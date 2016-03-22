@@ -1,0 +1,2 @@
+16-03-2016|20:44:50.451|HIS|L:0430|model     | Parameter count mismatch
+16-03-2016|20:44:50.574|HIS|L:0264|model     |Tabela visitas criada com sucesso!!

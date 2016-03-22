@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<pluginlist>
+    <!-- Pre-sell Plugin -->
+
+    <plugin name="atividadeplugin" library="./atividadeplugin" enabled="true">
+        <menu path="Cadastro" title="Consulta de Atividade" action="Manage" hotkey="CTRL+M" permission="atividade" />
+        <menu path="Cadastro" title="Cadastrar Atividade" action="Edit" hotkey="CTRL+E" permission="atividade" />
+    </plugin>
+
+</pluginlist>

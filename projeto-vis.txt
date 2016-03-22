@@ -1,0 +1,1 @@
+-s Visitas -t visitas.Visitas-Agora -c id -i int -c data_entrada.Data -i QDate -c hora_entrada.Hora -i QDate -c rg.RG -i QString:searchmaster -c cpf.CPF -i QString:search -c visitante.Visitante -i QString:search -c apto.Apto -i int:multi:Apartamento.Numero[103,104] -c torre.Torre -i int:multi:Torre.Nome[Olympic,Marine,Green] -c data_saida.Saida -i QDate -c saida_hora -i QDate 

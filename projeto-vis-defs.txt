@@ -1,0 +1,29 @@
+1. Nova Visita
+  1.1 solicitar
+      rg /cpf / nome / foto [autoprocura]
+  1.2 colocar como label se é liberado permanente e se tem que avisar
+  1.2.1 caso ja seja liberado, carregar automaticamente os dados do visitado
+  1.3 Informar numero do AP [carregar automaticamente as 3 possibilidades permitindo escolha]
+  1.3.1 Informar ramal automaticamente para facilitar ligação.
+  1.3 Salvar / Cancelar
+   
+2. Consulta Visitas [ tela principal ]
+  2.1 permitir consulta por qualquer um dos campos.
+  2.2 botão informar saida / visualisar 
+  
+-s Visitas -t visitas.Visitas-Agora -c id -i int -c data_entrada.Data -i QDate -c hora_entrada.Hora -i QTime -c rg.RG:nomodel -i QString:searchmaster -c cpf.CPF:nomodel -i QString:search -c visitante.Visitante -i int:multi:Visitante.Nome[] -c apto.Apto:nomodel -i QString  -c data_saida.Saida -i QDate -c saida_hora -i QTime   
+  
+3. Cadastro de moradores.
+
+-s Moradores -t morador.Morador -c id -i int -c data_cadastro.Data -i QDate -c hora_cadastro.Hora -i QTime -c torre.Torre -i int:multi:Torre.Nome[Olympic,Marine,Green] -c apto.Apto -i int:multi:Apartamento.Numero[103,104] -c proprietario.Proprietario -i QString:searchmaster   
+
+4. Cadastro de visitantes.
+
+-s Visitantes -t visitante.Visitante -c id -i int -c data_cadastro.Data -i QDate -c hora_cadastro.Hora -i QTime -c rg.RG -i QString:search -c cpf.CPF -i QString:search -c nome.Nome -i QString:searchmaster -c entrdalivre.EntradaLivre -i bool -c liberadopor.LiberadoPor -i int:multi:morador.Nome[]
+  
+    
+5. Relatorios:
+    1. Que visitantes estão no predito
+	    - agora, hoje, esta semana, este mês. 
+		- periodo
+    2. Seus visitantes ( e-mail )

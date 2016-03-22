@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>9999999</width>
+    <height>9999999</height>
+   </size>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>QRad Edit</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="QRadresource.qrc">
+    <normaloff>:/icons/QRadedit.ico</normaloff>:/icons/QRadedit.ico</iconset>
+  </property>
+  <property name="documentMode">
+   <bool>true</bool>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>true</bool>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QPlainTextEdit" name="plainTextEdit">
+      <property name="font">
+       <font>
+        <family>Verdana</family>
+       </font>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>700</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_Arquivo">
+    <property name="title">
+     <string>&amp;Arquivo</string>
+    </property>
+    <addaction name="action_Novo"/>
+    <addaction name="action_Abrir"/>
+    <addaction name="separator"/>
+    <addaction name="action_Salvar"/>
+    <addaction name="actionSalvar_Como"/>
+    <addaction name="actionSair"/>
+   </widget>
+   <widget class="QMenu" name="menu_Editar">
+    <property name="title">
+     <string>&amp;Editar</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuA_juda">
+    <property name="title">
+     <string>A&amp;juda</string>
+    </property>
+   </widget>
+   <addaction name="menu_Arquivo"/>
+   <addaction name="menu_Editar"/>
+   <addaction name="menuA_juda"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="action_Novo">
+   <property name="text">
+    <string>N&amp;ovo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="action_Abrir">
+   <property name="text">
+    <string>&amp;Abrir</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>_</string>
+   </property>
+  </action>
+  <action name="action_Salvar">
+   <property name="text">
+    <string>&amp;Salvar</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSalvar_Como">
+   <property name="text">
+    <string>Salvar &amp;Como</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionSair">
+   <property name="text">
+    <string>Sair</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="m2resource.qrc"/>
+ </resources>
+ <connections/>
+</ui>

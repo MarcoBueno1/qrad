@@ -103,3 +103,7 @@ win32:QMAKE_LFLAGS += --enable-auto-import
 #FORMS += \
 #    profilemanager.ui \
 #    profileregister.ui
+
+target.path = $${PREFIX}/bin
+INSTALLS += target
+

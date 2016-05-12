@@ -14,7 +14,7 @@ isEmpty(PREFIX) {
 
 }
 
-LIBS=-L$${BUILD_TREE}/binaries
+LIBS=-L$${BUILD_TREE}/bin
 win32:QMAKE_LFLAGS += --enable-auto-import
 
 # Include section
@@ -40,6 +40,7 @@ include(qmake/doc.pri)
 TEMPLATE = subdirs
 CONFIG += ordered
 
-SUBDIRS = QRad 
+SUBDIRS = QRad \
+          libs/QRadCore 
 
 message(Done! Now run \"make\" to build QRad)

@@ -54,3 +54,6 @@ FORMS += \
 
 DISTFILES += \
     UMLModel.qmodel
+
+target.path = $${PREFIX}/binaries
+INSTALLS += target

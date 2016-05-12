@@ -18,6 +18,8 @@
 #include <QTime>
 #include <QTimer>
 #include <QShowEvent>
+#include <QLineEdit>
+#include "model.h"
 
 typedef enum e_mode
 {
@@ -47,7 +49,9 @@ public:
     bool searchAtColumn(int column , Qt::MatchFlags flag ,QString text);
     void showEvent(QShowEvent *event);
     int getColumnOf(QString Title );
-
+    void setSearchEdit(QLineEdit *pSearchEdit, int nDefaultColumnSearch  );
+    void refreshTable();
+    void MatchNewest( Model *newest );
 
     void dropEvent(QDropEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
@@ -64,6 +68,11 @@ public slots:
     void VerifyEvent(QKeyEvent *event);
     void AferShowSlot();
 
+    void StartTimer(QString);
+    void Found(QModelIndex);
+    void OnNotFound();
+    void OnCurrentChanged(QModelIndex currentIndex);
+    void KeyPressTimeout();
 signals:
     void found(QModelIndex index);
     void notFound();
@@ -73,6 +82,8 @@ signals:
     void AfterShowEvent();
     void OnDrop(QString);
     void EnterPressed();
+    void ShowCurrentInformations( void );
+    void OnLoadTableView(void);
 
 private:
     QSortFilterProxyModel *m_proxyModel;
@@ -84,9 +95,12 @@ private:
     QTimer *m_timerAfterShowEvent;
     bool m_noEmptySearch;
     QString m_strLastString;
+    QLineEdit *m_pSearchEdit;
+    QTimer *m_keyinterval;
     void ShowToolTip();
     void DoDefaultSearch(QString string);
     bool MixFilteredSearch(QString text);
+    int m_nDefaultColumnSearch;
 
 };
 

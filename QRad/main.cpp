@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    if( argc < 7 )
+    if( argc < 4 )
     {
         qDebug() << "Poucos argumentos:";
         qDebug() << "-t tabela -c campo -i tipo          : Gera codigo a partir de linha de comando";

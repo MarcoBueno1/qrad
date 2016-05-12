@@ -41,7 +41,11 @@ QList<skeleton *> *SqlParser::Build( QString filename )
 
 void SqlParser::Dump()
 {
+    qDebug() << "Quantidade de Esqueletos: " << m_skels->count();
+
     QList<CTable*> *tables =  m_skels->at(m_skels->count()-1)->GetTables();
+    if(tables)
+        qDebug() << "    Quantidade de Tabelas: "  << tables->count();
     for( int i = 0; tables && (i < tables->count()); i++ )
     {
         qDebug() << "Dump\n------";
@@ -50,13 +54,19 @@ void SqlParser::Dump()
         for( int j = 0; fields  && (j < fields->count()); j++ )
         {
             CField *f = fields->at(j);
-            qDebug() << "Field: " << f->getField();
-            if( f->HasFKey() )
+            if(f)
             {
-                qDebug() << "HasForeingKey: ";
-                CForeingKey *fo = f->getForeingKey();
-                qDebug() << "Ref. Table: " << fo->getTable()->getName();
-                qDebug() << "Ref. Field: " << fo->getKey()->getField();
+               qDebug() << "Field: " << f->getField();
+               if( f->HasFKey() )
+               {
+                   qDebug() << "HasForeingKey: ";
+                   CForeingKey *fo = f->getForeingKey();
+                   if(fo)
+                   {
+                    qDebug() << "Ref. Table: " << fo->getTable()->getName();
+                    qDebug() << "Ref. Field: " << fo->getKey()->getField();
+                   }
+               }
             }
         }
     }
@@ -90,8 +100,9 @@ QList<skeleton *> *SqlParser::Parse2(QString filename)
         }
 
         TableName = GetTableName(Line);
-        if(!TableName.length())
+        if(TableName.length())
         {
+            qDebug() << " Estou inserindo uma nova tabela: ";
             table = new CTable;
             table->setName(TableName);
             skel = new skeleton;
@@ -152,7 +163,7 @@ int SqlParser::Parse(QString filename)
         }
 
         TableName = GetTableName(Line);
-        if(!TableName.length())
+        if(TableName.length() && !table)
         {
             table = new CTable;
             table->setName(TableName);
@@ -307,6 +318,24 @@ bool SqlParser::SkipLine( QString Line )
     if(Line.contains("CONSTRAINT"))
         return true;
 
+    if(Line.contains("SET "))
+        return true;
+
+    if(Line.contains("ALTER "))
+        return true;
+
+    if(Line.contains(" SEQUENCE "))
+        return true;
+
+    if(Line.contains("SELECT"))
+        return true;
+
+    if(Line.contains("COPY "))
+        return true;
+
+    if(Line.contains("ON "))
+        return true;
+
     if(Line.length() < 3)
         return true;
 
@@ -324,7 +353,7 @@ void SqlParser::PrintCommand()
    {
       Command += m_skels->at(i)->GetName();
       QList<CTable *> *pTables = m_skels->at(i)->GetTables();
-      for( int j = 0 ; pTables && ( pTables->count()); j++)
+      for( int j = 0 ; pTables && (j < pTables->count()); j++)
       {
           Command += " -t " + pTables->at(j)->getName();
           QList<CField *> *pFields = pTables->at(j)->getFields();

@@ -2,6 +2,8 @@
 #define QRADCONFIG_H
 
 #include <QString>
+#include <QWidget>
+
 
 class QRadConfig
 {
@@ -11,6 +13,7 @@ public:
 
     static bool GetUserProfile(QString strPermsission );
     static QString GetCurrentUserLogin();
+	static void centralizarWidget(QWidget *widget);
 };
 
 #endif // QRADCONFIG_H

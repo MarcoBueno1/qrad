@@ -14,11 +14,12 @@ TEMPLATE = lib
 TARGET = qradcore
 DEPENDPATH += .
 
-INCLUDEPATH += . \
+win32:INCLUDEPATH += . \
                ../3rdpart/libpq/include
 
 win32:INCLUDEPATH += ./system/inc/win
-unix:INCLUDEPATH += ./system/inc/lnx
+unix:INCLUDEPATH += ./system/inc/lnx \
+                    /usr/include/postgresql
 
 HEADERS +=  qradplugincontainer.h \
               qradcoreplugin.h \
@@ -49,7 +50,10 @@ HEADERS +=  qradplugincontainer.h \
     qradlineeditcompleter.h \
     qradlineeditenter.h \
     pgsqlasync.h \
-    coid.h
+    coid.h \
+#    profilemanager.h \
+#    profileregister.h \
+    qraddoublespinboxenter.h
 
 win32:HEADERS  += system/inc/win/qradsystem.h
 unix::HEADERS  += system/inc/lnx/qradsystem.h
@@ -80,7 +84,10 @@ SOURCES +=  qradplugininterface.cpp \
     qradlineeditcompleter.cpp \
     qradlineeditenter.cpp \
     pgsqlasync.cpp \
-    coid.cpp
+    coid.cpp \
+#    profilemanager.cpp \
+#    profileregister.cpp \
+    qraddoublespinboxenter.cpp
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c
 
@@ -92,3 +99,7 @@ win32:QMAKE_LFLAGS += --enable-auto-import
 
 #INSTALLS += target
 #INSTALLS += target
+
+#FORMS += \
+#    profilemanager.ui \
+#    profileregister.ui

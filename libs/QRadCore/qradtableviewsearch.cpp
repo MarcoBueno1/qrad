@@ -5,6 +5,7 @@
 #include <QHeaderView>
 #include "qraddebug.h"
 #include <QMimeData>
+#include "qradshared.h"
 
 
 QRadTableViewSearch::QRadTableViewSearch(QWidget *parent) :
@@ -15,10 +16,17 @@ QRadTableViewSearch::QRadTableViewSearch(QWidget *parent) :
     m_InUse = 0;
     m_noEmptySearch = true;
     m_timerAfterShowEvent = NULL;
+    m_keyinterval = NULL;
+
 }
 
 QRadTableViewSearch::~QRadTableViewSearch()
 {
+    if( m_keyinterval )
+    {
+        m_keyinterval->stop();
+        delete m_keyinterval;
+    }
     delete m_proxyModel;    
     //delete m_time;
 }
@@ -726,4 +734,102 @@ void QRadTableViewSearch::dragEnterEvent(QDragEnterEvent *event)
 void QRadTableViewSearch::dragMoveEvent(QDragMoveEvent *event)
 {
     event->acceptProposedAction();
+}
+
+///
+/// @ SearchEdit interaction
+///
+void QRadTableViewSearch::setSearchEdit(QLineEdit *pSearchEdit, int nDefaultColumnSearch )
+{
+    m_pSearchEdit = pSearchEdit;
+
+    connect(m_pSearchEdit, SIGNAL(textEdited(QString)), this, SLOT(StartTimer(QString)));
+    connect(this, SIGNAL(found(QModelIndex)), this, SLOT(Found(QModelIndex)));
+    connect(this, SIGNAL(notFound()),this,SLOT(OnNotFound()));
+    connect(this,SIGNAL(clicked(QModelIndex)),this,SLOT(OnCurrentChanged(QModelIndex)));
+    connect(this,SIGNAL(CurrentChanged(QModelIndex)),this,SLOT(CurrentChanged(QModelIndex)));
+    m_nDefaultColumnSearch = nDefaultColumnSearch;
+}
+void QRadTableViewSearch::StartTimer( QString )
+{
+    if( m_pSearchEdit->text().trimmed().length() == 1 )
+        this->selectRow(0);
+
+    if( m_keyinterval )
+    {
+        m_keyinterval->stop();
+        delete m_keyinterval;
+    }
+    m_keyinterval = new QTimer;
+    connect(m_keyinterval, SIGNAL(timeout()), this, SLOT(KeyPressTimeout()));
+    m_keyinterval->setSingleShot(true);
+    m_keyinterval->setInterval(200);
+    m_keyinterval->start();
+}
+void QRadTableViewSearch::KeyPressTimeout()
+{
+    this->Search(m_pSearchEdit->text());
+}
+void QRadTableViewSearch::Found(QModelIndex)
+{
+    this->SetNoEmptySearch( true );
+
+    emit ShowCurrentInformations();
+    m_pSearchEdit->setStyleSheet(AUTO_CONFIG_FOCUS);
+
+    this->SetNoEmptySearch( false);
+}
+
+void QRadTableViewSearch::OnNotFound()
+{
+   m_pSearchEdit->setStyleSheet(FG_COLOR_NOT_FOUND + BG_COLOR_NOT_FOUND);
+}
+
+void QRadTableViewSearch::OnCurrentChanged(QModelIndex currentIndex)
+{
+    m_pSearchEdit->setStyleSheet(AUTO_CONFIG_FOCUS);
+    m_pSearchEdit->setText(currentIndex.sibling(currentIndex.row(),m_nDefaultColumnSearch).data().toString());
+    m_pSearchEdit->selectAll();
+
+    emit ShowCurrentInformations();
+}
+void QRadTableViewSearch::refreshTable()
+{
+    QApplication::processEvents();
+
+    this->SetNoEmptySearch( true );
+
+    m_pSearchEdit->setFocus();
+
+    emit OnLoadTableView();
+
+    QModelIndex index;
+    index = this->currentIndex();
+
+    m_pSearchEdit->setText(index.sibling(index.row(), m_nDefaultColumnSearch).data().toString());
+
+    this->SetNoEmptySearch( false );
+
+    //this->refreshTable();
+
+
+    if(m_pSearchEdit->text() == "")
+    {
+        this->sortByColumn(m_nDefaultColumnSearch, Qt::AscendingOrder);
+        this->Search("");
+        m_pSearchEdit->setStyleSheet(AUTO_CONFIG_FOCUS);
+    }
+}
+
+void QRadTableViewSearch::MatchNewest( Model *newest )
+{
+    refreshTable();
+    for( int j = 0; j < newest->attributes().count(); j++ )
+    {
+        if( this->model()->headerData(m_nDefaultColumnSearch,Qt::Horizontal).toString() == newest->attributes().at(j)->fieldName())
+        {
+            m_pSearchEdit->setText(newest->attributes().at(j)->value().toString());
+            this->Search(newest->attributes().at(j)->value().toString());
+        }
+    }
 }

@@ -51,7 +51,7 @@ unix {
 					  $$[QT_INSTALL_LIBS]/libicuuc.so.53 \
                                           $$[QT_INSTALL_LIBS]/libicui18n.so.53
 
-	qtruntime.path = $${PREFIX}/libs
+	qtruntime.path = $${PREFIX}/bin
 	qtruntime.files = $${QT_RUNTIME_LIBS}
 	INSTALLS += qtruntime
 

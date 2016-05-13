@@ -12,7 +12,7 @@ TARGET = main
 TEMPLATE = app
 
 INCLUDEPATH += ../QRad/generated \
-               ../libs
+               ../libs/QRadCore
 
 SOURCES += main.cpp\
         mainwindow.cpp
@@ -21,5 +21,6 @@ HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
 
-LIBS += -L../libs \
+win32:LIBS += =L../libs/QRadCore/release
+LIBS += -L../libs/QRadCore \
         -lqradcore

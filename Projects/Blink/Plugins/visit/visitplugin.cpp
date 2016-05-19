@@ -1,10 +1,11 @@
 #include "visitplugin.h" 
-
+#include "qraddebug.h"
 visitPlugin::visitPlugin()
 {
     m_manager = 0;
     m_edit = 0;
     m_managerVisitante = 0;
+    m_editDweller = 0;
 }
 
 visitPlugin::~visitPlugin()
@@ -17,13 +18,16 @@ visitPlugin::~visitPlugin()
 
     if( m_managerVisitante )
         delete m_managerVisitante;
+
+    if( m_editDweller )
+        delete m_editDweller;
 }
 
 void visitPlugin::onLoad(QRadPluginContainer* container)
 {
     m_container = container;
 
-        appendAction("Manage");
+    appendAction("Manage");
     appendAction("Edit");
 }
 
@@ -52,6 +56,16 @@ void visitPlugin::Process( const QString& action )
 
     //    QRadConfig::centralizarWidget(m_edit);
         m_managerVisitante->show();
+    }
+    else if (action.toLower() == QString("EditMorador").toLower())
+    {
+        debug_message("-->EditMorador\n");
+        if (!m_editDweller )
+            m_editDweller = new EditDweller(m_parent);
+
+    //    QRadConfig::centralizarWidget(m_edit);
+        m_editDweller->show();
+        debug_message("<--EditMorador\n");
     }
 
 }

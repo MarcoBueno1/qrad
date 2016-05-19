@@ -4,12 +4,14 @@ PhoneList* Phone::m_allList = NULL;
 
 MODEL_BEGIN_MAP(Phone)
      MODEL_MAP_PRIMARYKEY(id, "id");
-	 MODEL_MAP_FIELD(Number, "number");
-	 MODEL_MAP_FIELD(Operator, "operator");
-	 MODEL_MAP_FIELD(Type, "type");
-	 MODEL_MAP_FIELD(WatsApp, "watsapp" );
+     MODEL_MAP_FIELD(dwellerid, "dwellerid" );
+     MODEL_MAP_FIELD(Number, "number");
+     MODEL_MAP_FIELD(Operator, "operator");
+     MODEL_MAP_FIELD(Type, "type");
+     MODEL_MAP_FIELD(WatsApp, "watsapp" );
+     MODEL_MAP_FIELD(Removed, "removed");
 
-	 MODEL_END_MAP()
+     MODEL_END_MAP()
 
 QList<Phone*>* Phone::findAll()
 {

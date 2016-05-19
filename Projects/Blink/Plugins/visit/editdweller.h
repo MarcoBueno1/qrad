@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QKeyEvent>
 #include "dweller.h"
+#include <QSqlQueryModel>
 
 namespace Ui {
 class EditDweller;
@@ -23,13 +24,17 @@ public slots:
     void Save();
     void Cancel();
     
+    void AddPhone();
+    void RemovePhone();
 private:
     Ui::EditDweller *ui;
     Dweller* m_mod;
     Dweller* m_lastMod;
+    QSqlQueryModel *m_model;
     void Load();
     void showEvent(QShowEvent *event);
     void keyPressEvent(QKeyEvent *e);
+    void RefreshPhoneTable();
 };
 
 #endif // EDITDweller_H

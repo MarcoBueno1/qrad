@@ -4,6 +4,7 @@
 #include <QComboBox>
 //#include <QString>
 #include <QSqlQueryModel>
+#include "qraddebug.h"
 
 class SComboBox : public QComboBox
 {
@@ -24,7 +25,9 @@ public:
 
     void setTable(QString text )
     {
+        debug_message("-->setTable\n");
         m_Table =  text;
+        debug_message("<--setTable\n");
     }
     void setField(QString text )
     {

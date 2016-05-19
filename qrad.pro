@@ -41,6 +41,10 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS = QRad \
-          libs/QRadCore 
+          libs/QRadCore \
+          Main \
+          Projects\Blink\libs\orm \
+          Projects\Blink\Plugins\visit
+
 
 message(Done! Now run \"make\" to build QRad)

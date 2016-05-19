@@ -6,8 +6,8 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select v.id, data_entrada as 'Entrou Em', hora_entrada as 'Hora', vi.nome, "\
-                  "data_saida as 'Saiu Em', saida_hora as Hora from visit v "\
+#define SQL_ITEMS "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome, "\
+                  "data_saida as \"Saiu Em\", saida_hora as Hora from visit v "\
                   "inner join Visitante  vi on vi.id = v.visitante  order by v.id "
 
 

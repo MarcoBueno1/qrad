@@ -6,7 +6,6 @@
 #include <QAbstractItemModel>
 #include <QVariant>
 
-#define PORTEIRO_FUL_PATH "photo_image2.jpg"
 
 Editphone::Editphone(QWidget *parent) :
     QDialog(parent),
@@ -16,14 +15,22 @@ Editphone::Editphone(QWidget *parent) :
     
     m_mod = NULL;
     m_lastMod = NULL;
-
-   // CriaTabela();
+        ui->CmbBxoperator->setTable("Operadora");
+    ui->CmbBxoperator->setField("Name");
+    ui->CmbBxoperator->setCanAdd(true);
+    ui->CmbBxoperator->setUserName("dsm");
+    if(ui->CmbBxoperator->completer())
+        ui->CmbBxoperator->completer()->setFilterMode(Qt::MatchContains );
+    ui->CmbBxtype->setTable("phonetype");
+    ui->CmbBxtype->setField("type");
+    ui->CmbBxtype->setCanAdd(true);
+    ui->CmbBxtype->setUserName("dsm");
+    if(ui->CmbBxtype->completer())
+        ui->CmbBxtype->completer()->setFilterMode(Qt::MatchContains );
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
-    ui->lineEditNumero->setFocus();
 }
-
 
 Editphone::~Editphone()
 {
@@ -48,36 +55,21 @@ void Editphone::SetModel(Phone* mod)
    Load();
 }
 
-bool Editphone::CanSave()
-{
-/*	
-    if(ui->lineEditCPF->text().trimmed().isEmpty()
-            && ui->lineEditRG->text().trimmed().isEmpty()
-            && ui->lineEditVisitante->text().trimmed().isEmpty())
-    {
-        QMessageBox::information(this, "Oops!", "Por favor, digite alguma informação sobre o phonente!!");
-        return false;
-    }
-	*/
-
-    return true;
-}
 
 void Editphone::Save()
 {
-
-    if( !CanSave() )
-        return;
 
     Phone* mod =  m_mod;
     if( m_mod == NULL)
         mod = new Phone;
 
-//    mod->setData(ui->DtEdtData->date());
-//    mod->setHora(ui->TmEdtHora->time());
-//    mod->setSaida(ui->DtEdtSaida->date());
-//    mod->setsaida_hora(ui->TmEdtsaida_hora->time());
-	
+    //mod->setdwellerid(ui->SpnBxdwellerid->value());
+    mod->setNumber(ui->LnEdtnumber->text());
+    mod->setOperator(ui->CmbBxoperator->model()->data(ui->CmbBxoperator->model()->index(ui->CmbBxoperator->currentIndex(), 0)).toInt());
+
+    mod->setType(ui->CmbBxtype->model()->data(ui->CmbBxtype->model()->index(ui->CmbBxtype->currentIndex(), 0)).toInt());
+
+    mod->setWatsApp(ui->ChkBxwatsapp->isChecked());
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -90,20 +82,18 @@ void Editphone::Save()
     }
     else
        QMessageBox::warning(this, "Oops","Não foi possivel salvar");
+    
 }
 
 void Editphone::Load()
 {
     if( m_mod == NULL)
       return;
-/*    ui->DtEdtData->setDate(m_mod->getData());
-    ui->TmEdtHora->setTime(m_mod->getHora());
-    ui->DtEdtSaida->setDate(m_mod->getSaida());
-    ui->TmEdtsaida_hora->setTime(m_mod->getsaida_hora());
+    ui->LnEdtnumber->setText(m_mod->getNumber());
+    ui->CmbBxoperator->setCurrentId(m_mod->getOperator());
+    ui->CmbBxtype->setCurrentId(m_mod->getType());
+    ui->ChkBxwatsapp->setChecked(m_mod->getWatsApp());
 
-    ui->DtEdtData->setReadOnly(true);
-    ui->TmEdtHora->setReadOnly(true);
-*/
 }
 
 void Editphone::Cancel()
@@ -116,3 +106,4 @@ Phone* Editphone::GetSaved()
    return m_lastMod;
 
 }
+

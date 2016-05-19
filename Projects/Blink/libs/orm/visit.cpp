@@ -6,7 +6,7 @@ MODEL_BEGIN_MAP(visit)
      MODEL_MAP_PRIMARYKEY(id, "id");
      MODEL_MAP_FIELD(Data, "data_entrada");
      MODEL_MAP_FIELD(Hora, "hora_entrada");
-     MODEL_MAP_FIELD(Visitante, "visitnte");
+     MODEL_MAP_FIELD(Visitante, "visitante");
      MODEL_MAP_FIELD(Reason, "reason");
      MODEL_MAP_FIELD(Saida, "data_saida");
      MODEL_MAP_FIELD(saida_hora, "saida_hora");

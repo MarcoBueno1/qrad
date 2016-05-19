@@ -17,8 +17,8 @@ void centerWidget(QWidget *widget)
 
 void configureDatabase()
 {
-//    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL7");
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL7");
+///    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
 
     db.setDatabaseName("qraddb");
     db.setHostName("localhost");

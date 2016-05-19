@@ -30,7 +30,6 @@ private:
     void Load();
     void showEvent(QShowEvent *event);
     void keyPressEvent(QKeyEvent *e);
-    bool CanSave();
 };
 
 #endif // EDITphone_H

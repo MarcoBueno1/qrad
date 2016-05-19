@@ -254,7 +254,7 @@
      <property name="title">
       <string> Telefones</string>
      </property>
-     <widget class="QTableView" name="tableView">
+     <widget class="QTableView" name="tableViewPhone">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -372,7 +372,7 @@
      <property name="title">
       <string> Endereços </string>
      </property>
-     <widget class="QTableView" name="tableView_2">
+     <widget class="QTableView" name="tableViewAddress">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -643,7 +643,7 @@
      <number>1</number>
     </property>
     <property name="text">
-     <string>Cadastro de Dweller</string>
+     <string>Cadastro de Morador</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>

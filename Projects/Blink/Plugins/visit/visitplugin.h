@@ -8,6 +8,8 @@
 #include "managervisit.h"
 #include "editvisit.h"
 #include "managerVisitante.h"
+#include "editdweller.h"
+
 
 class visitPlugin : public QRadPluginInterface
 {
@@ -24,6 +26,7 @@ public:
 protected:
     Managervisit *m_manager;
     ManagerVisitante *m_managerVisitante;
+    EditDweller *m_editDweller;
     Editvisit *m_edit;
 
 

@@ -56,4 +56,5 @@ win32:QMAKE_LFLAGS += --enable-auto-import
 
 OTHER_FILES += visit.json 
 
-DISTFILES +=
+target.path = $${PREFIX}/bin
+INSTALLS += target

@@ -22,10 +22,12 @@
 SComboBox::SComboBox(QWidget *parent) :
     QComboBox(parent)
 {
+    debug_message("-->SComboBox\n");
     m_CurrentId = -1;
     m_pModelLocal = new QSqlQueryModel;
     connect(this, SIGNAL(OnEdit()), this, SLOT(doEdit()));
     connect(this, SIGNAL(OnUpdate(QString)), this, SLOT(doUpdate(QString)));
+    debug_message("<--SComboBox\n");
 
 }
 SComboBox::~SComboBox()
@@ -36,6 +38,8 @@ SComboBox::~SComboBox()
 void SComboBox::showEvent ( QShowEvent * event )
 {
     Q_UNUSED(event );
+    debug_message("-->showEvent\n");
+
 #ifdef _USE_IN_QT_CREATOR
     QDesignerFormWindowInterface *formWindow;
     formWindow = QDesignerFormWindowInterface::findFormWindow(this);
@@ -96,6 +100,7 @@ void SComboBox::showEvent ( QShowEvent * event )
   //                        this, SLOT(checkProperty(QString,QVariant)));
 
     connect( this, SIGNAL(BuildChanged(bool)), this, SLOT(OnBuildChanged(bool)));
+    debug_message("<--showEvent\n");
 }
 
 void SComboBox::OnBuildChanged(bool bValue)

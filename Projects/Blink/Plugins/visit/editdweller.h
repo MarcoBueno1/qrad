@@ -27,13 +27,16 @@ public slots:
     void Cancel();
     
     void AddPhone();
+    void AddAddress();
     void RemovePhone();
+    void RemoveAddress();
     void baterFoto();
 private:
     Ui::EditDweller *ui;
     Dweller* m_mod;
     Dweller* m_lastMod;
     QSqlQueryModel *m_model;
+    QSqlQueryModel *m_AddressModel;
 
     ColumnPhone  *m_PhoneDelegate;
     ColumnCenter *m_CenterDelegate;
@@ -42,6 +45,7 @@ private:
     void showEvent(QShowEvent *event);
     void keyPressEvent(QKeyEvent *e);
     void RefreshPhoneTable();
+    void RefreshAddressTable();
 };
 
 #endif // EDITDweller_H

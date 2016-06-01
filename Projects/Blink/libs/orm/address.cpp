@@ -8,6 +8,8 @@ MODEL_BEGIN_MAP(Address)
 	 MODEL_MAP_FIELD(Number, "number");
 	 MODEL_MAP_FIELD(cep, "cep");
 	 MODEL_MAP_FIELD(Neighborhood, "neighborhood" );
+	 MODEL_MAP_FIELD(Removed, "removed" );
+
 
 	 MODEL_END_MAP()
 

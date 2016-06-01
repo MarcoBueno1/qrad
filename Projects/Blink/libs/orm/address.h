@@ -12,6 +12,7 @@ class Address : public Model
      MODEL_DECLARE_ATTRIBUTE(int, Number);
      MODEL_DECLARE_ATTRIBUTE(int, cep);
      MODEL_DECLARE_ATTRIBUTE(int, Neighborhood);
+     MODEL_DECLARE_ATTRIBUTE(bool, Removed);
 
      MODEL_MATCH_TABLE(Address, "address")
 

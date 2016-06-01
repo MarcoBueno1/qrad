@@ -394,7 +394,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButtonAddPhone_2">
+     <widget class="QPushButton" name="pushButtonAddAddress">
       <property name="geometry">
        <rect>
         <x>679</x>
@@ -407,7 +407,7 @@
        <string>+</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButtonRemovePhone_2">
+     <widget class="QPushButton" name="pushButtonRemoveAddress">
       <property name="geometry">
        <rect>
         <x>680</x>

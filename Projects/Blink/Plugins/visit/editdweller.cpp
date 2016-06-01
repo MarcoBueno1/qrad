@@ -1,5 +1,5 @@
 #include "editdweller.h"
-#include "ui_editDweller.h"
+#include "ui_editdweller.h"
 #include <QCompleter>
 #include <QMessageBox>
 #include <QModelIndex>
@@ -9,6 +9,7 @@
 #include "editphone.h"
 #include "docvalidate.h"
 #include "camera.h"
+#include "editaddress.h"
 
 #define PORTEIRO_FUL_PATH "deller.jpg"
 
@@ -27,6 +28,8 @@ EditDweller::EditDweller(QWidget *parent) :
     connect(ui->pushButtonRemovePhone, SIGNAL(clicked()),this,SLOT(RemovePhone()));
     connect(ui->pushButtonBaterFoto, SIGNAL(clicked()),this, SLOT(baterFoto()));
 
+    connect(ui->pushButtonAddAddress, SIGNAL(clicked()),this,SLOT(AddAddress()));
+    connect(ui->pushButtonRemoveAddress, SIGNAL(clicked()),this,SLOT(RemoveAddress()));
 
     debug_message("-->EditDweller\n");
 
@@ -61,6 +64,7 @@ EditDweller::EditDweller(QWidget *parent) :
         ui->comboBoxProfissao->completer()->setFilterMode(Qt::MatchContains );
 
     m_model = new QSqlQueryModel;
+    m_AddressModel = new QSqlQueryModel;
     m_PhoneDelegate = new ColumnPhone;
     m_CenterDelegate = new ColumnCenter;
     m_BooleanDelegate= new ColumnBool;
@@ -71,6 +75,7 @@ EditDweller::~EditDweller()
 {
     delete ui;
     delete m_model ;
+    delete m_AddressModel;
     delete m_PhoneDelegate;
     delete m_CenterDelegate;
     delete m_BooleanDelegate;
@@ -137,7 +142,11 @@ void EditDweller::Save()
     if( m_mod == NULL)
         mod = new Dweller;
 
-   // mod->setNome(ui->LnEdtNome->text());
+    mod->setName(ui->lineEditDweller->text());
+    mod->setCPF(ui->lineEditCPF->text());
+    mod->setRG(ui->lineEditRG->text());
+
+
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -145,6 +154,7 @@ void EditDweller::Save()
     m_mod = NULL;
     if( bRet )
     {
+       mod->saveImage( PORTEIRO_FUL_PATH );
        QMessageBox::information(this, "Sucesso!","Informações foram salvas com sucesso!");
        accept();
     }
@@ -157,7 +167,12 @@ void EditDweller::Load()
 {
     if( m_mod == NULL)
       return;
-  //  ui->LnEdtNome->setText(m_mod->getNome());
+    ui->lineEditDweller->setText(m_mod->getName());
+    ui->lineEditCPF->setText(m_mod->getCPF());
+    ui->lineEditRG->setText(m_mod->getRG());
+
+    RefreshAddressTable();
+    RefreshPhoneTable();
 
 }
 
@@ -180,6 +195,15 @@ void EditDweller::AddPhone()
     }
     delete phone;
 }
+void EditDweller::AddAddress()
+{
+    Editaddress *pAddress = new Editaddress();
+    if(pAddress->exec() == QDialog::Accepted )
+    {
+       RefreshAddressTable();
+    }
+    delete pAddress;
+}
 void EditDweller::RemovePhone()
 {
     int id = ui->tableViewPhone->model()->index(ui->tableViewPhone->currentIndex().row(),0).data().toInt();
@@ -189,6 +213,17 @@ void EditDweller::RemovePhone()
         p->updateRemoved( true );
         delete p;
         RefreshPhoneTable();
+    }
+}
+void EditDweller::RemoveAddress()
+{
+    int id = ui->tableViewAddress->model()->index(ui->tableViewAddress->currentIndex().row(),0).data().toInt();
+    Address *p = Address::findByid(id);
+    if(p)
+    {
+        p->updateRemoved( true );
+        delete p;
+        RefreshAddressTable();
     }
 }
 
@@ -217,6 +252,29 @@ void EditDweller::RefreshPhoneTable()
 
 
 }
+void EditDweller::RefreshAddressTable()
+{
+   // qrad -s phone -t phone -c id -i int -c dwellerid -i int -c number -i QString -c operator -i int:multi:Operadora.Name[Tim,Oi,Claro,Vivo] -c type -i int:multi:phonetype.type[Celular,Casa,Trabalho] -c watsapp -i bool
+
+
+  QString SQL = QString("select p.id, p.Number as \"Numero\", o.name as \"Operadora\", t.type as \"Tipo\", watsapp as \"WatsApp\" "\
+                        "from phone p inner join operadora o on o.id = p.operator  "\
+                        "inner join phonetype t on t.id = p.type  "\
+                        "where p.dwellerid = %1").arg(m_mod?m_mod->getid():0);
+
+  m_AddressModel->setQuery(SQL);
+  ui->tableViewAddress->setModel(m_AddressModel);
+  ui->tableViewAddress->hideColumn(0);
+  ui->tableViewAddress->setItemDelegateForColumn(1, m_PhoneDelegate);
+  ui->tableViewAddress->setItemDelegateForColumn(2, m_CenterDelegate);
+  ui->tableViewAddress->setItemDelegateForColumn(3, m_CenterDelegate);
+  ui->tableViewAddress->setItemDelegateForColumn(4, m_BooleanDelegate);
+
+  ui->tableViewAddress->resizeColumnsToContents();
+  ui->tableViewAddress->resizeRowsToContents();
+  ui->tableViewAddress->horizontalHeader()->setStretchLastSection(true);
+}
+
 void EditDweller::baterFoto()
 {
   Camera *cam = new Camera;

@@ -12,6 +12,8 @@ MODEL_BEGIN_MAP(Dweller)
      MODEL_MAP_FIELD(CPF, "cpf");
      MODEL_MAP_FIELD(RG, "rg");
      MODEL_MAP_FIELD(Type, "type");
+     MODEL_MAP_FIELD(Ap, "ap");
+     MODEL_MAP_FIELD(Tower, "tower");
      MODEL_MAP_FIELD(Since, "since");
      MODEL_MAP_FIELD(MoveOut, "moveout");
      MODEL_MAP_FIELD(ImageId, "imageid" );
@@ -48,6 +50,22 @@ Dweller* Dweller::findByid(int id)
 
     return DwellerM;
 }
+
+Dweller* Dweller::findByCPF(QString strCPF )
+{
+    Dweller *DwellerM = new Dweller();
+
+    QString query = QString("select * from dweller where cpf = '%1'").arg(strCPF);
+
+    if (!DwellerM->fillModelFromQuery(query))
+    {
+        delete DwellerM;
+        return NULL;
+    }
+
+    return DwellerM;
+}
+
 Dweller* Dweller::findByid(int id, QString database)
 {
     return Dweller::findByPrimaryKey(id, database);

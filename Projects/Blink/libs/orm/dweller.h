@@ -14,6 +14,8 @@ class Dweller : public Model
      MODEL_DECLARE_ATTRIBUTE(QString, CPF);
      MODEL_DECLARE_ATTRIBUTE(QString, RG);
      MODEL_DECLARE_ATTRIBUTE(int, Type);
+     MODEL_DECLARE_ATTRIBUTE(int, Ap);
+     MODEL_DECLARE_ATTRIBUTE(int, Tower);
      MODEL_DECLARE_ATTRIBUTE(QDate, Since);
      MODEL_DECLARE_ATTRIBUTE(QDate, MoveOut);
      MODEL_DECLARE_ATTRIBUTE(int, ImageId);
@@ -30,6 +32,7 @@ public:
     static DwellerList* findAll(void);
     static Dweller* findByid(int id);
     static Dweller* findByid(int id, QString database);
+    static Dweller* findByCPF(QString strCPF );
     bool saveImage(QString path);
     QPixmap getImage();
 };

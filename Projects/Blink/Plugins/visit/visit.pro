@@ -14,10 +14,11 @@ SOURCES = \
              editvisit.cpp \ 
              managerVisitante.cpp \ 
              editVisitante.cpp \
-    camera.cpp \
-    editdweller.cpp \
-	editphone.cpp \
-	editaddress.cpp
+             camera.cpp \
+             managerdweller.cpp \ 
+             editdweller.cpp \
+	     editphone.cpp \
+	     editaddress.cpp
 
 HEADERS = \ 
              visitplugin.h \ 
@@ -25,10 +26,11 @@ HEADERS = \
              editvisit.h \ 
              managerVisitante.h \ 
              editVisitante.h \ 
-    camera.h \
-    editdweller.h \
-    editphone.h \
-	editaddress.h
+             camera.h \
+             managerdweller.h \ 
+             editdweller.h \
+             editphone.h \
+	     editaddress.h
 
 
 
@@ -37,10 +39,11 @@ FORMS = \
              editvisit.ui\ 
              managerVisitante.ui \ 
              editVisitante.ui \ 
-    camera.ui \
-    editdweller.ui \
-	editphone.ui \
-	editaddress.ui
+             camera.ui \
+             editdweller.ui \
+             managerdweller.ui \ 
+	     editphone.ui \
+	     editaddress.ui
 
 
 

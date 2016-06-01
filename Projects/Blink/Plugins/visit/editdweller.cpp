@@ -11,7 +11,7 @@
 #include "camera.h"
 #include "editaddress.h"
 
-#define PORTEIRO_FUL_PATH "deller.jpg"
+#define PORTEIRO_FUL_PATH "dweller.jpg"
 
 EditDweller::EditDweller(QWidget *parent) :
     QDialog(parent),
@@ -20,7 +20,6 @@ EditDweller::EditDweller(QWidget *parent) :
     ui->setupUi(this);
     
     m_mod = NULL;
-    m_lastMod = NULL;
     
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
@@ -68,6 +67,8 @@ EditDweller::EditDweller(QWidget *parent) :
     m_PhoneDelegate = new ColumnPhone;
     m_CenterDelegate = new ColumnCenter;
     m_BooleanDelegate= new ColumnBool;
+ 
+    m_mod = new Dweller;
 
 }
 
@@ -79,6 +80,8 @@ EditDweller::~EditDweller()
     delete m_PhoneDelegate;
     delete m_CenterDelegate;
     delete m_BooleanDelegate;
+    if(  m_mod )
+       delete m_mod;
 }
 void EditDweller::showEvent(QShowEvent *event)
 {
@@ -94,9 +97,12 @@ void EditDweller::keyPressEvent(QKeyEvent *e)
 
 void EditDweller::SetModel(Dweller* mod)
 {
+   delete m_mod;
+
    m_mod = mod;
    Load();
 }
+
 
 
 void EditDweller::Save()
@@ -137,24 +143,37 @@ void EditDweller::Save()
         ui->lineEditCPF->setFocus();
         return;
     }
+    if( !cpf.isEmpty() )
+    {
+      // verifica se ja foi cadastrado previamente
 
-    Dweller* mod =  m_mod;
-    if( m_mod == NULL)
-        mod = new Dweller;
+      Dweller *d = Dweller::findByCPF( cpf );
+      if( d )
+      {
+        QMessageBox::warning(this,
+                             "Oops!",
+                              QString("Já existe um morador cadastrado com este CPF (%1 ) ").arg(d->getName()));
+        ui->lineEditCPF->selectAll();
+        ui->lineEditCPF->setFocus();
+        delete d;
+        return;
+      }
+    }
+   
+    m_mod->setName(ui->lineEditDweller->text());
+    m_mod->setCPF(ui->lineEditCPF->text());
+    m_mod->setRG(ui->lineEditRG->text());
 
-    mod->setName(ui->lineEditDweller->text());
-    mod->setCPF(ui->lineEditCPF->text());
-    mod->setRG(ui->lineEditRG->text());
+    m_mod->setAp( ui->comboBoxAp->model()->data(ui->comboBoxAp->model()->index(ui->comboBoxAp->currentIndex(), 0)).toInt());
+    m_mod->setTower( ui->comboBoxApTorre->model()->data(ui->comboBoxApTorre->model()->index(ui->comboBoxApTorre->currentIndex(), 0)).toInt() );
+    m_mod->setType( ui->comboBoxTipo->model()->data(ui->comboBoxTipo->model()->index(ui->comboBoxTipo->currentIndex(), 0)).toInt() );
+    m_mod->setJobTitle( ui->comboBoxProfissao->model()->data(ui->comboBoxProfissao->model()->index(ui->comboBoxProfissao->currentIndex(), 0)).toInt() ) ;
 
 
-    bool bRet = mod->Save();
-    if( m_lastMod )
-       delete m_lastMod;
-    m_lastMod = mod;
-    m_mod = NULL;
+    bool bRet = m_mod->Save();
     if( bRet )
     {
-       mod->saveImage( PORTEIRO_FUL_PATH );
+       m_mod->saveImage( PORTEIRO_FUL_PATH );
        QMessageBox::information(this, "Sucesso!","Informações foram salvas com sucesso!");
        accept();
     }
@@ -171,8 +190,16 @@ void EditDweller::Load()
     ui->lineEditCPF->setText(m_mod->getCPF());
     ui->lineEditRG->setText(m_mod->getRG());
 
+    ui->comboBoxAp->setCurrentId(m_mod->getAp());
+    ui->comboBoxApTorre->setCurrentId(m_mod->getTower());
+    ui->comboBoxTipo->setCurrentId(m_mod->getType());
+    ui->comboBoxProfissao->setCurrentId(m_mod->getJobTitle());
+
     RefreshAddressTable();
     RefreshPhoneTable();
+
+    QPixmap mypix = m_mod->getImage();
+    ui->LblPhoto->setPixmap(mypix);
 
 }
 
@@ -183,7 +210,7 @@ void EditDweller::Cancel()
 }
 Dweller* EditDweller::GetSaved()
 {
-   return m_lastMod;
+   return m_mod;
 
 }
 void EditDweller::AddPhone()

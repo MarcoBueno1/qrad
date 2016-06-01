@@ -43,7 +43,9 @@ void visitPlugin::Process( const QString& action )
     }
     else if (action.toLower() == QString("Edit").toLower())
     {
-        if (!m_edit)
+        if (m_edit)
+            delete m_edit;
+
             m_edit = new Editvisit(m_parent);
 
     //    QRadConfig::centralizarWidget(m_edit);
@@ -60,8 +62,10 @@ void visitPlugin::Process( const QString& action )
     else if (action.toLower() == QString("EditMorador").toLower())
     {
         debug_message("-->EditMorador\n");
-        if (!m_editDweller )
-            m_editDweller = new EditDweller(m_parent);
+        if (m_editDweller )
+            delete m_editDweller;
+
+        m_editDweller = new EditDweller(m_parent);
 
     //    QRadConfig::centralizarWidget(m_edit);
         m_editDweller->show();

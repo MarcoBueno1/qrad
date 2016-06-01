@@ -28,6 +28,7 @@ public slots:
     
     void AddPhone();
     void RemovePhone();
+    void baterFoto();
 private:
     Ui::EditDweller *ui;
     Dweller* m_mod;
@@ -41,7 +42,6 @@ private:
     void showEvent(QShowEvent *event);
     void keyPressEvent(QKeyEvent *e);
     void RefreshPhoneTable();
-    void baterFoto();
 };
 
 #endif // EDITDweller_H

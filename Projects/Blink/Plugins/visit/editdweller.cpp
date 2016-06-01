@@ -102,6 +102,7 @@ void EditDweller::Save()
         QMessageBox::warning(this,
                                  "Atenção",
                                  "Nome do morador não pode ficar vazio");
+        ui->lineEditDweller->selectAll();
         ui->lineEditDweller->setFocus();
         return;
     }
@@ -117,6 +118,7 @@ void EditDweller::Save()
                                   "Campo CPF está vazio, deseja prosseguir mesmo assim?",
                                   QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
         {
+            ui->lineEditCPF->selectAll();
             ui->lineEditCPF->setFocus();
             return;
         }
@@ -126,6 +128,7 @@ void EditDweller::Save()
         QMessageBox::warning(this,
                                  "Atenção",
                                  "Conteúdo do campo CPF inválido, preencha-o ou deixe-o vazio");
+        ui->lineEditCPF->selectAll();
         ui->lineEditCPF->setFocus();
         return;
     }

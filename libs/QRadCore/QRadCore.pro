@@ -53,7 +53,8 @@ HEADERS +=  qradplugincontainer.h \
     coid.h \
 #    profilemanager.h \
 #    profileregister.h \
-    qraddoublespinboxenter.h
+    qraddoublespinboxenter.h \
+    docvalidate.h
 
 win32:HEADERS  += system/inc/win/qradsystem.h
 unix::HEADERS  += system/inc/lnx/qradsystem.h
@@ -87,7 +88,8 @@ SOURCES +=  qradplugininterface.cpp \
     coid.cpp \
 #    profilemanager.cpp \
 #    profileregister.cpp \
-    qraddoublespinboxenter.cpp
+    qraddoublespinboxenter.cpp \
+    docvalidate.cpp
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c
 

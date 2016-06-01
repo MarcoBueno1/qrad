@@ -325,7 +325,7 @@ void ColumnPhone::paint(QPainter *painter,
     QStyleOptionViewItem myOption = option;
     QString phone;
 
-    phone = "(" + text.toString().mid(0,2) + ") " + text.toString().mid(2,4) + "-" + text.toString().mid(6);
+    phone = "(" + text.toString().mid(0,2) + ") " + text.toString().mid(2,5) + "-" + text.toString().mid(7);
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = Qt::AlignCenter;

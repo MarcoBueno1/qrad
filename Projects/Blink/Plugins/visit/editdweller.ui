@@ -38,13 +38,13 @@
      </rect>
     </property>
     <property name="title">
-     <string> Dweller</string>
+     <string>Morador</string>
     </property>
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>46</y>
+       <y>126</y>
        <width>40</width>
        <height>17</height>
       </rect>
@@ -70,7 +70,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>128</y>
+       <y>48</y>
        <width>40</width>
        <height>17</height>
       </rect>
@@ -102,7 +102,7 @@
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>40</y>
+       <y>120</y>
        <width>320</width>
        <height>27</height>
       </rect>
@@ -117,12 +117,15 @@
        <height>27</height>
       </rect>
      </property>
+     <property name="inputMask">
+      <string>999.999.999-99</string>
+     </property>
     </widget>
     <widget class="QRadLineEditEnter" name="lineEditDweller">
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>120</y>
+       <y>40</y>
        <width>320</width>
        <height>27</height>
       </rect>
@@ -247,7 +250,7 @@
       <rect>
        <x>20</x>
        <y>260</y>
-       <width>420</width>
+       <width>390</width>
        <height>121</height>
       </rect>
      </property>
@@ -259,15 +262,24 @@
        <rect>
         <x>20</x>
         <y>20</y>
-        <width>350</width>
+        <width>321</width>
         <height>90</height>
        </rect>
       </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>10</number>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>10</number>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
      </widget>
      <widget class="QPushButton" name="pushButtonAddPhone">
       <property name="geometry">
        <rect>
-        <x>377</x>
+        <x>350</x>
         <y>56</y>
         <width>30</width>
         <height>23</height>
@@ -280,7 +292,7 @@
      <widget class="QPushButton" name="pushButtonRemovePhone">
       <property name="geometry">
        <rect>
-        <x>378</x>
+        <x>351</x>
         <y>83</y>
         <width>30</width>
         <height>23</height>
@@ -317,9 +329,9 @@
     <widget class="QGroupBox" name="groupBox_3">
      <property name="geometry">
       <rect>
-       <x>447</x>
+       <x>417</x>
        <y>261</y>
-       <width>300</width>
+       <width>336</width>
        <height>120</height>
       </rect>
      </property>
@@ -331,7 +343,7 @@
        <rect>
         <x>10</x>
         <y>20</y>
-        <width>281</width>
+        <width>317</width>
         <height>91</height>
        </rect>
       </property>
@@ -703,6 +715,27 @@
    <header location="global">scombobox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>lineEditDweller</tabstop>
+  <tabstop>lineEditCPF</tabstop>
+  <tabstop>lineEditRG</tabstop>
+  <tabstop>lineEditDweller_2</tabstop>
+  <tabstop>comboBoxTipo</tabstop>
+  <tabstop>comboBoxProfissao</tabstop>
+  <tabstop>comboBoxAp</tabstop>
+  <tabstop>comboBoxApTorre</tabstop>
+  <tabstop>lineEditDweller_3</tabstop>
+  <tabstop>pushButtonAddPhone</tabstop>
+  <tabstop>pushButtonRemovePhone</tabstop>
+  <tabstop>pushButtonAddPhone_2</tabstop>
+  <tabstop>pushButtonRemovePhone_2</tabstop>
+  <tabstop>PshBtnCancel</tabstop>
+  <tabstop>PshBtnSave</tabstop>
+  <tabstop>pushButtonBaterFoto</tabstop>
+  <tabstop>textEdit</tabstop>
+  <tabstop>tableViewAddress</tabstop>
+  <tabstop>tableViewPhone</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

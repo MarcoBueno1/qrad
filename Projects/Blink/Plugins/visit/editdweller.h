@@ -5,6 +5,8 @@
 #include <QKeyEvent>
 #include "dweller.h"
 #include <QSqlQueryModel>
+#include  "column2delegate.h"
+
 
 namespace Ui {
 class EditDweller;
@@ -31,10 +33,15 @@ private:
     Dweller* m_mod;
     Dweller* m_lastMod;
     QSqlQueryModel *m_model;
+
+    ColumnPhone  *m_PhoneDelegate;
+    ColumnCenter *m_CenterDelegate;
+    ColumnBool   *m_BooleanDelegate;
     void Load();
     void showEvent(QShowEvent *event);
     void keyPressEvent(QKeyEvent *e);
     void RefreshPhoneTable();
+    void baterFoto();
 };
 
 #endif // EDITDweller_H

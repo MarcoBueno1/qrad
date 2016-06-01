@@ -7,7 +7,10 @@
 #include <QVariant>
 #include "qraddebug.h"
 #include "editphone.h"
+#include "docvalidate.h"
+#include "camera.h"
 
+#define PORTEIRO_FUL_PATH "deller.jpg"
 
 EditDweller::EditDweller(QWidget *parent) :
     QDialog(parent),
@@ -22,6 +25,8 @@ EditDweller::EditDweller(QWidget *parent) :
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
     connect(ui->pushButtonAddPhone, SIGNAL(clicked()),this,SLOT(AddPhone()));
     connect(ui->pushButtonRemovePhone, SIGNAL(clicked()),this,SLOT(RemovePhone()));
+    connect(ui->pushButtonBaterFoto, SIGNAL(clicked()),this, SLOT(baterFoto()));
+
 
     debug_message("-->EditDweller\n");
 
@@ -56,6 +61,9 @@ EditDweller::EditDweller(QWidget *parent) :
         ui->comboBoxProfissao->completer()->setFilterMode(Qt::MatchContains );
 
     m_model = new QSqlQueryModel;
+    m_PhoneDelegate = new ColumnPhone;
+    m_CenterDelegate = new ColumnCenter;
+    m_BooleanDelegate= new ColumnBool;
 
 }
 
@@ -63,6 +71,9 @@ EditDweller::~EditDweller()
 {
     delete ui;
     delete m_model ;
+    delete m_PhoneDelegate;
+    delete m_CenterDelegate;
+    delete m_BooleanDelegate;
 }
 void EditDweller::showEvent(QShowEvent *event)
 {
@@ -85,6 +96,39 @@ void EditDweller::SetModel(Dweller* mod)
 
 void EditDweller::Save()
 {
+    QString strNome = ui->lineEditDweller->text().trimmed();
+    if(strNome.isEmpty())
+    {
+        QMessageBox::warning(this,
+                                 "Atenção",
+                                 "Nome do morador não pode ficar vazio");
+        ui->lineEditDweller->setFocus();
+        return;
+    }
+
+    QString cpf = ui->lineEditCPF->text();
+
+    cpf = cpf.remove("-").remove(".").trimmed();
+
+    if( cpf.isEmpty() )
+    {
+        if( QMessageBox::No == QMessageBox::question(this,
+                                  "Atenção",
+                                  "Campo CPF está vazio, deseja prosseguir mesmo assim?",
+                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+        {
+            ui->lineEditCPF->setFocus();
+            return;
+        }
+    }
+    else if( !CCPF::IsValid(cpf))
+    {
+        QMessageBox::warning(this,
+                                 "Atenção",
+                                 "Conteúdo do campo CPF inválido, preencha-o ou deixe-o vazio");
+        ui->lineEditCPF->setFocus();
+        return;
+    }
 
     Dweller* mod =  m_mod;
     if( m_mod == NULL)
@@ -147,7 +191,6 @@ void EditDweller::RemovePhone()
 
 void EditDweller::RefreshPhoneTable()
 {
-
    // qrad -s phone -t phone -c id -i int -c dwellerid -i int -c number -i QString -c operator -i int:multi:Operadora.Name[Tim,Oi,Claro,Vivo] -c type -i int:multi:phonetype.type[Celular,Casa,Trabalho] -c watsapp -i bool
 
 
@@ -160,4 +203,28 @@ void EditDweller::RefreshPhoneTable()
   m_model->setQuery(SQL);
   ui->tableViewPhone->setModel(m_model);
   ui->tableViewPhone->hideColumn(0);
+  ui->tableViewPhone->setItemDelegateForColumn(1, m_PhoneDelegate);
+  ui->tableViewPhone->setItemDelegateForColumn(2, m_CenterDelegate);
+  ui->tableViewPhone->setItemDelegateForColumn(3, m_CenterDelegate);
+  ui->tableViewPhone->setItemDelegateForColumn(4, m_BooleanDelegate);
+
+  ui->tableViewPhone->resizeColumnsToContents();
+  ui->tableViewPhone->resizeRowsToContents();
+  ui->tableViewPhone->horizontalHeader()->setStretchLastSection(true);
+
+
+}
+void EditDweller::baterFoto()
+{
+  Camera *cam = new Camera;
+
+  cam->setPath(PORTEIRO_FUL_PATH);
+  if( QDialog::Accepted == cam->exec())
+  {
+      QImage myImage ;
+      myImage.load(PORTEIRO_FUL_PATH);
+      ui->LblPhoto->setPixmap(QPixmap::fromImage(myImage));
+      ui->PshBtnSave->setFocus(Qt::TabFocusReason);
+  }
+  delete cam;
 }

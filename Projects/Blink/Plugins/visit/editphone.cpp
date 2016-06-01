@@ -58,13 +58,21 @@ void Editphone::SetModel(Phone* mod)
 
 void Editphone::Save()
 {
+    QString number = ui->LnEdtnumber->text();
 
+    number = number.remove("(").remove(")").remove("-");
+    if( number.trimmed().length() < 10)
+    {
+        QMessageBox::warning(this, "Oops","Numero de telefone inválido, poucos números..");
+        ui->LnEdtnumber->setFocus();
+        return;
+    }
     Phone* mod =  m_mod;
     if( m_mod == NULL)
         mod = new Phone;
 
     //mod->setdwellerid(ui->SpnBxdwellerid->value());
-    mod->setNumber(ui->LnEdtnumber->text());
+    mod->setNumber(number);
     mod->setOperator(ui->CmbBxoperator->model()->data(ui->CmbBxoperator->model()->index(ui->CmbBxoperator->currentIndex(), 0)).toInt());
 
     mod->setType(ui->CmbBxtype->model()->data(ui->CmbBxtype->model()->index(ui->CmbBxtype->currentIndex(), 0)).toInt());

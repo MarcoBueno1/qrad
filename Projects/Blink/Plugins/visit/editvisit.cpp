@@ -8,7 +8,7 @@
 #include "camera.h"
 #include "Visitante.h"
 
-#define PORTEIRO_FUL_PATH "photo_image2.jpg"
+#define PORTEIRO_FUL_PATH "visit.jpg"
 
 Editvisit::Editvisit(QWidget *parent) :
     QDialog(parent),

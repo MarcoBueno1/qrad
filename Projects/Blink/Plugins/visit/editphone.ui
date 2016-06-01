@@ -50,6 +50,9 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="inputMask">
+     <string>(99) 99999-9999</string>
+    </property>
    </widget>
    <widget class="QCheckBox" name="ChkBxwatsapp">
     <property name="geometry">
@@ -64,7 +67,7 @@
      <string>WatsApp</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>19</x>

@@ -1,33 +1,40 @@
-#ifndef Preaut_H
-#define Preaut_H
+#ifndef preaut_H
+#define preaut_H
  
 #include "model.h"
 
-DECLARE_MODEL(Preaut)
+DECLARE_MODEL(preaut)
 
-class Preaut : public Model
+class preaut : public Model
 {
-     MODEL_DECLARE_ATTRIBUTE(int, id);
-     MODEL_DECLARE_ATTRIBUTE(int, Visit);
-     MODEL_DECLARE_ATTRIBUTE(int, Reason);
-     MODEL_DECLARE_ATTRIBUTE(QDate, AutSince);
-     MODEL_DECLARE_ATTRIBUTE(QDate, Validate);
-     MODEL_DECLARE_ATTRIBUTE(QTime, EnterTime);
-     MODEL_DECLARE_ATTRIBUTE(bool, Sunday);
-     MODEL_DECLARE_ATTRIBUTE(bool, Tuesday);
-     MODEL_DECLARE_ATTRIBUTE(bool, Wednesday);
-     MODEL_DECLARE_ATTRIBUTE(bool, Thursday);
-     MODEL_DECLARE_ATTRIBUTE(bool, Friday);
-     MODEL_DECLARE_ATTRIBUTE(bool, Saturday);
 
-     MODEL_MATCH_TABLE(Preaut, "preaut")
+
+     MODEL_DECLARE_ATTRIBUTE(int, id);
+     MODEL_DECLARE_ATTRIBUTE(bool, sunday);
+     MODEL_DECLARE_ATTRIBUTE(bool, monday);
+     MODEL_DECLARE_ATTRIBUTE(bool, tuesday);
+     MODEL_DECLARE_ATTRIBUTE(bool, wednesday);
+     MODEL_DECLARE_ATTRIBUTE(bool, thursday);
+     MODEL_DECLARE_ATTRIBUTE(bool, friday);
+     MODEL_DECLARE_ATTRIBUTE(bool, saturday);
+     MODEL_DECLARE_ATTRIBUTE(int, visit);
+     MODEL_DECLARE_ATTRIBUTE(QTime, horaini);
+     MODEL_DECLARE_ATTRIBUTE(QTime, horafim);
+     MODEL_DECLARE_ATTRIBUTE(QDate, validate);
+     MODEL_DECLARE_ATTRIBUTE(int, authorizer);
+     MODEL_DECLARE_ATTRIBUTE(QString, obs);
+     MODEL_DECLARE_ATTRIBUTE(QDate, autsince);
+     MODEL_DECLARE_ATTRIBUTE(int, reason);
+
+
+     MODEL_MATCH_TABLE(preaut, "preaut")
 
 private:
-    static PreautList* m_allList;
+    static preautList* m_allList;
 public:
-    static PreautList* findAll(void);
-    static Preaut* findByid(int id);
-    static Preaut* findByid(int id, QString database);
+    static preautList* findAll(void);
+    static preaut* findByid(int id);
+    static preaut* findByid(int id, QString database);
 };
  
 #endif 

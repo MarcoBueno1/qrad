@@ -18,7 +18,9 @@ SOURCES = \
              managerdweller.cpp \ 
              editdweller.cpp \
 	     editphone.cpp \
-	     editaddress.cpp
+	     editaddress.cpp \
+             editpreaut.cpp \
+             managerpreaut.cpp
 
 HEADERS = \ 
              visitplugin.h \ 
@@ -30,7 +32,9 @@ HEADERS = \
              managerdweller.h \ 
              editdweller.h \
              editphone.h \
-	     editaddress.h
+	     editaddress.h \
+             editpreaut.h \
+             managerpreaut.h
 
 
 
@@ -43,7 +47,9 @@ FORMS = \
              editdweller.ui \
              managerdweller.ui \ 
 	     editphone.ui \
-	     editaddress.ui
+	     editaddress.ui \
+             editpreaut.ui \
+             managerpreaut.ui 
 
 
 

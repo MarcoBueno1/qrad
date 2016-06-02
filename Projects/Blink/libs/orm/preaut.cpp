@@ -1,50 +1,53 @@
 #include "preaut.h"
 
-PreautList* Preaut::m_allList = NULL;
+preautList* preaut::m_allList = NULL;
 
-MODEL_BEGIN_MAP(Preaut)
-     MODEL_MAP_PRIMARYKEY(id, "id"); 
-     MODEL_MAP_FIELD(Visit, "visit");
-     MODEL_MAP_FIELD(Reason, "reason");
-     MODEL_MAP_FIELD(AutSince, "autsince");
-     MODEL_MAP_FIELD(Validate, "validate");
-     MODEL_MAP_FIELD(EnterTime, "entertime");
-     MODEL_MAP_FIELD(Sunday, "sunday");
-     MODEL_MAP_FIELD(Tuesday, "tuesday");
-     MODEL_MAP_FIELD(Wednesday, "wednesday");
-     MODEL_MAP_FIELD(Thursday, "thursday");
-     MODEL_MAP_FIELD(Friday, "friday");
-     MODEL_MAP_FIELD(Saturday, "aturday");
-	 
-	 MODEL_END_MAP()
+MODEL_BEGIN_MAP(preaut)
+     MODEL_MAP_PRIMARYKEY(id, "id");
+     MODEL_MAP_FIELD(sunday, "sunday");
+     MODEL_MAP_FIELD(monday, "monday");
+     MODEL_MAP_FIELD(tuesday, "tuesday");
+     MODEL_MAP_FIELD(wednesday, "wednesday");
+     MODEL_MAP_FIELD(thursday, "thursday");
+     MODEL_MAP_FIELD(friday, "friday");
+     MODEL_MAP_FIELD(saturday, "saturday");
+     MODEL_MAP_FIELD(visit, "visit");
+     MODEL_MAP_FIELD(horaini, "horaini");
+     MODEL_MAP_FIELD(horafim, "horafim");
+     MODEL_MAP_FIELD(validate, "validate");
+     MODEL_MAP_FIELD(authorizer, "authorizer");
+     MODEL_MAP_FIELD(obs, "obs");
+     MODEL_MAP_FIELD(autsince, "autsince");
+     MODEL_MAP_FIELD(reason, "reason");
+MODEL_END_MAP()
 
-QList<Preaut*>* Preaut::findAll()
+QList<preaut*>* preaut::findAll()
 {
-    MODEL_INIT_LIST(Preaut, m_allList);
+    MODEL_INIT_LIST(preaut, m_allList);
 
     QString query = QString("select * from preaut");
 
-    if (!Preaut::fillModelList(m_allList, query))
+    if (!preaut::fillModelList(m_allList, query))
         return NULL;
 
     return m_allList;
 }
 
-Preaut* Preaut::findByid(int id)
+preaut* preaut::findByid(int id)
 {
-    Preaut *PreautM = new Preaut();
+    preaut *preautM = new preaut();
 
     QString query = QString("select * from preaut where id = %3").arg(id);
 
-    if (!PreautM->fillModelFromQuery(query))
+    if (!preautM->fillModelFromQuery(query))
     {
-        delete PreautM;
+        delete preautM;
         return NULL;
     }
 
-    return PreautM;
+    return preautM;
 }
-Preaut* Preaut::findByid(int id, QString database)
+preaut* preaut::findByid(int id, QString database)
 {
-    return Preaut::findByPrimaryKey(id, database);
+    return preaut::findByPrimaryKey(id, database);
 }

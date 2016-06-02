@@ -18,9 +18,9 @@ class Visitante : public Model
      MODEL_DECLARE_ATTRIBUTE(int,  MoradorAutorizador);
      MODEL_DECLARE_ATTRIBUTE(QDate, DataAutorizado);
      MODEL_DECLARE_ATTRIBUTE(bool, AnunciarChegada);
-     MODEL_DECLARE_ATTRIBUTE(int, ImagemId);
+     MODEL_DECLARE_ATTRIBUTE(int, LoId);
 
-     MODEL_MATCH_TABLE(Visitante, "Visitante")
+     MODEL_MATCH_TABLE(Visitante, "Visitante");
 
 private:
     static VisitanteList* m_allList;
@@ -28,8 +28,9 @@ public:
     static VisitanteList* findAll(void);
     static Visitante* findByid(int id);
     static Visitante* findByid(int id, QString database);
-    static bool saveImage(QString path);
-    static QPixmap getImage();
+    bool saveImage(QString path);
+    QPixmap getImage();
+    bool Save();
 };
  
 #endif 

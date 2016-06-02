@@ -1,5 +1,6 @@
 #include "Visitante.h"
 #include <QImage>
+#include "pgsqlasync.h"
 
 VisitanteList* Visitante::m_allList = NULL;
 
@@ -12,7 +13,8 @@ MODEL_BEGIN_MAP(Visitante)
      MODEL_MAP_FIELD(MoradorAutorizador, "moradorautorizador");
      MODEL_MAP_FIELD(DataAutorizado, "dataautorizado");
      MODEL_MAP_FIELD(AnunciarChegada, "anunciarchegada");
-     MODEL_MAP_FIELD(ImagemId, "imagemid" );
+     MODEL_MAP_FIELD(LoId, "loid" );
+
 MODEL_END_MAP()
 
 QList<Visitante*>* Visitante::findAll()
@@ -46,22 +48,30 @@ Visitante* Visitante::findByid(int id, QString database)
     return Visitante::findByPrimaryKey(id, database);
 }
 
-bool Visitante::saveImage( QString path)
-{
 
- return true;
+bool Visitante::saveImage( QString path )
+{
+  int nLoId  = Model::saveImage( path );
+
+  if( nLoId )
+  {
+    setLoId( nLoId );
+    updateLoId( nLoId );
+    return true;
+  }
+
+  return false;
 }
 
 QPixmap Visitante::getImage()
 {
-    QString strFoto;
+  return  Model::getImage(getLoId());
 
-    ///
-    /// \brief codigo para ler a imagem do banco de dados
-    ///
+}
 
-    QImage myImage;
-    myImage.load(strFoto);
-
-    return QPixmap::fromImage(myImage);
+bool Visitante::Save()
+{
+  setDateLastOp(QDate::currentDate());
+  setTimeLastOp(QTime::currentTime());
+  return Model::Save();
 }

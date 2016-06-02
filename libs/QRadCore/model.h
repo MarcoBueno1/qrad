@@ -328,6 +328,7 @@ ATTRIBUTE_CLASS(bool);
                 } \
                 m_usecustodatabase = true; \
             } \
+            void setTableName(QString strTableName) {m_tableName = strTableName;}\
             static QSqlDatabase database() { return m_database; } \
             static bool useCustomDatabase() { return m_usecustodatabase; /*return false;*/ } \
             QSqlDatabase getDatabase() { return className::database(); } \
@@ -499,6 +500,8 @@ ATTRIBUTE_CLASS(bool);
             void className::mapFields() {
 
 #define MODEL_MATCH_TABLE(className, _tableName)\
+        MODEL_DECLARE_ATTRIBUTE(QDate, DateLastOp);\
+        MODEL_DECLARE_ATTRIBUTE(QTime, TimeLastOp);\
         MODEL_DEFAULT_CONSTRUCTOR(className, _tableName) \
         MODEL_STATIC_METHODS(className, _tableName)
 
@@ -524,7 +527,11 @@ ATTRIBUTE_CLASS(bool);
             obj->fillModelByPrimaryKey(attr->value());
 
 
-#define MODEL_END_MAP() }
+
+#define MODEL_END_MAP()\
+     MODEL_MAP_FIELD(DateLastOp, "datelastop");\
+     MODEL_MAP_FIELD(TimeLastOp, "timelastop");\
+ }
 
 #define DECLARE_MODEL(className)\
             class className;\
@@ -583,11 +590,14 @@ protected:
     void EnsureFieldsExist();
     void fillModel(QSqlRecord record);
     QString DebugAttribute(ModelAttribute *attr);
+    int  saveImage( QString path );
+    QPixmap getImage(int nLoId);
 
     bool do_insert();
     bool do_update();
     bool do_delete();
-
+    
+    void Audit();
 };
 
 #endif // MODEL_H

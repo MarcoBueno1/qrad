@@ -5,6 +5,7 @@
 #endif
 #include "model.h"
 #include "qradmodellog.h"
+#include "pgsqlasync.h"
 
 #ifdef __linux__
 #include <unac.h>
@@ -687,13 +688,35 @@ int Model::lastInsertId()
     delete model;
     return id;
 }
+
+void  Model::Audit()
+{
+   QCoreApplication *app = QCoreApplication::instance();
+   int CurrentUser = app->property("CurrentUserId").toInt();
+   QString CurrentTable = m_tableName;
+   m_tableName += QString("_%1").arg(CurrentUser);
+
+   Create();
+
+   m_tableName = CurrentTable;
+}
+
 bool Model::Save()
 {
+    bool bRet;
+
     if (m_primaryKey->value().toInt() == 0)
     {
-        return Create();
+        bRet = Create();
     }
-    return Update();
+    else 
+    {
+        bRet = Update();
+    }
+    if( bRet )
+        Audit();
+
+    return bRet;
 }
 
 
@@ -782,3 +805,45 @@ QString Model::getNoAccentuation( QString strPortuguese )
     return strText;
 
 }
+
+int Model::saveImage( QString path )
+{
+  QSqlDatabase db = QSqlDatabase::database();
+
+  int nLoId = PGSQLAsync::Send( path,
+              db.hostName(),
+              db.databaseName(),
+              db.userName(),
+              db.password() );
+
+  return nLoId;
+}
+
+QPixmap Model::getImage(int nLoId )
+{
+  QSqlDatabase db = QSqlDatabase::database();
+
+     QTime time = QTime::currentTime();
+     QString strFoto = QString("dweller_%1_%2_%3.jpg").arg(time.hour()).arg(time.minute()).arg(time.second());
+ 
+
+     PGSQLAsync::Receive( (unsigned int)nLoId,
+                          strFoto,
+                          db.hostName(),
+                          db.databaseName(),
+                          db.userName(),
+                          db.password() );
+
+
+    ///
+    /// \brief codigo para ler a imagem do banco de dados
+    ///
+
+    QImage myImage;
+    myImage.load(strFoto);
+
+    return QPixmap::fromImage(myImage);
+}
+//   QCoreApplication *app = QCoreApplication::instance();
+//    m_useTableFilter = app->property("useTableFilter").toBool();
+

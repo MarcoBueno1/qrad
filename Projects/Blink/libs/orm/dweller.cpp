@@ -1,7 +1,5 @@
 #include "dweller.h"
 #include <QImage>
-#include "pgsqlasync.h"
-#include <QTemporaryFile>
 
 DwellerList* Dweller::m_allList = NULL;
 
@@ -75,45 +73,20 @@ Dweller* Dweller::findByid(int id, QString database)
 
 bool Dweller::saveImage( QString path )
 {
-  QSqlDatabase db = QSqlDatabase::database();
+  int nLoId  = Model::saveImage( path );
 
-  int nLoId = PGSQLAsync::Send( path,
-              db.hostName(),
-              db.databaseName(),
-              db.userName(),
-              db.password() );
+  if( nLoId )
+  {
+    setLoId( nLoId );
+    updateLoId( nLoId );
+    return true;
+  }
 
-  if( !nLoId ) 
-     return false;
-
-  setLoId(nLoId);
-  updateLoId(nLoId);
-
-  return true;
+  return false;
 }
 
 QPixmap Dweller::getImage()
 {
-  QSqlDatabase db = QSqlDatabase::database();
+  return  Model::getImage(getLoId());
 
-     QTime time = QTime::currentTime();
-     QString strFoto = QString("dweller_%1_%2_%3.jpg").arg(time.hour()).arg(time.minute()).arg(time.second());
- 
-
-     PGSQLAsync::Receive( (unsigned int)getLoId(),
-                          strFoto,
-                          db.hostName(),
-                          db.databaseName(),
-                          db.userName(),
-                          db.password() );
-
-
-    ///
-    /// \brief codigo para ler a imagem do banco de dados
-    ///
-
-    QImage myImage;
-    myImage.load(strFoto);
-
-    return QPixmap::fromImage(myImage);
 }

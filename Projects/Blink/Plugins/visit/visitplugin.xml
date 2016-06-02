@@ -6,7 +6,8 @@
     <plugin name="visitplugin" library="./visitplugin" enabled="true">
         <menu path="Cadastro" title="Visitas" action="Manage" hotkey="CTRL+V" permission="visitas" />
         <menu path="Cadastro" title="Nova Visita " action="Edit" hotkey="CTRL+E" permission="visitas" />
-        <menu path="Edição" title="Morador" action="EditMorador" hotkey="CTRL+M" permission="visitas" />
+        <menu path="Edição" title="Moradores" action="ManagerMorador" hotkey="CTRL+M" permission="visitas" />
+        <menu path="Edição" title="Novo Morador" action="EditMorador" hotkey="CTRL+M" permission="visitas" />
 </plugin>
 
 </pluginlist>

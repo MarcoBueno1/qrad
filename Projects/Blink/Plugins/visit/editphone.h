@@ -18,6 +18,8 @@ public:
     ~Editphone();
     void SetModel(Phone* mod);
     Phone* GetSaved();
+    void setOwner(int id);
+    void setOwnerType(int id);
 
 public slots:
     void Save();
@@ -27,6 +29,8 @@ private:
     Ui::Editphone *ui;
     Phone* m_mod;
     Phone* m_lastMod;
+    int m_Owner;
+    int m_OwnerType;
     void Load();
     void showEvent(QShowEvent *event);
     void keyPressEvent(QKeyEvent *e);

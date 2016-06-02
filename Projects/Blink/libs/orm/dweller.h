@@ -23,7 +23,9 @@ class Dweller : public Model
      MODEL_DECLARE_ATTRIBUTE(QString, email );
      MODEL_DECLARE_ATTRIBUTE(QString, Obs );
      MODEL_DECLARE_ATTRIBUTE(int, LoId );
-	 
+     MODEL_DECLARE_ATTRIBUTE(QString,Ramal);
+     MODEL_DECLARE_ATTRIBUTE(bool, Removed );
+
      MODEL_MATCH_TABLE(Dweller, "dweller")
 
 private:

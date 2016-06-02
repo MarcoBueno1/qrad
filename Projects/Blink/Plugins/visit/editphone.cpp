@@ -30,6 +30,9 @@ Editphone::Editphone(QWidget *parent) :
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
+
+    m_Owner = 0;
+    m_OwnerType = 0;
 }
 
 Editphone::~Editphone()
@@ -78,6 +81,8 @@ void Editphone::Save()
     mod->setType(ui->CmbBxtype->model()->data(ui->CmbBxtype->model()->index(ui->CmbBxtype->currentIndex(), 0)).toInt());
 
     mod->setWatsApp(ui->ChkBxwatsapp->isChecked());
+    mod->setOwner(m_Owner);
+    mod->setOwnerType(m_OwnerType);
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -113,5 +118,14 @@ Phone* Editphone::GetSaved()
 {
    return m_lastMod;
 
+}
+
+void Editphone::setOwner(int id)
+{
+  m_Owner = id;
+}
+void Editphone::setOwnerType(int id)
+{
+  m_OwnerType = id;
 }
 

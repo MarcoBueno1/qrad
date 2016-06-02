@@ -9,6 +9,8 @@ MODEL_BEGIN_MAP(Phone)
      MODEL_MAP_FIELD(Operator, "operator");
      MODEL_MAP_FIELD(Type, "type");
      MODEL_MAP_FIELD(WatsApp, "watsapp" );
+     MODEL_MAP_FIELD(Owner, "owner");
+     MODEL_MAP_FIELD(OwnerType, "ownertype");
      MODEL_MAP_FIELD(Removed, "removed");
 
      MODEL_END_MAP()

@@ -6,6 +6,7 @@ visitPlugin::visitPlugin()
     m_edit = 0;
     m_managerVisitante = 0;
     m_editDweller = 0;
+    m_managerDweller = 0;
 }
 
 visitPlugin::~visitPlugin()
@@ -21,6 +22,10 @@ visitPlugin::~visitPlugin()
 
     if( m_editDweller )
         delete m_editDweller;
+
+    if(m_managerDweller)
+        delete m_managerDweller;
+
 }
 
 void visitPlugin::onLoad(QRadPluginContainer* container)
@@ -71,7 +76,18 @@ void visitPlugin::Process( const QString& action )
         m_editDweller->show();
         debug_message("<--EditMorador\n");
     }
+    else if (action.toLower() == QString("ManagerMorador").toLower())
+    {
+        debug_message("-->ManagerMorador\n");
+        if (m_managerDweller )
+            delete m_managerDweller;
 
+        m_managerDweller = new ManagerDweller(m_parent);
+
+    //    QRadConfig::centralizarWidget(m_edit);
+        m_managerDweller->show();
+        debug_message("<--ManagerMorador\n");
+    }
 }
 
 void visitPlugin::setParam(QString str, QVariant v)

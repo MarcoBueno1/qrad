@@ -18,6 +18,8 @@ public:
     ~Editaddress();
     void SetModel(Address* mod);
     Address* GetSaved();
+    void setOwner(int id);
+    void setOwnerType(int id);
 
 public slots:
     void Save();
@@ -27,10 +29,12 @@ private:
     Ui::Editaddress *ui;
     Address* m_mod;
     Address* m_lastMod;
+    int m_Owner;
+    int m_OwnerType;
+
     void Load();
     void showEvent(QShowEvent *event);
     void keyPressEvent(QKeyEvent *e);
-    bool CanSave();
 };
 
 #endif // EDITaddress_H

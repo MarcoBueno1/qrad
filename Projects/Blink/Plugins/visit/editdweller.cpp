@@ -69,7 +69,8 @@ EditDweller::EditDweller(QWidget *parent) :
     m_BooleanDelegate= new ColumnBool;
  
     m_mod = new Dweller;
-
+    m_mod->setRemoved(true);
+    m_mod->Save();
 }
 
 EditDweller::~EditDweller()
@@ -168,6 +169,12 @@ void EditDweller::Save()
     m_mod->setTower( ui->comboBoxApTorre->model()->data(ui->comboBoxApTorre->model()->index(ui->comboBoxApTorre->currentIndex(), 0)).toInt() );
     m_mod->setType( ui->comboBoxTipo->model()->data(ui->comboBoxTipo->model()->index(ui->comboBoxTipo->currentIndex(), 0)).toInt() );
     m_mod->setJobTitle( ui->comboBoxProfissao->model()->data(ui->comboBoxProfissao->model()->index(ui->comboBoxProfissao->currentIndex(), 0)).toInt() ) ;
+    m_mod->setemail( ui->lineEditEmail->text());
+    m_mod->setRamal(ui->lineEditRamal->text());
+    m_mod->setSince(ui->dateEditSince->date());
+    m_mod->setMoveOut(ui->dateEditUntil->date());
+    m_mod->setObs(ui->textEditObs->toPlainText());
+    m_mod->setRemoved(false);
 
 
     bool bRet = m_mod->Save();
@@ -189,6 +196,11 @@ void EditDweller::Load()
     ui->lineEditDweller->setText(m_mod->getName());
     ui->lineEditCPF->setText(m_mod->getCPF());
     ui->lineEditRG->setText(m_mod->getRG());
+    ui->lineEditEmail->setText(m_mod->getemail());
+    ui->lineEditRamal->setText(m_mod->getRamal());
+    ui->dateEditSince->setDate(m_mod->getSince());
+    ui->dateEditUntil->setDate(m_mod->getMoveOut());
+    ui->textEditObs->setText(m_mod->getObs());
 
     ui->comboBoxAp->setCurrentId(m_mod->getAp());
     ui->comboBoxApTorre->setCurrentId(m_mod->getTower());
@@ -200,7 +212,6 @@ void EditDweller::Load()
 
     QPixmap mypix = m_mod->getImage();
     ui->LblPhoto->setPixmap(mypix);
-
 }
 
 void EditDweller::Cancel()
@@ -216,6 +227,9 @@ Dweller* EditDweller::GetSaved()
 void EditDweller::AddPhone()
 {
     Editphone *phone = new Editphone();
+
+    phone->setOwner(m_mod->getid());
+    phone->setOwnerType(tpDweller);
     if(phone->exec() == QDialog::Accepted )
     {
        RefreshPhoneTable();
@@ -225,6 +239,8 @@ void EditDweller::AddPhone()
 void EditDweller::AddAddress()
 {
     Editaddress *pAddress = new Editaddress();
+    pAddress->setOwner(m_mod->getid());
+    pAddress->setOwnerType(tpDweller);
     if(pAddress->exec() == QDialog::Accepted )
     {
        RefreshAddressTable();
@@ -263,7 +279,7 @@ void EditDweller::RefreshPhoneTable()
   QString SQL = QString("select p.id, p.Number as \"Numero\", o.name as \"Operadora\", t.type as \"Tipo\", watsapp as \"WatsApp\" "\
                         "from phone p inner join operadora o on o.id = p.operator  "\
                         "inner join phonetype t on t.id = p.type  "\
-                        "where p.dwellerid = %1").arg(m_mod?m_mod->getid():0);
+                        "where p.owner = %1 and ownertype = 0 ").arg(m_mod?m_mod->getid():0);
 
   m_model->setQuery(SQL);
   ui->tableViewPhone->setModel(m_model);
@@ -284,18 +300,24 @@ void EditDweller::RefreshAddressTable()
    // qrad -s phone -t phone -c id -i int -c dwellerid -i int -c number -i QString -c operator -i int:multi:Operadora.Name[Tim,Oi,Claro,Vivo] -c type -i int:multi:phonetype.type[Celular,Casa,Trabalho] -c watsapp -i bool
 
 
-  QString SQL = QString("select p.id, p.Number as \"Numero\", o.name as \"Operadora\", t.type as \"Tipo\", watsapp as \"WatsApp\" "\
-                        "from phone p inner join operadora o on o.id = p.operator  "\
-                        "inner join phonetype t on t.id = p.type  "\
-                        "where p.dwellerid = %1").arg(m_mod?m_mod->getid():0);
+    QString SQL = QString("select a.id, s.name as \"Rua\", a.number as \"Número\", c.Number as \"Cep\", n.name as \"Bairro\", ci.name as \"Cidade\", st.name as \"Estado\" "\
+                          " from address a "\
+                          " inner join street s on s.id = a.street"\
+                          " inner join cep c on c.id = a.cep"\
+                          " inner join neighborhood n on n.id = a.neighborhood"\
+                          " inner join city ci on ci.id = a.city"\
+                          " inner join state st on st.id = a.state"\
+                          " where ownertype = 0 and owner = %1").arg(m_mod->getid());
 
   m_AddressModel->setQuery(SQL);
   ui->tableViewAddress->setModel(m_AddressModel);
   ui->tableViewAddress->hideColumn(0);
-  ui->tableViewAddress->setItemDelegateForColumn(1, m_PhoneDelegate);
+  ui->tableViewAddress->setItemDelegateForColumn(1, m_CenterDelegate);
   ui->tableViewAddress->setItemDelegateForColumn(2, m_CenterDelegate);
   ui->tableViewAddress->setItemDelegateForColumn(3, m_CenterDelegate);
-  ui->tableViewAddress->setItemDelegateForColumn(4, m_BooleanDelegate);
+  ui->tableViewAddress->setItemDelegateForColumn(4, m_CenterDelegate);
+  ui->tableViewAddress->setItemDelegateForColumn(5, m_CenterDelegate);
+  ui->tableViewAddress->setItemDelegateForColumn(6, m_CenterDelegate);
 
   ui->tableViewAddress->resizeColumnsToContents();
   ui->tableViewAddress->resizeRowsToContents();

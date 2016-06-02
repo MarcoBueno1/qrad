@@ -1,17 +1,21 @@
 #include "address.h"
 
+
 AddressList* Address::m_allList = NULL;
 
 MODEL_BEGIN_MAP(Address)
      MODEL_MAP_PRIMARYKEY(id, "id");
-	 MODEL_MAP_FIELD(Street, "street");
-	 MODEL_MAP_FIELD(Number, "number");
-	 MODEL_MAP_FIELD(cep, "cep");
-	 MODEL_MAP_FIELD(Neighborhood, "neighborhood" );
-	 MODEL_MAP_FIELD(Removed, "removed" );
+     MODEL_MAP_FIELD(street, "street");
+     MODEL_MAP_FIELD(number, "number");
+     MODEL_MAP_FIELD(cep, "cep");
+     MODEL_MAP_FIELD(Neighborhood, "Neighborhood");
+     MODEL_MAP_FIELD(city, "city");
+     MODEL_MAP_FIELD(state, "state");
+     MODEL_MAP_FIELD(Owner, "owner");
+     MODEL_MAP_FIELD(OwnerType, "ownertype");
+     MODEL_MAP_FIELD(Removed, "removed");
+MODEL_END_MAP()
 
-
-	 MODEL_END_MAP()
 
 QList<Address*>* Address::findAll()
 {

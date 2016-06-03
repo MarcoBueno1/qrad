@@ -22,7 +22,9 @@ SOURCES = \
              editpreaut.cpp \
              managerpreaut.cpp \
              editprofile.cpp \
-             managerprofile.cpp 
+             managerprofile.cpp  \
+             edituser.cpp \
+             manageruser.cpp 
 
 HEADERS = \ 
              visitplugin.h \ 
@@ -38,7 +40,9 @@ HEADERS = \
              editpreaut.h \
              managerpreaut.h \
              editprofile.h \ 
-             managerprofile.h
+             managerprofile.h \
+             edituser.h \
+             manageruser.h
 
 
 
@@ -55,7 +59,9 @@ FORMS = \
              editpreaut.ui \
              managerpreaut.ui \
              editprofile.ui \
-             managerprofile.ui 
+             managerprofile.ui \
+             edituser.ui \
+             manageruser.ui
 
 
 

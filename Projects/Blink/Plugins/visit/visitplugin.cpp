@@ -9,6 +9,7 @@ visitPlugin::visitPlugin()
     m_managerDweller = 0;
     m_managerPreAut = 0;
     m_managerProfile = 0 ;
+    m_managerUser =0;
 
 }
 
@@ -34,6 +35,9 @@ visitPlugin::~visitPlugin()
 
     if(m_managerProfile)
         delete m_managerProfile;
+ 
+    if(m_managerUser)
+        delete m_managerUser;
 }
 
 void visitPlugin::onLoad(QRadPluginContainer* container)
@@ -119,6 +123,18 @@ void visitPlugin::Process( const QString& action )
     //    QRadConfig::centralizarWidget(m_edit);
         m_managerProfile->show();
         debug_message("<--ManagerProfile\n");
+    }
+    else if (action.toLower() == QString("ManagerUser").toLower())
+    {
+        debug_message("-->ManagerUser\n");
+        if (m_managerUser )
+            delete m_managerUser;
+
+        m_managerUser = new Manageruser(m_parent);
+
+    //    QRadConfig::centralizarWidget(m_edit);
+        m_managerUser->show();
+        debug_message("<--ManagerUser\n");
     }
 }
 

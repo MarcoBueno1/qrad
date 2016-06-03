@@ -11,6 +11,7 @@ MODEL_BEGIN_MAP(profile)
      MODEL_MAP_FIELD(usevisitant, "usevisitant");
      MODEL_MAP_FIELD(useuser, "useuser");
      MODEL_MAP_FIELD(useprofile, "useprofile");
+     MODEL_MAP_FIELD(removed, "removed");
 MODEL_END_MAP()
 
 QList<profile*>* profile::findAll()

@@ -22,7 +22,8 @@ SOURCES += dweller.cpp \
 	   phone.cpp \
 	   address.cpp \
 	   preaut.cpp \
-           profile.cpp
+           profile.cpp \
+           user.cpp
             
 
 HEADERS += dweller.h \
@@ -33,7 +34,8 @@ HEADERS += dweller.h \
 	   phone.h \
 	   address.h \
 	   preaut.h \
-           profile.h
+           profile.h \
+           user.h
 		   
 win32:LIBS +=  -L../../../../libs/QRadCore\release
 unix:LIBS +=  -L../../../../libs/QRadCore

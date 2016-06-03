@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select id,id from profile order by id" 
+#define SQL_ITEMS "select name,id from profile order by id" 
 
 Managerprofile::Managerprofile(QWidget *parent) :
     QDialog(parent),
@@ -155,7 +155,8 @@ void Managerprofile::refreshTable()
 
 void Managerprofile::ConfigureTable()
 {
-      ui->tableViewSearch->addSearchColumn(0);
+      ui->tableViewSearch->addSearchColumnFilter(0);
+    ui->tableViewSearch->addSearchColumn(0);
 
 
    // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Conuna1"));
@@ -166,6 +167,7 @@ void Managerprofile::ConfigureTable()
 
    // ui->tableViewSearch->setColumnWidth(0, 0.06 * ui->tableViewSearch->width());
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
+     ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
 
 
 }

@@ -14,7 +14,11 @@ QRadConfig::~QRadConfig()
 
 bool QRadConfig::GetUserProfile(QString strPermsission)
 {
-    return true;
+   if( strPermsission.contains( "development", Qt::CaseInsensitive))
+     return true;
+
+   QCoreApplication *app = QCoreApplication::instance();
+   return  app->property(strPermsission.toLatin1().data()).toBool();
 }
 
 QString QRadConfig::GetCurrentUserLogin()

@@ -5,7 +5,7 @@
 #include <QModelIndex>
 #include <QAbstractItemModel>
 #include <QVariant>
-
+#include <QCryptographicHash>
 
 Edituser::Edituser(QWidget *parent) :
     QDialog(parent),
@@ -17,7 +17,7 @@ Edituser::Edituser(QWidget *parent) :
     m_lastMod = NULL;
         ui->CmbBxprofile->setTable("profile");
     ui->CmbBxprofile->setField("Name");
-    ui->CmbBxprofile->setCanAdd(true);
+//    ui->CmbBxprofile->setCanAdd(true);
     ui->CmbBxprofile->setUserName("QRad");
     ui->CmbBxprofile->completer()->setFilterMode(Qt::MatchContains );
 
@@ -51,6 +51,40 @@ void Edituser::SetModel(user* mod)
 
 void Edituser::Save()
 {
+   // consist
+
+   if( ui->LnEdtname->text().trimmed().isEmpty())
+   {
+     QMessageBox::warning(this, "Oops","O campo nome não pode ficar vazio!"); 
+     ui->LnEdtname->selectAll();
+     ui->LnEdtname->setFocus();
+     return;
+   }
+   if( ui->LnEdtemail->text().trimmed().isEmpty())
+   {
+     QMessageBox::warning(this, "Oops","O campo email não pode ficar vazio!"); 
+     ui->LnEdtemail->selectAll();
+     ui->LnEdtemail->setFocus();
+     return;
+   }
+   if( ui->LnEdtpassword->text().trimmed().isEmpty())
+   {
+     QMessageBox::warning(this, "Oops","O campo senha não pode ficar vazio!"); 
+     ui->LnEdtpassword->selectAll();
+     ui->LnEdtpassword->setFocus();
+     return;
+   }
+   if( ui->LnEdtpassword->text() != ui->LnEdtConfirmPassword->text())
+   {
+     QMessageBox::warning(this, "Oops","O campo senha não confere com o campo confirmação de senha!"); 
+     ui->LnEdtpassword->clear();
+     ui->LnEdtConfirmPassword->clear();
+     ui->LnEdtpassword->selectAll();
+     ui->LnEdtpassword->setFocus();
+     return;
+   }
+
+   //
 
     user* mod =  m_mod;
     if( m_mod == NULL)
@@ -59,7 +93,11 @@ void Edituser::Save()
     mod->setname(ui->LnEdtname->text());
     mod->setemail(ui->LnEdtemail->text());
     mod->setcontractsince(ui->DtEdtcontractsince->date());
-    mod->setpassword(ui->LnEdtpassword->text());
+
+    QVariant pass = ui->LnEdtpassword->text().toLower();
+    QString md5 = QCryptographicHash::hash(pass.toByteArray(), QCryptographicHash::Md5).toHex();
+
+    mod->setpassword(md5);
     mod->setprofile(ui->CmbBxprofile->model()->data(ui->CmbBxprofile->model()->index(ui->CmbBxprofile->currentIndex(), 0)).toInt());
 
     bool bRet = mod->Save();

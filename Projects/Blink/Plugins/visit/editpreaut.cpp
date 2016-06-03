@@ -5,6 +5,8 @@
 #include <QModelIndex>
 #include <QAbstractItemModel>
 #include <QVariant>
+#include "Visitante.h"
+#include "dweller.h"
 
 
 Editpreaut::Editpreaut(QWidget *parent) :
@@ -31,8 +33,17 @@ Editpreaut::Editpreaut(QWidget *parent) :
     ui->CmbBxreason->setUserName("QRad");
     ui->CmbBxreason->completer()->setFilterMode(Qt::MatchContains );
 
+    ui->CmbBxDestination->setTable("destination");
+    ui->CmbBxDestination->setField("Description");
+    ui->CmbBxDestination->setCanAdd(true);
+    ui->CmbBxDestination->setUserName("QRad");
+    ui->CmbBxDestination->completer()->setFilterMode(Qt::MatchContains );
+
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
+
+    connect(ui->CmbBxvisit, SIGNAL(activated(int)), this, SLOT(visitActivated(int)));
+    connect(ui->CmbBxauthorizer, SIGNAL(activated(int)), this, SLOT(AutActivated(int)));
 }
 
 Editpreaut::~Editpreaut()
@@ -80,9 +91,10 @@ void Editpreaut::Save()
     mod->setvalidate(ui->DtEdtvalidate->date());
     mod->setauthorizer(ui->CmbBxauthorizer->model()->data(ui->CmbBxauthorizer->model()->index(ui->CmbBxauthorizer->currentIndex(), 0)).toInt());
 
-    mod->setobs(ui->LnEdtobs->text());
+    mod->setobs(ui->textEdit->toPlainText());
     mod->setautsince(ui->DtEdtautsince->date());
     mod->setreason(ui->CmbBxreason->model()->data(ui->CmbBxreason->model()->index(ui->CmbBxreason->currentIndex(), 0)).toInt());
+    mod->setdestination(ui->CmbBxDestination->model()->data(ui->CmbBxDestination->model()->index(ui->CmbBxDestination->currentIndex(), 0)).toInt());
 
     bool bRet = mod->Save();
     if( m_lastMod )
@@ -115,9 +127,10 @@ void Editpreaut::Load()
     ui->TmEdthorafim->setTime(m_mod->gethorafim());
     ui->DtEdtvalidate->setDate(m_mod->getvalidate());
     ui->CmbBxauthorizer->setCurrentId(m_mod->getauthorizer());
-    ui->LnEdtobs->setText(m_mod->getobs());
+    ui->textEdit->setText(m_mod->getobs());
     ui->DtEdtautsince->setDate(m_mod->getautsince());
     ui->CmbBxreason->setCurrentId(m_mod->getreason());
+    ui->CmbBxDestination->setCurrentId(m_mod->getdestination());
 
 }
 
@@ -132,3 +145,32 @@ preaut* Editpreaut::GetSaved()
 
 }
 
+void Editpreaut::visitActivated(int)
+{
+  int id = ui->CmbBxvisit->model()->data(ui->CmbBxvisit->model()->index(ui->CmbBxvisit->currentIndex(), 0)).toInt()    ;
+  Visitante *vis = Visitante::findByid(id);
+  if( vis )
+  {
+      /// pegar telefone depois.
+      ui->lineEditRG->setText(vis->getRG());
+      ui->lineEditCPF->setText(vis->getCPF());
+      QPixmap mypix = vis->getImage();
+      ui->LblPhoto->setPixmap(mypix);
+      delete vis;
+  }
+}
+void Editpreaut::AutActivated(int)
+{
+  int id = ui->CmbBxauthorizer->model()->data(ui->CmbBxauthorizer->model()->index(ui->CmbBxauthorizer->currentIndex(), 0)).toInt()    ;
+  Dweller *dw = Dweller::findByid(id);
+  if( dw )
+  {
+      /// pegar telefone depois.
+      /// pegar torre depois.
+      /// pegar ap depois.
+      //ui->lineEdit(vis->getCPF());
+      QPixmap mypix = dw->getImage();
+      ui->LblPhotoAut->setPixmap(mypix);
+      delete dw;
+  }
+}

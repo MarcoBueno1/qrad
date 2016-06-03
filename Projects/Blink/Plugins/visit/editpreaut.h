@@ -23,6 +23,8 @@ public slots:
     void Save();
     void Cancel();
     
+    void visitActivated(int);
+    void AutActivated(int);
 private:
     Ui::Editpreaut *ui;
     preaut* m_mod;

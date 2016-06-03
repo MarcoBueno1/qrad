@@ -43,6 +43,22 @@ user* user::findByid(int id, QString database)
 {
     return user::findByPrimaryKey(id, database);
 }
+
+user* user::findByPassword(QString Password)
+{
+    user *userM = new user();
+
+    QString query = QString("select * from user where password = %1").arg(Password);
+
+    if (!userM->fillModelFromQuery(query))
+    {
+        delete userM;
+        return NULL;
+    }
+
+    return userM;
+}
+
 bool user::saveImage( QString path )
 {
   int nLoId  = Model::saveImage( path );

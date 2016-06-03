@@ -8,6 +8,7 @@
         <menu path="Cadastro" title="Nova Visita " action="Edit" hotkey="CTRL+E" permission="visitas" />
         <menu path="Edição" title="Moradores" action="ManagerMorador" hotkey="CTRL+M" permission="visitas" />
         <menu path="Edição" title="Novo Morador" action="EditMorador" hotkey="CTRL+M" permission="visitas" />
+        <menu path="Cadastro" title="Pré-Autorizações" action="ManagePreAut" hotkey="CTRL+V" permission="visitas" />
 </plugin>
 
 </pluginlist>

@@ -7,6 +7,7 @@ visitPlugin::visitPlugin()
     m_managerVisitante = 0;
     m_editDweller = 0;
     m_managerDweller = 0;
+    m_managerPreAut = 0;
 }
 
 visitPlugin::~visitPlugin()
@@ -25,6 +26,9 @@ visitPlugin::~visitPlugin()
 
     if(m_managerDweller)
         delete m_managerDweller;
+
+    if(m_managerPreAut)
+        delete m_managerPreAut ;
 
 }
 
@@ -87,6 +91,18 @@ void visitPlugin::Process( const QString& action )
     //    QRadConfig::centralizarWidget(m_edit);
         m_managerDweller->show();
         debug_message("<--ManagerMorador\n");
+    }
+    else if (action.toLower() == QString("ManagerPreAut").toLower())
+    {
+        debug_message("-->ManagerPreAut\n");
+        if (m_managerPreAut )
+            delete m_managerPreAut;
+
+        m_managerPreAut = new Managerpreaut(m_parent);
+
+    //    QRadConfig::centralizarWidget(m_edit);
+        m_managerPreAut->show();
+        debug_message("<--ManagerPreAut\n");
     }
 }
 

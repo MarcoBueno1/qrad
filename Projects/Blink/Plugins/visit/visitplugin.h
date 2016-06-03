@@ -10,6 +10,7 @@
 #include "managerVisitante.h"
 #include "editdweller.h"
 #include "managerdweller.h"
+#include "managerpreaut.h"
 
 
 class visitPlugin : public QRadPluginInterface
@@ -30,6 +31,7 @@ protected:
     EditDweller *m_editDweller;
     ManagerDweller *m_managerDweller;
     Editvisit *m_edit;
+    Managerpreaut *m_managerPreAut;
 
 
 

@@ -24,8 +24,7 @@ SOURCES = \
              editprofile.cpp \
              managerprofile.cpp  \
              edituser.cpp \
-             manageruser.cpp \
-             editlogin.cpp
+             manageruser.cpp 
 
 HEADERS = \ 
              visitplugin.h \ 
@@ -44,7 +43,6 @@ HEADERS = \
              managerprofile.h \
              edituser.h \
              manageruser.h \
-             editlogin.h
 
 
 
@@ -63,8 +61,7 @@ FORMS = \
              editprofile.ui \
              managerprofile.ui \
              edituser.ui \
-             manageruser.ui \
-             editlogin.ui
+             manageruser.ui 
 
 
 

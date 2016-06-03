@@ -12,7 +12,8 @@ TARGET = main
 TEMPLATE = app
 
 INCLUDEPATH += ../../../libs/QRadCore \
-               ../libs/common
+               ../libs/common \
+               ../libs/orm
 
 
 SOURCES += main.cpp\

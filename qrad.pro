@@ -42,8 +42,9 @@ CONFIG += ordered
 
 SUBDIRS = QRad \
           libs/QRadCore \
-          Main \
           Projects\Blink\libs\orm \
+          Projects\Blink\libs\common \
+          Projects\Blink\Main \
           Projects\Blink\Plugins\visit
 
 

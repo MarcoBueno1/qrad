@@ -7,6 +7,8 @@
 #include "qradcoreplugin.h"
 #include "mainwindow.h"
 #include "qraddebug.h"
+#include "editlogin.h"
+#include "login.h"
 
 
 void centerWidget(QWidget *widget)
@@ -70,6 +72,12 @@ int main(int argc, char *argv[])
     tradutorQt.load(":/translate/qt_pt", QCoreApplication::applicationDirPath());
 //    a.installTranslator(&tradutorExaro);
     a.installTranslator(&tradutorQt);
+
+    Editlogin *el = new Editlogin;
+
+    if( QDialog::Accepted != el->exec())
+       return 0;
+ 
 
     splash->show();
     splash->setMessage("Configurando janela principal");

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<pluginlist>
+    <!-- Pre-sell Plugin -->
+
+    <plugin name="visitasplugin" library="./visitasplugin" enabled="true">
+        <menu path="Cadastro" title="Visitas" action="Manage" hotkey="CTRL+M" permission="visitas" />
+        <menu path="Cadastro" title="Visitantes" action="ManageVisitante" hotkey="CTRL+V" permission="visitas" />
+    </plugin>
+
+</pluginlist>

@@ -7,6 +7,7 @@
 #include <QVariant>
 #include <QCryptographicHash>
 #include "user.h"
+#include "profile.h"
 
 
 Editlogin::Editlogin(QWidget *parent) :
@@ -74,6 +75,22 @@ void Editlogin::Save()
      ui->LnEdtpassword->setFocus();
      return;
    }
+
+   profile *pro = profile::findByid( usr->getprofile());
+   if(!pro)
+   {
+     QMessageBox::warning(this, "Oops","Perfil do usuário não encontrado!"); 
+     return;
+   }
+
+   QCoreApplication *app = QCoreApplication::instance();
+   app->setProperty("CurrentUserId", usr->getid());
+   app->setProperty("usepreaut", pro->getusepreaut());
+   app->setProperty("usevisit", pro->getusevisit());
+   app->setProperty("useuser", pro->getuseuser());
+   app->setProperty("useprofile", pro->getuseprofile());
+   app->setProperty("usedweller", pro->getusedweller());
+   app->setProperty("useivisitant", pro->getusevisitant());
 
     login* mod =  m_mod;
     if( m_mod == NULL)

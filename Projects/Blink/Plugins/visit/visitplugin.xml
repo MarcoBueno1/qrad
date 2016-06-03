@@ -4,13 +4,13 @@
     <!-- Pre-sell Plugin -->
 
     <plugin name="visitplugin" library="./visitplugin" enabled="true">
-        <menu path="Cadastro" title="Visitas" action="Manage" hotkey="CTRL+V" permission="visitas" />
-        <menu path="Cadastro" title="Nova Visita " action="Edit" hotkey="CTRL+E" permission="visitas" />
-        <menu path="Edição" title="Moradores" action="ManagerMorador" hotkey="CTRL+M" permission="visitas" />
-        <menu path="Edição" title="Novo Morador" action="EditMorador" hotkey="CTRL+M" permission="visitas" />
-        <menu path="Cadastro" title="Pré-Autorizações" action="ManagePreAut" hotkey="CTRL+V" permission="visitas" />
-        <menu path="Cadastro" title="Usuário" action="ManageUser" hotkey="CTRL+V" permission="visitas" />
-        <menu path="Cadastro" title="Perfil" action="ManageProfile" hotkey="CTRL+V" permission="visitas" />
+        <menu path="Cadastro" title="Visitas" action="Manage" hotkey="CTRL+V" permission="usevisit" />
+        <menu path="Cadastro" title="Nova Visita " action="Edit" hotkey="CTRL+E" permission="usevisit" />
+        <menu path="Edição" title="Moradores" action="ManagerMorador" hotkey="CTRL+M" permission="usedweller" />
+        <menu path="Edição" title="Novo Morador" action="EditMorador" hotkey="CTRL+M" permission="usedweller" />
+        <menu path="Cadastro" title="Pré-Autorizações" action="ManagePreAut" hotkey="CTRL+V" permission="usepreaut" />
+        <menu path="Cadastro" title="Usuário" action="ManageUser" hotkey="CTRL+V" permission="useuser" />
+        <menu path="Cadastro" title="Perfil" action="ManageProfile" hotkey="CTRL+V" permission="useprofile" />
 </plugin>
 
 </pluginlist>

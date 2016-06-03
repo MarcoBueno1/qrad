@@ -20,7 +20,9 @@ SOURCES = \
 	     editphone.cpp \
 	     editaddress.cpp \
              editpreaut.cpp \
-             managerpreaut.cpp
+             managerpreaut.cpp \
+             editprofile.cpp \
+             managerprofile.cpp 
 
 HEADERS = \ 
              visitplugin.h \ 
@@ -34,7 +36,9 @@ HEADERS = \
              editphone.h \
 	     editaddress.h \
              editpreaut.h \
-             managerpreaut.h
+             managerpreaut.h \
+             editprofile.h \ 
+             managerprofile.h
 
 
 
@@ -49,7 +53,9 @@ FORMS = \
 	     editphone.ui \
 	     editaddress.ui \
              editpreaut.ui \
-             managerpreaut.ui 
+             managerpreaut.ui \
+             editprofile.ui \
+             managerprofile.ui 
 
 
 

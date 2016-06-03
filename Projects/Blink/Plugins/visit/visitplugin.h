@@ -11,7 +11,7 @@
 #include "editdweller.h"
 #include "managerdweller.h"
 #include "managerpreaut.h"
-
+#include "managerprofile.h"
 
 class visitPlugin : public QRadPluginInterface
 {
@@ -32,6 +32,7 @@ protected:
     ManagerDweller *m_managerDweller;
     Editvisit *m_edit;
     Managerpreaut *m_managerPreAut;
+    Managerprofile *m_managerProfile;
 
 
 

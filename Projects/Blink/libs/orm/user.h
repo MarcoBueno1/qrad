@@ -29,7 +29,7 @@ public:
     static userList* findAll(void);
     static user* findByid(int id);
     static user* findByid(int id, QString database);
-    static user* findByPassword(QString Password);
+    static user* findByPassword(QString email, QString Password);
     bool saveImage(QString path);
     QPixmap getImage();
 };

@@ -44,11 +44,11 @@ user* user::findByid(int id, QString database)
     return user::findByPrimaryKey(id, database);
 }
 
-user* user::findByPassword(QString Password)
+user* user::findByPassword(QString email, QString Password)
 {
     user *userM = new user();
 
-    QString query = QString("select * from user where password = %1").arg(Password);
+    QString query = QString("select * from user where password = '%1' and email = '%2'").arg(Password).arg(email);
 
     if (!userM->fillModelFromQuery(query))
     {

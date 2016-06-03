@@ -5,6 +5,8 @@
 #include <QModelIndex>
 #include <QAbstractItemModel>
 #include <QVariant>
+#include <QCryptographicHash>
+#include "user.h"
 
 
 Editlogin::Editlogin(QWidget *parent) :
@@ -47,18 +49,46 @@ void Editlogin::SetModel(login* mod)
 void Editlogin::Save()
 {
 
+   if( ui->LnEdtemail->text().trimmed().isEmpty())
+   {
+     QMessageBox::warning(this, "Oops","O campo email não pode ficar vazio!"); 
+     ui->LnEdtemail->selectAll();
+     ui->LnEdtemail->setFocus();
+     return;
+   }
+   if( ui->LnEdtpassword->text().trimmed().isEmpty())
+   {
+     QMessageBox::warning(this, "Oops","O campo senha não pode ficar vazio!"); 
+     ui->LnEdtpassword->selectAll();
+     ui->LnEdtpassword->setFocus();
+     return;
+   }
+   QVariant pass = ui->LnEdtpassword->text().toLower();
+   QString md5 = QCryptographicHash::hash(pass.toByteArray(), QCryptographicHash::Md5).toHex();
+   user *usr = user::findByPassword(ui->LnEdtemail->text(), md5);
+
+   if(! usr )
+   {
+     QMessageBox::warning(this, "Oops","Usuario ou Senha nao conferem!"); 
+     ui->LnEdtpassword->selectAll();
+     ui->LnEdtpassword->setFocus();
+     return;
+   }
+
     login* mod =  m_mod;
     if( m_mod == NULL)
         mod = new login;
 
-    mod->setuser(ui->SpnBxuser->value());
-    mod->setdate(ui->DtEdtdate->date());
-    mod->settime(ui->TmEdttime->time());
+    mod->setuser(usr->getid());
+    mod->setdate(QDate::currentDate());
+    mod->settime(QTime::currentTime());
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
     m_lastMod = mod;
     m_mod = NULL;
+
+    delete usr;
     if( bRet )
     {
        QMessageBox::information(this, "Sucesso!","Informações foram salvas com sucesso!");
@@ -73,10 +103,6 @@ void Editlogin::Load()
 {
     if( m_mod == NULL)
       return;
-    ui->SpnBxuser->setValue(m_mod->getuser());
-    ui->DtEdtdate->setDate(m_mod->getdate());
-    ui->TmEdttime->setTime(m_mod->gettime());
-
 }
 
 void Editlogin::Cancel()

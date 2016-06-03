@@ -9,6 +9,7 @@ MODEL_BEGIN_MAP(user)
      MODEL_MAP_FIELD(contractsince, "contractsince");
      MODEL_MAP_FIELD(password, "password");
      MODEL_MAP_FIELD(profile, "profile");
+     MODEL_MAP_FIELD(LoId, "loid");
      MODEL_MAP_FIELD(removed, "removed");
 MODEL_END_MAP()
 
@@ -41,4 +42,23 @@ user* user::findByid(int id)
 user* user::findByid(int id, QString database)
 {
     return user::findByPrimaryKey(id, database);
+}
+bool user::saveImage( QString path )
+{
+  int nLoId  = Model::saveImage( path );
+
+  if( nLoId )
+  {
+    setLoId( nLoId );
+    updateLoId( nLoId );
+    return true;
+  }
+
+  return false;
+}
+
+QPixmap user::getImage()
+{
+  return  Model::getImage(getLoId());
+
 }

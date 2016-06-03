@@ -1,5 +1,4 @@
 #include "dweller.h"
-#include <QImage>
 
 DwellerList* Dweller::m_allList = NULL;
 

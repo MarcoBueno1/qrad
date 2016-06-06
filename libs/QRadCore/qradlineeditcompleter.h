@@ -17,13 +17,18 @@ public:
     void setSelect(QString strSelect );
     int getCurrentId();
 
-    int setCurrentId(int id);
+    void setCurrentId(int id);
 public slots:
     void textchanged(QString text);
     void activated(QModelIndex model);
     void textEdited(QString text);
 
     void returnPressed();
+
+signals:
+
+    void found( int id );
+
 private:
     QList<QLineEdit *> m_lineEdits;
     QCompleter     *m_completer;

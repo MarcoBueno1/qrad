@@ -22,6 +22,7 @@ public:
 public slots:
     void Save();
     void Cancel();
+    void found(int id );
     
     void baterFoto();
 private:

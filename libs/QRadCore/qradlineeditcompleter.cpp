@@ -32,7 +32,7 @@ void QRadLineEditCompleter::setSelect(QString strSelect)
     this->setCompleter(m_completer);
 }
 
-int QRadLineEditCompleter::setCurrentId(int id)
+void QRadLineEditCompleter::setCurrentId(int id)
 {
     for( int i = 0; i < m_completerModel->rowCount(); i++ )
     {
@@ -120,6 +120,7 @@ void QRadLineEditCompleter::returnPressed()
 //                    m_lineEdits.at(1)->setText(m_completerModel->index(i,4).data().toString());
                 }
                 m_lineEdits.at(j-1)->setFocus();
+                emit found(m_completerModel->index(i,1).data().toInt());
                 break;
             }
         }

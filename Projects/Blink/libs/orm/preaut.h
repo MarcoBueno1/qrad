@@ -26,6 +26,7 @@ class preaut : public Model
      MODEL_DECLARE_ATTRIBUTE(QDate, autsince);
      MODEL_DECLARE_ATTRIBUTE(int, reason);
      MODEL_DECLARE_ATTRIBUTE(int, destination);
+     MODEL_DECLARE_ATTRIBUTE(int, tp);
      MODEL_DECLARE_ATTRIBUTE(int, removed);
 
 

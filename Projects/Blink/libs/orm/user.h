@@ -21,7 +21,7 @@ class user : public Model
      MODEL_DECLARE_ATTRIBUTE(bool, removed);
 
 
-     MODEL_MATCH_TABLE(user, "user")
+     MODEL_MATCH_TABLE(user, "vuser")
 
 private:
     static userList* m_allList;

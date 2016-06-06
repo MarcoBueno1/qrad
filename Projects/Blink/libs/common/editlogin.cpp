@@ -108,7 +108,7 @@ void Editlogin::Save()
     delete usr;
     if( bRet )
     {
-       QMessageBox::information(this, "Sucesso!","Informações foram salvas com sucesso!");
+      // QMessageBox::information(this, "Sucesso!","Informações foram salvas com sucesso!");
        accept();
     }
     else

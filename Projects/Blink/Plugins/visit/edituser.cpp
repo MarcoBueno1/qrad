@@ -15,11 +15,13 @@ Edituser::Edituser(QWidget *parent) :
     
     m_mod = NULL;
     m_lastMod = NULL;
-        ui->CmbBxprofile->setTable("profile");
-    ui->CmbBxprofile->setField("Name");
-//    ui->CmbBxprofile->setCanAdd(true);
-    ui->CmbBxprofile->setUserName("QRad");
-    ui->CmbBxprofile->completer()->setFilterMode(Qt::MatchContains );
+
+    ui->CmbBxprofile->setTable("profile");
+    ui->CmbBxprofile->setField("name");
+    ui->CmbBxprofile->setCanAdd(false);
+    ui->CmbBxprofile->setUserName("dsm");
+    if( ui->CmbBxprofile->completer() )
+          ui->CmbBxprofile->completer()->setFilterMode(Qt::MatchContains );
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));

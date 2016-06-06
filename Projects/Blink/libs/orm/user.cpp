@@ -17,7 +17,7 @@ QList<user*>* user::findAll()
 {
     MODEL_INIT_LIST(user, m_allList);
 
-    QString query = QString("select * from user");
+    QString query = QString("select * from vuser");
 
     if (!user::fillModelList(m_allList, query))
         return NULL;
@@ -29,7 +29,7 @@ user* user::findByid(int id)
 {
     user *userM = new user();
 
-    QString query = QString("select * from user where id = %3").arg(id);
+    QString query = QString("select * from vuser where id = %3").arg(id);
 
     if (!userM->fillModelFromQuery(query))
     {
@@ -48,7 +48,7 @@ user* user::findByPassword(QString email, QString Password)
 {
     user *userM = new user();
 
-    QString query = QString("select * from user where password = '%1' and email = '%2'").arg(Password).arg(email);
+    QString query = QString("select * from vuser where password = '%1' and email = '%2'").arg(Password).arg(email);
 
     if (!userM->fillModelFromQuery(query))
     {

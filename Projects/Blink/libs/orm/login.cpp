@@ -4,7 +4,7 @@ loginList* login::m_allList = NULL;
 
 MODEL_BEGIN_MAP(login)
      MODEL_MAP_PRIMARYKEY(id, "id");
-     MODEL_MAP_FIELD(user, "user");
+     MODEL_MAP_FIELD(user, "userid");
      MODEL_MAP_FIELD(date, "date");
      MODEL_MAP_FIELD(time, "time");
 MODEL_END_MAP()

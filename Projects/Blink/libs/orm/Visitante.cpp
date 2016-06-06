@@ -14,6 +14,7 @@ MODEL_BEGIN_MAP(Visitante)
      MODEL_MAP_FIELD(DataAutorizado, "dataautorizado");
      MODEL_MAP_FIELD(AnunciarChegada, "anunciarchegada");
      MODEL_MAP_FIELD(LoId, "loid" );
+     MODEL_MAP_FIELD(tp, "tp" );
 
 MODEL_END_MAP()
 

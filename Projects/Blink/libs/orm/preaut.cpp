@@ -20,6 +20,7 @@ MODEL_BEGIN_MAP(preaut)
      MODEL_MAP_FIELD(autsince, "autsince");
      MODEL_MAP_FIELD(reason, "reason");
      MODEL_MAP_FIELD(destination, "destination");
+     MODEL_MAP_FIELD(tp, "tp");
      MODEL_MAP_FIELD(removed, "removed");
 MODEL_END_MAP()
 

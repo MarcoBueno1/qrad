@@ -10,6 +10,7 @@ MODEL_BEGIN_MAP(visit)
      MODEL_MAP_FIELD(Reason, "reason");
      MODEL_MAP_FIELD(Saida, "data_saida");
      MODEL_MAP_FIELD(saida_hora, "saida_hora");
+     MODEL_MAP_FIELD(autorizador, "autorizador");
 MODEL_END_MAP()
 
 QList<visit*>* visit::findAll()

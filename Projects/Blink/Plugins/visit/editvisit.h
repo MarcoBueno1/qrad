@@ -29,6 +29,7 @@ private:
     visit* m_mod;
     visit* m_lastMod;
     int m_idVisitante;
+    int m_foto;
     void Load();
     void showEvent(QShowEvent *event);
     void keyPressEvent(QKeyEvent *e);

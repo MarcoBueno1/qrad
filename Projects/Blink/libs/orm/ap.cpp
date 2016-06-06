@@ -5,9 +5,8 @@ ApList* Ap::m_allList = NULL;
 MODEL_BEGIN_MAP(Ap)
      MODEL_MAP_PRIMARYKEY(id, "id");
 	 
-     MODEL_MAP_FIELD(Number, "number");
-     MODEL_MAP_FIELD(Tower, "tower");
-     MODEL_MAP_FIELD(m2, "m2");
+     MODEL_MAP_FIELD(Number, "numero");
+     MODEL_MAP_FIELD(tp, "tp");
 
 	 MODEL_END_MAP()
 

@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 #include <QSqlQueryModel>
 #include "editvisit.h"
+#include "column2delegate.h"
 
 namespace Ui {
 class Managervisit;
@@ -29,15 +30,16 @@ public slots:
     void doEditar();
     void doSair();
     void doNovo();
+    void LoadTableView();
 
 private:
     Ui::Managervisit *ui;
 
     QTimer *m_keyinterval;
     QSqlQueryModel  *m_Model;
+    ColumnDateTimeNull *m_DateNullDelagate;
 
     void ShowCurrentInformations( void );
-    void LoadTableView();
     void DoRefresh();
     void refreshTable();
     void ConfigureTable();

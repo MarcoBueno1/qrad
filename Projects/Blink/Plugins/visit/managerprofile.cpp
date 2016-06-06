@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select name,id from profile order by id" 
+#define SQL_ITEMS "select name,id from profile where tp <> 2 order by id"
 
 Managerprofile::Managerprofile(QWidget *parent) :
     QDialog(parent),

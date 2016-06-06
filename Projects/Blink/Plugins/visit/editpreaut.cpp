@@ -20,23 +20,23 @@ Editpreaut::Editpreaut(QWidget *parent) :
         ui->CmbBxvisit->setTable("visitante");
     ui->CmbBxvisit->setField("Nome");
     ui->CmbBxvisit->setCanAdd(true);
-    ui->CmbBxvisit->setUserName("QRad");
+    ui->CmbBxvisit->setUserName("dsm");
     ui->CmbBxvisit->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxauthorizer->setTable("dweller");
     ui->CmbBxauthorizer->setField("Name");
-    ui->CmbBxauthorizer->setCanAdd(true);
-    ui->CmbBxauthorizer->setUserName("QRad");
+    ui->CmbBxauthorizer->setCanAdd(false);
+    ui->CmbBxauthorizer->setUserName("dsm");
     ui->CmbBxauthorizer->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxreason->setTable("reason");
     ui->CmbBxreason->setField("Description");
     ui->CmbBxreason->setCanAdd(true);
-    ui->CmbBxreason->setUserName("QRad");
+    ui->CmbBxreason->setUserName("dsm");
     ui->CmbBxreason->completer()->setFilterMode(Qt::MatchContains );
 
     ui->CmbBxDestination->setTable("destination");
     ui->CmbBxDestination->setField("Description");
     ui->CmbBxDestination->setCanAdd(true);
-    ui->CmbBxDestination->setUserName("QRad");
+    ui->CmbBxDestination->setUserName("dsm");
     ui->CmbBxDestination->completer()->setFilterMode(Qt::MatchContains );
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));

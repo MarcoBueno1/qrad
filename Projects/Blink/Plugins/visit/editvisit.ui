@@ -98,7 +98,7 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="groupBoxEntrada">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -172,13 +172,13 @@
       </layout>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="QGroupBox" name="groupBoxSaida">
      <property name="geometry">
       <rect>
-       <x>200</x>
-       <y>164</y>
-       <width>191</width>
-       <height>90</height>
+       <x>204</x>
+       <y>160</y>
+       <width>192</width>
+       <height>100</height>
       </rect>
      </property>
      <property name="title">
@@ -261,6 +261,9 @@
        <width>320</width>
        <height>27</height>
       </rect>
+     </property>
+     <property name="inputMask">
+      <string>999.999.999-99</string>
      </property>
     </widget>
     <widget class="QRadLineEditEnter" name="lineEditVisitante">
@@ -365,6 +368,29 @@
        <bool>true</bool>
       </property>
      </widget>
+    </widget>
+    <widget class="SComboBox" name="comboBoxReason">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>270</y>
+       <width>321</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>270</y>
+       <width>40</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Motivo</string>
+     </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_4">
@@ -783,11 +809,23 @@
    <extends>QLineEdit</extends>
    <header location="global">qradlineeditenter.h</header>
   </customwidget>
+  <customwidget>
+   <class>SComboBox</class>
+   <extends>QComboBox</extends>
+   <header location="global">scombobox.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>lineEditRG</tabstop>
   <tabstop>lineEditCPF</tabstop>
   <tabstop>lineEditVisitante</tabstop>
+  <tabstop>DtEdtData</tabstop>
+  <tabstop>TmEdtHora</tabstop>
+  <tabstop>DtEdtSaida</tabstop>
+  <tabstop>TmEdtsaida_hora</tabstop>
+  <tabstop>lineEditPreAutorizado</tabstop>
+  <tabstop>lineEditAnunciarChegada</tabstop>
+  <tabstop>comboBoxReason</tabstop>
   <tabstop>lineEditMorador</tabstop>
   <tabstop>lineEditAP</tabstop>
   <tabstop>lineEditTorre</tabstop>
@@ -795,12 +833,6 @@
   <tabstop>pushButtonBaterFoto</tabstop>
   <tabstop>PshBtnCancel</tabstop>
   <tabstop>PshBtnSave</tabstop>
-  <tabstop>DtEdtData</tabstop>
-  <tabstop>TmEdtHora</tabstop>
-  <tabstop>DtEdtSaida</tabstop>
-  <tabstop>TmEdtsaida_hora</tabstop>
-  <tabstop>lineEditPreAutorizado</tabstop>
-  <tabstop>lineEditAnunciarChegada</tabstop>
  </tabstops>
  <resources/>
  <connections/>

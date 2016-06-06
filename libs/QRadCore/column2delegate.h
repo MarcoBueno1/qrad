@@ -188,6 +188,15 @@ public:
                             const QModelIndex &index) const;
 };
 
+class ColumnDateTimeNull : public QItemDelegate
+{
+    Q_OBJECT
+public:
+    void paint(QPainter *painter,
+                            const QStyleOptionViewItem &option,
+                            const QModelIndex &index) const;
+};
+
 class ColumnObs : public QItemDelegate
 {
     Q_OBJECT

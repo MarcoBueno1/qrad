@@ -17,6 +17,7 @@ public:
     void setSelect(QString strSelect );
     int getCurrentId();
 
+    int setCurrentId(int id);
 public slots:
     void textchanged(QString text);
     void activated(QModelIndex model);

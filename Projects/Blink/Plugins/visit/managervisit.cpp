@@ -5,10 +5,36 @@
 #include <QMessageBox>
 #include <QDebug>
 
-#define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome, "\
-                  "data_saida as \"Saiu Em\", saida_hora as Hora from visit v "\
-                  "inner join Visitante  vi on vi.id = v.visitante  order by v.id "
+#define BN_DEFAULT_COLUMN_SEARCH 3
+
+#define SQL_ITEMS_OPENED "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome as \"Visitante\", "\
+                         " (select d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\" "\
+                         " from dweller d "\
+                         " inner join tower t on t.id = d.tower "\
+                         "inner join ap a on a.id = d.ap where d.id = v.autorizador), "\
+                         "data_saida as \"Saida / Situação\", saida_hora as \"Hora Saída\" from visit v "\
+                         "inner join Visitante  vi on vi.id = v.visitante  "\
+                         "where data_saida = '2000-01-01' "\
+                         " order by v.id desc"
+
+#define SQL_ITEMS_CLOSED "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome as \"Visitante\", "\
+                        " (select d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\" "\
+                        " from dweller d "\
+                        " inner join tower t on t.id = d.tower "\
+                        "inner join ap a on a.id = d.ap where d.id = v.autorizador), "\
+                         "data_saida as \"Saida / Situação\", saida_hora as \"Hora Saída\" from visit v "\
+                         "inner join Visitante  vi on vi.id = v.visitante  "\
+                         "where data_saida <> '2000-01-01' "\
+                         " order by data_saida, saida_hora desc"
+
+#define SQL_ITEMS_ALL "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome as \"Visitante\", "\
+                        " (select d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\" "\
+                        " from dweller d "\
+                        " inner join tower t on t.id = d.tower "\
+                        "inner join ap a on a.id = d.ap where d.id = v.autorizador), "\
+                         "data_saida as \"Saida / Situação\", saida_hora as \"Hora Saída\" from visit v "\
+                         "inner join Visitante  vi on vi.id = v.visitante  "\
+                         " order by v.id desc"
 
 
 Managervisit::Managervisit(QWidget *parent) :
@@ -19,6 +45,8 @@ Managervisit::Managervisit(QWidget *parent) :
 
     m_keyinterval = NULL;
     m_Model = new QSqlQueryModel;
+
+    m_DateNullDelagate = new ColumnDateTimeNull;
 
     ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
 
@@ -31,6 +59,9 @@ Managervisit::Managervisit(QWidget *parent) :
     connect(ui->PshBtnEditar, SIGNAL(clicked()), this, SLOT(doEditar()));
     connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
+    connect(ui->radioButtonAll, SIGNAL(released()), this, SLOT(LoadTableView()) );
+    connect(ui->radioButtonEnded, SIGNAL(released()), this, SLOT(LoadTableView()) );
+    connect(ui->radioButtonOpened, SIGNAL(released()), this, SLOT(LoadTableView()) );
 
     DoRefresh();
 }
@@ -40,6 +71,7 @@ Managervisit::~Managervisit()
     m_keyinterval->stop();
     delete m_keyinterval;
     delete m_Model;
+    delete m_DateNullDelagate;
 
     delete ui;
 }
@@ -112,11 +144,18 @@ void Managervisit::ShowCurrentInformations( void )
          ui->groupBoxItens->setTitle(strTemp);
     }
 }
+
 void Managervisit::LoadTableView()
 {
     QApplication::processEvents();
 
-    m_Model->setQuery(SQL_ITEMS);
+    if(ui->radioButtonOpened->isChecked())
+        m_Model->setQuery(SQL_ITEMS_OPENED);
+    else if(ui->radioButtonEnded->isChecked())
+        m_Model->setQuery(SQL_ITEMS_CLOSED);
+    else
+        m_Model->setQuery(SQL_ITEMS_ALL);
+
 
     QApplication::processEvents();
     ui->tableViewSearch->setModel( m_Model);
@@ -158,7 +197,7 @@ void Managervisit::refreshTable()
 
 void Managervisit::ConfigureTable()
 {
-      ui->tableViewSearch->addSearchColumn(0);
+      ui->tableViewSearch->addSearchColumn(4);
 
 
    // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Conuna1"));
@@ -170,7 +209,11 @@ void Managervisit::ConfigureTable()
    // ui->tableViewSearch->setColumnWidth(0, 0.06 * ui->tableViewSearch->width());
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
 
+    ui->tableViewSearch->setItemDelegateForColumn(ui->tableViewSearch->getColumnOf("Saida / Situação"),
+                                                  m_DateNullDelagate);
 
+    ui->tableViewSearch->setItemDelegateForColumn(ui->tableViewSearch->getColumnOf("Hora Saída"),
+                                                  m_DateNullDelagate);
 }
 
 void Managervisit::keyPressEvent(QKeyEvent *event)

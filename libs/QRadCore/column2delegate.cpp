@@ -3,6 +3,8 @@
 #include "column2delegate.h"
 #include "qradmoney.h"
 
+#define BG_COLOR_YELLOW     QColor(255, 255, 0)
+
 #define FORMAT(p, w, r) qSetPadChar(p) << qSetRealNumberPrecision(r) << qSetFieldWidth(w)
 
 void ColumnMoney2::paint(QPainter *painter,
@@ -368,5 +370,30 @@ void ColumnDateTime::paint(QPainter *painter,
     myOption.displayAlignment = Qt::AlignCenter;
 
     drawDisplay(painter, myOption, myOption.rect, text.toDateTime().toString(QString("%1 %2").arg(FMT_DATE).arg(FMT_TIME)));
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+void ColumnDateTimeNull::paint(QPainter *painter,
+                           const QStyleOptionViewItem &option,
+                           const QModelIndex &index) const
+{
+    QDate date = index.model()->data(index.model()->index(index.row(),5)).toDate();
+//    QTime time = index.model()->data(index.model()->index(index.row(),4)).toTime();
+
+    QVariant text = index.model()->data(index, Qt::DisplayRole);
+    QStyleOptionViewItem myOption = option;
+    QString strText= text.toString(); //toDate().toString(QString("%1").arg(FMT_DATE));
+
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+
+    if( date == QDate(2000,1,1) )
+    {
+        painter->fillRect(option.rect, BG_COLOR_YELLOW);
+        strText = "NO CONDOMÍNIO";
+    }
+
+    drawDisplay(painter, myOption, myOption.rect, strText);
     drawFocus(painter, myOption, myOption.rect);
 }

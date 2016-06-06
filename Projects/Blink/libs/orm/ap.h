@@ -9,8 +9,7 @@ class Ap : public Model
 {
      MODEL_DECLARE_ATTRIBUTE(int, id);
      MODEL_DECLARE_ATTRIBUTE(QString, Number);
-     MODEL_DECLARE_ATTRIBUTE(int, Tower);
-     MODEL_DECLARE_ATTRIBUTE(int, m2);
+     MODEL_DECLARE_ATTRIBUTE(int, tp);
 
      MODEL_MATCH_TABLE(Ap, "ap")
 

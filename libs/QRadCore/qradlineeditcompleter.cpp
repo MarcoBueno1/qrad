@@ -32,12 +32,23 @@ void QRadLineEditCompleter::setSelect(QString strSelect)
     this->setCompleter(m_completer);
 }
 
+int QRadLineEditCompleter::setCurrentId(int id)
+{
+    for( int i = 0; i < m_completerModel->rowCount(); i++ )
+    {
+        if( m_completerModel->index(i,1).data().toInt() ==  id)
+        {
+            completer()->setCurrentRow(m_completerModel->index(i,1).row());
+            break;
+        }
+    }
+}
 int QRadLineEditCompleter::getCurrentId()
 {
     int id = -1;
     for( int i = 0; i < m_completerModel->rowCount(); i++ )
     {
-        if( m_completerModel->index(i,2).data().toString() ==  this->text())
+        if( !m_completerModel->index(i,2).data().toString().trimmed().isEmpty() && (m_completerModel->index(i,2).data().toString() ==  this->text()))
         {
             id = m_completerModel->index(i,1).data().toInt();
             break;

@@ -19,8 +19,9 @@ class Visitante : public Model
      MODEL_DECLARE_ATTRIBUTE(QDate, DataAutorizado);
      MODEL_DECLARE_ATTRIBUTE(bool, AnunciarChegada);
      MODEL_DECLARE_ATTRIBUTE(int, LoId);
+     MODEL_DECLARE_ATTRIBUTE(int, tp);
 
-     MODEL_MATCH_TABLE(Visitante, "Visitante");
+     MODEL_MATCH_TABLE(Visitante, "visitante");
 
 private:
     static VisitanteList* m_allList;

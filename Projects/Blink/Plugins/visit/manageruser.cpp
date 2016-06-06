@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select name, email,id from user order by id" 
+#define SQL_ITEMS "select name, email,id from vuser order by id"
 
 Manageruser::Manageruser(QWidget *parent) :
     QDialog(parent),

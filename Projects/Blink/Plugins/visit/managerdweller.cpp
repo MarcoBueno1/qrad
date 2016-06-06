@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
-#define SQL_ITEMS "select id, name, cpf from Dweller order by id"
+#define SQL_ITEMS "select id, name, cpf from Dweller where removed = false order by id"
 
 ManagerDweller::ManagerDweller(QWidget *parent) :
     QDialog(parent),

@@ -14,6 +14,7 @@ class visit : public Model
      MODEL_DECLARE_ATTRIBUTE(int, Reason);
      MODEL_DECLARE_ATTRIBUTE(QDate, Saida);
      MODEL_DECLARE_ATTRIBUTE(QTime, saida_hora);
+     MODEL_DECLARE_ATTRIBUTE(int, autorizador);
 
      MODEL_MATCH_TABLE(visit, "visit")
 

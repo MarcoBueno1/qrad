@@ -183,6 +183,19 @@
   <widget class="QPushButton" name="PshBtnEditar">
    <property name="geometry">
     <rect>
+     <x>504</x>
+     <y>560</y>
+     <width>111</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Consulta / Finaliza</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PshBtnNovo">
+   <property name="geometry">
+    <rect>
      <x>620</x>
      <y>560</y>
      <width>85</width>
@@ -190,20 +203,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>&amp;Editar</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="PshBtnNovo">
-   <property name="geometry">
-    <rect>
-     <x>533</x>
-     <y>560</y>
-     <width>85</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&amp;Novo</string>
+    <string>Nova Visita</string>
    </property>
   </widget>
   <widget class="QPushButton" name="PshBtnSair">
@@ -218,6 +218,61 @@
    <property name="text">
     <string>&amp;Sair</string>
    </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>520</y>
+     <width>471</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string> Visualisar</string>
+   </property>
+   <widget class="QRadioButton" name="radioButtonOpened">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>151</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Quem está no Condomínio</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButtonEnded">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>30</y>
+      <width>111</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Visitas Finalizadas</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButtonAll">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>30</y>
+      <width>82</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Todos</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <customwidgets>

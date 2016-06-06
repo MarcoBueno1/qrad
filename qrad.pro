@@ -45,7 +45,8 @@ SUBDIRS = QRad \
           Projects\Blink\libs\orm \
           Projects\Blink\libs\common \
           Projects\Blink\Main \
-          Projects\Blink\Plugins\visit
+          Projects\Blink\Plugins\visit \
+          Projects\Blink\Plugins\report
 
 
 message(Done! Now run \"make\" to build QRad)

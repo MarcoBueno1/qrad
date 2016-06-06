@@ -26,14 +26,14 @@ pdfwrapper::~pdfwrapper()
 
 int pdfwrapper::Build( QString strFile, QString strTitle, QString strColTitle, QStringList body )
 {
-    const char *page_title = strTitle.toLatin1().data();
+//    const char *page_title = strTitle.toLatin1().data();
     HPDF_Doc  pdf;
     HPDF_Page page;
     HPDF_Font def_font;
     HPDF_REAL tw;
     HPDF_REAL height;
     HPDF_REAL width;
-    HPDF_UINT i;
+    //HPDF_UINT i;
 
     pdf = HPDF_New (error_handler, NULL);
     if (!pdf) {
@@ -56,10 +56,10 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QString strColTitle, Q
         def_font = HPDF_GetFont (pdf, "Helvetica-Bold", NULL);
         HPDF_Page_SetFontAndSize (page, def_font, 20);
 
-        tw = HPDF_Page_TextWidth(page, page_title);
+        tw = HPDF_Page_TextWidth(page, strTitle.toLatin1().data());
         HPDF_Page_BeginText(page);
         HPDF_Page_MoveTextPos(page, (width - tw) / 2, height - 50);
-        HPDF_Page_ShowText(page, page_title);
+        HPDF_Page_ShowText(page, strTitle.toLatin1().data());
         HPDF_Page_EndText(page);
 
         /* output subtitle. */
@@ -75,7 +75,7 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QString strColTitle, Q
         HPDF_Page_BeginText(page);
         HPDF_Page_MoveTextPos(page, 60, height - 105);
 
-        i = 0;
+        //i = 0;
 		
 		for( int i=0; i < body.count(); i++ )
 		{

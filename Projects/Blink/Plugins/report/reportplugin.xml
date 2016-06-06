@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<pluginlist>
+    <!-- Pre-sell Plugin -->
+
+    <plugin name="report" library="./report" enabled="true">
+        <menu path="Relatório" title="Teste" action="Build" hotkey="CTRL+V" permission="usevisit" />
+</plugin>
+
+</pluginlist>

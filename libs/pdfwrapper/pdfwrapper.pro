@@ -15,9 +15,11 @@ TEMPLATE = lib
 INCLUDEPATH += ../3rdpart/libharu/src/include \
                ../3rdpart/libharu/bin/include/
 
-SOURCES += pdfwrapper.cpp 
+SOURCES += pdfwrapper.cpp  \
+           format.cpp
 
-HEADERS += pdfwrapper.h 
+HEADERS += pdfwrapper.h  \
+           format.h
 		   
 LIBS +=  -L../3rdpart/libharu/bin/src/
 

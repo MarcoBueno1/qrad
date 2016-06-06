@@ -67,7 +67,7 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QString strColTitle, Q
 //        HPDF_Page_MoveTextPos (page, 60, height - 80);
         tw = HPDF_Page_TextWidth(page, strColTitle.toLatin1().data());
         HPDF_Page_MoveTextPos(page, (width - tw) / 2, height - 80);
-        HPDF_Page_SetFontAndSize (page, def_font, 13);
+        HPDF_Page_SetFontAndSize (page, def_font, 9);
 //        HPDF_Page_ShowText (page, "<Standerd Type1 fonts samples>");
         HPDF_Page_ShowText(page, strColTitle.toLatin1().data());
         HPDF_Page_EndText(page);

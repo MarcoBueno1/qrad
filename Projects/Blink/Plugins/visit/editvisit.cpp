@@ -119,7 +119,7 @@ void Editvisit::Save()
         pVis = new Visitante;
         pVis->setRG(ui->lineEditRG->text());
         QString CPF =ui->lineEditCPF->text().trimmed();
-        CPF.remove("-").remove("/");
+        CPF.remove("-").remove(".");
         pVis->setCPF(CPF);
         pVis->setNome(ui->lineEditVisitante->text());
         pVis->saveImage(PORTEIRO_FUL_PATH);

@@ -4,6 +4,7 @@
 #include <exception>
 #include "pdfwrapper.h"
 #include "hpdf.h"
+#include "format.h"
 
 void error_handler (HPDF_STATUS   error_no,
                HPDF_STATUS   detail_no,
@@ -22,6 +23,58 @@ pdfwrapper::pdfwrapper()
 pdfwrapper::~pdfwrapper()
 {
 	
+}
+
+int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> ColHeader, QList<QStringList> lines )
+{
+#if(0)
+//    const char *page_title = strTitle.toLatin1().data();
+    HPDF_Doc  pdf;
+    HPDF_Page page;
+    HPDF_Font def_font;
+    HPDF_REAL tw;
+    HPDF_REAL height;
+    HPDF_REAL width;
+    //HPDF_UINT i;
+
+    pdf = HPDF_New (error_handler, NULL);
+    if (!pdf) {
+        printf ("error: cannot create PdfDoc object\n");
+        return 1;
+    }
+    try 
+    {
+        /* Add a new page object. */
+        page = HPDF_AddPage (pdf);
+
+        height = HPDF_Page_GetHeight (page);
+        width = HPDF_Page_GetWidth (page);
+
+        /* Print the lines of the page. */
+        HPDF_Page_SetLineWidth (page, 1);
+        HPDF_Page_Rectangle (page, 50, 50, width - 100, height - 110);
+        HPDF_Page_Stroke (page);
+
+        /* Print the title of the page (with positioning center). */
+        def_font = HPDF_GetFont (pdf, "Helvetica-Bold", NULL);
+        HPDF_Page_SetFontAndSize (page, def_font, 20);
+
+        tw = HPDF_Page_TextWidth(page, strTitle.toLatin1().data());
+        HPDF_Page_BeginText(page);
+        HPDF_Page_MoveTextPos(page, (width - tw) / 2, height - 50);
+        HPDF_Page_ShowText(page, strTitle.toLatin1().data());
+        HPDF_Page_EndText(page);
+
+        for( int j = 0; i < colHeader.count(); i++ )
+        {
+            format::
+
+        }
+
+     }
+#endif
+
+
 }
 
 int pdfwrapper::Build( QString strFile, QString strTitle, QString strColTitle, QStringList body )

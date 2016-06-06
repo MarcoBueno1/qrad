@@ -10,4 +10,5 @@ class Format
  public:
  
    static QString FormatLine( QList<FieldFormat> head, QList<QString> fields );
+   static QString FormatColHead( QList<FieldFormat> head );
 };

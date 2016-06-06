@@ -16,6 +16,26 @@ Format::~Format()
 
 }
 
+QString Format::FormatColHead( QList<FieldFormat> head )
+{
+   QString tmp;
+   QString Line;
+
+   
+   for( int i = 0; i < head.count(); i++ )
+   {
+     int FieldMaxLen = (int)((FORMAT_LINE_LEN-head.count()+1) / 100 * head.at(i).Percent);
+	 if( head.at(i).Align == ALIGN_CENTER )
+		 tmp.sprintf("%*s", FieldMaxLen / 2 + head.at(i).Name.length() / 2,head.at(i).Name.toLatin1().data());
+	 else if( head.at(i).Align == ALIGN_LEFT )
+		 tmp.sprintf ("%-*s",FieldMaxLen,head.at(i).Name.toLatin1().data());
+	 else
+		 tmp.sprintf ("%*s",FieldMaxLen,head.at(i).Name.toLatin1().data());
+     if( Line.length() )
+		 Line += " ";
+	 Line += tmp;
+   }
+}
 
 QString Format::FormatLine( QList<FieldFormat> head, QList<QString> fields )
 {

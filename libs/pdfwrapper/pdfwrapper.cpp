@@ -27,7 +27,6 @@ pdfwrapper::~pdfwrapper()
 
 int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> ColHeader, QList<QStringList> lines )
 {
-#if(0)
 //    const char *page_title = strTitle.toLatin1().data();
     HPDF_Doc  pdf;
     HPDF_Page page;
@@ -36,45 +35,84 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> C
     HPDF_REAL height;
     HPDF_REAL width;
     //HPDF_UINT i;
+    int i = 0;
 
     pdf = HPDF_New (error_handler, NULL);
-    if (!pdf) {
+    if (!pdf) 
+    {
         printf ("error: cannot create PdfDoc object\n");
         return 1;
     }
     try 
     {
         /* Add a new page object. */
-        page = HPDF_AddPage (pdf);
-
-        height = HPDF_Page_GetHeight (page);
-        width = HPDF_Page_GetWidth (page);
-
-        /* Print the lines of the page. */
-        HPDF_Page_SetLineWidth (page, 1);
-        HPDF_Page_Rectangle (page, 50, 50, width - 100, height - 110);
-        HPDF_Page_Stroke (page);
-
-        /* Print the title of the page (with positioning center). */
-        def_font = HPDF_GetFont (pdf, "Helvetica-Bold", NULL);
-        HPDF_Page_SetFontAndSize (page, def_font, 20);
-
-        tw = HPDF_Page_TextWidth(page, strTitle.toLatin1().data());
-        HPDF_Page_BeginText(page);
-        HPDF_Page_MoveTextPos(page, (width - tw) / 2, height - 50);
-        HPDF_Page_ShowText(page, strTitle.toLatin1().data());
-        HPDF_Page_EndText(page);
-
-        for( int j = 0; i < colHeader.count(); i++ )
+        do 
         {
-            format::
 
-        }
+            page = HPDF_AddPage (pdf);
 
-     }
-#endif
+            height = HPDF_Page_GetHeight (page);
+            width = HPDF_Page_GetWidth (page);
+
+            /* Print the lines of the page. */
+            HPDF_Page_SetLineWidth (page, 1);
+            HPDF_Page_Rectangle (page, 50, 50, width - 100, height - 110);
+            HPDF_Page_Stroke (page);
+
+            /* Print the title of the page (with positioning center). */
+            def_font = HPDF_GetFont (pdf, "Helvetica-Bold", NULL);
+            HPDF_Page_SetFontAndSize (page, def_font, 20);
+
+            tw = HPDF_Page_TextWidth(page, strTitle.toLatin1().data());
+            HPDF_Page_BeginText(page);
+            HPDF_Page_MoveTextPos(page, (width - tw) / 2, height - 50);
+            HPDF_Page_ShowText(page, strTitle.toLatin1().data());
+            HPDF_Page_EndText(page);
 
 
+           /// header ....
+
+           QString strHead =  Format::FormatColHead( ColHeader );
+
+           HPDF_Page_BeginText(page);
+           HPDF_Page_SetFontAndSize (page, def_font, 9);
+           char szHeader[256];
+           strcpy( szHeader, strHead.toLatin1().data());
+           HPDF_Page_MoveTextPos (page, 0, -18);
+           HPDF_Page_ShowText (page, szHeader);
+           HPDF_Page_EndText(page);
+
+
+
+           ///
+//           for(; (i % 39) && i < lines.count(); i++ )
+           {
+               QString line = Format::FormatLine( ColHeader, lines.at(i) );
+ 
+               HPDF_Page_BeginText(page);
+               HPDF_Page_SetFontAndSize (page, def_font, 9);
+               HPDF_Page_MoveTextPos (page, 0, -18);
+               HPDF_Page_ShowText (page, line.toLatin1().data());
+               HPDF_Page_EndText(page);
+           }
+           i++;
+
+          // HPDF_Page_EndText( page );
+
+        }while( /*i < lines.count()*/ 0);
+
+		
+        HPDF_SaveToFile( pdf, strFile.toLatin1().data() );
+    } 
+    catch (...) 
+    {
+       HPDF_Free (pdf);
+       return 1;
+    }
+
+    /* clean up */
+      HPDF_Free (pdf);
+    return 0;
 }
 
 int pdfwrapper::Build( QString strFile, QString strTitle, QString strColTitle, QStringList body )

@@ -12,7 +12,7 @@
 
 typedef struct fieldformat
 {
-  QString Name;
+  char Name[128];
   double Percent;
   int Align;
 }FieldFormat, *PFieldFormat;

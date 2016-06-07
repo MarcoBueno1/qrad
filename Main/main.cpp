@@ -7,6 +7,8 @@
 #include "qradcoreplugin.h"
 #include "mainwindow.h"
 #include "qraddebug.h"
+#include "qradplugininterface.h"
+#include "qradplugincontainer.h"
 
 
 void centerWidget(QWidget *widget)
@@ -55,11 +57,14 @@ int main(int argc, char *argv[])
 
     /* Configure database */
 
-    debug_message("[main] -->configureDatabase...\n");
+    if(( argc < 2) || strcmp( argv[1], "-nosql"))
+    {
+      debug_message("[main] -->configureDatabase...\n");
 
-    configureDatabase();
+      configureDatabase();
 
-    debug_message("[main] <--configureDatabase...\n");
+      debug_message("[main] <--configureDatabase...\n");
+    }
 
     /* Translate application components */
 
@@ -86,8 +91,24 @@ int main(int argc, char *argv[])
     g_pluginLoader->Load("plugins.xml");
 
     splash->finish(g_mainWindow);
-    g_mainWindow->setParent(0, 0);
-    g_mainWindow->show();
+
+
+    if((argc > 3) &&  !strcmp(argv[1], "--run"))
+    {
+
+        QString name = QString(argv[2]);
+        QRadPluginInterface *iface = QRadPluginContainer::getInstance()->plugin(name);
+        if (iface)
+        {
+            QString action = QString(argv[3]);
+            iface->Process(action);
+        }
+    }
+    else
+    {
+      g_mainWindow->setParent(0, 0);
+      g_mainWindow->show();
+    }
 
     rc = a.exec();
 

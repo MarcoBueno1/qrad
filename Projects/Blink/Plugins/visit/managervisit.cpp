@@ -197,7 +197,10 @@ void Managervisit::refreshTable()
 
 void Managervisit::ConfigureTable()
 {
+      ui->tableViewSearch->addSearchColumn(3);
       ui->tableViewSearch->addSearchColumn(4);
+      ui->tableViewSearch->addSearchColumnFilter(3);
+      ui->tableViewSearch->addSearchColumnFilter(4);
 
 
    // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Conuna1"));

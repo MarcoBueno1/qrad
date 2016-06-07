@@ -42,10 +42,11 @@ CONFIG += ordered
 
 SUBDIRS = QRad \
           libs/QRadCore \
+          libs/pdfwrapper \
           Projects\Blink\libs\orm \
           Projects\Blink\libs\common \
           Projects\Blink\Main \
-          Projects\Blink\Plugins\visit \
+          Projects\Blink\Plugins\visit
           Projects\Blink\Plugins\report
 
 

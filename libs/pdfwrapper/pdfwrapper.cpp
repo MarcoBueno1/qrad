@@ -48,6 +48,7 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> C
         /* Add a new page object. */
         do 
         {
+//            HPDF_SetEncoding ("ISO8859-3"); 
 
             page = HPDF_AddPage (pdf);
 
@@ -60,7 +61,7 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> C
             HPDF_Page_Stroke (page);
 
             /* Print the title of the page (with positioning center). */
-            def_font = HPDF_GetFont (pdf, "Helvetica-Bold", NULL);
+            def_font = HPDF_GetFont (pdf, "Helvetica-Bold", "ISO8859-3");
             HPDF_Page_SetFontAndSize (page, def_font, 20);
 
             tw = HPDF_Page_TextWidth(page, strTitle.toLatin1().data());
@@ -75,29 +76,36 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> C
            QString strHead =  Format::FormatColHead( ColHeader );
 
            HPDF_Page_BeginText(page);
+           HPDF_Page_MoveTextPos (page, 60, height - 80);
            HPDF_Page_SetFontAndSize (page, def_font, 9);
            char szHeader[256];
            strcpy( szHeader, strHead.toLatin1().data());
-           HPDF_Page_MoveTextPos (page, 0, -18);
+           //HPDF_Page_MoveTextPos (page, 0, -18);
            HPDF_Page_ShowText (page, szHeader);
            HPDF_Page_EndText(page);
+//           HPDF_Page_MoveTextPos (page, 0, -18);
+
+           
+           HPDF_Page_BeginText(page);
+           HPDF_Page_MoveTextPos(page, 60, height - 105);
 
 
 
            ///
-//           for(; (i % 39) && i < lines.count(); i++ )
+           for(; (i % 39) && i < lines.count(); i++ )
            {
                QString line = Format::FormatLine( ColHeader, lines.at(i) );
  
-               HPDF_Page_BeginText(page);
+          //     HPDF_Page_BeginText(page);
                HPDF_Page_SetFontAndSize (page, def_font, 9);
+               HPDF_Page_ShowText (page, line.toUtf8().data());
                HPDF_Page_MoveTextPos (page, 0, -18);
-               HPDF_Page_ShowText (page, line.toLatin1().data());
-               HPDF_Page_EndText(page);
+               //HPDF_Page_ShowText (page, line.toUtf8().data());
+          //     HPDF_Page_EndText(page);
            }
            i++;
 
-          // HPDF_Page_EndText( page );
+           HPDF_Page_EndText( page );
 
         }while( /*i < lines.count()*/ 0);
 

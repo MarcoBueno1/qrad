@@ -25,7 +25,12 @@ QString Format::FormatColHead( QList<FieldFormat *> head )
    
    for( int i = 0; i < head.count(); i++ )
    {
-     int FieldMaxLen = (int)((FORMAT_LINE_LEN-head.count()+1) / 100 * head.at(i)->Percent);
+     double dPart1 = FORMAT_LINE_LEN-(head.count()+1);
+     double dPart2 = dPart1 /100 ;
+     double dPart3 = dPart2 * head.at(i)->Percent;
+
+ //    double dValue = ((FORMAT_LINE_LEN-(head.count()+1)) / 100 * head.at(i)->Percent);
+     int FieldMaxLen = (int)dPart3; //((FORMAT_LINE_LEN-(head.count()+1)) / 100 * head.at(i)->Percent);
 	 if( head.at(i)->Align == ALIGN_CENTER )
          tmp.sprintf("%*s", FieldMaxLen / 2 + strlen(head.at(i)->Name) / 2,head.at(i)->Name);
 	 else if( head.at(i)->Align == ALIGN_LEFT )

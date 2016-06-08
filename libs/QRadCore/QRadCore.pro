@@ -54,7 +54,9 @@ HEADERS +=  qradplugincontainer.h \
 #    profilemanager.h \
 #    profileregister.h \
     qraddoublespinboxenter.h \
-    docvalidate.h
+    docvalidate.h \
+    qraddateeditfakeenter.h \
+    qradtimeeditenter.h
 
 win32:HEADERS  += system/inc/win/qradsystem.h
 unix::HEADERS  += system/inc/lnx/qradsystem.h
@@ -89,7 +91,9 @@ SOURCES +=  qradplugininterface.cpp \
 #    profilemanager.cpp \
 #    profileregister.cpp \
     qraddoublespinboxenter.cpp \
-    docvalidate.cpp
+    docvalidate.cpp \
+    qraddateeditfakeenter.cpp \
+    qradtimeeditenter.cpp
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c
 

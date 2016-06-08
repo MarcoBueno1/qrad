@@ -1,5 +1,6 @@
 #include "qradlineeditcompleter.h"
 #include <QAbstractItemView>
+#include "qraddebug.h"
 
 QRadLineEditCompleter::QRadLineEditCompleter(QWidget *parent):QLineEdit(parent)
 {
@@ -9,6 +10,7 @@ QRadLineEditCompleter::QRadLineEditCompleter(QWidget *parent):QLineEdit(parent)
     connect(this,SIGNAL(textChanged(QString)), this, SLOT(textchanged(QString)));
     connect(this,SIGNAL(textEdited(QString)), this, SLOT(textEdited(QString)));
     connect(m_completer,SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
+    connect(m_completer,SIGNAL(highlighted(QModelIndex)), this, SLOT(activated(QModelIndex)));
     connect(this,SIGNAL(returnPressed()), this, SLOT(returnPressed()));
 }
 
@@ -68,16 +70,20 @@ void QRadLineEditCompleter::textchanged(QString text)
 }
 void QRadLineEditCompleter::activated(QModelIndex model)
 {
+    debug_message("-->\n");
 //    if( m_lineEdits.count() >= 2)
     for( int i =0; i < m_lineEdits.count(); i++ )
     {
         m_lineEdits.at(i)->setText(model.sibling(model.row(), i+3).data().toString());
+        debug_message("%s\n", model.sibling(model.row(), i+3).data().toString().toLatin1().data());
 //        m_lineEdits.at(i)->setText(model.sibling(model.row(), 4).data().toString());
     }
+    debug_message("<--\n");
 }
 
 void QRadLineEditCompleter::textEdited(QString text)
 {
+    debug_message("-->\n");
     if( m_lineEdits.count() )
     {
         int i = 0;
@@ -102,23 +108,31 @@ void QRadLineEditCompleter::textEdited(QString text)
                 m_lineEdits.at(i)->setText("");
         }
     }
+    debug_message("<--\n");
 }
 
 void QRadLineEditCompleter::returnPressed()
 {
+    debug_message("-->\n");
+
     if( m_lineEdits.count())
     {
         int i = 0;
         for( ; i < m_completerModel->rowCount(); i++ )
         {
-            if( m_completerModel->index(i,2).data().toString() == this->text() )
+            QString data = m_completerModel->index(i,2).data().toString();
+            debug_message("data:%s, this->text():%s\n", data.toLatin1().data(), this->text().toLatin1().data());
+            if( !data.trimmed().isEmpty() && (data == this->text()) )
             {
+                debug_message("data:%s\n", data.toLatin1().data());
                 int j = 0;
                 for( ; j < m_lineEdits.count(); j++ )
                 {
+                    debug_message("for...:%s\n", m_completerModel->index(i,j+3).data().toString().toLatin1().data());
                     m_lineEdits.at(j)->setText(m_completerModel->index(i,j+3).data().toString());
-//                    m_lineEdits.at(1)->setText(m_completerModel->index(i,4).data().toString());
+                  //  m_lineEdits.at(1)->setText(m_completerModel->index(i,4).data().toString());
                 }
+
                 m_lineEdits.at(j-1)->setFocus();
                 emit found(m_completerModel->index(i,1).data().toInt());
                 break;
@@ -131,5 +145,5 @@ void QRadLineEditCompleter::returnPressed()
     }else
         this->focusNextChild();
 
-
+    debug_message("<--\n");
 }

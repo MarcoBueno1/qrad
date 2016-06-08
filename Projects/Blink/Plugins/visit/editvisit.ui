@@ -253,7 +253,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEditCPF">
+    <widget class="QRadLineEditEnter" name="lineEditCPF">
      <property name="geometry">
       <rect>
        <x>70</x>

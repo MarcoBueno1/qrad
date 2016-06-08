@@ -38,6 +38,8 @@ public:
     static preautList* findAll(void);
     static preaut* findByid(int id);
     static preaut* findByid(int id, QString database);
+    static preaut* findValidByVisitor( int visitor );
+
 };
  
 #endif 

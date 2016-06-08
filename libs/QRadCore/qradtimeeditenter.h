@@ -3,7 +3,7 @@
 
 #include <QTimeEdit>
 #include <QKeyEvent>
-#include "dsmshared.h"
+#include "qradshared.h"
 
 class QRadTimeEditEnter : public QTimeEdit
 {

@@ -54,3 +54,26 @@ preaut* preaut::findByid(int id, QString database)
 {
     return preaut::findByPrimaryKey(id, database);
 }
+
+preaut* preaut::findValidByVisitor( int visitor )
+{
+  QString query = QString( "select * from preaut where visit = %1 "\
+                            "  and (current_time between  horaini and horafim) and "\
+                            "        (select case when (select extract(DOW from current_date)) = 0 then sunday "\
+                            "                     when (select extract(DOW from current_date)) = 1 then monday "\
+                            "                     when (select extract(DOW from current_date)) = 2 then tuesday "\
+                            "                     when (select extract(DOW from current_date)) = 3 then wednesday "\
+                            "                     when (select extract(DOW from current_date)) = 4 then thursday "\
+                            "                     when (select extract(DOW from current_date)) = 5 then friday "\
+                            "                     when (select extract(DOW from current_date)) = 6 then saturday "\
+                            "                    end ) = true and removed = false and  (validate > current_date) limit 1"),arg(visitor);
+
+    preaut *preautM = new preaut();
+    if (!preautM->fillModelFromQuery(query))
+    {
+        delete preautM;
+        return NULL;
+    }
+
+    return preautM;
+}

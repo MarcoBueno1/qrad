@@ -1,4 +1,4 @@
-#include "dsmtimeeditenter.h"
+#include "qradtimeeditenter.h"
 
 QRadTimeEditEnter::QRadTimeEditEnter(QWidget *parent) : QTimeEdit(parent)
 {

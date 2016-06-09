@@ -114,7 +114,7 @@ void ReportPlugin::Process( const QString& action )
        strcpy(f->Name, "Perifericos");
        //f->Name    = QString();
        f->Percent = 40;
-       f->Align   = ALIGN_CENTER;
+       f->Align   = ALIGN_LEFT;
        headers.append(f);
 
        f = (FieldFormat *)malloc(sizeof(FieldFormat));
@@ -144,7 +144,7 @@ void ReportPlugin::Process( const QString& action )
        lines.append( linha6 );
 
 
-       pdfwrapper::Build( "RelatorioFormatado.pdf", "Relatório Formatado", headers, lines );
+       pdfwrapper::Build( "RelatorioDispositivos.pdf", "Relatório ATM CAIXA", headers, lines );
    }
 }
 

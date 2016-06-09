@@ -1,16 +1,16 @@
 /* include/hpdf_config.h.in.  Generated from configure.in by autoheader.  */
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
-#define LIBHPDF_HAVE_DLFCN_H
+/* #undef LIBHPDF_HAVE_DLFCN_H */
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define LIBHPDF_HAVE_INTTYPES_H
 
 /* Define to 1 if you have the `png' library (-lpng). */
-#define LIBHPDF_HAVE_LIBPNG
+/* #undef LIBHPDF_HAVE_LIBPNG */
 
 /* Define to 1 if you have the `z' library (-lz). */
-#define LIBHPDF_HAVE_LIBZ
+/* #undef LIBHPDF_HAVE_LIBZ */
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define LIBHPDF_HAVE_MEMORY_H
@@ -43,11 +43,11 @@
 /* #undef LIBHPDF_DEBUG_TRACE */
 
 /* libpng is not available */
-/* #undef LIBHPDF_HAVE_NOPNGLIB */
-/* #undef HPDF_NOPNGLIB */
+#define LIBHPDF_HAVE_NOPNGLIB
+#define HPDF_NOPNGLIB
 
 /* zlib is not available */
-/* #undef LIBHPDF_HAVE_NOZLIB */
+#define LIBHPDF_HAVE_NOZLIB
 
 /* Define to the address where bug reports for this package should be sent. */
 #define LIBHPDF_PACKAGE_BUGREPORT "TODO"

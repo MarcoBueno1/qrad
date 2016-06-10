@@ -29,7 +29,9 @@ Editvisit::Editvisit(QWidget *parent) :
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
     connect(ui->pushButtonBaterFoto, SIGNAL(clicked()),this, SLOT(baterFoto()));
-    connect(ui->lineEditMorador, SIGNAL(found(int)), this, SLOT(found(int)));
+    connect(ui->lineEditRG, SIGNAL(found(int)), this, SLOT(found(int)));
+    connect(ui->lineEditRG, SIGNAL(notFound()), this, SLOT(notFound()));
+
     ui->DtEdtData->setDate(QDate::currentDate());
     ui->TmEdtHora->setTime(QTime::currentTime());
     ui->lineEditRG->setFocus();
@@ -272,4 +274,10 @@ void Editvisit::found( int id )
           ui->LblPhoto->setPixmap(mypix);
           delete pVis;
     }
+}
+void Editvisit::notFound()
+{
+    QPixmap mypix;// = pVis->getImage();
+    ui->LblPhoto->setPixmap(mypix);
+//    delete pVis;
 }

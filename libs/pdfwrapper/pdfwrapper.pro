@@ -13,8 +13,8 @@ TARGET = pdfwrapper
 TEMPLATE = lib
 
 INCLUDEPATH       += ../3rdpart/libharu/src/include
-#win32:INCLUDEPATH += ../3rdpart/libharu/src/win32/include
-INCLUDEPATH  +=  ../3rdpart/libharu/bin/include/
+win32:INCLUDEPATH += ../3rdpart/libharu/bin/include/win
+unix:INCLUDEPATH  +=  ../3rdpart/libharu/bin/include/
 
 SOURCES += pdfwrapper.cpp  \
            format.cpp \

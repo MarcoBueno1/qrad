@@ -4,7 +4,9 @@
 #include <QLineEdit>
 #include <QSqlQueryModel>
 #include <QCompleter>
-//#include <QKeyEvent>
+#include <QKeyEvent>
+#include <QFocusEvent>
+ //#include <QKeyEvent>
 
 class QRadLineEditCompleter : public QLineEdit
 {
@@ -18,6 +20,8 @@ public:
     int getCurrentId();
 
     void setCurrentId(int id);
+    void focusInEvent(QFocusEvent *e);
+  //  void keyPressEvent(QKeyEvent *event);
 public slots:
     void textchanged(QString text);
     void activated(QModelIndex model);
@@ -28,11 +32,16 @@ public slots:
 signals:
 
     void found( int id );
+    void notFound();
+
 
 private:
     QList<QLineEdit *> m_lineEdits;
     QCompleter     *m_completer;
     QSqlQueryModel *m_completerModel;
+    int m_nCurrentId = 0;
+
+    void ClearAll();
 
 };
 

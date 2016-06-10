@@ -25,6 +25,7 @@ public slots:
     void found(int id );
     
     void baterFoto();
+    void notFound();
 private:
     Ui::Editvisit *ui;
     visit* m_mod;

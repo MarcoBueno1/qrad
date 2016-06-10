@@ -14,7 +14,7 @@ TEMPLATE = lib
 
 INCLUDEPATH       += ../3rdpart/libharu/src/include
 win32:INCLUDEPATH += ../3rdpart/libharu/bin/include/win
-unix:INCLUDEPATH  +=  ../3rdpart/libharu/bin/include/
+unix:INCLUDEPATH  +=  ../3rdpart/libharu/bin/include/lnx
 
 SOURCES += pdfwrapper.cpp  \
            format.cpp \

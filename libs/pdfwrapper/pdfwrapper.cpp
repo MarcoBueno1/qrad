@@ -42,15 +42,14 @@ void draw_line( HPDF_Page    page,
 
 int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> ColHeader, QList<QStringList> lines )
 {
-//    const char *page_title = strTitle.toLatin1().data();
     HPDF_Doc  pdf;
     HPDF_Page page;
     HPDF_Font def_font;
+    HPDF_Font def_font_head;
     HPDF_Font def_font_title;
     HPDF_REAL tw;
     HPDF_REAL height;
     HPDF_REAL width;
-    //HPDF_UINT i;
     int i = 1;
 
     pdf = HPDF_New (error_handler, NULL);
@@ -64,7 +63,6 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> C
         /* Add a new page object. */
         do 
         {
-//            HPDF_SetEncoding ("ISO8859-3"); 
 
             page = HPDF_AddPage (pdf);
 
@@ -75,6 +73,25 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> C
             HPDF_Page_SetLineWidth (page, 1);
             HPDF_Page_Rectangle (page, 50, 50, width - 100, height - 110);
             HPDF_Page_Stroke (page);
+
+            /// Tentativa de imprimir 3 linhas pequenas
+            def_font_head = HPDF_GetFont (pdf, "Helvetica", "ISO8859-2");
+            HPDF_Page_SetFontAndSize (page, def_font_head, 8);
+            HPDF_Page_BeginText(page);
+            HPDF_Page_MoveTextPos(page, 50 , height - 30);
+            HPDF_Page_ShowText(page, "Diebold Inc. @2016 Gastão");
+            HPDF_Page_EndText(page);
+
+            HPDF_Page_BeginText(page);
+            HPDF_Page_MoveTextPos(page, 50 , height - 40);
+            HPDF_Page_ShowText(page, "Inovação ao seu Alcance");
+            HPDF_Page_EndText(page);
+            
+            HPDF_Page_BeginText(page);
+            HPDF_Page_MoveTextPos(page, 50 , height - 50);
+            HPDF_Page_ShowText(page, "R. Gastão Vidigal, 2700 São Paulo ó - SP");
+            HPDF_Page_EndText(page);
+            ///
 
             /* Print the title of the page (with positioning center). */
 //            def_font = HPDF_GetFont (pdf, "Helvetica-Bold", "ISO8859-3");
@@ -90,14 +107,14 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> C
 
 
            /// header ....
-		   Format::FormatColHead( page, 
-								  def_font,
-								  width -100, 
-								  height - 80, 
-								  ColHeader );
+	   Format::FormatColHead( page, 
+				  def_font,
+				  width -100, 
+				  height - 80, 
+				  ColHeader );
 								  
-//           HPDF_Page_SetLineWidth (page, 1);
-//           HPDF_Page_LineTo(page, 55, width - 55 );
+//         HPDF_Page_SetLineWidth (page, 1);
+//         HPDF_Page_LineTo(page, 55, width - 55 );
 /*
            QString strHead =  Format::FormatColHead( ColHeader );
 

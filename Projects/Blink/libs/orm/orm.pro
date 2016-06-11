@@ -24,7 +24,8 @@ SOURCES += dweller.cpp \
 	   preaut.cpp \
            profile.cpp \
            user.cpp \
-           login.cpp
+           login.cpp \
+    emailconf.cpp
             
 
 HEADERS += dweller.h \
@@ -37,7 +38,8 @@ HEADERS += dweller.h \
 	   preaut.h \
            profile.h \
            user.h \
-           login.h
+           login.h \
+    emailconf.h
 		   
 win32:LIBS +=  -L../../../../libs/QRadCore\release
 unix:LIBS +=  -L../../../../libs/QRadCore

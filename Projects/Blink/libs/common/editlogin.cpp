@@ -91,6 +91,7 @@ void Editlogin::Save()
    app->setProperty("useprofile", pro->getuseprofile());
    app->setProperty("usedweller", pro->getusedweller());
    app->setProperty("useivisitant", pro->getusevisitant());
+   app->setProperty("configureemail",pro->getConfigureEmail());
 
     login* mod =  m_mod;
     if( m_mod == NULL)

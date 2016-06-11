@@ -11,6 +11,7 @@
         <menu path="Cadastro" title="Pré-Autorizações" action="ManagerPreAut" hotkey="CTRL+V" permission="usepreaut" />
         <menu path="Cadastro" title="Usuário" action="ManagerUser" hotkey="CTRL+V" permission="useuser" />
         <menu path="Cadastro" title="Perfil" action="ManagerProfile" hotkey="CTRL+V" permission="useprofile" />
+        <menu path="Configurações" title="e-mail" action="EmailConfig" hotkey="CTRL+V" permission="configureemail" />
 </plugin>
 
 </pluginlist>

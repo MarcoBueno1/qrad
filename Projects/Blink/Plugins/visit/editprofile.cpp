@@ -58,6 +58,7 @@ void Editprofile::Save()
     mod->setusevisitant(ui->ChkBxusevisitant->isChecked());
     mod->setuseuser(ui->ChkBxuseuser->isChecked());
     mod->setuseprofile(ui->ChkBxuseprofile->isChecked());
+    mod->setConfigureEmail(ui->ChkConfigureemail->isChecked());
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -84,6 +85,7 @@ void Editprofile::Load()
     ui->ChkBxusevisitant->setChecked(m_mod->getusevisitant());
     ui->ChkBxuseuser->setChecked(m_mod->getuseuser());
     ui->ChkBxuseprofile->setChecked(m_mod->getuseprofile());
+    ui->ChkConfigureemail->setChecked(m_mod->getConfigureEmail());
 
 }
 

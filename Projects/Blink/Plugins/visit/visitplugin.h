@@ -13,6 +13,7 @@
 #include "managerpreaut.h"
 #include "managerprofile.h"
 #include "manageruser.h"
+#include "editemailconf.h"
 
 class visitPlugin : public QRadPluginInterface
 {
@@ -35,6 +36,7 @@ protected:
     Managerpreaut *m_managerPreAut;
     Managerprofile *m_managerProfile;
     Manageruser *m_managerUser;
+    Editemailconf *m_emailConfig;
 
 
 

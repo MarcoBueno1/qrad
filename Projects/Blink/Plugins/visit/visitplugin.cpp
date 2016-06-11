@@ -1,5 +1,6 @@
 #include "visitplugin.h" 
 #include "qraddebug.h"
+#include "emailconf.h"
 visitPlugin::visitPlugin()
 {
     m_manager = 0;
@@ -10,6 +11,7 @@ visitPlugin::visitPlugin()
     m_managerPreAut = 0;
     m_managerProfile = 0 ;
     m_managerUser =0;
+    m_emailConfig = 0;
 
 }
 
@@ -38,6 +40,9 @@ visitPlugin::~visitPlugin()
  
     if(m_managerUser)
         delete m_managerUser;
+
+    if(m_emailConfig)
+        delete m_emailConfig;
 }
 
 void visitPlugin::onLoad(QRadPluginContainer* container)
@@ -135,6 +140,19 @@ void visitPlugin::Process( const QString& action )
     //    QRadConfig::centralizarWidget(m_edit);
         m_managerUser->show();
         debug_message("<--ManagerUser\n");
+    }
+    else if(action.toLower() == QString("EmailConfig").toLower())
+    {
+        debug_message("-->EmailConfig\n");
+        if( m_emailConfig )
+            delete m_emailConfig;
+
+        m_emailConfig =  new Editemailconf(m_parent);
+        emailconf *conf = emailconf::findByid(1);
+        if( conf )
+            m_emailConfig->SetModel(conf);
+        m_emailConfig->show();
+        debug_message("-->EmailConfig\n");
     }
 }
 

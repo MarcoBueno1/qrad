@@ -10,6 +10,7 @@
 #include "dweller.h"
 #include "ap.h"
 #include "tower.h"
+#include "preaut.h"
 
 #define PORTEIRO_FUL_PATH "visit.jpg"
 
@@ -36,7 +37,7 @@ Editvisit::Editvisit(QWidget *parent) :
     ui->TmEdtHora->setTime(QTime::currentTime());
     ui->lineEditRG->setFocus();
 
-    ui->lineEditRG->setSelect("select rg || ' | ' || nome, id, rg, cpf, nome from Visitante");
+    ui->lineEditRG->setSelect("select rg || ' | ' || nome || ' | ' || cpf, id, rg, cpf, nome from Visitante");
     ui->lineEditRG->Add(ui->lineEditCPF);
     ui->lineEditRG->Add(ui->lineEditVisitante);
 
@@ -88,11 +89,26 @@ void Editvisit::SetModel(visit* mod)
 
 bool Editvisit::CanSave()
 {
-    if(ui->lineEditCPF->text().trimmed().isEmpty()
-            && ui->lineEditRG->text().trimmed().isEmpty()
-            && ui->lineEditVisitante->text().trimmed().isEmpty())
+    QString CPF  = ui->lineEditCPF->text();
+    QString RG   = ui->lineEditRG->text();
+    QString Nome = ui->lineEditVisitante->text();
+
+    CPF = CPF.remove(".").remove("-").trimmed();
+
+
+    if( Nome.trimmed().isEmpty() )
     {
-        QMessageBox::information(this, "Oops!", "Por favor, digite alguma informação sobre o visitnte!!");
+        QMessageBox::information(this, "Oops!", "Por favor, digite o Nome do Visitante!!");
+        ui->lineEditVisitante->selectAll();
+        ui->lineEditVisitante->setFocus();
+        return false;
+    }
+
+    if(CPF.trimmed().isEmpty()
+            && RG.trimmed().isEmpty()
+            && Nome.trimmed().isEmpty())
+    {
+        QMessageBox::information(this, "Oops!", "Por favor, digite alguma informação sobre o Visitnte!!");
         ui->lineEditVisitante->selectAll();
         ui->lineEditVisitante->setFocus();
         return false;
@@ -104,8 +120,6 @@ bool Editvisit::CanSave()
         ui->lineEditMorador->setFocus();
         return false;
     }
-
-
 
     return true;
 }
@@ -272,6 +286,58 @@ void Editvisit::found( int id )
     {
           QPixmap mypix = pVis->getImage();
           ui->LblPhoto->setPixmap(mypix);
+
+          preaut *pre = preaut::findValidByVisitor(id);
+          if( pre )
+          {
+              ui->lineEditPreAutorizado->setText("SIM");
+              QString styleSheet = QString("QLineEdit{%1 %2}")
+                                   .arg("color: white;"/*FG_COLOR_NORMAL*/) //
+                                   .arg("background: green;"); //BG_COLOR_NORMAL
+
+              ui->lineEditPreAutorizado->setStyleSheet(styleSheet);
+
+              if(pre->getNoAnnounce() == true)
+              {
+                  ui->lineEditAnunciarChegada->setText("NÃO");
+                  ui->lineEditAnunciarChegada->setStyleSheet(styleSheet);
+              }
+
+              //// dados do autorizador
+              Dweller *Dw = Dweller::findByid(pre->getauthorizer());
+              if( Dw )
+              {
+                  ui->lineEditMorador->setText(Dw->getName());
+                  Ap *ap = Ap::findByid(Dw->getAp());
+                  if( ap )
+                  {
+                      ui->lineEditAP->setText(ap->getNumber());
+                      delete ap;
+                  }
+                  Tower *tw = Tower::findByid(Dw->getTower());
+                  if( tw )
+                  {
+                      ui->lineEditTorre->setText(tw->getName());
+                      delete tw;
+                  }
+                  ui->lineEditRamal->setText(Dw->getRamal());
+                  delete Dw;
+              }
+
+              delete pre;
+          }
+          else
+          {
+              ui->lineEditPreAutorizado->setText("NÃO");
+              QString styleSheet = QString("QLineEdit{%1 %2}")
+                                   .arg(FG_COLOR_NORMAL) //
+                                   .arg(BG_COLOR_NORMAL);
+
+              ui->lineEditPreAutorizado->setStyleSheet(styleSheet);
+              ui->lineEditAnunciarChegada->setText("SIM");
+              ui->lineEditAnunciarChegada->setStyleSheet(styleSheet);
+          }
+
           delete pVis;
     }
 }
@@ -279,5 +345,14 @@ void Editvisit::notFound()
 {
     QPixmap mypix;// = pVis->getImage();
     ui->LblPhoto->setPixmap(mypix);
+
+    ui->lineEditPreAutorizado->setText("NÃO");
+    QString styleSheet = QString("QLineEdit{%1 %2}")
+                         .arg(FG_COLOR_NORMAL) //
+                         .arg(BG_COLOR_NORMAL);
+
+    ui->lineEditPreAutorizado->setStyleSheet(styleSheet);
+    ui->lineEditAnunciarChegada->setText("SIM");
+    ui->lineEditAnunciarChegada->setStyleSheet(styleSheet);
 //    delete pVis;
 }

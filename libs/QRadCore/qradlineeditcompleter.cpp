@@ -117,12 +117,16 @@ void QRadLineEditCompleter::activated(QModelIndex model)
     {
         m_lineEdits.at(i)->setText(model.sibling(model.row(), i+3).data().toString());
         debug_message("%s\n", model.sibling(model.row(), i+3).data().toString().toLatin1().data());
+        m_lineEdits.at(i)->setEnabled(false);
+
 //        m_lineEdits.at(i)->setText(model.sibling(model.row(), 4).data().toString());        
     }
     m_nCurrentId = model.sibling(model.row(),1).data().toInt();
+    this->focusNextChild();
     emit found(m_nCurrentId);
 
-    m_lineEdits.at(m_lineEdits.count()-1)->setFocus();
+    //m_lineEdits.at(m_lineEdits.count()-1)->setFocus();
+
 
     connect(this,SIGNAL(textChanged(QString)), this, SLOT(textchanged(QString)));
 
@@ -146,13 +150,17 @@ void QRadLineEditCompleter::ClearAll()
     for( int i =0 ; i < m_lineEdits.count(); i++)
     {
         m_lineEdits.at(i)->clear();
+        m_lineEdits.at(i)->setEnabled(true);
     }
+    m_nCurrentId = 0;
 }
 
 void QRadLineEditCompleter::textEdited(QString text)
 {
     debug_message("-->\n");
     ClearAll();
+    emit notFound();
+
     /*if( text.indexOf("|") > 0 )
     {
         text.truncate(text.indexOf("|"));

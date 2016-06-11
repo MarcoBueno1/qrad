@@ -27,7 +27,8 @@ class preaut : public Model
      MODEL_DECLARE_ATTRIBUTE(int, reason);
      MODEL_DECLARE_ATTRIBUTE(int, destination);
      MODEL_DECLARE_ATTRIBUTE(int, tp);
-     MODEL_DECLARE_ATTRIBUTE(int, removed);
+     MODEL_DECLARE_ATTRIBUTE(bool, NoAnnounce);
+     MODEL_DECLARE_ATTRIBUTE(bool, removed);
 
 
      MODEL_MATCH_TABLE(preaut, "preaut")

@@ -21,6 +21,7 @@ MODEL_BEGIN_MAP(preaut)
      MODEL_MAP_FIELD(reason, "reason");
      MODEL_MAP_FIELD(destination, "destination");
      MODEL_MAP_FIELD(tp, "tp");
+     MODEL_MAP_FIELD(NoAnnounce, "noannounce");
      MODEL_MAP_FIELD(removed, "removed");
 MODEL_END_MAP()
 
@@ -66,7 +67,7 @@ preaut* preaut::findValidByVisitor( int visitor )
                             "                     when (select extract(DOW from current_date)) = 4 then thursday "\
                             "                     when (select extract(DOW from current_date)) = 5 then friday "\
                             "                     when (select extract(DOW from current_date)) = 6 then saturday "\
-                            "                    end ) = true and removed = false and  (validate > current_date) limit 1"),arg(visitor);
+                            "                    end ) = true and (removed <> true) and  (validate > current_date) limit 1").arg(visitor);
 
     preaut *preautM = new preaut();
     if (!preautM->fillModelFromQuery(query))

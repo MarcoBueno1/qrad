@@ -134,7 +134,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QDateEdit" name="DtEdtData">
+        <widget class="QRadDateEditFakeEnter" name="DtEdtData">
          <property name="minimumSize">
           <size>
            <width>20</width>
@@ -160,7 +160,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QTimeEdit" name="TmEdtHora">
+        <widget class="QRadTimeEditEnter" name="TmEdtHora">
          <property name="minimumSize">
           <size>
            <width>20</width>
@@ -208,7 +208,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QDateEdit" name="DtEdtSaida">
+        <widget class="QRadDateEditFakeEnter" name="DtEdtSaida">
          <property name="minimumSize">
           <size>
            <width>100</width>
@@ -231,7 +231,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QTimeEdit" name="TmEdtsaida_hora">
+        <widget class="QRadTimeEditEnter" name="TmEdtsaida_hora">
          <property name="minimumSize">
           <size>
            <width>60</width>
@@ -813,6 +813,16 @@
    <class>SComboBox</class>
    <extends>QComboBox</extends>
    <header location="global">scombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QRadDateEditFakeEnter</class>
+   <extends>QDateEdit</extends>
+   <header location="global">qraddateeditfakeenter.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QRadTimeEditEnter</class>
+   <extends>QTimeEdit</extends>
+   <header location="global">qradtimeeditenter.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

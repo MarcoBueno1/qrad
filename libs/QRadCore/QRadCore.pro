@@ -56,7 +56,8 @@ HEADERS +=  qradplugincontainer.h \
     qraddoublespinboxenter.h \
     docvalidate.h \
     qraddateeditfakeenter.h \
-    qradtimeeditenter.h
+    qradtimeeditenter.h \
+    smtp.h
 
 win32:HEADERS  += system/inc/win/qradsystem.h
 unix::HEADERS  += system/inc/lnx/qradsystem.h
@@ -93,7 +94,8 @@ SOURCES +=  qradplugininterface.cpp \
     qraddoublespinboxenter.cpp \
     docvalidate.cpp \
     qraddateeditfakeenter.cpp \
-    qradtimeeditenter.cpp
+    qradtimeeditenter.cpp \
+    smtp.cpp
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c
 

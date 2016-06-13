@@ -15,6 +15,7 @@ class visit : public Model
      MODEL_DECLARE_ATTRIBUTE(QDate, Saida);
      MODEL_DECLARE_ATTRIBUTE(QTime, saida_hora);
      MODEL_DECLARE_ATTRIBUTE(int, autorizador);
+     MODEL_DECLARE_ATTRIBUTE(bool, Notified);
 
      MODEL_MATCH_TABLE(visit, "visit")
 
@@ -24,6 +25,7 @@ public:
     static visitList* findAll(void);
     static visit* findByid(int id);
     static visit* findByid(int id, QString database);
+    static QList<visit*>* findNotNotified();
 };
  
 #endif 

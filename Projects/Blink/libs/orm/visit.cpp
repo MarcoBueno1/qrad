@@ -11,6 +11,7 @@ MODEL_BEGIN_MAP(visit)
      MODEL_MAP_FIELD(Saida, "data_saida");
      MODEL_MAP_FIELD(saida_hora, "saida_hora");
      MODEL_MAP_FIELD(autorizador, "autorizador");
+     MODEL_MAP_FIELD(Notified, "notified");
 MODEL_END_MAP()
 
 QList<visit*>* visit::findAll()
@@ -42,4 +43,15 @@ visit* visit::findByid(int id)
 visit* visit::findByid(int id, QString database)
 {
     return visit::findByPrimaryKey(id, database);
+}
+QList<visit*>* visit::findNotNotified()
+{
+    MODEL_INIT_LIST(visit, m_allList);
+
+    QString query = QString("select * from visit v inner join dweller d on d.id = v.autorizador and d.notifbyemail = true and v.notified = false and d.removed = false and d.moveout < '2010-01-01' ");
+
+    if (!visit::fillModelList(m_allList, query))
+        return NULL;
+
+    return m_allList;
 }

@@ -24,4 +24,6 @@ class Format
 							  
    static QString FormatLine( QList<FieldFormat *> head, QList<QString> fields );
    static QString FormatColHead( QList<FieldFormat *> head );
+
+   static void RemoveUnsuportedChar( char *szDest, char *szSrc );
 };

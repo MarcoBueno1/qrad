@@ -17,16 +17,53 @@ Format::~Format()
 {
 
 }
+void Format::RemoveUnsuportedChar( char *szDest, char *szSrc )
+{
+  int i;
+  int nCount=0;
+
+  for( i = 0; i < strlen(szSrc); i++ )
+  {
+    if( (szSrc[i] & 0x000000FF) == 0xc3 )
+    {
+       i++;
+       if(( (szSrc[i] & 0x000000FF) == 0xa3 ) || (( szSrc[i] & 0x000000FF)  == 0xe3 ))
+       {
+        szDest[nCount++] = 'a'; //'a';
+       }
+       else if( (szSrc[i] & 0x000000FF) == 0xa7 )
+       {
+        szDest[nCount++] = 'c';
+       }
+    }
+    else if( szSrc[i] == 'Õ' )
+        szDest[nCount++] = 'O';
+    else if( szSrc[i] == 'õ')
+        szDest[nCount++] = 'o';
+    else if( (szSrc[i] & 0x000000FF)  == 0xa7 )
+    {
+        szDest[nCount++] = 'c';
+        i++;
+    }
+    else if( szSrc[i] == 0xc7 )
+        szDest[nCount++] = 'C';
+    else 
+        szDest[nCount++] = szSrc[i];
+    printf( "%c: = %x\n", szSrc[i], szSrc[i] );
+  }
+  szDest[nCount] = 0;
+}
 
 
 void Format::FormatColHead( HPDF_Page page, 
                             HPDF_Font def_font,
                             HPDF_REAL pgWidth, 
-							HPDF_REAL pgHeight, 
-							QList<FieldFormat *> head )
+		     	    HPDF_REAL pgHeight, 
+			    QList<FieldFormat *> head )
 {
    HPDF_REAL tw; 
    HPDF_REAL CurrPos=0;
+   char szText[512];
  
    for( int i = 0; i < head.count(); i++ )
    {
@@ -55,7 +92,8 @@ void Format::FormatColHead( HPDF_Page page,
 		 printf( "ALIGN_RIGHT: Nao implementado\n");
 	 }
      HPDF_Page_SetFontAndSize(page, def_font, 13);
-     HPDF_Page_ShowText(page, head.at(i)->Name);
+     RemoveUnsuportedChar(szText, head.at(i)->Name);
+     HPDF_Page_ShowText(page, szText);
 	 HPDF_Page_EndText(page);
 	 CurrPos += FieldMaxLen + 1;
    }
@@ -109,7 +147,7 @@ void Format::FormatLine( HPDF_Page page,
 	 
 	 /// Passo 1:  Assegurar que nao passa do tamanho maximo
 	 fields.at(i);
-	 strcpy(szText, fields.at(i).toLatin1().data());
+	 RemoveUnsuportedChar(szText, fields.at(i).toLatin1().data());
 	 
 	 tw = HPDF_Page_TextWidth(page, szText);   
 	 while( tw > FieldMaxLen )

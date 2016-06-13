@@ -15,7 +15,6 @@ void error_handler (HPDF_STATUS   error_no,
 
     throw std::exception ();
 }
-
 pdfwrapper::pdfwrapper()
 {
 	
@@ -50,7 +49,9 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> C
     HPDF_REAL tw;
     HPDF_REAL height;
     HPDF_REAL width;
+    char szText[512];
     int i = 1;
+    int nPage = 0;
 
     pdf = HPDF_New (error_handler, NULL);
     if (!pdf) 
@@ -63,6 +64,7 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> C
         /* Add a new page object. */
         do 
         {
+            nPage++;
 
             page = HPDF_AddPage (pdf);
 
@@ -79,30 +81,40 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> C
             HPDF_Page_SetFontAndSize (page, def_font_head, 8);
             HPDF_Page_BeginText(page);
             HPDF_Page_MoveTextPos(page, 50 , height - 30);
-            HPDF_Page_ShowText(page, "Diebold Inc. @2016 Gastão");
+            Format::RemoveUnsuportedChar( szText,"Diebold Inc. @2016 Gastão");
+            HPDF_Page_ShowText(page, szText);
             HPDF_Page_EndText(page);
 
             HPDF_Page_BeginText(page);
             HPDF_Page_MoveTextPos(page, 50 , height - 40);
-            HPDF_Page_ShowText(page, "Inovação ao seu Alcance");
+            
+            Format::RemoveUnsuportedChar( szText,"Inovação ao seu Alcance" );
+            HPDF_Page_ShowText(page, szText);
             HPDF_Page_EndText(page);
             
             HPDF_Page_BeginText(page);
             HPDF_Page_MoveTextPos(page, 50 , height - 50);
-            HPDF_Page_ShowText(page, "R. Gastão Vidigal, 2700 São Paulo ó - SP");
+            Format::RemoveUnsuportedChar( szText,"R. Gastão Vidigal, 2700 São Paulo-SP");
+            HPDF_Page_ShowText(page, szText);
             HPDF_Page_EndText(page);
             ///
+            HPDF_Page_BeginText(page);
+            sprintf( szText, "Pagina: %d de %d", nPage, (int)lines.count()/35?lines.count()/35:1 );
+            HPDF_Page_MoveTextPos(page, width-50-HPDF_Page_TextWidth(page, szText ) , height - 50);
+            HPDF_Page_ShowText(page, szText);
+            HPDF_Page_EndText(page);
 
             /* Print the title of the page (with positioning center). */
-//            def_font = HPDF_GetFont (pdf, "Helvetica-Bold", "ISO8859-3");
-            def_font_title = HPDF_GetFont (pdf, "Helvetica-Oblique", "ISO8859-3");
+//            def_font = HPDF_GetFont (pdf, "Helvetica-Bold", "ISO8859-2");
+            def_font_title = HPDF_GetFont (pdf, "Helvetica-Oblique", "ISO8859-2");
             HPDF_Page_SetFontAndSize (page, def_font_title, 20);
 
-            def_font = HPDF_GetFont (pdf, "Helvetica", "ISO8859-3");
-            tw = HPDF_Page_TextWidth(page, strTitle.toLatin1().data());
+            def_font = HPDF_GetFont (pdf, "Helvetica", "ISO8859-2");
+            tw = HPDF_Page_TextWidth(page, strTitle.toUtf8().data());
             HPDF_Page_BeginText(page);
             HPDF_Page_MoveTextPos(page, (width - tw) / 2, height - 50);
-            HPDF_Page_ShowText(page, strTitle.toLatin1().data());
+            Format::RemoveUnsuportedChar( szText, strTitle.toUtf8().data());
+            HPDF_Page_ShowText(page, szText);
             HPDF_Page_EndText(page);
 
 

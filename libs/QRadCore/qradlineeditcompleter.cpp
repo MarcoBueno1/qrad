@@ -9,11 +9,12 @@ QRadLineEditCompleter::QRadLineEditCompleter(QWidget *parent):QLineEdit(parent)
 
     connect(this,SIGNAL(textChanged(QString)), this, SLOT(textchanged(QString)));
     connect(this,SIGNAL(textEdited(QString)), this, SLOT(textEdited(QString)));
+
    connect(m_completer,SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
 //    connect(m_completer,SIGNAL(highlighted(QModelIndex)), this, SLOT(activated(QModelIndex)));
-   connect(m_completer->popup(),SIGNAL(clicked(QModelIndex)), this, SLOT(activated(QModelIndex)));
+//   connect(m_completer->popup(),SIGNAL(clicked(QModelIndex)), this, SLOT(activated(QModelIndex)));
 //    connect(m_completer->popup(),SIGNAL(entered(QModelIndex)), this, SLOT(activated(QModelIndex)));
-//    connect(m_completer->popup(),SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
+    connect(m_completer->popup(),SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
     connect(this,SIGNAL(returnPressed()), this, SLOT(returnPressed()));
 
 //    connect(this,SIGNAL(returnPressed()), this, SLOT(returnPressed()));
@@ -47,22 +48,31 @@ void QRadLineEditCompleter::setSelect(QString strSelect)
 
 void QRadLineEditCompleter::setCurrentId(int id)
 {
+    debug_message("-->\n");
+    disconnect(this,SIGNAL(textChanged(QString)), this, SLOT(textchanged(QString)));
+    disconnect(this,SIGNAL(textEdited(QString)), this, SLOT(textEdited(QString)));
+
     for( int i = 0; i < m_completerModel->rowCount(); i++ )
     {
         if( m_completerModel->index(i,1).data().toInt() ==  id)
         {
             completer()->setCurrentRow(m_completerModel->index(i,1).row());
             m_nCurrentId = id;
+            activated(completer()->currentIndex());
+            debug_message("m_nCurrentId=%d\n", m_nCurrentId);
             break;
         }
     }
+    connect(this,SIGNAL(textChanged(QString)), this, SLOT(textchanged(QString)));
+    connect(this,SIGNAL(textEdited(QString)), this, SLOT(textEdited(QString)));
+    debug_message("<--\n");
 }
 
 void QRadLineEditCompleter::focusInEvent(QFocusEvent *e)
 {
         debug_message("-->\n");
-        disconnect(m_completer,SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
-        disconnect(m_completer->popup(),SIGNAL(clicked(QModelIndex)), this, SLOT(activated(QModelIndex)));
+        //disconnect(m_completer->popup(),SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
+        //disconnect(m_completer->popup(),SIGNAL(clicked(QModelIndex)), this, SLOT(activated(QModelIndex)));
         connect(m_completer,SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
         connect(m_completer->popup(),SIGNAL(clicked(QModelIndex)), this, SLOT(activated(QModelIndex)));
 
@@ -121,6 +131,7 @@ void QRadLineEditCompleter::activated(QModelIndex model)
 
 //        m_lineEdits.at(i)->setText(model.sibling(model.row(), 4).data().toString());        
     }
+    debug_message("id: %d\n", model.sibling(model.row(),1).data().toInt());
     m_nCurrentId = model.sibling(model.row(),1).data().toInt();
     this->focusNextChild();
     emit found(m_nCurrentId);
@@ -147,11 +158,13 @@ void QRadLineEditCompleter::keyPressEvent(QKeyEvent *event)
 */
 void QRadLineEditCompleter::ClearAll()
 {
+    debug_message("-->\n");
     for( int i =0 ; i < m_lineEdits.count(); i++)
     {
         m_lineEdits.at(i)->clear();
         m_lineEdits.at(i)->setEnabled(true);
     }
+    debug_message("<--\n");
     m_nCurrentId = 0;
 }
 

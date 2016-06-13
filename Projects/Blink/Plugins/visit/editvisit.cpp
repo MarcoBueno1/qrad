@@ -33,6 +33,9 @@ Editvisit::Editvisit(QWidget *parent) :
     connect(ui->lineEditRG, SIGNAL(found(int)), this, SLOT(found(int)));
     connect(ui->lineEditRG, SIGNAL(notFound()), this, SLOT(notFound()));
 
+    ui->lineEditPreAutorizado->setReadOnly(true);
+    ui->lineEditAnunciarChegada->setReadOnly(true);
+
     ui->DtEdtData->setDate(QDate::currentDate());
     ui->TmEdtHora->setTime(QTime::currentTime());
     ui->lineEditRG->setFocus();
@@ -54,7 +57,7 @@ Editvisit::Editvisit(QWidget *parent) :
 
     ui->comboBoxReason->setTable("reason");
     ui->comboBoxReason->setField("description");
-    ui->comboBoxReason->setCanAdd(true);
+    ui->comboBoxReason->setCanAdd(false);
     ui->comboBoxReason->setUserName("dsm");
     if( ui->comboBoxReason->completer() )
         ui->comboBoxReason->completer()->setFilterMode(Qt::MatchContains );
@@ -230,7 +233,8 @@ void Editvisit::Load()
     Dweller *dw = Dweller::findByid(m_mod->getautorizador());
     if( dw )
     {
-        ui->lineEditMorador->setText(dw->getName());
+        ui->lineEditMorador->setCurrentId(m_mod->getautorizador());
+/*        ui->lineEditMorador->setText(dw->getName());
 
         Ap *ap = Ap::findByid(dw->getAp());
         debug_message("dw->getAp(): %d\n", dw->getAp());
@@ -246,7 +250,7 @@ void Editvisit::Load()
             ui->lineEditTorre->setText(t->getName());
             delete t;
         }
-        ui->lineEditRamal->setText(dw->getRamal());
+        ui->lineEditRamal->setText(dw->getRamal());*/
         delete dw;
     }
 
@@ -307,7 +311,8 @@ void Editvisit::found( int id )
               Dweller *Dw = Dweller::findByid(pre->getauthorizer());
               if( Dw )
               {
-                  ui->lineEditMorador->setText(Dw->getName());
+                  ui->lineEditMorador->setCurrentId(pre->getauthorizer());
+                 /* ui->lineEditMorador->setText(Dw->getName());
                   Ap *ap = Ap::findByid(Dw->getAp());
                   if( ap )
                   {
@@ -321,8 +326,11 @@ void Editvisit::found( int id )
                       delete tw;
                   }
                   ui->lineEditRamal->setText(Dw->getRamal());
-                  delete Dw;
+                  delete Dw;*/
               }
+
+              ui->comboBoxReason->setCurrentId( pre->getreason() );
+              ui->pushButtonBaterFoto->setFocus();
 
               delete pre;
           }
@@ -336,6 +344,7 @@ void Editvisit::found( int id )
               ui->lineEditPreAutorizado->setStyleSheet(styleSheet);
               ui->lineEditAnunciarChegada->setText("SIM");
               ui->lineEditAnunciarChegada->setStyleSheet(styleSheet);
+              ui->DtEdtData->setFocus();
           }
 
           delete pVis;

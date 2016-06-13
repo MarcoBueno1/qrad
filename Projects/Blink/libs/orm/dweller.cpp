@@ -19,6 +19,7 @@ MODEL_BEGIN_MAP(Dweller)
      MODEL_MAP_FIELD(Obs, "obs");
      MODEL_MAP_FIELD(LoId, "loid");
      MODEL_MAP_FIELD(Ramal, "ramal");
+     MODEL_MAP_FIELD(NotifByEmail, "notifbyemail");
      MODEL_MAP_FIELD(tp, "tp");
      MODEL_MAP_FIELD(Removed, "removed");
 

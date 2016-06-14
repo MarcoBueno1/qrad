@@ -39,7 +39,11 @@ void draw_line( HPDF_Page    page,
     HPDF_Page_Stroke (page);
 }
 
-int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> ColHeader, QList<QStringList *> lines )
+int pdfwrapper::Build( QString strFile, 
+                       QStringList ThreeLinesheader,
+                       QString strTitle, 
+					   QList<FieldFormat *> ColHeader, 
+					   QList<QStringList *> lines )
 {
     HPDF_Doc  pdf;
     HPDF_Page page;
@@ -78,31 +82,49 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> C
 
             /// Tentativa de imprimir 3 linhas pequenas
             def_font_head = HPDF_GetFont (pdf, "Helvetica", "ISO8859-2");
-            HPDF_Page_SetFontAndSize (page, def_font_head, 8);
+			for( int j = 0; (j < ThreeLinesheader.count()) && (j < 3); j++)
+			{
+				HPDF_Page_SetFontAndSize (page, def_font_head, 8);
+				HPDF_Page_BeginText(page);
+				HPDF_Page_MoveTextPos(page, 50 , height - 30 -( j*10));
+				Format::RemoveUnsuportedChar( szText, ThreeLinesheader.at(j).toUtf8().data() );
+				HPDF_Page_ShowText(page, szText);
+				HPDF_Page_EndText(page);
+
+/*				HPDF_Page_BeginText(page);
+				HPDF_Page_MoveTextPos(page, 50 , height - 40);
+				
+				Format::RemoveUnsuportedChar( szText,"Inovação ao seu Alcance" );
+				HPDF_Page_ShowText(page, szText);
+				HPDF_Page_EndText(page);
+				
+				HPDF_Page_BeginText(page);
+				HPDF_Page_MoveTextPos(page, 50 , height - 50);
+				Format::RemoveUnsuportedChar( szText,"R. Gastão Vidigal, 2700 São Paulo-SP");
+				HPDF_Page_ShowText(page, szText);
+				HPDF_Page_EndText(page);
+*/
+				///
+			}
             HPDF_Page_BeginText(page);
-            HPDF_Page_MoveTextPos(page, 50 , height - 30);
-            Format::RemoveUnsuportedChar( szText,"Diebold Inc. @2016 Gastão");
+            sprintf( szText, "Pagina: %d de %d", nPage, (int)lines.count()/35?lines.count()/35:1 );
+            HPDF_Page_MoveTextPos(page, width-50-HPDF_Page_TextWidth(page, szText ) , height - 40);
+            HPDF_Page_ShowText(page, szText);
+            HPDF_Page_EndText(page);
+			
+            HPDF_Page_BeginText(page);
+            sprintf( szText, "Tot. Itens: %d", (int)lines.count());
+            HPDF_Page_MoveTextPos(page, width-50-HPDF_Page_TextWidth(page, szText ) , height - 50);
             HPDF_Page_ShowText(page, szText);
             HPDF_Page_EndText(page);
 
             HPDF_Page_BeginText(page);
-            HPDF_Page_MoveTextPos(page, 50 , height - 40);
-            
-            Format::RemoveUnsuportedChar( szText,"Inovação ao seu Alcance" );
+			HPDF_Page_SetFontAndSize (page, def_font_head, 8);
+            strcpy( szText, "Blink Sistemas - WatsApp: 92 98415-1066");
+            HPDF_Page_MoveTextPos(page, 50 , 40);
             HPDF_Page_ShowText(page, szText);
             HPDF_Page_EndText(page);
-            
-            HPDF_Page_BeginText(page);
-            HPDF_Page_MoveTextPos(page, 50 , height - 50);
-            Format::RemoveUnsuportedChar( szText,"R. Gastão Vidigal, 2700 São Paulo-SP");
-            HPDF_Page_ShowText(page, szText);
-            HPDF_Page_EndText(page);
-            ///
-            HPDF_Page_BeginText(page);
-            sprintf( szText, "Pagina: %d de %d", nPage, (int)lines.count()/35?lines.count()/35:1 );
-            HPDF_Page_MoveTextPos(page, width-50-HPDF_Page_TextWidth(page, szText ) , height - 50);
-            HPDF_Page_ShowText(page, szText);
-            HPDF_Page_EndText(page);
+			
 
             /* Print the title of the page (with positioning center). */
 //            def_font = HPDF_GetFont (pdf, "Helvetica-Bold", "ISO8859-2");

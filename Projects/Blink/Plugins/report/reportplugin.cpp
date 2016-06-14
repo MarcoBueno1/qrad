@@ -144,8 +144,14 @@ void ReportPlugin::Process( const QString& action )
        QStringList *linha6 = new QStringList; linha6->append("SANTANDER"); linha6->append("Dispensador, depositário, LCB"); linha6->append("PARALELA, SERIAL" );
        lines.append( linha6 );
 
+       QStringList LeftHead;
 
-       pdfwrapper::Build( "RelatorioDispositivos.pdf", "Relatório ATM CAIXA", headers, lines );
+       LeftHead.append("Diebold Inc. @2016");
+       LeftHead.append("Distrito Industrial");
+       LeftHead.append("Manaus - AM");
+
+
+       pdfwrapper::Build( "RelatorioDispositivos.pdf", LeftHead, "Relatório ATM CAIXA", headers, lines );
    
 }
 

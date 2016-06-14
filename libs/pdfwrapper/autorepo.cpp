@@ -74,8 +74,14 @@ bool AutoRepo::Build(QString FileName, QString Title, QString Sql)
   }
      
   delete pModel;
+  
+  QStringList LeftHead;
+  
+  LeftHead.append("Diebold Inc. @2016");
+  LeftHead.append("Distrito Industrial");
+  LeftHead.append("Manaus - AM");
 
-  bool bRet = (bool)!pdfwrapper::Build( FileName, Title, headers, lines );
+  bool bRet = (bool)!pdfwrapper::Build( FileName, LeftHead, Title, headers, lines );
   if( bRet )
   {  
 	  QUrl url(FileName);

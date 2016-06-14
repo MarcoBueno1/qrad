@@ -20,6 +20,7 @@ void ReportPlugin::onLoad(QRadPluginContainer* container)
 
 void ReportPlugin::Process( const QString& action )
 {
+#if(0)
     QStringList list;
 
     if (action.toLower() == QString("Build").toLower())
@@ -98,10 +99,10 @@ void ReportPlugin::Process( const QString& action )
     }
    else
    {
-
+#endif
        QList< FieldFormat *> headers;
 //       QStringList fields;
-       QList<QStringList> lines;
+       QList<QStringList *> lines;
 
        FieldFormat *f = (FieldFormat *)malloc(sizeof(FieldFormat));
        strcpy(f->Name, "ATM");
@@ -125,27 +126,27 @@ void ReportPlugin::Process( const QString& action )
        headers.append(f);
 
 
-       QStringList linha1; linha1.append("CAIXA"); linha1.append("Dispensador, depositário"); linha1.append("USB" );
+       QStringList *linha1 = new QStringList; linha1->append("CAIXA"); linha1->append("Dispensador, depositário"); linha1->append("USB" );
        lines.append( linha1 );
 
-       QStringList linha2; linha2.append("ITAU"); linha2.append("Dispensador, depositário, LCB"); linha2.append("USB, SERIAL" );
+       QStringList *linha2 = new QStringList; linha2->append("ITAU"); linha2->append("Dispensador, depositário, LCB"); linha2->append("USB, SERIAL" );
        lines.append( linha2 );
 
-       QStringList linha3; linha3.append("BB"); linha3.append("Depositário, DIP, IMPRESSORA"); linha3.append("USB, SERIAL, PARALELA" );
+       QStringList *linha3 =  new QStringList; linha3->append("BB"); linha3->append("Depositário, DIP, IMPRESSORA"); linha3->append("USB, SERIAL, PARALELA" );
        lines.append( linha3 );
 
-       QStringList linha4; linha4.append("BANCOB"); linha4.append("Depositário"); linha4.append("USB, SERIAL" );
+       QStringList *linha4 = new QStringList; linha4->append("BANCOB"); linha4->append("Depositário"); linha4->append("USB, SERIAL" );
        lines.append( linha4 );
 
-       QStringList linha5; linha5.append("BANRISUL"); linha5.append("AFD, DEP, LCB, DIP"); linha5.append("USB,SERIAL" );
+       QStringList *linha5 = new QStringList; linha5->append("BANRISUL"); linha5->append("AFD, DEP, LCB, DIP"); linha5->append("USB,SERIAL" );
        lines.append( linha5 );
 
-       QStringList linha6; linha6.append("SANTANDER"); linha6.append("Dispensador, depositário, LCB"); linha6.append("PARALELA, SERIAL" );
+       QStringList *linha6 = new QStringList; linha6->append("SANTANDER"); linha6->append("Dispensador, depositário, LCB"); linha6->append("PARALELA, SERIAL" );
        lines.append( linha6 );
 
 
        pdfwrapper::Build( "RelatorioDispositivos.pdf", "Relatório ATM CAIXA", headers, lines );
-   }
+   
 }
 
 void ReportPlugin::setParam(QString str, QVariant v)

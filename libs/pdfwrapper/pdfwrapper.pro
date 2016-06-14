@@ -17,7 +17,8 @@ win32:INCLUDEPATH += ../3rdpart/libharu/bin/include/win
 unix:INCLUDEPATH  +=  ../3rdpart/libharu/bin/include/lnx
 
 SOURCES += pdfwrapper.cpp  \
-           format.cpp \
+           format.cpp \ 
+           autorepo.cpp \
     ../3rdpart/libharu/src/src/hpdf_3dmeasure.c \
     ../3rdpart/libharu/src/src/hpdf_annotation.c \
     ../3rdpart/libharu/src/src/hpdf_array.c \
@@ -77,7 +78,8 @@ SOURCES += pdfwrapper.cpp  \
     ../3rdpart/libharu/src/src/hpdf_xref.c
 
 HEADERS += pdfwrapper.h  \
-           format.h \
+           format.h \ 
+           autorepo.h \
     ../3rdpart/libharu/src/src/t4.h \
     ../3rdpart/libharu/src/include/hpdf.h \
     ../3rdpart/libharu/src/include/hpdf_3dmeasure.h \

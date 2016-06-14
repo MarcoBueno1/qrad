@@ -25,8 +25,8 @@ class pdfwrapper
 	~pdfwrapper();
 	
  public:	
-    static int Build( QString strFile, QString strTitle, QString strColTitle, QStringList body );
-    static int Build( QString strFile, QString strTitle, QList<FieldFormat *> ColHeader, QList<QStringList> lines );
+//    static int Build( QString strFile, QString strTitle, QString strColTitle, QStringList body );
+    static int Build( QString strFile, QString strTitle, QList<FieldFormat *> ColHeader, QList<QStringList *> lines );
 
 	
 };

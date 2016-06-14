@@ -39,7 +39,7 @@ void draw_line( HPDF_Page    page,
     HPDF_Page_Stroke (page);
 }
 
-int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> ColHeader, QList<QStringList> lines )
+int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> ColHeader, QList<QStringList *> lines )
 {
     HPDF_Doc  pdf;
     HPDF_Page page;
@@ -194,6 +194,8 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QList<FieldFormat *> C
     return 0;
 }
 
+#if(0)
+/*
 int pdfwrapper::Build( QString strFile, QString strTitle, QString strColTitle, QStringList body )
 {
 //    const char *page_title = strTitle.toLatin1().data();
@@ -279,3 +281,5 @@ int pdfwrapper::Build( QString strFile, QString strTitle, QString strColTitle, Q
 
     return 0;
 }
+*/
+#endif

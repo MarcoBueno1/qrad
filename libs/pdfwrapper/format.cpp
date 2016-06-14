@@ -99,6 +99,7 @@ void Format::FormatColHead( HPDF_Page page,
    }
 }
 
+/*
 QString Format::FormatColHead( QList<FieldFormat *> head )
 {
    QString tmp;
@@ -125,14 +126,15 @@ QString Format::FormatColHead( QList<FieldFormat *> head )
    }
    return Line;
 }
+*/
 
 
 void Format::FormatLine( HPDF_Page page, 
                          HPDF_Font def_font,
                          HPDF_REAL pgWidth, 
-						 HPDF_REAL pgHeight, 
-						 QList<FieldFormat *> head,
-                         QList<QString> fields )
+			 HPDF_REAL pgHeight, 
+			 QList<FieldFormat *> head,
+                         QStringList *fields )
 {
    HPDF_REAL tw; 
    HPDF_REAL CurrPos=0;
@@ -146,8 +148,8 @@ void Format::FormatLine( HPDF_Page page,
      double FieldMaxLen = dPart2 * head.at(i)->Percent;
 	 
 	 /// Passo 1:  Assegurar que nao passa do tamanho maximo
-	 fields.at(i);
-	 RemoveUnsuportedChar(szText, fields.at(i).toLatin1().data());
+	 fields->at(i);
+	 RemoveUnsuportedChar(szText, fields->at(i).toLatin1().data());
 	 
 	 tw = HPDF_Page_TextWidth(page, szText);   
 	 while( tw > FieldMaxLen )
@@ -177,6 +179,7 @@ void Format::FormatLine( HPDF_Page page,
 }
 
 
+/*
 QString Format::FormatLine( QList<FieldFormat *> head, QList<QString> fields )
 {
    QString tmp;
@@ -197,4 +200,4 @@ QString Format::FormatLine( QList<FieldFormat *> head, QList<QString> fields )
    }
    return Line;   
 }
-
+*/

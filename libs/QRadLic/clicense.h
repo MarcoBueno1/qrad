@@ -56,8 +56,8 @@ private:
     QString GetStoredKey();
     QString GetSerialNumbers();
     QString BuildKey( QDate ObjDate );
-	QString GetMaxUsers( QString cnpj );
-	StoreMaxUsers( QString strMax );
+    QString GetMaxUsers( QString cnpj );
+    void StoreMaxUsers( QString strMax );
     bool StoreNewlicense( QString strNewlicense);
     bool IsNewlicenseValid( QString strNewlicense );
     bool IsStoredStillValid();

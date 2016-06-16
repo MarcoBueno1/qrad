@@ -3,12 +3,13 @@
 # -------------------------------------------------
 QT += core \
     gui \
-    sql 
+    sql \
+    widgets
 
 TARGET = qradlicup
 TEMPLATE = lib
-INCLUDEPATH = ../../qradcore \
-     ../../qradlic 
+INCLUDEPATH = ../QRadCore \
+     ../QRadLic 
 
 DESTDIR = .
 SOURCES += qradlicup.cpp 

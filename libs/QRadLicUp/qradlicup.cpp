@@ -14,11 +14,11 @@ void QRadLicUp::conectlocal()
 {
     if( !m_localdb.isOpen() || !m_localdb.isValid() )
     {
-        m_localdb =QSqlDatabase::addDatabase( dsmFile::GetParamValue("banco/database"), "pqsqllocal");
-        m_localdb.setDatabaseName(dsmFile::GetParamValue("banco/databasename"));
-        m_localdb.setHostName(dsmFile::GetParamValue("banco/hostname"));
-        m_localdb.setUserName(dsmFile::GetParamValue("banco/username"));
-        m_localdb.setPassword(dsmFile::GetParamValue("banco/password"));
+        m_localdb =QSqlDatabase::addDatabase( QRadFile::GetParamValue("banco/database"), "pqsqllocal");
+        m_localdb.setDatabaseName(QRadFile::GetParamValue("banco/databasename"));
+        m_localdb.setHostName(QRadFile::GetParamValue("banco/hostname"));
+        m_localdb.setUserName(QRadFile::GetParamValue("banco/username"));
+        m_localdb.setPassword(QRadFile::GetParamValue("banco/password"));
     }
 
     if (!m_localdb.open())
@@ -36,7 +36,7 @@ void QRadLicUp::conectremote()
         debug_message("\nENTREI NO IF PARA SETAR DADOS DO SERVIDOR REMOTO ........\n");
 
 
-        m_db =QSqlDatabase::addDatabase( dsmFile::GetParamValue("licensedb/database"), "mysqlserverdream");
+        m_db =QSqlDatabase::addDatabase( QRadFile::GetParamValue("licensedb/database"), "mysqlserverdream");
         m_db.setDatabaseName(/*dsmFile::GetParamValue("licensedb/databasename")*/ "lnxclients");
         strRemoteServer = "mysql.b2lnx.com"; /*dsmFile::GetParamValue("licensedb/hostname")*/
         m_db.setHostName(strRemoteServer);
@@ -125,7 +125,7 @@ bool QRadLicUp::SyncLicence()
 
             strcnpj = m_Remotemodel->record(0).field(0).value().toString();
             strLastlicense = m_Remotemodel->record(0).field(1).value().toString();
-            strDSMRelease = dsmFile::GetParamValue("version/oldrelease");
+            strDSMRelease = QRadFile::GetParamValue("version/oldrelease");
             /// update license...
 
 
@@ -195,7 +195,7 @@ bool QRadLicUp::SyncLicence()
                 {
                     if(updateDsm & dsmRelease != dsmNewRelease){
 
-                        dsmFile::SetParamValue("version/newrelease",dsmNewRelease);
+                        QRadFile::SetParamValue("version/newrelease",dsmNewRelease);
 
                         DSMPluginInterface *dsmUpdatePlugin;
 

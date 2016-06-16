@@ -12,6 +12,7 @@ visitPlugin::visitPlugin()
     m_managerProfile = 0 ;
     m_managerUser =0;
     m_emailConfig = 0;
+    m_maincompany = 0; 
 
 }
 
@@ -43,6 +44,10 @@ visitPlugin::~visitPlugin()
 
     if(m_emailConfig)
         delete m_emailConfig;
+   
+    if( m_maincompany )
+        delete m_maincompany;
+
 }
 
 void visitPlugin::onLoad(QRadPluginContainer* container)
@@ -152,7 +157,20 @@ void visitPlugin::Process( const QString& action )
         if( conf )
             m_emailConfig->SetModel(conf);
         m_emailConfig->show();
-        debug_message("-->EmailConfig\n");
+        debug_message("<--EmailConfig\n");
+    }
+    else if(action.toLower() == QString("MainCompany").toLower())
+    {
+        debug_message("-->MainCompany\n");
+        if( m_maincompany )
+            delete m_maincompany;
+
+        m_maincompany  =  new Editmaincompany(m_parent);
+        maincompany *conf = maincompany::findByid(1);
+        if( conf )
+            m_maincompany->SetModel(conf);
+        m_maincompany->show();
+        debug_message("<--MainCompany\n");
     }
 }
 

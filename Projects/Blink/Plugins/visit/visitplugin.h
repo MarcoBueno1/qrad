@@ -14,6 +14,7 @@
 #include "managerprofile.h"
 #include "manageruser.h"
 #include "editemailconf.h"
+#include "editmaincompany.h"
 
 class visitPlugin : public QRadPluginInterface
 {
@@ -37,7 +38,7 @@ protected:
     Managerprofile *m_managerProfile;
     Manageruser *m_managerUser;
     Editemailconf *m_emailConfig;
-
+    Editmaincompany *m_maincompany;
 
 
 private slots:

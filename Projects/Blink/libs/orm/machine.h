@@ -19,6 +19,7 @@ public:
     static machineList* findAll(void);
     static machine* findByid(int id);
     static machine* findByid(int id, QString database);
+    static machine* findByMachine(QString Machine);
 };
  
 #endif 

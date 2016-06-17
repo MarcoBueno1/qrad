@@ -33,6 +33,20 @@ machine* machine::findByid(int id)
 
     return machineM;
 }
+machine* machine::findByMachine(QString Machine)
+{
+    machine *machineM = new machine();
+
+    QString query = QString("select * from machine where machine = '%3'").arg(Machine);
+
+    if (!machineM->fillModelFromQuery(query))
+    {
+        delete machineM;
+        return NULL;
+    }
+
+    return machineM;
+}
 machine* machine::findByid(int id, QString database)
 {
     return machine::findByPrimaryKey(id, database);

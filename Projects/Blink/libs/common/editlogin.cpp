@@ -8,7 +8,8 @@
 #include <QCryptographicHash>
 #include "user.h"
 #include "profile.h"
-
+#include "m2phi.h"
+#include "machine.h"
 
 Editlogin::Editlogin(QWidget *parent) :
     QDialog(parent),
@@ -93,6 +94,23 @@ void Editlogin::Save()
    app->setProperty("useivisitant", pro->getusevisitant());
    app->setProperty("configureemail",pro->getConfigureEmail());
 
+
+    // aqui deve salvar a maquina
+
+    QString MachineId = M2phi::GetHDSerial();
+   
+    machine *pm =  machine::findByMachine(MachineId);
+    if( !pm )
+    {
+       pm =  new machine;
+       pm->setmachine(MachineId);
+       pm->Save();
+    }
+
+
+    ///
+
+
     login* mod =  m_mod;
     if( m_mod == NULL)
         mod = new login;
@@ -100,11 +118,14 @@ void Editlogin::Save()
     mod->setuser(usr->getid());
     mod->setdate(QDate::currentDate());
     mod->settime(QTime::currentTime());
+    mod->setmachineid(pm->getid());
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
     m_lastMod = mod;
     m_mod = NULL;
+
+    delete pm;
 
     delete usr;
     if( bRet )

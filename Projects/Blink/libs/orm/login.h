@@ -12,6 +12,7 @@ class login : public Model
      MODEL_DECLARE_ATTRIBUTE(int, user);
      MODEL_DECLARE_ATTRIBUTE(QDate, date);
      MODEL_DECLARE_ATTRIBUTE(QTime, time);
+     MODEL_DECLARE_ATTRIBUTE(int, machineid);
 
      MODEL_MATCH_TABLE(login, "login")
 

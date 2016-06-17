@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <QProcess>
 #include <QNetworkInterface>
-#include "dsmdebug.h"
+#include "qraddebug.h"
 
 #if defined(WIN32)
 #else

@@ -3,11 +3,11 @@
 # -------------------------------------------------
 QT -= gui
 QT += network
-TARGET = m2phi
+TARGET = qradhw 
 TEMPLATE = lib
 CONFIG += staticlib
 SOURCES += m2phi.cpp
-INCLUDEPATH += ../../src/include
+INCLUDEPATH += ../QRadCore
 win32 {
     SOURCES += rawio.cpp
 }
@@ -17,4 +17,4 @@ HEADERS += m2phi.h \
 win32 {
     HEADERS += rawio.h
 }
-DESTDIR += ../m2phi
+DESTDIR += .

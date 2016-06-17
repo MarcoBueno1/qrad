@@ -41,6 +41,7 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS = QRad \
+          libs/QRadHw \
           libs/QRadCore \
           libs/QRadLic \
           libs/QRadLicUp \

@@ -271,18 +271,16 @@ QString Clicense::GetMaxUsers( QString cnpj )
     if( !query.exec() || (-1 == query.size()) )
     {
 		return strUsers;
-	}
-	strUsers =  query.value(query.record().indexOf("max")).toString();
+    }
+    strUsers =  query.value(query.record().indexOf("max")).toString();
 	
-	if( 0 == strUsers.length() )
-		return strUsers;
+    if( 0 == strUsers.length() )
+	return strUsers;
 	
-	while( strUsers.length() % 8 )
-		strUsers.append(" ");
+    while( strUsers.length() % 8 )
+	strUsers.append(" ");
 
-	
-	
-	return DecryptClientIdentification( strUsers, cnpj );
+   return DecryptClientIdentification( strUsers, cnpj );
 }
 
 QString Clicense::GetSerialNumbers()

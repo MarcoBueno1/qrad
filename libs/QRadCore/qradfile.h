@@ -15,8 +15,8 @@ public:
     static qint64 Size(QString fileName);
 
     /** Arquivo config.ini */
-    static QString  GetParamValue(QString param, QString strConfigFile);
-    static void     SetParamValue(QString param, QString value, QString strConfigFile);
+    static QString  GetParamValue(QString param, QString strConfigFile = "config.enc");
+    static void     SetParamValue(QString param, QString value, QString strConfigFile = "config.enc");
     static QString  GetDefaultParamValue(QString param);
 
 };

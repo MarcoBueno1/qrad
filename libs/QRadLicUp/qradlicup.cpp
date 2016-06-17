@@ -23,7 +23,7 @@ void QRadLicUp::conectlocal()
 
     if (!m_localdb.open())
     {
-        QMessageBox::information(m_splash, "Erro.", "Nao foi possivel conectar no banco de dados local");
+        QMessageBox::information(NULL, "Erro.", "Nao foi possivel conectar no banco de dados local");
     }
 
 }
@@ -60,7 +60,7 @@ void QRadLicUp::conectremote()
 
     if (!m_db.open())
     {
-        QMessageBox::information(m_splash, "Erro.", "Nao foi possivel conectar no banco de dados remoto.");
+        QMessageBox::information(NULL, "Erro.", "Nao foi possivel conectar no banco de dados remoto.");
 //        debug_message("\nErro: %s\n (m_db.setHostName=%s, m_db.password()=%s)\n", m_db.lastError().text().toUtf8().data(),
  //                     m_db.hostName().toUtf8().data(), m_db.password().toUtf8().data());
     }
@@ -73,7 +73,7 @@ QRadLicUp::QRadLicUp()
 
     m_model = new QSqlQueryModel;
     m_Remotemodel = new QSqlQueryModel;
-    m_progress = NULL;
+    //m_progress = NULL;
     m_isNetworkStore = false;
 }
 
@@ -82,8 +82,8 @@ QRadLicUp::~QRadLicUp()
 
     delete m_model;
     delete m_Remotemodel;
-    if( NULL != m_progress )
-      delete m_progress;
+    //if( NULL != m_progress )
+//      delete m_progress;
 }
 
 bool QRadLicUp::SyncLicence()
@@ -119,7 +119,6 @@ bool QRadLicUp::SyncLicence()
             QString strDSMRelease;
             bool blocked;
             bool enabled;
-            bool updateDsm;
             QString dsmRelease;
             QString dsmNewRelease;
 
@@ -147,7 +146,7 @@ bool QRadLicUp::SyncLicence()
 
                 enabled = m_Remotemodel->record(0).field(3).value().toBool();
                 blocked = m_Remotemodel->record(0).field(4).value().toBool();
-                updateDsm = m_Remotemodel->record(0).field(5).value().toBool();
+                //updateDsm = m_Remotemodel->record(0).field(5).value().toBool();
                 dsmRelease = m_Remotemodel->record(0).field(6).value().toString();
                 dsmNewRelease = m_Remotemodel->record(0).field(7).value().toString();
 
@@ -191,26 +190,6 @@ bool QRadLicUp::SyncLicence()
                        m_Remotemodel->setQuery( strSQL );
                        qDebug() << "IMPORTANTE: SUA LICENÇA FOI BLOQUEADA, POR FAVOR ENTRE EM CONTATO COM A M2SMART ( contato@m2smart.com.br )";
                 }
-                else
-                {
-                    if(updateDsm & dsmRelease != dsmNewRelease){
-
-                        QRadFile::SetParamValue("version/newrelease",dsmNewRelease);
-
-                        DSMPluginInterface *dsmUpdatePlugin;
-
-                        dsmUpdatePlugin = DSMPluginContainer::getInstance()->plugin("dsmupdate");
-
-                        if( NULL == dsmUpdatePlugin )
-                        {
-                            qDebug() << "Not found dsmupdate...: " << __LINE__;
-                            return false;
-                        }
-
-                        dsmUpdatePlugin->setParam("updateDSM", updateDsm);
-                        dsmUpdatePlugin->Process(ACTION_SHOW_DSMUPDATE);
-                    }
-                }
 
             }
             else // insert new store into remote db.
@@ -243,7 +222,7 @@ bool QRadLicUp::SyncLicence()
                     .arg( strDSMRelease ) ))
                 {
                     qDebug() << insert->lastQuery();
-                    QMessageBox::warning(m_splash, QString::fromUtf8("Atenção"), QString::fromUtf8("Não foi possivel atualizar base remota"));
+                    QMessageBox::warning(NULL, QString::fromUtf8("Atenção"), QString::fromUtf8("Não foi possivel atualizar base remota"));
                 }
                 else
                 {

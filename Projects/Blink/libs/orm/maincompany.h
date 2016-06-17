@@ -19,6 +19,9 @@ class maincompany : public Model
      MODEL_DECLARE_ATTRIBUTE(QString, license);
      MODEL_DECLARE_ATTRIBUTE(int, city);
      MODEL_DECLARE_ATTRIBUTE(int, state);
+     MODEL_DECLARE_ATTRIBUTE(QString, Max);
+     MODEL_DECLARE_ATTRIBUTE(QString, License);
+     MODEL_DECLARE_ATTRIBUTE(QString, lastLicense);
 
 
      MODEL_MATCH_TABLE(maincompany, "maincompany")

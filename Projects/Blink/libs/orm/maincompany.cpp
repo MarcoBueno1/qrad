@@ -13,6 +13,9 @@ MODEL_BEGIN_MAP(maincompany)
      MODEL_MAP_FIELD(license, "license");
      MODEL_MAP_FIELD(city, "city");
      MODEL_MAP_FIELD(state, "state");
+     MODEL_MAP_FIELD(Max, "max");
+     MODEL_MAP_FIELD(License, "licence");
+     MODEL_MAP_FIELD(lastLicense, "lastlicense");
 MODEL_END_MAP()
 
 QList<maincompany*>* maincompany::findAll()

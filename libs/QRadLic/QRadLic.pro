@@ -11,6 +11,8 @@ SOURCES += ccrypt.cpp \
 HEADERS += ccrypt.h \
     clicense.h \
     dsmerrors.h
-win32:LIBS += -leay32
+win32:LIBS += -L../3rdpart/libpq/win/lib \
+              -L../../3rdpart/libpq/win/lib \
+              -leay32
 unix:LIBS += -lssl
 

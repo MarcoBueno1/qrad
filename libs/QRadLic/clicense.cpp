@@ -252,7 +252,7 @@ int Clicense::TooMuchUsers()
 //
 // This information need to be stored cripted
 //
-void StoreMaxUsers( QString strMax )
+void Clicense::StoreMaxUsers( QString strMax )
 {
    QSqlQuery query;
    QString strSQL;

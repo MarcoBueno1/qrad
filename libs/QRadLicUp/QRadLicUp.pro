@@ -17,7 +17,11 @@ SOURCES += qradlicup.cpp
 HEADERS += qradlicup.h 
 
 win32:LIBS += -L../QRadCore/release \
-    -L../QRadLic/release
+    -L../QRadLic/release \
+    -L../3rdpart/libpq/win/lib \
+    -L../../3rdpart/libpq/win/lib \
+    -leay32
+
 
 unix:LIBS += -L../QRadCore \
     -L../QRadLic

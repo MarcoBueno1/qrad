@@ -133,14 +133,13 @@ bool Clicense::IsNewlicenseValid( QString strNewlicense )
         return false;
     }
 	
-	if( strNewlicense.length() > 32 )
-	{
-		// has max users information
-		QString strmax = strNewlicense.mid(32);
-		StoreMaxUsers(strmax);
-		strNewlicense.truncate(32);
-		
-	}
+    if( strNewlicense.length() > 32 )
+    {
+	// has max users information
+	QString strmax = strNewlicense.mid(32);
+	StoreMaxUsers(strmax);
+	strNewlicense.truncate(32);
+    }
 
     objDate = QDate::currentDate();
 

@@ -9,6 +9,11 @@
 ReportPlugin::ReportPlugin()
 {
    m_Title = "Relatorio";
+   
+
+   m_LeftHead.append("Blink. @2016");
+   m_LeftHead.append("Manaus - AMl");
+   m_LeftHead.append("Watsapp +55 92 98415-1066");
 }
 
 ReportPlugin::~ReportPlugin()
@@ -26,11 +31,6 @@ void ReportPlugin::Process( const QString& action )
 {
    QList< FieldFormat *> headers;
    QList<QStringList *> lines;
-   QStringList LeftHead;
-
-   LeftHead.append("Diebold Inc. @2016");
-   LeftHead.append("Distrito Industrial");
-   LeftHead.append("Manaus - AM");
 
    if( action.contains( "REPORT_SQL"))
    {
@@ -63,7 +63,7 @@ void ReportPlugin::Process( const QString& action )
 
         }
 
-        pdfwrapper::Build( QString("%1%2").arg(m_Title).arg(".pdf"), LeftHead, m_Title, headers, lines );
+        pdfwrapper::Build( QString("%1%2").arg(m_Title).arg(".pdf"), m_LeftHead, m_Title, headers, lines );
    }
    else
    {
@@ -107,7 +107,7 @@ void ReportPlugin::Process( const QString& action )
        QStringList *linha6 = new QStringList; linha6->append("SANTANDER"); linha6->append("Dispensador, depositário, LCB"); linha6->append("PARALELA, SERIAL" );
        lines.append( linha6 );
 
-       pdfwrapper::Build( "RelatorioDispositivos.pdf", LeftHead, "Relatório ATM CAIXA", headers, lines );
+       pdfwrapper::Build( "RelatorioDispositivos.pdf", m_LeftHead, "Relatório ATM CAIXA", headers, lines );
     }
    
 }
@@ -118,6 +118,11 @@ void ReportPlugin::setParam(QString str, QVariant v)
     m_Title = v.toString();
   else if( str == "SQL" )
     m_strSQL = v.toString();
+  else if( str == "LeftHead" )
+  {
+    m_LeftHead.clear();
+    m_LeftHead = v.toStringList();
+  }
 }
 
 QVariant ReportPlugin::getParam(QString str)

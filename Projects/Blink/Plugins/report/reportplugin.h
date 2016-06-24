@@ -5,6 +5,7 @@
 
 #include "qradplugininterface.h"
 #include "qradplugincontainer.h"
+#include <QStringList>
 
 class ReportPlugin : public QRadPluginInterface
 {
@@ -28,6 +29,7 @@ private:
     QRadPluginContainer *m_container;
     QString m_Title;
     QString m_strSQL;
+    QStringList m_LeftHead;
 };
 
 #endif // Report_H

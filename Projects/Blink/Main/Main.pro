@@ -12,6 +12,8 @@ TARGET = main
 TEMPLATE = app
 
 INCLUDEPATH += ../../../libs/QRadCore \
+               ../../../libs/QRadLicUp \
+               ../../../libs/QRadLic \
                ../libs/common \
                ../libs/orm
 
@@ -25,11 +27,14 @@ FORMS    += mainwindow.ui
 
 LIBS += -L../../../libs/QRadCore \
         -L../../../libs/QRadCore/release \
+        -L../../../libs/QRadLicUp/release \
+        -L../../../libs/QRadLicUp \
         -L../libs/common/ \
         -L../libs/common/release \
         -L../libs/orm/ \
         -L../libs/orm/release \
         -lqradcore \
+        -lqradlicup \
         -lblinkcommon \
         -lblinkorm \
 

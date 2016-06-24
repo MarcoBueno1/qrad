@@ -9,6 +9,8 @@
 #include "qraddebug.h"
 #include "editlogin.h"
 #include "login.h"
+#include "qradlicup.h"
+#include "clicense.h"
 
 
 void centerWidget(QWidget *widget)
@@ -78,6 +80,18 @@ int main(int argc, char *argv[])
     if( QDialog::Accepted != el->exec())
        return 0;
  
+
+    QRadLicUp *pLic = new QRadLicUp;
+    pLic->SyncLicence();
+    delete pLic;
+
+    Clicense *pl = new Clicense;
+    if( pl->IsValidlicense() != DSM_SUCCESS )
+    {
+       debug_message("Licenca invalida, preparar janela de entrada de licenca... atualize!!!!!");
+    }
+
+    delete pl;
 
     splash->show();
     splash->setMessage("Configurando janela principal");

@@ -49,7 +49,12 @@ void ReportPlugin::Process( const QString& action )
               f->Percent = m_percents.at(i).toDouble();
            else
               f->Percent = 100/nColumns;
-           f->Align   = ALIGN_CENTER;
+
+           if( m_aligns.count() == nColumns )
+              f->Align   = m_aligns.at(i).toInt();
+           else
+              f->Align   = ALIGN_CENTER;
+
            headers.append(f);
         }
 
@@ -130,6 +135,11 @@ void ReportPlugin::setParam(QString str, QVariant v)
   {
     m_percents.clear();
     m_percents = v.toStringList();
+  }
+  else if( str == "aligns" )
+  {
+    m_aligns.clear();
+    m_aligns = v.toStringList();
   }
 }
 

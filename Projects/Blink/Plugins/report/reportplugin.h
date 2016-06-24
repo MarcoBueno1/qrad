@@ -30,6 +30,7 @@ private:
     QString m_Title;
     QString m_strSQL;
     QStringList m_LeftHead;
+    QStringList m_percents;
 };
 
 #endif // Report_H

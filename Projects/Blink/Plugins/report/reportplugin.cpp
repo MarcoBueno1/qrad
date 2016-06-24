@@ -44,8 +44,11 @@ void ReportPlugin::Process( const QString& action )
         {
            QString strAux = model->headerData(i, Qt::Horizontal).toString();
            FieldFormat *f = (FieldFormat *)malloc(sizeof(FieldFormat));
-           strcpy(f->Name,strAux.toLatin1().data());
-           f->Percent = 100/nColumns;
+           strcpy(f->Name,strAux.toLatin1().data()); 
+           if( m_percents.count() == nColumns )
+              f->Percent = m_percents.at(i).toDouble();
+           else
+              f->Percent = 100/nColumns;
            f->Align   = ALIGN_CENTER;
            headers.append(f);
         }
@@ -122,6 +125,11 @@ void ReportPlugin::setParam(QString str, QVariant v)
   {
     m_LeftHead.clear();
     m_LeftHead = v.toStringList();
+  }
+  else if( str == "Percents" )
+  {
+    m_percents.clear();
+    m_percents = v.toStringList();
   }
 }
 

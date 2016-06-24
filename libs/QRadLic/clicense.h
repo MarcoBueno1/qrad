@@ -7,6 +7,7 @@
 
 #define DSM_ERR_INVALID_LICENSE -1
 #define DSM_ERR_DATE_FRAUD      -2
+#define DSM_ERR_TOO_MUCH_USERS  -3
 
 class Clicense
 {

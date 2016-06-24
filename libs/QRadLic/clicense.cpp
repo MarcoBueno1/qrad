@@ -52,6 +52,11 @@ int Clicense::IsValidlicense( QString strlicense )
             {
                 return DSM_ERR_DATE_FRAUD;
             }
+            int nUsers = TooMuchUsers();
+            if( nUsers )
+            {
+                 return nUsers;
+            }
 
             return DSM_SUCCESS;
         }
@@ -244,7 +249,7 @@ int Clicense::TooMuchUsers()
 		return 0;
 	 }
 	 if( query.size() > strMax.toInt() )
-		 return query.size() - strMax.toInt() ;
+		 return  query.size() - strMax.toInt() ;
 	 
 	 return 0;
 }

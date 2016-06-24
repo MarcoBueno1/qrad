@@ -2,9 +2,13 @@
 #include "qraddebug.h"
 #include "pdfwrapper.h"
 #include <QCoreApplication>
+#include <QSqlQueryModel>
+#include <QSqlRecord>
+#include <QSqlField>
 
 ReportPlugin::ReportPlugin()
 {
+   m_Title = "Relatorio";
 }
 
 ReportPlugin::~ReportPlugin()
@@ -20,90 +24,49 @@ void ReportPlugin::onLoad(QRadPluginContainer* container)
 
 void ReportPlugin::Process( const QString& action )
 {
-#if(0)
-    QStringList list;
+   QList< FieldFormat *> headers;
+   QList<QStringList *> lines;
+   QStringList LeftHead;
 
-    if (action.toLower() == QString("Build").toLower())
-    {
-       list.append("Linha de teste 1");
-       list.append("Linha de teste 2");
-       list.append("Linha de teste 3");
-       list.append("Linha de teste 4");
-       list.append("Linha de teste 5");
-       list.append("Linha de teste 6");
-       list.append("Linha de teste 7");
-       list.append("Linha de teste 8");
-       list.append("Linha de teste 9");
-       list.append("Linha de teste 10");
-       list.append("Linha de teste 11");
-       list.append("Linha de teste 12");
-      list.append("Linha de teste 13");
-      list.append("Linha de teste 14");
-      list.append("Linha de teste 15");	  
-      list.append("Linha de teste 16");
-      list.append("Linha de teste 17");
-      list.append("Linha de teste 18");	  
-      list.append("Linha de teste 19");
-      list.append("Linha de teste 20");
-      list.append("Linha de teste 21");	  	  
-	  list.append("Linha de teste 22");
-      list.append("Linha de teste 23");
-      list.append("Linha de teste 24");	  
-      list.append("Linha de teste 25");
-      list.append("Linha de teste 26");
-      list.append("Linha de teste 27");	  
-      list.append("Linha de teste 28");
-      list.append("Linha de teste 29");
-      list.append("Linha de teste 30");	  
-      list.append("Linha de teste 31");
-      list.append("Linha de teste 32");
-      list.append("Linha de teste 33");	  	  
-	  list.append("Linha de teste 34");
-      list.append("Linha de teste 35");
-      list.append("Linha de teste 36");	  
-      list.append("Linha de teste 37");
-      list.append("Linha de teste 38");
-      list.append("Linha de teste 39");	  
-      list.append("Linha de teste 40");
-      list.append("Linha de teste 41");
-      list.append("Linha de teste 42");	  
-      list.append("Linha de teste 43");
-      list.append("Linha de teste 44");
-      list.append("Linha de teste 45");	  	  
-	  list.append("Linha de teste 46");
-      list.append("Linha de teste 47");
-      list.append("Linha de teste 48");	  
-	  list.append("Linha de teste 49");
-      list.append("Linha de teste 50");
-      list.append("Linha de teste 51");	  
-      list.append("Linha de teste 52");
-      list.append("Linha de teste 53");
-      list.append("Linha de teste 54");	  
-      list.append("Linha de teste 55");
-      list.append("Linha de teste 56");
-      list.append("Linha de teste 57");	  	  
-	  list.append("Linha de teste 58");
-      list.append("Linha de teste 59");
-      list.append("Linha de teste 60");	  
-      list.append("Linha de teste 61");	  
-      list.append("Linha de teste 62");
-      list.append("Linha de teste 63");
-      list.append("Linha de teste 64");	  
-      list.append("Linha de teste 65");
-      list.append("Linha de teste 66");
-      list.append("Linha de teste 67");	  	  
-	  list.append("Linha de teste 68");
-      list.append("Linha de teste 69");
-      list.append("Linha de teste 70");	  	  
-       pdfwrapper::Build( "RELATORIO_TESTE.PDF", "Titulo de Teste", "campo1 campo2 campo3 campo4", list );
-    }
+   LeftHead.append("Diebold Inc. @2016");
+   LeftHead.append("Distrito Industrial");
+   LeftHead.append("Manaus - AM");
+
+   if( action.contains( "REPORT_SQL"))
+   {
+        int i;
+        QSqlQueryModel *model  = new QSqlQueryModel;
+        model->setQuery(m_strSQL);
+
+        QStringList *line;
+        int nColumns = model->columnCount();
+        for( i = 0; i < nColumns; i++ )
+        {
+           QString strAux = model->headerData(i, Qt::Horizontal).toString();
+           FieldFormat *f = (FieldFormat *)malloc(sizeof(FieldFormat));
+           strcpy(f->Name,strAux.toLatin1().data());
+           f->Percent = 100/nColumns;
+           f->Align   = ALIGN_CENTER;
+           headers.append(f);
+        }
+
+
+        for(  i = 0; i < model->rowCount(); i++ )
+        {
+          QSqlRecord rec = model->record(i);
+          line = new QStringList;
+          for( int j = 0; j < nColumns; j++ )
+          {
+            line->append(rec.field(j).value().toString() )    ;
+          }
+          lines.append(line);    
+
+        }
+
+        pdfwrapper::Build( QString("%1%2").arg(m_Title).arg(".pdf"), LeftHead, m_Title, headers, lines );
+   }
    else
    {
-#endif
-       QList< FieldFormat *> headers;
-//       QStringList fields;
-       QList<QStringList *> lines;
-
        FieldFormat *f = (FieldFormat *)malloc(sizeof(FieldFormat));
        strcpy(f->Name, "ATM");
        //    = QString();
@@ -144,21 +107,17 @@ void ReportPlugin::Process( const QString& action )
        QStringList *linha6 = new QStringList; linha6->append("SANTANDER"); linha6->append("Dispensador, depositário, LCB"); linha6->append("PARALELA, SERIAL" );
        lines.append( linha6 );
 
-       QStringList LeftHead;
-
-       LeftHead.append("Diebold Inc. @2016");
-       LeftHead.append("Distrito Industrial");
-       LeftHead.append("Manaus - AM");
-
-
        pdfwrapper::Build( "RelatorioDispositivos.pdf", LeftHead, "Relatório ATM CAIXA", headers, lines );
+    }
    
 }
 
 void ReportPlugin::setParam(QString str, QVariant v)
 {
-    Q_UNUSED(str);
-    Q_UNUSED(v);
+  if( str == "Title" )
+    m_Title = v.toString();
+  else if( str == "SQL" )
+    m_strSQL = v.toString();
 }
 
 QVariant ReportPlugin::getParam(QString str)

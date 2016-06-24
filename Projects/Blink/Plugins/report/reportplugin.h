@@ -26,6 +26,8 @@ private slots:
 
 private:
     QRadPluginContainer *m_container;
+    QString m_Title;
+    QString m_strSQL;
 };
 
 #endif // Report_H

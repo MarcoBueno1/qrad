@@ -5,6 +5,8 @@
 #include <QSqlQueryModel>
 #include <QSqlRecord>
 #include <QSqlField>
+#include <QDesktopServices>
+#include <QUrl>
 
 ReportPlugin::ReportPlugin()
 {
@@ -71,7 +73,9 @@ void ReportPlugin::Process( const QString& action )
 
         }
 
-        pdfwrapper::Build( QString("%1%2").arg(m_Title).arg(".pdf"), m_LeftHead, m_Title, headers, lines );
+        QString strAux =  QString("%1%2").arg(m_Title).arg(".pdf");
+        if( 0 == pdfwrapper::Build( strAux , m_LeftHead, m_Title, headers, lines ))
+             QDesktopServices::openUrl(QUrl(strAux, QUrl::TolerantMode));
    }
    else
    {

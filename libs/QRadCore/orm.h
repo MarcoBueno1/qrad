@@ -119,7 +119,12 @@ ORM_ATTRIBUTE_CLASS(bool);
         static className##List * findBy##attr(attrType value, QSqlDatabase db = QSqlDatabase::database())\
         {\
            return findByAttribute(#attr, value, db );\
+        }\
+        static className * findBy##attr(attrType value, bool t, QSqlDatabase db = QSqlDatabase::database())\
+        {\
+           return findByAttribute(#attr, value, t, db );\
         }
+
 
 
 
@@ -260,16 +265,45 @@ ORM_ATTRIBUTE_CLASS(bool);
             if (!_className::fillORMList(lst,query, db )) { delete lst; lst = NULL; } \
             return lst;\
         }\
-        public: static _className* findByPrimaryKey(QVariant primaryKey,QSqlDatabase db = QSqlDatabase::database())\
+        public: static _className* findByAttribute(QString attrName, QVariant value, bool t=false, QSqlDatabase db = QSqlDatabase::database())\
         {\
+             Q_UNUSED(t);\
+             ORMAttribute *ORMattribute = NULL;\
             _className *obj = new _className(db);\
-            if (!obj->fillORMByPrimaryKey(primaryKey))\
+            foreach(ORMAttribute *mattr, obj->m_attrList)\
+            {\
+            if( mattr->fieldName().toLower() == attrName.toLower())\
+            {\
+                ORMattribute = mattr;\
+                break;\
+            }\
+            }\
+            if( NULL == ORMattribute)\
             {\
                 delete obj;\
-                obj = NULL;\
+                return NULL;\
             }\
+            QString query = QString("select * from %1 where %2 = %3 limit 1")\
+                      .arg(_className::tableName())\
+                      .arg(_className::fieldName(attrName))\
+                      .arg(IS_STRING_VALUE(ORMattribute)? "'"+value.toString()+"'":value.toString());\
+            QSqlQueryModel *ORM = new QSqlQueryModel();\
+            ORM_SETQUERY(ORM, query) \
+            if (ORM->rowCount() <= 0) { delete ORM; delete obj;return NULL; }\
+            obj->fillORM(ORM->record(0));\
+            delete ORM;\
             return obj;\
-        } \
+        }\
+        public: static _className* findByPrimaryKey(QVariant primaryKey,QSqlDatabase db = QSqlDatabase::database())\
+            {\
+                _className *obj = new _className(db);\
+                if (!obj->fillORMByPrimaryKey(primaryKey))\
+                {\
+                    delete obj;\
+                    obj = NULL;\
+                }\
+                return obj;\
+            } \
         public: void mapFields();
 
 #define ORM_DYNAMIC_METHODS(_className, _tableName) \
@@ -381,6 +415,7 @@ protected:
     bool do_insert();
     bool do_update();
     bool do_delete();
+    void Audit();
 
 };
 

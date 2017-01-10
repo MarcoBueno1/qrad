@@ -19,6 +19,9 @@
 #include <QSqlField>
 #include "fieldfactory.h"
 
+#include <QApplication>
+
+
 
 #define ATTR_VALUE(attr) IS_STRING_VALUE(attr) ? ("\'" + attr->toString().replace("\'", "\'\'") + "\'") : attr->toString()
 
@@ -147,16 +150,18 @@ void ORM::CreateTable()
         bFirst = false;
     }
 
-    if(pKey && getDatabase().driverName() != "QSQLITE")
+/*    if(pKey && getDatabase().driverName() != "QSQLITE")
        strCreate += QString::fromUtf8(" , CONSTRAINT %1_pkey PRIMARY KEY (%2) ")
                                       .arg(m_tableName)
-                                      .arg(pKey->fieldName());
+                                     .arg(pKey->fieldName());*/
 
     strCreate += QString::fromUtf8(");");
 
     QSqlQuery *newTable =  new QSqlQuery(getDatabase());
     if( newTable->exec( strCreate ) < 1 )
     {
+        qDebug() <<  strCreate;
+        qDebug() << newTable->lastError();
         setLastError(newTable->lastError());
     }
     delete newTable;
@@ -424,7 +429,12 @@ bool ORM::do_delete()
 
 bool ORM::Save()
 {
-    return m_primaryKey->value().toInt()?Update() || Create():Create();
+    bool bRet= m_primaryKey->value().toInt()?Update() || Create():Create();
+
+    if( bRet )
+        Audit();
+
+    return bRet;
 }
 
 
@@ -441,4 +451,15 @@ bool ORM::Update()
 bool ORM::Delete()
 {
     return do_delete();
+}
+void  ORM::Audit()
+{
+   QCoreApplication *app = QCoreApplication::instance();
+   int CurrentUser = app->property("CurrentUserId").toInt();
+   QString CurrentTable = m_tableName;
+   m_tableName += QString("_%1").arg(CurrentUser);
+
+   Create();
+
+   m_tableName = CurrentTable;
 }

@@ -1,5 +1,18 @@
 #ifndef machine_H
 #define machine_H
+
+#include "orm.h"
+
+DECLARE_ORM(machine)
+
+DECLARE_CLASS(machine)
+    ORM_DECLARE_ATTRIBUTE(machine, int, id)
+    ORM_DECLARE_ATTRIBUTE(machine, QString, Machine)
+    ORM_MATCH_TABLE(machine, "machine")
+ORM_END_MAP()
+
+
+/*
  
 #include "model.h"
 
@@ -21,5 +34,7 @@ public:
     static machine* findByid(int id, QString database);
     static machine* findByMachine(QString Machine);
 };
+
+*/
  
 #endif 

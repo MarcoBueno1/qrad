@@ -99,12 +99,12 @@ void Editlogin::Save()
 
     QString MachineId = M2phi::GetHDSerial();
    
-    machine *pm =  machine::findByMachine(MachineId);
+    machine *pm =  machine::findByMachine(MachineId,true);
     if( !pm )
     {
        pm =  new machine;
-       pm->setmachine(MachineId);
-       pm->Save();
+       pm->setMachine(MachineId);
+       qDebug() << pm->Save();
     }
 
 

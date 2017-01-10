@@ -1,5 +1,12 @@
 #include "machine.h"
 
+ORM_BEGIN_MAP(machine)
+    ORM_MAP_PRIMARYKEY(id, "id");
+    ORM_MAP_FIELD(Machine, "machine");
+ORM_END_MAP()
+
+
+/*
 machineList* machine::m_allList = NULL;
 
 MODEL_BEGIN_MAP(machine)
@@ -51,3 +58,4 @@ machine* machine::findByid(int id, QString database)
 {
     return machine::findByPrimaryKey(id, database);
 }
+*/

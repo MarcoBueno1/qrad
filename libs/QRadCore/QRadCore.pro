@@ -57,7 +57,14 @@ HEADERS +=  qradplugincontainer.h \
     docvalidate.h \
     qraddateeditfakeenter.h \
     qradtimeeditenter.h \
-    smtp.h
+    smtp.h \
+    orm.h \
+    fieldfactory.h \
+    cmdsqlite.h \
+    cmdpostgres.h \
+    cmdmysql.h \
+    cmdinterface.h
+
 
 win32:HEADERS  += system/inc/win/qradsystem.h
 unix::HEADERS  += system/inc/lnx/qradsystem.h
@@ -95,7 +102,13 @@ SOURCES +=  qradplugininterface.cpp \
     docvalidate.cpp \
     qraddateeditfakeenter.cpp \
     qradtimeeditenter.cpp \
-    smtp.cpp
+    smtp.cpp \
+    cmdmysql.cpp \
+    cmdpostgres.cpp \
+    cmdsqlite.cpp \
+    fieldfactory.cpp \
+    orm.cpp 
+
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c
 

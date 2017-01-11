@@ -77,11 +77,11 @@ public:
     ~QRadPluginLoader();
 
     bool Load(const QString& xmlPluginList);
+    bool loadMenu(QRadPluginInterface *plugin, QRadPluginMenu *menu);
 private:
     bool parse(const QString &xmlContent);
     bool parsePluginNode(const QDomNode &node);
     bool loadPlugin(QRadPluginDescriptor *desc);
-    bool loadMenu(QRadPluginInterface *plugin, QRadPluginMenu *menu);
     QMenu* findMenu(QWidget* parent, QString menuTitle);
 private:
     QList<QRadPluginDescriptor *>    *m_pluginList;

@@ -36,3 +36,20 @@ ALTER TABLE ONLY vuser
     ADD CONSTRAINT vuser_key PRIMARY KEY (id);
 
 insert into vuser ( id, email, password, profile ) values ( 1, 'marco','1ac61befdde2a266f91b6088478c535e', 1);
+
+create table report
+(
+   id serial,
+   name character varying,
+   path character varying,
+   menu character varying,
+   datemode integer,
+   sql character varying,
+   sqlcombo character varying,
+   permission character varying,
+   visible  boolean
+);
+
+ALTER TABLE ONLY report
+    ADD CONSTRAINT report_key PRIMARY KEY (id);
+

@@ -5,6 +5,7 @@
 
 #include "qradplugininterface.h"
 #include "qradplugincontainer.h"
+#include "qradcoreplugin.h"
 
 class QRadReportPlugin : public QRadPluginInterface
 {

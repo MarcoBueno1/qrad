@@ -46,6 +46,7 @@ SUBDIRS = QRad \
           libs/QRadLic \
           libs/QRadLicUp \
           libs/pdfwrapper \
+          plugins/QRadReport \
           Projects\Blink\libs\orm \
           Projects\Blink\libs\common \
           Projects\Blink\Main \

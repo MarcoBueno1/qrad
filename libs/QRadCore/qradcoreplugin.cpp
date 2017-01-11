@@ -89,21 +89,33 @@ bool QRadPluginLoader::Load( const QString& xmlPluginList )
     debug_message("[QRadPluginLoader]-->Load(%s)\n", xmlPluginList.toUtf8().data());
     QFile file( xmlPluginList );
 
-    if (!file.open(QIODevice::ReadOnly))
+
+    /// Add default report smart plugin ( it create its menus onLoad according database config )
+    QRadPluginDescriptor *descrep = new QRadPluginDescriptor(
+            QString::fromUtf8("qradreportplugin"),
+            QString::fromUtf8("./qradreportplugin"),
+            true);
+    m_pluginList->append(descrep);
+    ///
+
+
+    if( file.open(QIODevice::ReadOnly) )
+    {
+        QString content = QString::fromUtf8(file.readAll());
+
+
+        if (!parse(content))
+        {
+            debug_message("[QRadPluginLoader]<--Load false L:%d\n",__LINE__);
+            return false;
+        }
+    }
+    else
     {
         debug_message("[QRadPluginLoader]::Load() Fail L:%d\n",__LINE__);
         QRad_LOG_ERROR(QString("Failed to read file {%1}").arg(xmlPluginList));
-        return false;
     }
 
-    QString content = QString::fromUtf8(file.readAll());
-
-
-    if (!parse(content))
-    {
-        debug_message("[QRadPluginLoader]<--Load false L:%d\n",__LINE__);
-        return false;
-    }
 
     foreach (QRadPluginDescriptor *desc, *m_pluginList)
     {
@@ -163,6 +175,7 @@ bool QRadPluginLoader::loadPlugin(QRadPluginDescriptor *desc)
     {
         loader->unload();
         delete loader;
+        debug_message("Failed: %s\n", loader->errorString().toUtf8().data()); fflush(stdout);
         return false;
     }
 
@@ -214,35 +227,6 @@ bool QRadPluginLoader::loadMenu(QRadPluginInterface *plugin, QRadPluginMenu *men
 #else
     action->setEnabled(QRadConfig::GetUserProfile(menu->permission()));
 #endif
-
-/*    if (!menu->hotKey().isEmpty())
-    {
-        if ( (menu->action() == ACTION_SHOW_PAF_CASHIER) ||
-             (menu->action() == ACTION_MNG_ACCOUNT_PAF) ||
-             (menu->action() == ACTION_MNG_AGREEMENT_PAF) ||
-             (menu->action() == ACTION_SHOW_CASHIER) ||
-             (menu->action() == ACTION_SHOW_PAF_PAYMENTWAYREG) ||
-             (menu->action() == ACTION_SHOW_PAF_PAYMENTWAYAUXREG) )
-        {
-            bool isEnabled = true;
-
-            if (!ECFChecker::load())
-            {
-                isEnabled = false;
-            }
-            isEnabled &= ECFChecker::enabled();
-
-            if (isEnabled)
-            {
-                action->setShortcut(QKeySequence(menu->hotKey()));
-            }
-        }
-        else
-        {
-            action->setShortcut(QKeySequence(menu->hotKey()));
-        }
-    }
-*/
 
     action->setActionDescriptor(menu->action());
     lastMenu->addAction( action );
@@ -297,6 +281,7 @@ bool QRadPluginLoader::parse(const QString &xmlContent)
 
     QString error;
     int eLine, eColumn;
+
 
     QDomDocument doc;
 
@@ -356,69 +341,6 @@ bool QRadPluginLoader::parsePluginNode(const QDomNode &node)
         enabled = (node.attributes().namedItem("enabled").nodeValue() == "true") ? true : false;
     }
 
-/*
-    if(( name == "paf-cashiernfce")  && !enabled)
-    {
-        // check if current machine already has hd serial into QRad_cashier
-        CashierModel *c = CashierModel::findByHDSerial(M2phi::GetHDSerial());
-        if(c)
-        {
-            enabled = true;
-            forceNFCe = true;
-            delete c;
-            debug_message("enable=true for 'paf-cashiernfce' plugin ( checked logic..)!\n");
-        }
-        else
-        {
-            CashierModelList *l = CashierModel::findAll();
-            if( !l )
-            {
-                if( QMessageBox::Yes == QMessageBox::question(m_mainWindow,QString::fromUtf8("Atenção"),
-                                      QString::fromUtf8("Esta máquina será utilizada como caixa?"),
-                                      QMessageBox::Yes | QMessageBox::No ))
-                {
-
-                    if( QRadConfig::UserCanCancelSale(true))
-                    {
-                        enabled = true;
-                        forceNFCe = true;
-                        delete c;
-                        debug_message("enable=true for 'paf-cashiernfce' plugin ( by user..)!\n");
-                    }
-                    else
-                    {
-                        QMessageBox::information(m_mainWindow,QString::fromUtf8("Oops"),
-                                                              QString::fromUtf8("Você não tem permissão para habilitar a funcionalidade de caixa nesta máquina!"));
-                    }
-
-                }
-
-            }
-
-
-        }
-    }
-
-    //for nfe and nfce assume database configuration
-    else if(( name == "nfegenerator20") &&
-            ConfigurationModel::getInstanceNoSelect()->getUseNFE() )
-    {
-        enabled = true;
-        debug_message("enable=true for 'nfegenrator20' plugin ( checked via Database..)!\n");
-    }
-    else if(( name == "paf-cashier") &&
-            forceNFCe )
-    {
-        enabled = false;
-        debug_message("enable=false for 'paf-cashier' plugin ( paf-cashiernfce is checked via Database..)!\n");
-    }
-    else if(( name == "paf-cashiernc") &&
-            forceNFCe )
-    {
-        enabled = false;
-        debug_message("enable=false for 'paf-cashiernc' plugin ( paf-cashiernfce is checked via Database..)!\n");
-    }
-*/
     QRadPluginDescriptor *desc = new QRadPluginDescriptor(
             node.attributes().namedItem("name").nodeValue(),
             node.attributes().namedItem("library").nodeValue(),
@@ -445,6 +367,7 @@ bool QRadPluginLoader::parsePluginNode(const QDomNode &node)
     } // for
 
     m_pluginList->append(desc);
+
 
     return true;
 }

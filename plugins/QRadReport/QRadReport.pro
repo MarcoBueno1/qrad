@@ -1,4 +1,4 @@
-QT += core sql network script widgets multimedia multimediawidgets
+QT += core sql network script widgets multimedia multimediawidgets xml
 
 TARGET = qradreportplugin
 TEMPLATE = lib
@@ -8,10 +8,12 @@ INCLUDEPATH = ../../libs/QRadCore
 
 DESTDIR = .
 SOURCES = \ 
-             qradreport.cpp  
+             qradreport.cpp  \
+             ormreport.cpp
 
 HEADERS = \ 
-             qradreport.h  
+             qradreport.h \
+             ormreport.h
 
 win32:LIBS += -L../../libs/QRadCore/release 
 unix:LIBS += -L../../libs/QRadCore

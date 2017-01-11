@@ -23,8 +23,8 @@ ReportLauncher::ReportLauncher(QWidget *parent) :
     connect(ui->pushButtonCancelar, SIGNAL(clicked()), this, SLOT(CancelPressed()));
 
     m_LeftHead.append("Blink. @2016");
-    m_LeftHead.append("Manaus - AMl");
-    m_LeftHead.append("Watsapp +55 92 98415-1066");
+    m_LeftHead.append("Manaus - AM");
+    m_LeftHead.append("Watsapp +55 (92) 98415-1066");
 
 
     m_report = NULL;
@@ -71,7 +71,7 @@ void ReportLauncher::OkPressed()
 }
 void ReportLauncher::CancelPressed()
 {
-  abort();
+  reject();
 }
 
 void ReportLauncher::Buildreport()
@@ -117,6 +117,7 @@ void ReportLauncher::Buildreport()
      }
 
      QString strAux =  QString("%1%2").arg(m_report->getName()).arg(".pdf");
+     strAux.replace(" ", "_");
      if( 0 == pdfwrapper::Build( strAux , m_LeftHead, m_report->getName(), headers, lines ))
           QDesktopServices::openUrl(QUrl(strAux, QUrl::TolerantMode));
 }

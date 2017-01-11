@@ -3,6 +3,12 @@
 
 #include "orm.h"
 
+typedef enum ReportDateType
+{
+    dtNoDate,
+    dtNormal,
+}QRAD_REPO_DATE_TYPE;
+
 DECLARE_ORM(report)
 
 DECLARE_CLASS(report)

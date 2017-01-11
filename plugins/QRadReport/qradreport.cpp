@@ -2,6 +2,7 @@
 #include <QMainWindow>
 #include "ormreport.h"
 #include "qraddebug.h"
+#include "reportlauncher.h"
 
 QRadReportPlugin::QRadReportPlugin()
 {
@@ -43,6 +44,12 @@ void QRadReportPlugin::onLoad(QRadPluginContainer* container)
 void QRadReportPlugin::Process( const QString& action )
 {
   qDebug() << "Action: " << action;
+
+  ReportLauncher *RepLauncher = new ReportLauncher;
+
+  RepLauncher->Exec(action);
+
+  delete RepLauncher;
 }
 
 void QRadReportPlugin::setParam(QString str, QVariant v)

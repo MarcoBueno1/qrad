@@ -133,3 +133,39 @@ ALTER TABLE ONLY vuser
 insert into vuser ( id, email, password, profile ) values ( 1, 'marco','1ac61befdde2a266f91b6088478c535e', 1);
 alter sequence vuser_id_seq restart with 2;
 
+
+create table dweller
+(
+ id serial, 
+ name character varying,
+ CPF character varying,
+ RG character varying,
+ type integer,
+ ap integer, 
+ tower integer,
+ since date,
+ moveout date,
+ imageid integer,
+ jobtitle integer,
+ email character varying,
+ obs character varying,
+ loid integer,
+ ramal character varying,
+ notifByemail boolean,
+ tp integer,
+ removed boolean
+);
+
+ALTER TABLE ONLY dweller
+    ADD CONSTRAINT dweller_key PRIMARY KEY (id);
+
+
+create table tower
+(
+  id serial,
+  name character varying
+);
+
+ALTER TABLE ONLY tower
+    ADD CONSTRAINT tower_key PRIMARY KEY (id);
+

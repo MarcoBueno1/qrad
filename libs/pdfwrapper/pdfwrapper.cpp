@@ -55,6 +55,7 @@ int pdfwrapper::Build( QString strFile,
     HPDF_REAL width;
     char szText[512];
     int i = 1;
+    int iHeight = 1;
     int nPage = 0;
 
     pdf = HPDF_New (error_handler, NULL);
@@ -181,9 +182,13 @@ int pdfwrapper::Build( QString strFile,
                Format::FormatLine(page, 
 								  def_font,
 								  width -100, 
-								  height - 80 -18*i, 
+//								  height - 80 -18*i,
+                                  height - 80 -18*iHeight,
 								  ColHeader, lines.at(i-1) );
 								  
+               iHeight++;
+               if( iHeight == 39)
+                   iHeight = 1;
 //               HPDF_Page_MoveTextPos (page, 0, -18);
  
  /*

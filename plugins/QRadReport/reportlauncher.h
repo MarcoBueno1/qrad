@@ -27,7 +27,10 @@ private:
     QSqlQueryModel *m_model;
     void Buildreport();
     QStringList m_LeftHead;
+    QStringList m_percents;
 
+    void AutoSizeColumn(QSqlQueryModel *model);
+    QString BuildSQL();
 };
 
 #endif // REPORTLAUNCHER_H

@@ -89,6 +89,12 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="displayFormat">
+     <string>dd/MM/yy</string>
+    </property>
+    <property name="calendarPopup">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QDateTimeEdit" name="dateTimeEditUntil">
     <property name="geometry">
@@ -98,6 +104,12 @@
       <width>121</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="displayFormat">
+     <string>dd/MM/yy</string>
+    </property>
+    <property name="calendarPopup">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="label">

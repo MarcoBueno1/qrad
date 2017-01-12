@@ -6,6 +6,7 @@
 #include <QSqlField>
 #include <QDesktopServices>
 #include <QUrl>
+#include "qradshared.h"
 #include "pdfwrapper.h"
 
 
@@ -22,7 +23,7 @@ ReportLauncher::ReportLauncher(QWidget *parent) :
     connect(ui->pushButtonOk, SIGNAL(clicked()), this, SLOT(OkPressed()));
     connect(ui->pushButtonCancelar, SIGNAL(clicked()), this, SLOT(CancelPressed()));
 
-    m_LeftHead.append("Blink. @2016");
+    m_LeftHead.append("Blink. @2017");
     m_LeftHead.append("Manaus - AM");
     m_LeftHead.append("Watsapp +55 (92) 98415-1066");
 
@@ -54,12 +55,24 @@ void ReportLauncher::Exec(QString action)
 
     setWindowTitle(m_report->getName());
 
-    m_model = new QSqlQueryModel;
 
-    m_model->setQuery(m_report->getSqlCombo());
 
     if( m_report->getDateMode() == dtNoDate)
+    {
         ui->groupBoxPeriod->setVisible(false);
+    }
+    if( m_report->getComboMode() == cmNoCombo)
+    {
+        ui->groupBoxJust->setVisible(false);
+    }
+    else
+    {
+        m_model = new QSqlQueryModel;
+        m_model->setQuery(m_report->getSqlCombo());
+        ui->comboBox->setModel(m_model);
+        ui->comboBox->setModelColumn(1);
+    }
+
 
      exec();
 
@@ -74,6 +87,68 @@ void ReportLauncher::CancelPressed()
   reject();
 }
 
+void ReportLauncher::AutoSizeColumn(QSqlQueryModel * model)
+{
+    for(int i = 0; i < model->rowCount(); i++ )
+        for(int j = 0; j < model->columnCount(); j++ )
+        {
+            QString Field = model->index(i,j).data().toString();
+            qDebug() << "Field:" << Field ;
+            if( m_percents.count() <= j )
+                m_percents.append(QString("%1").arg(Field.size()));
+            else
+            {
+                if( m_percents.at(j).toInt() < Field.size())
+                    m_percents.replace(j, QString("%1").arg(Field.size()));
+            }
+        }
+
+////
+//      Dump Tamanhos Máximos
+////
+    qDebug() << "Dump Colunas";
+    int TotalSizes = 0;
+    for( int k = 0; k < m_percents.count(); k++ )
+    {
+        qDebug() << "Coluna:" << k << " Maximo: " << m_percents.at(k);
+        TotalSizes +=m_percents.at(k).toInt();
+    }
+    double dwUnity = (double)100/TotalSizes;
+    qDebug() << "dwUnity:" << dwUnity;
+
+    for( int k = 0; k < m_percents.count(); k++ )
+    {
+        m_percents.replace(k, QString("%1").arg(dwUnity* m_percents.at(k).toInt()));
+        qDebug() << "Coluna:" << k << " Percentual: " << m_percents.at(k);
+    }
+
+
+
+}
+
+QString ReportLauncher::BuildSQL()
+{
+    int IdCombo = 0;
+    QString sql = m_report->getSql();
+    QString SqlWhere ;
+
+    if( ui->groupBoxJust->isChecked() )
+    {
+        IdCombo = m_model->index(ui->comboBox->currentIndex(),0).data().toInt();
+        SqlWhere = QString(m_report->getWhereCombo()).arg(IdCombo);
+    }
+
+    if( ui->groupBoxPeriod->isVisible() && ui->comboBox->isVisible())
+           sql = QString(m_report->getSql()).arg(ui->dateTimeEditSince->date().toString(FMT_DATE_DB)).arg(ui->dateTimeEditUntil->date().toString(FMT_DATE_DB)).arg(SqlWhere);
+    else if( ui->groupBoxPeriod->isVisible())
+        sql = QString(m_report->getSql()).arg(ui->dateTimeEditSince->date().toString(FMT_DATE_DB)).arg(ui->dateTimeEditUntil->date().toString(FMT_DATE_DB));
+    else if( ui->comboBox->isVisible() )
+        sql = QString(m_report->getSql()).arg(SqlWhere);
+
+    qDebug() << "Sql:" << sql;
+    return sql;
+}
+
 void ReportLauncher::Buildreport()
 {
     QList< FieldFormat *> headers;
@@ -81,7 +156,12 @@ void ReportLauncher::Buildreport()
 
      int i;
      QSqlQueryModel *model  = new QSqlQueryModel;
-     model->setQuery(m_report->getSql());
+
+     QString sql = BuildSQL();
+
+     model->setQuery(sql);
+
+     AutoSizeColumn(model);
 
      QStringList *line;
      int nColumns = model->columnCount();
@@ -90,14 +170,14 @@ void ReportLauncher::Buildreport()
         QString strAux = model->headerData(i, Qt::Horizontal).toString();
         FieldFormat *f = (FieldFormat *)malloc(sizeof(FieldFormat));
         strcpy(f->Name,strAux.toLatin1().data());
-        //if( m_percents.count() == nColumns )
-        //   f->Percent = m_percents.at(i).toDouble();
-       // else
+        if( m_percents.count() == nColumns )
+           f->Percent = m_percents.at(i).toDouble();
+        else
            f->Percent = 100/nColumns;
 
-       // if( m_aligns.count() == nColumns )
-       //    f->Align   = m_aligns.at(i).toInt();
-       // else
+//        if( m_aligns.count() == nColumns )
+//           f->Align   = m_aligns.at(i).toInt();
+//        else
            f->Align   = ALIGN_CENTER;
 
         headers.append(f);

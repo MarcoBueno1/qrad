@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
-#define SQL_ITEMS "select id, name, cpf from Dweller where removed = false order by id"
+#define SQL_ITEMS "select d.id, d.name \"Nome\", t.name \"Torre\", a.numero \"AP\", tp.name \"Tipo\" from dweller d inner join ap a on a.id = d.ap inner join tower t on t.id = d.tower inner join dweller_type tp on tp.id = d.type where removed = false order by id"
 
 ManagerDweller::ManagerDweller(QWidget *parent) :
     QDialog(parent),
@@ -34,8 +34,11 @@ ManagerDweller::ManagerDweller(QWidget *parent) :
 
 ManagerDweller::~ManagerDweller()
 {
-    m_keyinterval->stop();
-    delete m_keyinterval;
+    if( m_keyinterval )
+    {
+        m_keyinterval->stop();
+        delete m_keyinterval;
+    }
     delete m_Model;
 
     delete ui;
@@ -117,7 +120,7 @@ void ManagerDweller::LoadTableView()
 
     QApplication::processEvents();
     ui->tableViewSearch->setModel( m_Model);
-    ui->tableViewSearch->horizontalHeader()->setStretchLastSection(true);
+    ui->tableViewSearch->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);//setStretchLastSection(true);
 
     QApplication::processEvents();
 }
@@ -155,8 +158,17 @@ void ManagerDweller::refreshTable()
 
 void ManagerDweller::ConfigureTable()
 {
-      ui->tableViewSearch->addSearchColumn(0);
+  //    ui->tableViewSearch->addSearchColumn(0);
+      ui->tableViewSearch->addSearchColumn(1);
+      ui->tableViewSearch->addSearchColumn(2);
+      ui->tableViewSearch->addSearchColumn(3);
+      ui->tableViewSearch->addSearchColumn(4);
 
+//      ui->tableViewSearch->addSearchColumnFilter(0);
+      ui->tableViewSearch->addSearchColumnFilter(1);
+      ui->tableViewSearch->addSearchColumnFilter(2);
+      ui->tableViewSearch->addSearchColumnFilter(3);
+      ui->tableViewSearch->addSearchColumnFilter(4);
 
    // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Conuna1"));
     //m_Model->setHeaderData(2, Qt::Horizontal, QString::fromUtf8("Conuna2"));

@@ -34,8 +34,11 @@ ManagerVisitante::ManagerVisitante(QWidget *parent) :
 
 ManagerVisitante::~ManagerVisitante()
 {
-    m_keyinterval->stop();
-    delete m_keyinterval;
+    if( m_keyinterval )
+    {
+        m_keyinterval->stop();
+        delete m_keyinterval;
+    }
     delete m_Model;
 
     delete ui;
@@ -117,7 +120,8 @@ void ManagerVisitante::LoadTableView()
 
     QApplication::processEvents();
     ui->tableViewSearch->setModel( m_Model);
-    ui->tableViewSearch->horizontalHeader()->setStretchLastSection(true);
+    ui->tableViewSearch->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    //ui->tableViewSearch->horizontalHeader()->setStretchLastSection(true);
 
     QApplication::processEvents();
 }

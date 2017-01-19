@@ -107,7 +107,7 @@ void visitPlugin::Process( const QString& action )
         m_managerDweller = new ManagerDweller(m_parent);
 
     //    QRadConfig::centralizarWidget(m_edit);
-        m_managerDweller->show();
+        m_managerDweller->exec();
         debug_message("<--ManagerMorador\n");
     }
     else if (action.toLower() == QString("ManagerPreAut").toLower())

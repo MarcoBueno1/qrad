@@ -209,6 +209,7 @@ void EditDweller::Load()
 
     RefreshAddressTable();
     RefreshPhoneTable();
+//    RefreshVeicTable();
 
     QPixmap mypix = m_mod->getImage();
     ui->LblPhoto->setPixmap(mypix);
@@ -291,8 +292,10 @@ void EditDweller::RefreshPhoneTable()
 
   ui->tableViewPhone->resizeColumnsToContents();
   ui->tableViewPhone->resizeRowsToContents();
-  ui->tableViewPhone->horizontalHeader()->setStretchLastSection(true);
+ // ui->tableViewPhone->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+ // ui->tableViewPhone->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
+  ui->tableViewPhone->horizontalHeader()->setStretchLastSection(true);
 
 }
 void EditDweller::RefreshAddressTable()
@@ -319,10 +322,41 @@ void EditDweller::RefreshAddressTable()
   ui->tableViewAddress->setItemDelegateForColumn(5, m_CenterDelegate);
   ui->tableViewAddress->setItemDelegateForColumn(6, m_CenterDelegate);
 
-  ui->tableViewAddress->resizeColumnsToContents();
-  ui->tableViewAddress->resizeRowsToContents();
-  ui->tableViewAddress->horizontalHeader()->setStretchLastSection(true);
+//  ui->tableViewAddress->resizeColumnsToContents();
+//  ui->tableViewAddress->resizeRowsToContents();
+//  ui->tableViewAddress->horizontalHeader()->setStretchLastSection(true);
+  ui->tableViewAddress->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+  ui->tableViewAddress->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
+/*
+void EditDweller::RefreshVeicTable()
+{
+   // qrad -s phone -t phone -c id -i int -c dwellerid -i int -c number -i QString -c operator -i int:multi:Operadora.Name[Tim,Oi,Claro,Vivo] -c type -i int:multi:phonetype.type[Celular,Casa,Trabalho] -c watsapp -i bool
+
+
+
+  QString SQL = QString("select dv.id, dv.board as \"Placa\", m.name as \"Marca\", v.name as \"Nome\" "\
+                        "from dweller_veic dv inner join veic_brand m on m.id = dv.brand  "\
+                        "inner join veic_name v on dv.name = v.id  "\
+                        "where dv.owner = %1 and ownertype = 0 ").arg(m_mod?m_mod->getid():0);
+
+  m_model->setQuery(SQL);
+  ui->tableViewVeiculos->setModel(m_model);
+  ui->tableViewVeiculos->hideColumn(0);
+  ui->tableViewVeiculos->setItemDelegateForColumn(1, m_PhoneDelegate);
+  ui->tableViewVeiculos->setItemDelegateForColumn(2, m_CenterDelegate);
+  ui->tableViewVeiculos->setItemDelegateForColumn(3, m_CenterDelegate);
+  ui->tableViewVeiculos->setItemDelegateForColumn(4, m_BooleanDelegate);
+
+  ui->tableViewVeiculos->resizeColumnsToContents();
+  ui->tableViewVeiculos->resizeRowsToContents();
+ // ui->tableViewPhone->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+ // ui->tableViewPhone->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+  ui->tableViewVeiculos->horizontalHeader()->setStretchLastSection(true);
+
+}
+*/
 
 void EditDweller::baterFoto()
 {

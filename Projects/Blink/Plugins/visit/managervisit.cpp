@@ -68,8 +68,11 @@ Managervisit::Managervisit(QWidget *parent) :
 
 Managervisit::~Managervisit()
 {
-    m_keyinterval->stop();
-    delete m_keyinterval;
+    if( m_keyinterval )
+    {
+        m_keyinterval->stop();
+        delete m_keyinterval;
+    }
     delete m_Model;
     delete m_DateNullDelagate;
 
@@ -159,7 +162,8 @@ void Managervisit::LoadTableView()
 
     QApplication::processEvents();
     ui->tableViewSearch->setModel( m_Model);
-    ui->tableViewSearch->horizontalHeader()->setStretchLastSection(true);
+    ui->tableViewSearch->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    //ui->tableViewSearch->horizontalHeader()->setStretchLastSection(true);
 
     QApplication::processEvents();
 }

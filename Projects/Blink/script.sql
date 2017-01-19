@@ -159,6 +159,8 @@ create table dweller
 ALTER TABLE ONLY dweller
     ADD CONSTRAINT dweller_key PRIMARY KEY (id);
 
+alter table dweller alter column removed set default false ;
+
 
 create table tower
 (
@@ -168,4 +170,33 @@ create table tower
 
 ALTER TABLE ONLY tower
     ADD CONSTRAINT tower_key PRIMARY KEY (id);
+
+alter table tower add column tp integer default 1;
+
+create table ap
+(
+   id serial,
+   numero character varying,
+   tp integer default 1
+);
+ALTER TABLE ONLY ap
+    ADD CONSTRAINT ap_key PRIMARY KEY (id);
+
+create table dweller_type
+(
+ id serial,
+ name character varying,
+ tp integer default 1
+);
+
+ALTER TABLE ONLY dweller_type
+    ADD CONSTRAINT dweller_type_key PRIMARY KEY (id);
+
+insert into dweller_type ( id, name ) values ( 1, 'Proprietário' );
+insert into dweller_type ( id, name ) values ( 2, 'Proprietário Dependente' );
+insert into dweller_type ( id, name ) values ( 3, 'Inquilino' );
+insert into dweller_type ( id, name ) values ( 4, 'Inquilino Dependente' );
+
+
+
 

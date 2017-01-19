@@ -43,7 +43,8 @@ int pdfwrapper::Build( QString strFile,
                        QStringList ThreeLinesheader,
                        QString strTitle, 
 					   QList<FieldFormat *> ColHeader, 
-					   QList<QStringList *> lines )
+                       QList<QStringList *> lines,
+                       int dwTitleSize)
 {
     HPDF_Doc  pdf;
     HPDF_Page page;
@@ -130,7 +131,7 @@ int pdfwrapper::Build( QString strFile,
             /* Print the title of the page (with positioning center). */
 //            def_font = HPDF_GetFont (pdf, "Helvetica-Bold", "ISO8859-2");
             def_font_title = HPDF_GetFont (pdf, "Helvetica-Oblique", "ISO8859-2");
-            HPDF_Page_SetFontAndSize (page, def_font_title, 20);
+            HPDF_Page_SetFontAndSize (page, def_font_title, dwTitleSize);
 
             def_font = HPDF_GetFont (pdf, "Helvetica", "ISO8859-2");
             tw = HPDF_Page_TextWidth(page, strTitle.toUtf8().data());

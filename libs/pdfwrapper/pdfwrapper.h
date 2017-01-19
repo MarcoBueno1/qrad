@@ -29,7 +29,8 @@ class pdfwrapper
 	                  QStringList ThreeLinesheader,
 	                  QString strTitle, 
 					  QList<FieldFormat *> ColHeader, 
-					  QList<QStringList *> lines );
+                      QList<QStringList *> lines,
+                      int dwTitleSize = 20);
 
 	
 };

@@ -23,9 +23,9 @@ ReportLauncher::ReportLauncher(QWidget *parent) :
     connect(ui->pushButtonOk, SIGNAL(clicked()), this, SLOT(OkPressed()));
     connect(ui->pushButtonCancelar, SIGNAL(clicked()), this, SLOT(CancelPressed()));
 
-    m_LeftHead.append("Blink. @2017");
-    m_LeftHead.append("Manaus - AM");
-    m_LeftHead.append("Watsapp +55 (92) 98415-1066");
+    m_LeftHead.append("Condomínio Garden Club");
+    m_LeftHead.append("Parque 10 de Novembro");
+    m_LeftHead.append("Manaus-AM, Brasil");
 
 
     m_report = NULL;
@@ -196,9 +196,17 @@ void ReportLauncher::Buildreport()
 
      }
 
+     QString reportTitle = m_report->getName();
+     int Titlesize = 20;
+     if( ui->groupBoxJust->isChecked() )
+     {
+         reportTitle += " (Apenas "+m_model->index(ui->comboBox->currentIndex(),1).data().toString()+")";
+         Titlesize = 12;
+     }
+
      QString strAux =  QString("%1%2").arg(m_report->getName()).arg(".pdf");
      strAux.replace(" ", "_");
-     if( 0 == pdfwrapper::Build( strAux , m_LeftHead, m_report->getName(), headers, lines ))
+     if( 0 == pdfwrapper::Build( strAux , m_LeftHead, reportTitle , headers, lines, Titlesize ))
           QDesktopServices::openUrl(QUrl(strAux, QUrl::TolerantMode));
 }
 

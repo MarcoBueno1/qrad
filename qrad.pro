@@ -50,6 +50,7 @@ SUBDIRS = QRad \
           Projects\Blink\libs\orm \
           Projects\Blink\libs\common \
           Projects\Blink\Main \
+          Projects\Blink\MainPlate \
           Projects\Blink\Plugins\visit \
           Projects\Blink\Plugins\report
 

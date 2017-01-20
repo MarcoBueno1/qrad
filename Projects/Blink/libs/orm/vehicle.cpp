@@ -8,6 +8,7 @@ MODEL_BEGIN_MAP(vehicle)
      MODEL_MAP_FIELD(board, "board");
      MODEL_MAP_FIELD(brand, "brand");
      MODEL_MAP_FIELD(veicname, "veicname");
+     MODEL_MAP_FIELD(Removed, "removed");
 MODEL_END_MAP()
 
 QList<vehicle*>* vehicle::findAll()

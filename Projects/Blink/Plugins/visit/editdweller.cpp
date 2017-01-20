@@ -10,6 +10,7 @@
 #include "docvalidate.h"
 #include "camera.h"
 #include "editaddress.h"
+#include "editvehicle.h"
 
 #define PORTEIRO_FUL_PATH "dweller.jpg"
 
@@ -29,6 +30,10 @@ EditDweller::EditDweller(QWidget *parent) :
 
     connect(ui->pushButtonAddAddress, SIGNAL(clicked()),this,SLOT(AddAddress()));
     connect(ui->pushButtonRemoveAddress, SIGNAL(clicked()),this,SLOT(RemoveAddress()));
+
+    connect(ui->pushButtonAddVeiculo, SIGNAL(clicked()),this,SLOT(AddVeiculo()));
+    connect(ui->pushButtonRemoveVeiculo, SIGNAL(clicked()),this,SLOT(RemoveVeiculo()));
+
 
     debug_message("-->EditDweller\n");
 
@@ -64,6 +69,7 @@ EditDweller::EditDweller(QWidget *parent) :
 
     m_model = new QSqlQueryModel;
     m_AddressModel = new QSqlQueryModel;
+    m_VehicleModel= new QSqlQueryModel;
     m_PhoneDelegate = new ColumnPhone;
     m_CenterDelegate = new ColumnCenter;
     m_BooleanDelegate= new ColumnBool;
@@ -78,6 +84,7 @@ EditDweller::~EditDweller()
     delete ui;
     delete m_model ;
     delete m_AddressModel;
+    delete m_VehicleModel;
     delete m_PhoneDelegate;
     delete m_CenterDelegate;
     delete m_BooleanDelegate;
@@ -209,7 +216,7 @@ void EditDweller::Load()
 
     RefreshAddressTable();
     RefreshPhoneTable();
-//    RefreshVeicTable();
+    RefreshVeicTable();
 
     QPixmap mypix = m_mod->getImage();
     ui->LblPhoto->setPixmap(mypix);
@@ -248,6 +255,32 @@ void EditDweller::AddAddress()
     }
     delete pAddress;
 }
+
+
+void EditDweller::AddVeiculo()
+{
+    Editvehicle *pVeic = new Editvehicle();
+    pVeic->setOwner(m_mod->getid());
+    //pVeic->setOwnerType(tpDweller);
+    if(pVeic->exec() == QDialog::Accepted )
+    {
+       RefreshVeicTable();
+    }
+    delete pVeic;
+}
+
+void EditDweller::RemoveVeiculo()
+{
+    int id = ui->tableViewVeiculos->model()->index(ui->tableViewVeiculos->currentIndex().row(),0).data().toInt();
+    vehicle *p = vehicle::findByid(id);
+    if(p)
+    {
+        p->updateRemoved( true );
+        delete p;
+        RefreshVeicTable();
+    }
+}
+
 void EditDweller::RemovePhone()
 {
     int id = ui->tableViewPhone->model()->index(ui->tableViewPhone->currentIndex().row(),0).data().toInt();
@@ -328,25 +361,25 @@ void EditDweller::RefreshAddressTable()
   ui->tableViewAddress->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
   ui->tableViewAddress->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
-/*
+
 void EditDweller::RefreshVeicTable()
 {
    // qrad -s phone -t phone -c id -i int -c dwellerid -i int -c number -i QString -c operator -i int:multi:Operadora.Name[Tim,Oi,Claro,Vivo] -c type -i int:multi:phonetype.type[Celular,Casa,Trabalho] -c watsapp -i bool
 
 
 
-  QString SQL = QString("select dv.id, dv.board as \"Placa\", m.name as \"Marca\", v.name as \"Nome\" "\
-                        "from dweller_veic dv inner join veic_brand m on m.id = dv.brand  "\
-                        "inner join veic_name v on dv.name = v.id  "\
-                        "where dv.owner = %1 and ownertype = 0 ").arg(m_mod?m_mod->getid():0);
 
-  m_model->setQuery(SQL);
-  ui->tableViewVeiculos->setModel(m_model);
+  QString SQL = QString("select dv.id, dv.board as \"Placa\", b.name as \"Marca\", v.type as \"Nome\" "\
+                        " from vehicle dv inner join brand b on b.id = dv.brand  "\
+                        " inner join veicname v on v.id = dv.veicname  "\
+                        " where dv.owner = %1 and removed = false").arg(m_mod?m_mod->getid():0);
+
+  m_VehicleModel->setQuery(SQL);
+  ui->tableViewVeiculos->setModel(m_VehicleModel);
   ui->tableViewVeiculos->hideColumn(0);
-  ui->tableViewVeiculos->setItemDelegateForColumn(1, m_PhoneDelegate);
+  ui->tableViewVeiculos->setItemDelegateForColumn(1, m_CenterDelegate);
   ui->tableViewVeiculos->setItemDelegateForColumn(2, m_CenterDelegate);
   ui->tableViewVeiculos->setItemDelegateForColumn(3, m_CenterDelegate);
-  ui->tableViewVeiculos->setItemDelegateForColumn(4, m_BooleanDelegate);
 
   ui->tableViewVeiculos->resizeColumnsToContents();
   ui->tableViewVeiculos->resizeRowsToContents();
@@ -356,7 +389,7 @@ void EditDweller::RefreshVeicTable()
   ui->tableViewVeiculos->horizontalHeader()->setStretchLastSection(true);
 
 }
-*/
+
 
 void EditDweller::baterFoto()
 {

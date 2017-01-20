@@ -13,22 +13,29 @@ Editvehicle::Editvehicle(QWidget *parent) :
     ui(new Ui::Editvehicle)
 {
     ui->setupUi(this);
-    
+
+    m_owner = 0;
     m_mod = NULL;
     m_lastMod = NULL;
         ui->CmbBxbrand->setTable("Brand");
     ui->CmbBxbrand->setField("Name");
     ui->CmbBxbrand->setCanAdd(true);
-    ui->CmbBxbrand->setUserName("QRad");
+    ui->CmbBxbrand->setUserName("dsm");
+
     ui->CmbBxbrand->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxveicname->setTable("veicname");
     ui->CmbBxveicname->setField("type");
     ui->CmbBxveicname->setCanAdd(true);
-    ui->CmbBxveicname->setUserName("QRad");
+    ui->CmbBxveicname->setUserName("dsm");
     ui->CmbBxveicname->completer()->setFilterMode(Qt::MatchContains );
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
+}
+
+void Editvehicle::setOwner(int owner)
+{
+    m_owner = owner;
 }
 
 Editvehicle::~Editvehicle()
@@ -62,7 +69,7 @@ void Editvehicle::Save()
     if( m_mod == NULL)
         mod = new vehicle;
 
-    mod->setowner(ui->SpnBxowner->value());
+    mod->setowner(m_owner);
     mod->setboard(ui->LnEdtboard->text());
     mod->setbrand(ui->CmbBxbrand->model()->data(ui->CmbBxbrand->model()->index(ui->CmbBxbrand->currentIndex(), 0)).toInt());
 
@@ -87,7 +94,8 @@ void Editvehicle::Load()
 {
     if( m_mod == NULL)
       return;
-    ui->SpnBxowner->setValue(m_mod->getowner());
+
+    m_owner = m_mod->getowner();
     ui->LnEdtboard->setText(m_mod->getboard());
     ui->CmbBxbrand->setCurrentId(m_mod->getbrand());
     ui->CmbBxveicname->setCurrentId(m_mod->getveicname());

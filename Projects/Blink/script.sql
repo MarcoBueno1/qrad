@@ -197,6 +197,56 @@ insert into dweller_type ( id, name ) values ( 2, 'Proprietário Dependente' );
 insert into dweller_type ( id, name ) values ( 3, 'Inquilino' );
 insert into dweller_type ( id, name ) values ( 4, 'Inquilino Dependente' );
 
+CREATE TABLE vehicle
+(
+  id serial NOT NULL,
+  owner integer,
+  board character varying,
+  brand integer,
+  veicname integer,
+  datelastop boolean,
+  timelastop date,
+  removed boolean default false,
+  CONSTRAINT vehicle_pkey PRIMARY KEY (id)
+);
+ALTER TABLE vehicle
+  OWNER TO dsm;
 
+CREATE TABLE address
+(
+  id serial NOT NULL,
+  street integer,
+  "number" character varying,
+  cep integer,
+  neighborhood integer,
+  city integer,
+  state integer,
+  owner integer,
+  ownertype integer,
+  removed boolean default false,
+  datelastop date,
+  timelastop time without time zone,
+  CONSTRAINT address_pkey PRIMARY KEY (id)
+);
+ALTER TABLE address
+  OWNER TO dsm;
 
+CREATE TABLE phone
+(
+  id serial NOT NULL,
+  dwellerid integer,
+  "number" character varying,
+  operator integer,
+  type integer,
+  watsapp boolean,
+  owner integer,
+  ownertype integer,
+  removed boolean default false,
+  datelastop date,
+  timelastop time without time zone,
+  CONSTRAINT phone_pkey PRIMARY KEY (id)
+);
+
+ALTER TABLE phone
+  OWNER TO dsm;
 

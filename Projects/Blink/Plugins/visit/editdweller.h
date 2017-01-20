@@ -31,12 +31,15 @@ public slots:
     void RemovePhone();
     void RemoveAddress();
     void baterFoto();
+    void AddVeiculo();
+    void RemoveVeiculo();
 private:
     Ui::EditDweller *ui;
     Dweller* m_mod;
     Dweller* m_lastMod;
     QSqlQueryModel *m_model;
     QSqlQueryModel *m_AddressModel;
+    QSqlQueryModel *m_VehicleModel;
 
     ColumnPhone  *m_PhoneDelegate;
     ColumnCenter *m_CenterDelegate;
@@ -46,6 +49,7 @@ private:
     void keyPressEvent(QKeyEvent *e);
     void RefreshPhoneTable();
     void RefreshAddressTable();
+    void RefreshVeicTable();
 };
 
 #endif // EDITDweller_H

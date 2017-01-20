@@ -12,6 +12,7 @@ class vehicle : public Model
      MODEL_DECLARE_ATTRIBUTE(QString, board);
      MODEL_DECLARE_ATTRIBUTE(int, brand);
      MODEL_DECLARE_ATTRIBUTE(int, veicname);
+     MODEL_DECLARE_ATTRIBUTE(bool, Removed);
 
      MODEL_MATCH_TABLE(vehicle, "vehicle")
 

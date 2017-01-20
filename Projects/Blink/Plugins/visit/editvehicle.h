@@ -18,7 +18,7 @@ public:
     ~Editvehicle();
     void SetModel(vehicle* mod);
     vehicle* GetSaved();
-
+    void setOwner(int owner);
 public slots:
     void Save();
     void Cancel();
@@ -27,6 +27,7 @@ private:
     Ui::Editvehicle *ui;
     vehicle* m_mod;
     vehicle* m_lastMod;
+    int m_owner;
     void Load();
     void showEvent(QShowEvent *event);
     void keyPressEvent(QKeyEvent *e);

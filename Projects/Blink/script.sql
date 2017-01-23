@@ -250,3 +250,89 @@ CREATE TABLE phone
 ALTER TABLE phone
   OWNER TO dsm;
 
+create table preaut
+(
+   id serial,
+   sunday boolean,
+   monday boolean,
+   tuesday boolean,
+   wednesday boolean,
+   thursday boolean,
+   friday boolean,
+   saturday boolean,
+   visit integer,
+   horaini time without time zone,
+   horafim time without time zone,
+   validate date,
+   authorizer integer,
+   obs character varying,
+   autsince date,
+   reason integer,
+   destination integer,
+   tp integer default 1,
+   noannounce boolean,
+   removed boolean default false
+);
+ALTER TABLE ONLY preaut
+    ADD CONSTRAINT preaut_key PRIMARY KEY (id);
+
+
+create table visitante
+(
+ id serial,
+ nome character varying,
+ rg character varying,
+ cpf character varying,
+ preautorizado boolean,
+ moradorautorizador integer,
+ dataautorizado date,
+ anunciarchegada boolean,
+ loid integer,
+ tp integer default 1
+);
+ALTER TABLE ONLY visitante
+    ADD CONSTRAINT visitante_key PRIMARY KEY (id);
+
+
+create table visit
+(
+  id serial,
+  data_entrada date,
+  hora_entrada time without time zone,
+  visitante integer,
+  reason integer,
+  data_saida date,
+  saida_hora time without time zone,
+  autorizador integer,
+  notified boolean
+);
+ALTER TABLE ONLY visit
+    ADD CONSTRAINT visit_key PRIMARY KEY (id);
+
+create table reason
+(
+ id serial,
+ description character varying,
+ tp integer default 1
+);
+
+ALTER TABLE ONLY reason
+    ADD CONSTRAINT reason_key PRIMARY KEY (id);
+
+create table brand
+(
+ id serial,
+ name character varying,
+ tp integer default 1
+);
+ALTER TABLE ONLY brand
+    ADD CONSTRAINT brand_key PRIMARY KEY (id);
+
+create table veicname
+(
+ id serial,
+ type character varying,
+ tp integer default 1
+);
+ALTER TABLE ONLY veicname
+    ADD CONSTRAINT veicname_key PRIMARY KEY (id);

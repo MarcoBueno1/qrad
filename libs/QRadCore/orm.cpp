@@ -18,6 +18,7 @@
 #include <QSqlDriver>
 #include <QSqlField>
 #include "fieldfactory.h"
+#include "pgsqlasync.h"
 
 #include <QApplication>
 
@@ -462,4 +463,42 @@ void  ORM::Audit()
    Create();
 
    m_tableName = CurrentTable;
+}
+int ORM::saveImage( QString path )
+{
+  QSqlDatabase db = QSqlDatabase::database();
+
+  int nLoId = PGSQLAsync::Send( path,
+              db.hostName(),
+              db.databaseName(),
+              db.userName(),
+              db.password() );
+
+  return nLoId;
+}
+
+QPixmap ORM::getImage(int nLoId )
+{
+  QSqlDatabase db = QSqlDatabase::database();
+
+     QTime time = QTime::currentTime();
+     QString strFoto = QString("photo_%1_%2_%3.jpg").arg(time.hour()).arg(time.minute()).arg(time.second());
+
+
+     PGSQLAsync::Receive( (unsigned int)nLoId,
+                          strFoto,
+                          db.hostName(),
+                          db.databaseName(),
+                          db.userName(),
+                          db.password() );
+
+
+    ///
+    /// \brief codigo para ler a imagem do banco de dados
+    ///
+
+    QImage myImage;
+    myImage.load(strFoto);
+
+    return QPixmap::fromImage(myImage);
 }

@@ -3,7 +3,8 @@
 #include <QProcess>
 #include <QMessageBox>
 
-#define CMD "c:\\dvl\\test_ocr\\openalpr_32\\alpr.exe -c eu \"c:\\Program Files (x86)\\Tesseract-OCR\\placa.jpg\""
+#define CMD_DBD "c:\\dvl\\test_ocr\\openalpr_32\\alpr.exe -c eu \"c:\\Program Files (x86)\\Tesseract-OCR\\placa.jpg\""
+#define CMD_CASA "C:\\Dvl\\ocr\\openalpr_64\\alpr.exe -c eu \"c:\\Program Files (x86)\\Tesseract-OCR\\placa.jpg\""
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,7 +20,7 @@ MainWindow::~MainWindow()
 QString MainWindow::FindPlate(QString path)
 {
     QProcess *process = new QProcess(this);
-    QString program = CMD;
+    QString program = QString("%1 %2").arg(CMD_CASA).arg(path);
     process->start(program);
     process->waitForStarted();
     process->waitForFinished();
@@ -62,7 +63,7 @@ QString MainWindow::FindPlate(QString path)
 
 void MainWindow::on_pushButton_clicked()
 {
-    FindPlate("C:\\qrad\\bin\\placa.jpg");
+    FindPlate("C:\\Dvl\\ocr\\openalpr_64\\WhatsApp.jpeg");
 
 //    QMessageBox::information(this, "Retornado", QString(plate));
 }

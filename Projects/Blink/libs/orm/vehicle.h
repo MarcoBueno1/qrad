@@ -1,8 +1,18 @@
 #ifndef vehicle_H
 #define vehicle_H
  
-#include "model.h"
+#include "orm.h"
 
+DECLARE_ORM(vehicle)
+
+DECLARE_CLASS(vehicle)
+    ORM_DECLARE_ATTRIBUTE(vehicle, int, id)
+    ORM_DECLARE_ATTRIBUTE(vehicle, int, owner)
+    ORM_DECLARE_ATTRIBUTE(vehicle, QString, board)
+    ORM_MATCH_TABLE(vehicle, "vehicle")
+ORM_END_MAP()
+
+/*
 DECLARE_MODEL(vehicle)
 
 class vehicle : public Model
@@ -23,5 +33,5 @@ public:
     static vehicle* findByid(int id);
     static vehicle* findByid(int id, QString database);
 };
- 
+ */
 #endif 

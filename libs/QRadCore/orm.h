@@ -416,6 +416,8 @@ protected:
     bool do_update();
     bool do_delete();
     void Audit();
+    int  saveImage( QString path );
+    QPixmap getImage(int nLoId);
 
 };
 

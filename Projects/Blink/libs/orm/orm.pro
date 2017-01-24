@@ -28,7 +28,10 @@ SOURCES += dweller.cpp \
            emailconf.cpp \
            maincompany.cpp \
            machine.cpp \ 
-    vehicle.cpp
+    vehicle.cpp \
+    Brand.cpp \
+    veicname.cpp \
+    reason.cpp
             
 
 HEADERS += dweller.h \
@@ -45,7 +48,10 @@ HEADERS += dweller.h \
            emailconf.h \
            maincompany.h \
            machine.h \ 
-    vehicle.h
+    vehicle.h \
+    Brand.h \
+    veicname.h \
+    reason.h
 		   
 win32:LIBS +=  -L../../../../libs/QRadCore\release
 unix:LIBS +=  -L../../../../libs/QRadCore

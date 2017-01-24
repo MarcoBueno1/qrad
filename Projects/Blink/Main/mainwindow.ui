@@ -26,9 +26,40 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuCadastro">
+    <property name="title">
+     <string>Cadastro</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuPortaria">
+    <property name="title">
+     <string>Portaria</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuRelatorios">
+    <property name="title">
+     <string>Relatorios</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuConfigura_es">
+    <property name="title">
+     <string>Configurações</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuAjuda">
+    <property name="title">
+     <string>Ajuda</string>
+    </property>
+    <addaction name="actionSobre_o_Blink"/>
+   </widget>
+   <addaction name="menuCadastro"/>
+   <addaction name="menuPortaria"/>
+   <addaction name="menuRelatorios"/>
+   <addaction name="menuConfigura_es"/>
+   <addaction name="menuAjuda"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -39,6 +70,11 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionSobre_o_Blink">
+   <property name="text">
+    <string>Sobre o Blink</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

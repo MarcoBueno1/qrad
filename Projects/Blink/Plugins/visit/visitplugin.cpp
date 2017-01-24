@@ -1,6 +1,10 @@
 #include "visitplugin.h" 
 #include "qraddebug.h"
 #include "emailconf.h"
+#include "managerBrand.h"
+#include "managerveicname.h"
+#include "managerreason.h"
+
 visitPlugin::visitPlugin()
 {
     m_manager = 0;
@@ -66,7 +70,7 @@ void visitPlugin::Process( const QString& action )
             m_manager = new Managervisit(m_parent);
 
     //    QRadConfig::centralizarWidget(m_manager);
-        m_manager->show();
+        m_manager->exec();
     }
     else if (action.toLower() == QString("Edit").toLower())
     {
@@ -76,7 +80,7 @@ void visitPlugin::Process( const QString& action )
             m_edit = new Editvisit(m_parent);
 
     //    QRadConfig::centralizarWidget(m_edit);
-        m_edit->show();
+        m_edit->exec();
     }
     else if (action.toLower() == QString("ManageVisitante").toLower())
     {
@@ -84,7 +88,7 @@ void visitPlugin::Process( const QString& action )
             m_managerVisitante = new ManagerVisitante(m_parent);
 
     //    QRadConfig::centralizarWidget(m_edit);
-        m_managerVisitante->show();
+        m_managerVisitante->exec();
     }
     else if (action.toLower() == QString("EditMorador").toLower())
     {
@@ -95,7 +99,7 @@ void visitPlugin::Process( const QString& action )
         m_editDweller = new EditDweller(m_parent);
 
     //    QRadConfig::centralizarWidget(m_edit);
-        m_editDweller->show();
+        m_editDweller->exec();
         debug_message("<--EditMorador\n");
     }
     else if (action.toLower() == QString("ManagerMorador").toLower())
@@ -119,7 +123,7 @@ void visitPlugin::Process( const QString& action )
         m_managerPreAut = new Managerpreaut(m_parent);
 
     //    QRadConfig::centralizarWidget(m_edit);
-        m_managerPreAut->show();
+        m_managerPreAut->exec();
         debug_message("<--ManagerPreAut\n");
     }
     else if (action.toLower() == QString("ManagerProfile").toLower())
@@ -131,7 +135,7 @@ void visitPlugin::Process( const QString& action )
         m_managerProfile = new Managerprofile(m_parent);
 
     //    QRadConfig::centralizarWidget(m_edit);
-        m_managerProfile->show();
+        m_managerProfile->exec();
         debug_message("<--ManagerProfile\n");
     }
     else if (action.toLower() == QString("ManagerUser").toLower())
@@ -143,7 +147,7 @@ void visitPlugin::Process( const QString& action )
         m_managerUser = new Manageruser(m_parent);
 
     //    QRadConfig::centralizarWidget(m_edit);
-        m_managerUser->show();
+        m_managerUser->exec();
         debug_message("<--ManagerUser\n");
     }
     else if(action.toLower() == QString("EmailConfig").toLower())
@@ -156,7 +160,7 @@ void visitPlugin::Process( const QString& action )
         emailconf *conf = emailconf::findByid(1);
         if( conf )
             m_emailConfig->SetModel(conf);
-        m_emailConfig->show();
+        m_emailConfig->exec();
         debug_message("<--EmailConfig\n");
     }
     else if(action.toLower() == QString("MainCompany").toLower())
@@ -169,8 +173,37 @@ void visitPlugin::Process( const QString& action )
         maincompany *conf = maincompany::findByid(1);
         if( conf )
             m_maincompany->SetModel(conf);
-        m_maincompany->show();
+        m_maincompany->exec();
         debug_message("<--MainCompany\n");
+    }
+
+    else if(action.toLower() == QString("ManageBrand").toLower())
+    {
+        debug_message("-->ManageBrand\n");
+
+        ManagerBrand *Brand  =  new ManagerBrand(m_parent);
+        Brand->exec();
+        delete Brand;
+        debug_message("<--ManageBrand\n");
+    }
+
+    else if(action.toLower() == QString("ManageVeicname").toLower())
+    {
+        debug_message("-->ManageVeicname\n");
+
+        Managerveicname *VeicName  =  new Managerveicname(m_parent);
+        VeicName->exec();
+        delete VeicName;
+        debug_message("<--ManageVeicname\n");
+    }
+    else if(action.toLower() == QString("ManageReason").toLower())
+    {
+        debug_message("-->ManageReason\n");
+
+        Managerreason *reason  =  new Managerreason(m_parent);
+        reason->exec();
+        delete reason;
+        debug_message("<--ManageReason\n");
     }
 }
 

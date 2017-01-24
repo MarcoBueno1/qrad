@@ -27,7 +27,13 @@ SOURCES = \
              manageruser.cpp \ 
              editemailconf.cpp \
              editmaincompany.cpp \
-    editvehicle.cpp
+    editvehicle.cpp \
+    editBrand.cpp \
+    managerBrand.cpp \
+    editveicname.cpp \
+    managerveicname.cpp \
+    editreason.cpp \
+    managerreason.cpp
 
 HEADERS = \ 
              visitplugin.h \ 
@@ -48,7 +54,13 @@ HEADERS = \
              manageruser.h \
              editemailconf.h \
              editmaincompany.h \
-    editvehicle.h
+    editvehicle.h \
+    editBrand.h \
+    managerBrand.h \
+    editveicname.h \
+    managerveicname.h \
+    editreason.h \
+    managerreason.h
 
 
 
@@ -70,7 +82,13 @@ FORMS = \
              manageruser.ui \ 
              editemailconf.ui \
              editmaincompany.ui \
-    editvehicle.ui
+    editvehicle.ui \
+    editBrand.ui \
+    managerBrand.ui \
+    editveicname.ui \
+    managerveicname.ui \
+    editreason.ui \
+    managerreason.ui
 
 
 

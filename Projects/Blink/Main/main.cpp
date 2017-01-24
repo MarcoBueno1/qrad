@@ -11,7 +11,7 @@
 #include "login.h"
 #include "qradlicup.h"
 #include "clicense.h"
-
+#include <QMessageBox>
 
 void centerWidget(QWidget *widget)
 {
@@ -71,7 +71,8 @@ int main(int argc, char *argv[])
     QTranslator tradutorQt;
 
 //    tradutorExaro.load(":/translate/exaro_pt", QCoreApplication::applicationDirPath());
-    tradutorQt.load(":/translate/qt_pt", QCoreApplication::applicationDirPath());
+    if(!tradutorQt.load("qt_pt.qm", "C:\\Dvl\\qrad"))
+        QMessageBox::information(NULL,"ERRO AO CARREGAR LINGUAGM", "Erro" );
 //    a.installTranslator(&tradutorExaro);
     a.installTranslator(&tradutorQt);
 

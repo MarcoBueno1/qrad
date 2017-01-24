@@ -272,7 +272,7 @@ void EditDweller::AddVeiculo()
 void EditDweller::RemoveVeiculo()
 {
     int id = ui->tableViewVeiculos->model()->index(ui->tableViewVeiculos->currentIndex().row(),0).data().toInt();
-    vehicle *p = vehicle::findByid(id);
+    vehicle *p = vehicle::findByid(id,true);
     if(p)
     {
         p->updateRemoved( true );

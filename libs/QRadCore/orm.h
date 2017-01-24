@@ -24,6 +24,7 @@
 #include <QDate>
 #include <QString>
 #include <QDebug>
+#include <QPixmap>
 
 typedef enum ORMAttrType_en
 {

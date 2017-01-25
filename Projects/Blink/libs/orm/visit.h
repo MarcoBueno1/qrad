@@ -25,7 +25,7 @@ public:
     static visitList* findAll(void);
     static visit* findByid(int id);
     static visit* findByid(int id, QString database);
-    static QList<visit*>* findNotNotified();
+    static visitList * findNotNotified();
 };
  
 #endif 

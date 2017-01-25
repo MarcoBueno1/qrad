@@ -22,6 +22,13 @@ public:
                          QString strdatabasename,
                          QString strusername,
                          QString strpassword );
+
+    static int WaitChange( QString strtable,
+                           int nTimeout,
+                           QString strHostName,
+                           QString strDatabaseName,
+                           QString strUserName,
+                           QString strPassword );
 };
 
 #endif //

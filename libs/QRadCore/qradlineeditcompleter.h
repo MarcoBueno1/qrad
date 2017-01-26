@@ -39,7 +39,7 @@ private:
     QList<QLineEdit *> m_lineEdits;
     QCompleter     *m_completer;
     QSqlQueryModel *m_completerModel;
-    int m_nCurrentId = 0;
+    int m_nCurrentId;
 
     void ClearAll();
 

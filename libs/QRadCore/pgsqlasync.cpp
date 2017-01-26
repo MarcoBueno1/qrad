@@ -137,6 +137,7 @@ int PGSQLAsync::WaitChange( QString strtable,
                             QString strUserName,
                             QString strPassword )
 {
+#ifdef _nao_compilar_
 #ifndef __linux__
     ConfigurationModel *config = ConfigurationModel::getInstanceNoSelect();
     if( config && config->getDisableListen() )
@@ -150,6 +151,8 @@ int PGSQLAsync::WaitChange( QString strtable,
         return 0;
     }
 #endif
+#endif
+
     char conninfo[256];
     PGconn     *conn;
     PGresult   *res;

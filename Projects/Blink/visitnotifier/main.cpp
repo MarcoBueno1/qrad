@@ -148,6 +148,8 @@ bool ProcessEmail(visit *pCurrent)
 
   g_mail->sendMail(from,to,subject,body,list);
 
+  qDebug() << "e-mail enviado.. ";
+
   return true;
 
 }
@@ -169,7 +171,7 @@ int main(int argc, char *argv[])
             if( ProcessEmail(pCurrent) )
                 pCurrent->updateNotified(true);
         }
-        qDebug() << "WaitForChange.... ";
+        //qDebug() << "WaitForChange.... ";
 
 
     }while(1);

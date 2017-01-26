@@ -48,7 +48,7 @@ visitList * visit::findNotNotified()
 {
     MODEL_INIT_LIST(visit, m_allList);
 
-    QString query = QString("select * from visit v inner join dweller d on d.id = v.autorizador and d.notifbyemail = true and v.notified = false and d.removed = false and d.moveout < '2010-01-01' order by v.id desc limit 100");
+    QString query = QString("select * from visit v inner join dweller d on d.id = v.autorizador and d.notifbyemail = true and v.notified = false and d.removed = false and d.moveout < '2012-01-01' order by v.id desc limit 100");
 
     if (!visit::fillModelList(m_allList, query))
         return NULL;

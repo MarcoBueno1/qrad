@@ -37,13 +37,9 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 #include "camera.h"
 #include "ui_camera.h"
-//#include "videosettings.h"
-//#include "imagesettings.h"
 
-#include <QMediaService>
 #include <QMediaRecorder>
 #include <QCameraViewfinder>
 #include <QCameraInfo>
@@ -52,7 +48,8 @@
 #include <QMessageBox>
 #include <QPalette>
 
-#include <QtWidgets>
+#include <QFile>
+#include <QKeyEvent>
 
 Q_DECLARE_METATYPE(QCameraInfo)
 

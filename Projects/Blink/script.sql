@@ -336,3 +336,15 @@ create table veicname
 );
 ALTER TABLE ONLY veicname
     ADD CONSTRAINT veicname_key PRIMARY KEY (id);
+
+
+
+
+
+CREATE FUNCTION notify_visit_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$BEGIN NOTIFY visit; return new; END $$;
+
+CREATE TRIGGER trigger_notify_visit_change AFTER INSERT OR DELETE OR UPDATE ON visit FOR EACH ROW EXECUTE PROCEDURE notify_visit_change();
+
+

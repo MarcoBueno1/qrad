@@ -30,3 +30,6 @@ LIBS += -lqradcore \
         -lblinkorm
 
 win32:QMAKE_LFLAGS += --enable-auto-import
+
+target.path = $${PREFIX}/bin
+INSTALLS += target

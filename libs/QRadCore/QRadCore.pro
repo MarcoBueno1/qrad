@@ -63,7 +63,20 @@ HEADERS +=  qradplugincontainer.h \
     cmdsqlite.h \
     cmdpostgres.h \
     cmdmysql.h \
-    cmdinterface.h
+    cmdinterface.h \
+    m2smtp.cpp \
+    emailaddress.cpp \
+    mimeattachment.cpp \
+    mimefile.cpp \
+    mimehtml.cpp \
+    mimeinlinefile.cpp \
+    mimemessage.cpp \
+    mimepart.cpp \
+    mimetext.cpp \
+    smtpclient.cpp \
+    quotedprintable.cpp \
+    mimemultipart.cpp \
+    mimecontentformatter.cpp
 
 
 win32:HEADERS  += system/inc/win/qradsystem.h
@@ -107,7 +120,22 @@ SOURCES +=  qradplugininterface.cpp \
     cmdpostgres.cpp \
     cmdsqlite.cpp \
     fieldfactory.cpp \
-    orm.cpp 
+    orm.cpp \
+    m2smtp.h \
+    emailaddress.h \
+    mimeattachment.h \
+    mimefile.h \
+    mimehtml.h \
+    mimeinlinefile.h \
+    mimemessage.h \
+    mimepart.h \
+    mimetext.h \
+    smtpclient.h \
+    SmtpMime \
+    quotedprintable.h \
+    mimemultipart.h \
+    mimecontentformatter.h \
+    smtpexports.h
 
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c

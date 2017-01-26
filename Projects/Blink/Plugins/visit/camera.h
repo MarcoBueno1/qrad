@@ -37,19 +37,15 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+#ifndef QRAD_CAMERA_H
+#define QRAD_CAMERA_H
 
-#ifndef CAMERA_H
-#define CAMERA_H
-
+#include <QDialog>
 #include <QCamera>
 #include <QCameraImageCapture>
 #include <QMediaRecorder>
 
-#include <QDialog>
-
-QT_BEGIN_NAMESPACE
 namespace Ui { class Camera; }
-QT_END_NAMESPACE
 
 class Camera : public QDialog
 {

@@ -1,4 +1,6 @@
-QT += core sql network script widgets multimedia multimediawidgets
+QT       += core gui sql xml  multimedia multimediawidgets
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets sql
 
 TARGET = visitplugin
 TEMPLATE = lib
@@ -8,13 +10,12 @@ INCLUDEPATH = ../../../../libs/QRadCore \
               ../../libs/orm/
 
 DESTDIR = .
-SOURCES = \ 
-             visitplugin.cpp \ 
+SOURCES = camera.cpp \
+             visitplugin.cpp \
              managervisit.cpp \ 
              editvisit.cpp \ 
              managerVisitante.cpp \ 
              editVisitante.cpp \
-             camera.cpp \
              managerdweller.cpp \ 
              editdweller.cpp \
 	     editphone.cpp \

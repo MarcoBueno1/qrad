@@ -67,7 +67,11 @@ bool Visitante::saveImage( QString path )
 QPixmap Visitante::getImage()
 {
   return  Model::getImage(getLoId());
+}
 
+QString Visitante::getImage(QString path)
+{
+  return  Model::getImage(getLoId(), path);
 }
 
 bool Visitante::Save()

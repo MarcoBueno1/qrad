@@ -81,7 +81,7 @@ M2Smtp::M2Smtp(const QString &server,
         okMessage.exec();
         return;
     }
-    else if( popupMessage )
+//    else if( popupMessage )
     {
         okMessage.setText(QString::fromUtf8("Email Enviado!"));
         okMessage.exec();

@@ -125,6 +125,7 @@ void PGSQLAsync::Receive( unsigned int loid,
 
      res = PQexec(conn, "end");
 
+     PQflush(conn);
      PQclear(res);
 
      PQfinish(conn);

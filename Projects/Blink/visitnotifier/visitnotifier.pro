@@ -4,9 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core sql network widgets
+QT       += gui core sql network widgets
 
-QT       -= gui
+#QT       -= gui
 
 TARGET = visitnotifier
 CONFIG   += console
@@ -19,7 +19,8 @@ INCLUDEPATH = ../../../libs/QRadCore \
 TEMPLATE = app
 
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    task.cpp
 
 win32:LIBS += -L../../../libs/QRadCore/release \
               -L../libs/orm/release
@@ -33,3 +34,6 @@ win32:QMAKE_LFLAGS += --enable-auto-import
 
 target.path = $${PREFIX}/bin
 INSTALLS += target
+
+HEADERS += \
+    task.h

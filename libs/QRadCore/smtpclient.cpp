@@ -357,7 +357,11 @@ bool SmtpClient::sendMail(MimeMessage& email)
 
         waitForResponse();
 
-        if (responseCode != 250) return false;
+        if (responseCode != 250)
+        {
+            qDebug() << "responseCode" << ":" <<responseCode << "=" << responseText;
+            return false;
+        }
 
         // Send RCPT command for each recipient
         QList<EmailAddress*>::const_iterator it, itEnd;
@@ -368,7 +372,11 @@ bool SmtpClient::sendMail(MimeMessage& email)
             sendMessage("RCPT TO: <" + (*it)->getAddress() + ">");
             waitForResponse();
 
-            if (responseCode != 250) return false;
+            if (responseCode != 250)
+            {
+                qDebug() << "responseCode" << ":" <<responseCode << "=" << responseText;
+                return false;
+            }
         }
 
         // Cc (carbon copy)
@@ -378,7 +386,11 @@ bool SmtpClient::sendMail(MimeMessage& email)
             sendMessage("RCPT TO: <" + (*it)->getAddress() + ">");
             waitForResponse();
 
-            if (responseCode != 250) return false;
+            if (responseCode != 250)
+            {
+                qDebug() << "responseCode" << ":" <<responseCode << "=" << responseText;
+                return false;
+            }
         }
 
         // Bcc (blind carbon copy)
@@ -388,14 +400,22 @@ bool SmtpClient::sendMail(MimeMessage& email)
             sendMessage("RCPT TO: <" + (*it)->getAddress() + ">");
             waitForResponse();
 
-            if (responseCode != 250) return false;
+            if (responseCode != 250)
+            {
+                qDebug() << "responseCode" << ":" <<responseCode << "=" << responseText;
+                return false;
+            }
         }
 
         // Send DATA command
         sendMessage("DATA");
         waitForResponse();
 
-        if (responseCode != 354) return false;
+        if (responseCode != 354)
+        {
+            qDebug() << "responseCode" << ":" <<responseCode << "=" << responseText;
+            return false;
+        }
 
         sendMessage(email.toString());
 
@@ -404,7 +424,12 @@ bool SmtpClient::sendMail(MimeMessage& email)
 
         waitForResponse();
 
-        if (responseCode != 250) return false;
+        if (responseCode != 250)
+        {
+            qDebug() << "responseCode" << ":" <<responseCode << "=" << responseText;
+            return false;
+        }
+
     }
     catch (ResponseTimeoutException)
     {

@@ -6,6 +6,7 @@
 #include "model.h"
 #include "qradmodellog.h"
 #include "pgsqlasync.h"
+#include <QPixmap>
 
 #ifdef __linux__
 #include <unac.h>
@@ -824,7 +825,7 @@ QPixmap Model::getImage(int nLoId )
   QSqlDatabase db = QSqlDatabase::database();
 
      QTime time = QTime::currentTime();
-     QString strFoto = QString("dweller_%1_%2_%3.jpg").arg(time.hour()).arg(time.minute()).arg(time.second());
+     QString strFoto = QString("image_%1_%2_%3.jpg").arg(time.hour()).arg(time.minute()).arg(time.second());
  
 
      PGSQLAsync::Receive( (unsigned int)nLoId,
@@ -839,11 +840,46 @@ QPixmap Model::getImage(int nLoId )
     /// \brief codigo para ler a imagem do banco de dados
     ///
 
-    QImage myImage;
-    myImage.load(strFoto);
+    QImage myImage;// = new QImage(strFoto);
+//    qDebug() << "QImage";
+    if( !myImage.load(strFoto))
+       qDebug() << "Load Error...";
+    qDebug() << "load...";
 
-    return QPixmap::fromImage(myImage);
+    if( myImage.isNull())
+        qDebug() << "image is null ... ";
+
+    QPixmap pix =  QPixmap::fromImage(myImage);
+    qDebug() << "from image...";
+    return pix;
 }
+
+
+QString Model::getImage(int nLoId, QString path )
+{
+  Q_UNUSED(path);
+
+  QSqlDatabase db = QSqlDatabase::database();
+
+     QTime time = QTime::currentTime();
+     QString strFoto = QString("image_%1_%2_%3.jpg").arg(time.hour()).arg(time.minute()).arg(time.second());
+
+
+     PGSQLAsync::Receive( (unsigned int)nLoId,
+                          strFoto,
+                          db.hostName(),
+                          db.databaseName(),
+                          db.userName(),
+                          db.password() );
+
+
+    ///
+    /// \brief codigo para ler a imagem do banco de dados
+    ///
+
+    return strFoto;
+}
+
 //   QCoreApplication *app = QCoreApplication::instance();
 //    m_useTableFilter = app->property("useTableFilter").toBool();
 

@@ -31,6 +31,7 @@ public:
     static Visitante* findByid(int id, QString database);
     bool saveImage(QString path);
     QPixmap getImage();
+    QString getImage(QString path);
     bool Save();
 };
  

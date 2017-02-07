@@ -592,6 +592,7 @@ protected:
     QString DebugAttribute(ModelAttribute *attr);
     int  saveImage( QString path );
     QPixmap getImage(int nLoId);
+    QString getImage(int nLoId, QString path );
 
     bool do_insert();
     bool do_update();

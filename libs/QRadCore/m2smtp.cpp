@@ -34,6 +34,7 @@ M2Smtp::M2Smtp(const QString &server,
             const QList<QString> file, const bool html )
 {
 
+    m_bSent =  false;
     EmailAddress *sender = stringToEmail(from);
 
     SmtpClient smtp (server, port.toInt(), SmtpClient::SslConnection);
@@ -83,8 +84,10 @@ M2Smtp::M2Smtp(const QString &server,
     }
 //    else if( popupMessage )
     {
-        okMessage.setText(QString::fromUtf8("Email Enviado!"));
-        okMessage.exec();
+//        okMessage.setText(QString::fromUtf8("Email Enviado!"));
+//        okMessage.exec();
+        m_bSent =  true;
+
     }
 
     smtp.quit();
@@ -264,7 +267,7 @@ M2Smtp::M2Smtp(const QString &server,
 */
 }
 
-void M2Smtp::send()
+bool M2Smtp::send()
 {
 /*    state = Init;
     emit status( 1 ); //Connecting
@@ -276,6 +279,7 @@ void M2Smtp::send()
         emit status( 2 ); //Connected
     }
 */
+    return m_bSent;
 }
 M2Smtp::~M2Smtp()
 {

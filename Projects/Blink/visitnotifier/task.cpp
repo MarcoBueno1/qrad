@@ -10,6 +10,7 @@
 #include "m2smtp.h"
 #include<QApplication>
 #include "task.h"
+#include "reason.h"
 
 QString g_user     = "garden.club.residence@gmail.com";
 //QString g_user     = "lnxdevelopment@gmail.com";
@@ -32,8 +33,15 @@ QString GetAuthorizer(visit *pCurrent)
 
 QString GetReason(visit *pCurrent)
 {
-   Q_UNUSED(pCurrent);
-  return QString("Visita tecnica");
+   QString string = QString("Visita tecnica");
+   reason *reas = reason::findByid(pCurrent->getReason());
+   if(reas)
+   {
+      string = reas->getdescription();
+      delete reas;
+   }
+
+  return string;
 }
 
 QString GetImage(visit *pCurrent)
@@ -101,7 +109,7 @@ bool ProcessEmail(visit *pCurrent)
 
   QString visitant= GetVistName(pCurrent);
   QString subject  = QString("%1 a caminho de seu apartamento...").arg(visitant);
-  QString body  = QString("Prezado Morador,<br/><br/>        O Sr(a) %1 entrou no condominio em %2 %3 e dirige-se a seu apartamento, motivo da visita:<br/><br/><br/><br/>          %4<br/><br/><br/><br/>        Autorizado por: %5<br/><br/><br/><br/>        Atenciosamente\n")
+  QString body  = QString("Prezado Morador,<br/><br/>        O Sr(a) %1 entrou no condominio em %2 as %3hrs e dirige-se a seu apartamento, motivo da visita:<br/><br/><br/><br/>          %4<br/><br/><br/><br/>        Autorizado por: %5<br/><br/><br/><br/>        Atenciosamente\n")
           .arg(visitant)
           .arg(pCurrent->getData().toString(FMT_DATE))
           .arg(pCurrent->getHora().toString(FMT_TIME))
@@ -138,7 +146,9 @@ bool ProcessEmail(visit *pCurrent)
 
   //progress->show();
   qDebug() << "Linha:" << __LINE__;
-  newEmail->send();
+  bool bRet = false;
+  if(newEmail->send())
+      bRet = true;
   qDebug() << "Linha:" << __LINE__;
 
 
@@ -146,7 +156,7 @@ bool ProcessEmail(visit *pCurrent)
 
   qDebug() << "e-mail enviado.. ";
 
-  return true;
+  return bRet;
 
 }
 

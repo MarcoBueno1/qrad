@@ -13,267 +13,253 @@
   <property name="windowTitle">
    <string/>
   </property>
-  <widget class="QTabWidget" name="tabWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>516</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Verdana</family>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::NoFocus</enum>
-   </property>
-   <property name="currentIndex">
-    <number>0</number>
-   </property>
-   <widget class="QWidget" name="tab">
-    <attribute name="title">
-     <string>Visitas</string>
-    </attribute>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <property name="leftMargin">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="currentIndex">
       <number>0</number>
      </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <item row="1" column="0">
-      <widget class="QGroupBox" name="groupBoxItens">
-       <property name="font">
-        <font>
-         <family>Verdana</family>
-         <pointsize>9</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Visitas</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="leftMargin">
+        <number>0</number>
        </property>
-       <property name="title">
-        <string>Visitas</string>
+       <property name="topMargin">
+        <number>0</number>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
+       <property name="rightMargin">
+        <number>0</number>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QRadTableViewSearch" name="tableViewSearch">
-          <property name="font">
-           <font>
-            <family>Verdana</family>
-            <pointsize>8</pointsize>
-           </font>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBoxItens">
+         <property name="font">
+          <font>
+           <family>Verdana</family>
+           <pointsize>9</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="title">
+          <string>Visitas</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QRadTableViewSearch" name="tableViewSearch">
+            <property name="font">
+             <font>
+              <family>Verdana</family>
+              <pointsize>8</pointsize>
+             </font>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">selection-background-color: rgba(102, 176, 239, 75%); selection-color: rgb(255, 255, 255);</string>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+            <attribute name="horizontalHeaderMinimumSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderMinimumSectionSize">
+             <number>18</number>
+            </attribute>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Verdana</family>
+           <pointsize>9</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter|Qt::AlignTop</set>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="spacing">
+           <number>6</number>
           </property>
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
+          <property name="leftMargin">
+           <number>9</number>
           </property>
-          <property name="styleSheet">
-           <string notr="true">selection-background-color: rgba(102, 176, 239, 75%); selection-color: rgb(255, 255, 255);</string>
+          <property name="topMargin">
+           <number>0</number>
           </property>
-          <property name="verticalScrollBarPolicy">
-           <enum>Qt::ScrollBarAlwaysOn</enum>
+          <property name="rightMargin">
+           <number>9</number>
           </property>
-          <property name="selectionBehavior">
-           <enum>QAbstractItemView::SelectRows</enum>
+          <property name="bottomMargin">
+           <number>9</number>
           </property>
-          <property name="sortingEnabled">
-           <bool>true</bool>
-          </property>
-          <attribute name="horizontalHeaderMinimumSectionSize">
-           <number>20</number>
-          </attribute>
-          <attribute name="verticalHeaderVisible">
-           <bool>false</bool>
-          </attribute>
-          <attribute name="verticalHeaderMinimumSectionSize">
-           <number>18</number>
-          </attribute>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QGroupBox" name="groupBox_2">
+          <item>
+           <widget class="QRadLineEditFakeEnter" name="lineEditSearch">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Verdana</family>
+              <pointsize>18</pointsize>
+             </font>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QGroupBox" name="groupBox">
        <property name="minimumSize">
         <size>
-         <width>0</width>
-         <height>60</height>
+         <width>471</width>
+         <height>50</height>
         </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>60</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Verdana</family>
-         <pointsize>9</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
        </property>
        <property name="title">
-        <string/>
+        <string> Visualisar</string>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignHCenter|Qt::AlignTop</set>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <property name="spacing">
-         <number>6</number>
+       <widget class="QRadioButton" name="radioButtonOpened">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>30</y>
+          <width>151</width>
+          <height>17</height>
+         </rect>
         </property>
-        <property name="leftMargin">
-         <number>9</number>
+        <property name="text">
+         <string>Quem está no Condomínio</string>
         </property>
-        <property name="topMargin">
-         <number>0</number>
+        <property name="checked">
+         <bool>true</bool>
         </property>
-        <property name="rightMargin">
-         <number>9</number>
+       </widget>
+       <widget class="QRadioButton" name="radioButtonEnded">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>30</y>
+          <width>111</width>
+          <height>17</height>
+         </rect>
         </property>
-        <property name="bottomMargin">
-         <number>9</number>
+        <property name="text">
+         <string>Visitas Finalizadas</string>
         </property>
-        <item>
-         <widget class="QRadLineEditFakeEnter" name="lineEditSearch">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>34</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>34</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>Verdana</family>
-            <pointsize>18</pointsize>
-           </font>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       </widget>
+       <widget class="QRadioButton" name="radioButtonAll">
+        <property name="geometry">
+         <rect>
+          <x>380</x>
+          <y>30</y>
+          <width>82</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Todos</string>
+        </property>
+       </widget>
       </widget>
      </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="PshBtnEditar">
+         <property name="text">
+          <string>&amp;Consulta / Finaliza</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="PshBtnNovo">
+         <property name="text">
+          <string>&amp;Nova Visita</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="PshBtnSair">
+         <property name="text">
+          <string>&amp;Sair</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
     </layout>
-   </widget>
-  </widget>
-  <widget class="QPushButton" name="PshBtnEditar">
-   <property name="geometry">
-    <rect>
-     <x>504</x>
-     <y>560</y>
-     <width>111</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Consulta / Finaliza</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="PshBtnNovo">
-   <property name="geometry">
-    <rect>
-     <x>620</x>
-     <y>560</y>
-     <width>85</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Nova Visita</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="PshBtnSair">
-   <property name="geometry">
-    <rect>
-     <x>707</x>
-     <y>560</y>
-     <width>85</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&amp;Sair</string>
-   </property>
-  </widget>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>520</y>
-     <width>471</width>
-     <height>70</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string> Visualisar</string>
-   </property>
-   <widget class="QRadioButton" name="radioButtonOpened">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>151</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Quem está no Condomínio</string>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioButtonEnded">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>30</y>
-      <width>111</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Visitas Finalizadas</string>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioButtonAll">
-    <property name="geometry">
-     <rect>
-      <x>380</x>
-      <y>30</y>
-      <width>82</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Todos</string>
-    </property>
-   </widget>
-  </widget>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>

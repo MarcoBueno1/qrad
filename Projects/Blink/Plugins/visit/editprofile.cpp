@@ -18,6 +18,8 @@ Editprofile::Editprofile(QWidget *parent) :
     
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
+
+    setWindowTitle("Edição de Perfil");
 }
 
 Editprofile::~Editprofile()
@@ -59,6 +61,7 @@ void Editprofile::Save()
     mod->setuseuser(ui->ChkBxuseuser->isChecked());
     mod->setuseprofile(ui->ChkBxuseprofile->isChecked());
     mod->setConfigureEmail(ui->ChkConfigureemail->isChecked());
+    mod->setGerarRelatorios(ui->ChkGerarRelatorios->isChecked());
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -86,6 +89,7 @@ void Editprofile::Load()
     ui->ChkBxuseuser->setChecked(m_mod->getuseuser());
     ui->ChkBxuseprofile->setChecked(m_mod->getuseprofile());
     ui->ChkConfigureemail->setChecked(m_mod->getConfigureEmail());
+    ui->ChkGerarRelatorios->setChecked(m_mod->getGerarRelatorios());
 
 }
 

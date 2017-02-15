@@ -5,8 +5,8 @@
 #include <QMessageBox>
 #include <QDebug>
 
-#define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select name, email,id from vuser order by id"
+#define BN_DEFAULT_COLUMN_SEARCH 1
+#define SQL_ITEMS "select name as \"Nome\", email as \"Login\",id from vuser order by id"
 
 Manageruser::Manageruser(QWidget *parent) :
     QDialog(parent),
@@ -30,12 +30,16 @@ Manageruser::Manageruser(QWidget *parent) :
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
 
     DoRefresh();
+    setWindowTitle("Gerência de Usuários");
 }
 
 Manageruser::~Manageruser()
 {
-    m_keyinterval->stop();
-    delete m_keyinterval;
+    if( m_keyinterval )
+    {
+        m_keyinterval->stop();
+        delete m_keyinterval;
+    }
     delete m_Model;
 
     delete ui;
@@ -155,7 +159,7 @@ void Manageruser::refreshTable()
 
 void Manageruser::ConfigureTable()
 {
-      ui->tableViewSearch->addSearchColumnFilter(0);
+    ui->tableViewSearch->addSearchColumnFilter(0);
     ui->tableViewSearch->addSearchColumn(0);
     ui->tableViewSearch->addSearchColumn(1);
     ui->tableViewSearch->addSearchColumnFilter(1);
@@ -171,6 +175,8 @@ void Manageruser::ConfigureTable()
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
      ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
      ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnCenter);
+     ui->tableViewSearch->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
 
 
 }

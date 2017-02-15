@@ -12,6 +12,7 @@ MODEL_BEGIN_MAP(profile)
      MODEL_MAP_FIELD(useuser, "useuser");
      MODEL_MAP_FIELD(useprofile, "useprofile");
      MODEL_MAP_FIELD(ConfigureEmail, "configureemail");
+     MODEL_MAP_FIELD(GerarRelatorios, "gerarrelatorios");
      MODEL_MAP_FIELD(tp, "tp");
      MODEL_MAP_FIELD(removed, "removed");
 MODEL_END_MAP()

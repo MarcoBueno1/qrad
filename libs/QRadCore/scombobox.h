@@ -5,6 +5,7 @@
 //#include <QString>
 #include <QSqlQueryModel>
 #include "qraddebug.h"
+#include "qradconfig.h"
 
 class SComboBox : public QComboBox
 {
@@ -15,6 +16,7 @@ class SComboBox : public QComboBox
     Q_PROPERTY(QString UserName READ UserName WRITE setUserName)
     Q_PROPERTY(QString Password READ Password WRITE setPassword)
     Q_PROPERTY(QString Host READ Host WRITE setHost)
+    Q_PROPERTY(QString Permission READ Host WRITE setPermission)
     Q_PROPERTY(bool Build READ Build WRITE setBuild NOTIFY BuildChanged)
     Q_PROPERTY(bool CanAdd READ CanAdd WRITE setCanAdd)
     Q_PROPERTY(int  CurentId READ CurrentId WRITE setCurrentId)
@@ -61,6 +63,10 @@ public:
     {
         m_CurrentId = id;
     }
+    void setPermission(QString Permission )
+    {
+        m_Permission = Permission;
+    }
 
 
     QString Table()
@@ -93,11 +99,19 @@ public:
     }
     bool CanAdd()
     {
-        return m_CanAdd;
+
+        if( m_Permission.isEmpty() || QRadConfig::GetUserProfile(m_Permission))
+            return m_CanAdd;
+        else
+            return false;
     }
     int CurrentId()
     {
         return m_CurrentId;
+    }
+    QString GetPermission()
+    {
+        return m_Permission;
     }
 
 public slots:
@@ -127,6 +141,7 @@ private:
   QSqlQueryModel *m_pModelLocal;
   bool   m_CanAdd;
   int m_CurrentId;
+  QString m_Permission;
 
   QString m_UIFileName;
   QSqlDatabase m_currentdb;

@@ -44,6 +44,19 @@ Editpreaut::Editpreaut(QWidget *parent) :
 
     connect(ui->CmbBxvisit, SIGNAL(activated(int)), this, SLOT(visitActivated(int)));
     connect(ui->CmbBxauthorizer, SIGNAL(activated(int)), this, SLOT(AutActivated(int)));
+
+
+    ui->DtEdtautsince->setDate(QDate::currentDate());
+    ui->DtEdtvalidate->setDate(QDate::currentDate().addMonths(3));
+
+    /*
+    QTime time;
+
+    time.fromString("17:00", "HH:MM");
+    ui->TmEdthorafim->setTime(time);
+    time.fromString("08:00", "HH:MM");
+    ui->TmEdthoraini->setTime(time);
+    */
 }
 
 Editpreaut::~Editpreaut()
@@ -72,6 +85,12 @@ void Editpreaut::SetModel(preaut* mod)
 
 void Editpreaut::Save()
 {
+    if( 1 >  ui->CmbBxvisit->model()->data(ui->CmbBxvisit->model()->index(ui->CmbBxvisit->currentIndex(), 0)).toInt())
+    {
+        QMessageBox::warning(this, "Oops!","Informe o nome do visitante!");
+        ui->CmbBxvisit->setFocus();
+        return;
+    }
 
     preaut* mod =  m_mod;
     if( m_mod == NULL)
@@ -103,6 +122,20 @@ void Editpreaut::Save()
     m_mod = NULL;
     if( bRet )
     {
+       Visitante *visitante = Visitante::findByid(mod->getvisit());
+       if(visitante)
+       {
+          visitante->setRG(ui->lineEditRG->text().remove(".").remove("-"));
+          visitante->setCPF(ui->lineEditCPF->text().remove(".").remove("-"));
+          if( visitante->getRG().isEmpty() )
+             visitante->setRG(" ");
+          if( visitante->getCPF().isEmpty() )
+             visitante->setCPF(" ");
+
+          visitante->Save();
+          delete visitante;
+       }
+
        QMessageBox::information(this, "Sucesso!","Informações foram salvas com sucesso!");
        accept();
     }
@@ -132,6 +165,13 @@ void Editpreaut::Load()
     ui->CmbBxreason->setCurrentId(m_mod->getreason());
     ui->CmbBxDestination->setCurrentId(m_mod->getdestination());
 
+    Visitante *visitante = Visitante::findByid(m_mod->getvisit());
+    if(visitante)
+    {
+       ui->lineEditRG->setText(visitante->getRG());
+       ui->lineEditCPF->setText(visitante->getCPF());
+       delete visitante;
+    }
 }
 
 void Editpreaut::Cancel()

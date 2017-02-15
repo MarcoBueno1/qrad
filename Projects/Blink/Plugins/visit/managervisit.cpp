@@ -64,6 +64,12 @@ Managervisit::Managervisit(QWidget *parent) :
     connect(ui->radioButtonOpened, SIGNAL(released()), this, SLOT(LoadTableView()) );
 
     DoRefresh();
+
+    Qt::WindowFlags flags = windowFlags();
+    flags |= Qt::WindowMaximizeButtonHint;
+    flags |= Qt::WindowContextHelpButtonHint;
+    setWindowFlags( flags );
+    setWindowState(Qt::WindowMaximized);
 }
 
 Managervisit::~Managervisit()
@@ -162,8 +168,9 @@ void Managervisit::LoadTableView()
 
     QApplication::processEvents();
     ui->tableViewSearch->setModel( m_Model);
-    ui->tableViewSearch->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+// mbueno    ui->tableViewSearch->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     //ui->tableViewSearch->horizontalHeader()->setStretchLastSection(true);
+
 
     QApplication::processEvents();
 }
@@ -267,13 +274,24 @@ void Managervisit::doEditar()
 
     int nId = currentIndex.sibling(currentIndex.row(),ui->tableViewSearch->getColumnOf("id")).data().toInt();
 
+    qDebug() << nId;
+
     visit *sa = visit::findByid(nId);
+    if( !sa )
+    {
+        QMessageBox::warning(this,"Oops!", "Selecione um item primeiro!");
+        return;
+    }
+
     edt->SetModel(sa);
     if( edt->exec() == QDialog::Accepted )
     {
         MatchNewest(edt->GetSaved());
     }
     delete edt;
+
+    ui->lineEditSearch->selectAll();
+    ui->lineEditSearch->setFocus();
 
 }
 
@@ -286,10 +304,41 @@ void Managervisit::doNovo()
         MatchNewest(edt->GetSaved());
     }
     delete edt;
+
+    ui->lineEditSearch->selectAll();
+    ui->lineEditSearch->setFocus();
 }
 
 void Managervisit::doSair()
 {
     if( QMessageBox::Yes ==  QMessageBox::question(this, "Sair?","Deseja sair desta pesquisa?",QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
            reject();
+}
+void Managervisit::resizeEvent(QResizeEvent * event)
+{
+//    debug_message("resizeEvent widht:%d resizemode: %d\n",
+  //                ui->tableViewSearch->width(),
+    //              ui->tableViewSearch->horizontalHeader()->sectionResizeMode());
+
+//    LoadTableView();
+
+    if( this->isVisible())
+    {
+        ui->tableViewSearch->setColumnWidth(1, 0.10 * ui->tableViewSearch->width());
+        ui->tableViewSearch->setColumnWidth(2, 0.10 * ui->tableViewSearch->width());
+        ui->tableViewSearch->setColumnWidth(3, 0.30 * ui->tableViewSearch->width());
+        ui->tableViewSearch->setColumnWidth(4, 0.30 * ui->tableViewSearch->width());
+        ui->tableViewSearch->setColumnWidth(5, 0.09 * ui->tableViewSearch->width());
+        ui->tableViewSearch->setColumnWidth(6, 0.09 * ui->tableViewSearch->width());
+        //ui->tableViewSearch->horizontalHeader()->setSectionResizeMode(3);
+    }
+  //  else
+  //      ui->tableViewSearch->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+
+//    ui->tableViewSearch->addSearchColumn(3);
+ //   ui->tableViewSearch->addSearchColumn(4);
+  //  ui->tableViewSearch->addSearchColumnFilter(3);
+   // ui->tableViewSearch->addSearchColumnFilter(4);
+
 }

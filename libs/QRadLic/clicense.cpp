@@ -9,7 +9,7 @@
 
 #define _CLIENT_SIDE 1
 
-#define QRADL_SELECT_MACHINES        "select id, hdserial, id from machine order by id"
+#define QRADL_SELECT_MACHINES        "select id, machine, id from machine order by id"
 #define QRADL_MAX_USERS              "select max from license"
 #define QRADL_SELECT_STOREDLICENSE   "select lastlicense from license"
 #define QRADL_SELECT_CNPJ            "select cnpj from license"
@@ -17,7 +17,7 @@
 #define QRADL_UPDATE_MAX_USERS       "update license set max = "
 
 /// FIX: Adjust next line to provide safe fraud verification.
-#define QRADL_SELECT_SELL_DATE       "select date from dsm_sell order by date"
+#define QRADL_SELECT_SELL_DATE       "select data_entrada from visit order by date"
 //
 
 #define QRADL_CONNECTED_USERS        "SELECT usesysid, usename FROM pg_stat_activity"
@@ -209,13 +209,13 @@ QString Clicense::BuildKey( QDate ObjDate )
     // step 5: Build key
     strKey = m_objCrypt.Encrypt( strHash, strHash );
 */
-
+/*
     if( 0 == strKey.length() )
     {
         //qDebug() << "<--BuildKey 3";
         return strKey;
     }
-
+*/
     return strKey;
 }
 
@@ -308,7 +308,7 @@ QString Clicense::GetSerialNumbers()
         strTemp = query.value(query.record().indexOf("id")).toString();
         if( strTemp.length() )
             strNumbers.push_back(strTemp + ";");
-        strTemp = query.value(query.record().indexOf("hdserial")).toString();
+        strTemp = query.value(query.record().indexOf("machine")).toString();
         if( strTemp.length() )
             strNumbers.push_back( strTemp + ";");
         query.next();
@@ -452,7 +452,7 @@ bool Clicense::IsLocalDateWrong()
 
     query.last();
 
-    objDate = query.value(query.record().indexOf("date")).toDate();
+    objDate = query.value(query.record().indexOf("data_entrada")).toDate();
     if( objDate > QDate::currentDate() )
     {
         //qDebug() << objDate.day() << objDate.month() << objDate.year();

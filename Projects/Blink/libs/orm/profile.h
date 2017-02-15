@@ -18,6 +18,7 @@ class profile : public Model
      MODEL_DECLARE_ATTRIBUTE(bool, useuser);
      MODEL_DECLARE_ATTRIBUTE(bool, useprofile);
      MODEL_DECLARE_ATTRIBUTE(bool, ConfigureEmail);
+     MODEL_DECLARE_ATTRIBUTE(bool, GerarRelatorios);
      MODEL_DECLARE_ATTRIBUTE(int, tp);
      MODEL_DECLARE_ATTRIBUTE(bool, removed);
 

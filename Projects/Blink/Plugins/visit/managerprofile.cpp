@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select name,id from profile where tp <> 2 order by id"
+#define SQL_ITEMS "select name as \"Nome\" ,id from profile where tp <> 2 order by id"
 
 Managerprofile::Managerprofile(QWidget *parent) :
     QDialog(parent),
@@ -30,12 +30,17 @@ Managerprofile::Managerprofile(QWidget *parent) :
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
 
     DoRefresh();
+
+    setWindowTitle("Gerência de Perfil");
 }
 
 Managerprofile::~Managerprofile()
 {
-    m_keyinterval->stop();
-    delete m_keyinterval;
+    if(m_keyinterval)
+    {
+        m_keyinterval->stop();
+        delete m_keyinterval;
+    }
     delete m_Model;
 
     delete ui;

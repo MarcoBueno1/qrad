@@ -69,21 +69,24 @@ void Edituser::Save()
      ui->LnEdtemail->setFocus();
      return;
    }
-   if( ui->LnEdtpassword->text().trimmed().isEmpty())
+   if( ui->LnEdtpassword->isEnabled())
    {
-     QMessageBox::warning(this, "Oops","O campo senha não pode ficar vazio!"); 
-     ui->LnEdtpassword->selectAll();
-     ui->LnEdtpassword->setFocus();
-     return;
-   }
-   if( ui->LnEdtpassword->text() != ui->LnEdtConfirmPassword->text())
-   {
-     QMessageBox::warning(this, "Oops","O campo senha não confere com o campo confirmação de senha!"); 
-     ui->LnEdtpassword->clear();
-     ui->LnEdtConfirmPassword->clear();
-     ui->LnEdtpassword->selectAll();
-     ui->LnEdtpassword->setFocus();
-     return;
+       if( ui->LnEdtpassword->text().trimmed().isEmpty())
+       {
+         QMessageBox::warning(this, "Oops","O campo senha não pode ficar vazio!");
+         ui->LnEdtpassword->selectAll();
+         ui->LnEdtpassword->setFocus();
+         return;
+       }
+       if( ui->LnEdtpassword->text() != ui->LnEdtConfirmPassword->text())
+       {
+         QMessageBox::warning(this, "Oops","O campo senha não confere com o campo confirmação de senha!");
+         ui->LnEdtpassword->clear();
+         ui->LnEdtConfirmPassword->clear();
+         ui->LnEdtpassword->selectAll();
+         ui->LnEdtpassword->setFocus();
+         return;
+       }
    }
 
    //
@@ -96,10 +99,13 @@ void Edituser::Save()
     mod->setemail(ui->LnEdtemail->text());
     mod->setcontractsince(ui->DtEdtcontractsince->date());
 
-    QVariant pass = ui->LnEdtpassword->text().toLower();
-    QString md5 = QCryptographicHash::hash(pass.toByteArray(), QCryptographicHash::Md5).toHex();
+    if( ui->LnEdtpassword->isEnabled())
+    {
+        QVariant pass = ui->LnEdtpassword->text().toLower();
+        QString md5 = QCryptographicHash::hash(pass.toByteArray(), QCryptographicHash::Md5).toHex();
 
-    mod->setpassword(md5);
+        mod->setpassword(md5);
+    }
     mod->setprofile(ui->CmbBxprofile->model()->data(ui->CmbBxprofile->model()->index(ui->CmbBxprofile->currentIndex(), 0)).toInt());
 
     bool bRet = mod->Save();
@@ -124,8 +130,9 @@ void Edituser::Load()
     ui->LnEdtname->setText(m_mod->getname());
     ui->LnEdtemail->setText(m_mod->getemail());
     ui->DtEdtcontractsince->setDate(m_mod->getcontractsince());
-    ui->LnEdtpassword->setText(m_mod->getpassword());
+//    ui->LnEdtpassword->setText(m_mod->getpassword());
     ui->CmbBxprofile->setCurrentId(m_mod->getprofile());
+    ui->LnEdtpassword->setEnabled(false);
 
 }
 

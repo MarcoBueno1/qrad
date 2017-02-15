@@ -313,12 +313,14 @@ create table reason
 (
  id serial,
  description character varying,
- tp integer default 1
+ tp integer default 1,
+ removed boolean default false
 );
 
 ALTER TABLE ONLY reason
     ADD CONSTRAINT reason_key PRIMARY KEY (id);
 
+alter table reason add column removed boolean default false;
 create table brand
 (
  id serial,
@@ -332,12 +334,13 @@ create table veicname
 (
  id serial,
  type character varying,
- tp integer default 1
+ tp integer default 1,
+ removed boolean default false
 );
 ALTER TABLE ONLY veicname
     ADD CONSTRAINT veicname_key PRIMARY KEY (id);
 
-
+alter table veicname add column removed boolean default false;
 
 
 

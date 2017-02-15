@@ -45,8 +45,8 @@
       <rect>
        <x>88</x>
        <y>20</y>
-       <width>390</width>
-       <height>27</height>
+       <width>27</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="editable">
@@ -209,8 +209,8 @@
       <rect>
        <x>90</x>
        <y>20</y>
-       <width>310</width>
-       <height>27</height>
+       <width>27</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="editable">
@@ -282,6 +282,13 @@
         <height>27</height>
        </rect>
       </property>
+      <property name="time">
+       <time>
+        <hour>17</hour>
+        <minute>0</minute>
+        <second>0</second>
+       </time>
+      </property>
      </widget>
      <widget class="QTimeEdit" name="TmEdthoraini">
       <property name="geometry">
@@ -291,6 +298,13 @@
         <width>60</width>
         <height>27</height>
        </rect>
+      </property>
+      <property name="time">
+       <time>
+        <hour>8</hour>
+        <minute>0</minute>
+        <second>0</second>
+       </time>
       </property>
      </widget>
      <widget class="QLabel" name="Lblhorafim">
@@ -403,6 +417,9 @@
       <property name="text">
        <string>Segunda</string>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QCheckBox" name="ChkBxtuesday">
       <property name="geometry">
@@ -415,6 +432,9 @@
       </property>
       <property name="text">
        <string>Terça</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="ChkBxwednesday">
@@ -429,6 +449,9 @@
       <property name="text">
        <string>Quarta</string>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QCheckBox" name="ChkBxthursday">
       <property name="geometry">
@@ -441,6 +464,9 @@
       </property>
       <property name="text">
        <string>Quinta</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="ChkBxfriday">
@@ -455,6 +481,9 @@
       <property name="text">
        <string>Sexta</string>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QCheckBox" name="ChkBxsaturday">
       <property name="geometry">
@@ -467,6 +496,9 @@
       </property>
       <property name="text">
        <string>Sabado</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QCheckBox" name="ChkBxsunday">
@@ -481,6 +513,9 @@
       <property name="text">
        <string>Domingo</string>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
      </widget>
     </widget>
     <widget class="SComboBox" name="CmbBxauthorizer">
@@ -488,8 +523,8 @@
       <rect>
        <x>122</x>
        <y>212</y>
-       <width>370</width>
-       <height>27</height>
+       <width>27</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="editable">
@@ -607,8 +642,8 @@
       <rect>
        <x>90</x>
        <y>60</y>
-       <width>310</width>
-       <height>27</height>
+       <width>27</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="editable">

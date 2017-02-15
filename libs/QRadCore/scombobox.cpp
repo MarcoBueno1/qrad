@@ -385,11 +385,22 @@ bool SComboBox::PersistObjects()
     }
 
 
+    if( CanAdd())
+    {
+        m_pModelLocal->setQuery(QString("select id, %1 from %2 where %1 <> '' order by tp, %1")
+                                .arg(Field().toLower())
+                                .arg(Table().toLower())
+                               ,m_currentdb);
+    }
+    else
+    {
+        m_pModelLocal->setQuery(QString("select id, %1 from %2 where %1 <> '%3' and %1 <> '' order by tp, %1")
+                                .arg(Field().toLower())
+                                .arg(Table().toLower())
+                                .arg(strTokenNew)
+                               ,m_currentdb);
+    }
 
-    m_pModelLocal->setQuery(QString("select id, %1 from %2 order by tp, %1")
-                            .arg(Field().toLower())
-                            .arg(Table().toLower())
-                           ,m_currentdb);
 
 
     setModel(m_pModelLocal);

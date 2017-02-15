@@ -3,9 +3,20 @@
 #include <QProcess>
 #include <QMessageBox>
 #include <QCameraInfo>
+#include <QSqlQueryModel>
+#include <QSqlRecord>
+#include <QSqlField>
+#include <QFileDialog>
+#include "qradshared.h"
 
 #define CMD_DBD "c:\\dvl\\test_ocr\\openalpr_32\\alpr.exe -c eu \"c:\\Program Files (x86)\\Tesseract-OCR\\placa.jpg\""
 #define CMD_CASA "C:\\Dvl\\ocr\\openalpr_64\\alpr.exe -c eu \"c:\\Program Files (x86)\\Tesseract-OCR\\placa.jpg\""
+
+#define SELECT "select d.name as \"Morador\", t.name as \"Torre\", ap.numero as \"Apartamento\", v.board as \"Placa\" from dweller d "\
+               " inner join vehicle v on v.owner = d.id"\
+               " inner join tower t on t.id = d.tower "\
+               " inner join ap on ap.id = d.ap where v.board = '%1'"
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -129,10 +140,34 @@ QString MainWindow::FindPlate(QString path)
 
 void MainWindow::on_pushButton_clicked()
 {
-    QString plate = FindPlate("C:\\Dvl\\qrad\\bin\\image.jpeg"/*"C:\\Dvl\\ocr\\openalpr_64\\WhatsApp.jpeg"*/);
+    ui->LblMorador->setText("NAO CADASTRADO, PLACA:" );
+    ui->LblMorador->setStyleSheet(FG_COLOR_RED);
+
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Abrir Arquivo"), "C:\\dvl\\qrad", tr("Image Files (*.png *.jpg *.bmp *.jpeg)"));
+
+
+//    QString plate = FindPlate("C:\\Dvl\\qrad\\bin\\image.jpeg"/*"C:\\Dvl\\ocr\\openalpr_64\\WhatsApp.jpeg"*/);
+    QString plate = FindPlate(fileName);
 
     plate.truncate(plate.indexOf("confidence"));
     plate.remove(plate.indexOf("-"),1);
     plate = plate.trimmed();
-    QMessageBox::information(this, "Retornado", QString(plate));
+    if( !plate.isEmpty())
+    {
+       QSqlQueryModel *model = new QSqlQueryModel;
+       model->setQuery(QString(SELECT).arg(plate));
+       if(model->rowCount() > 0 )
+       {
+           QString Dweller = model->record(0).field(0).value().toString();
+           QString Tower = model->record(0).field(1).value().toString();
+           QString Ap = model->record(0).field(2).value().toString();
+           QString Plate = model->record(0).field(3).value().toString();
+
+           ui->LblMorador->setText(QString("%1, %2, %3, %4").arg(Dweller).arg(Tower).arg(Ap).arg(Plate));
+           ui->LblMorador->setStyleSheet(FG_COLOR_GREEN);
+       }
+       delete model;
+//      QMessageBox::information(this, "Retornado", QString(plate));
+    }
 }

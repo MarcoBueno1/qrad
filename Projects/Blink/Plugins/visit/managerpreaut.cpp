@@ -6,7 +6,8 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
-#define SQL_ITEMS "select validate, obs,id from preaut order by sunday" 
+#define SQL_ITEMS "select validate, v.nome as \"Nome\" , obs as \"Obs\", p.id from preaut p "\
+                  " inner join visitante v on v.id = p.visit  order by v.nome"
 
 Managerpreaut::Managerpreaut(QWidget *parent) :
     QDialog(parent),
@@ -34,8 +35,11 @@ Managerpreaut::Managerpreaut(QWidget *parent) :
 
 Managerpreaut::~Managerpreaut()
 {
-    m_keyinterval->stop();
-    delete m_keyinterval;
+    if( m_keyinterval )
+    {
+        m_keyinterval->stop();
+        delete m_keyinterval;
+    }
     delete m_Model;
 
     delete ui;

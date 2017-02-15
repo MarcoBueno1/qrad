@@ -93,6 +93,7 @@ void Editlogin::Save()
    app->setProperty("usedweller", pro->getusedweller());
    app->setProperty("useivisitant", pro->getusevisitant());
    app->setProperty("configureemail",pro->getConfigureEmail());
+   app->setProperty("gerarrelatorios",pro->getGerarRelatorios());
 
 
     // aqui deve salvar a maquina

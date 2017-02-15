@@ -60,7 +60,9 @@ void QRadLicUp::conectremote()
 
     if (!m_db.open())
     {
-        QMessageBox::information(NULL, "Erro.", "Nao foi possivel conectar no banco de dados remoto.");
+//        QMessageBox::information(NULL, "Erro.", "Nao foi possivel conectar no banco de dados remoto.");
+
+
 //        debug_message("\nErro: %s\n (m_db.setHostName=%s, m_db.password()=%s)\n", m_db.lastError().text().toUtf8().data(),
  //                     m_db.hostName().toUtf8().data(), m_db.password().toUtf8().data());
     }

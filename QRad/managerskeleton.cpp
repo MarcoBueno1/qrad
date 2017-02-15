@@ -280,8 +280,11 @@
 "\n"\
 "Manager%1::~Manager%1()\n"\
 "{\n"\
-"    m_keyinterval->stop();\n"\
-"    delete m_keyinterval;\n"\
+"     if( m_keyinterval )\n"\
+"     {\n"\
+"       m_keyinterval->stop();\n"\
+"       delete m_keyinterval;\n"\
+"     }\n"\
 "    delete m_Model;\n"\
 "\n"\
 "    delete ui;\n"\

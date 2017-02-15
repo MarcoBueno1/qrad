@@ -5,6 +5,7 @@
 #include <QModelIndex>
 #include <QAbstractItemModel>
 #include <QVariant>
+#include <QShortcut>
 #include "camera.h"
 #include "Visitante.h"
 #include "dweller.h"
@@ -57,13 +58,20 @@ Editvisit::Editvisit(QWidget *parent) :
 
     ui->comboBoxReason->setTable("reason");
     ui->comboBoxReason->setField("description");
-    ui->comboBoxReason->setCanAdd(false);
+    ui->comboBoxReason->setPermission("usedweller");
+    ui->comboBoxReason->setCanAdd(true);
     ui->comboBoxReason->setUserName("dsm");
     if( ui->comboBoxReason->completer() )
         ui->comboBoxReason->completer()->setFilterMode(Qt::MatchContains );
 
     ui->groupBoxSaida->setVisible(false);
 
+    /*
+    Qt::WindowFlags flags = windowFlags();
+    flags |= Qt::WindowMaximizeButtonHint;
+    flags |= Qt::WindowContextHelpButtonHint;
+    setWindowFlags( flags );
+    */
 }
 
 
@@ -74,7 +82,6 @@ Editvisit::~Editvisit()
 void Editvisit::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
-    
     
 }
 void Editvisit::keyPressEvent(QKeyEvent *e)
@@ -203,7 +210,10 @@ void Editvisit::Load()
    ui->lineEditTorre->setEnabled(false);
    ui->lineEditRamal->setEnabled(false);
    ui->labelStatus->setText("Finalizar Vizita");
-   ui->PshBtnSave->setText("Concluir");
+   ui->PshBtnSave->setText("C&oncluir");
+   QShortcut *shortcut = new QShortcut(QKeySequence("Alt+o"), this);
+   QObject::connect(shortcut, SIGNAL(activated()), ui->PshBtnSave, SLOT(click()));
+
    ui->pushButtonBaterFoto->setEnabled(false);
 
     ui->DtEdtData->setDate(m_mod->getData());
@@ -281,6 +291,7 @@ void Editvisit::baterFoto()
       m_foto = 1;
   }
   delete cam;
+  ui->lineEditRG->setFocus();
 }
 
 void Editvisit::found( int id )

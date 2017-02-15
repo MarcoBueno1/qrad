@@ -67,14 +67,11 @@ int main(int argc, char *argv[])
 
     /* Translate application components */
 
-//    QTranslator tradutorExaro;
-    QTranslator tradutorQt;
+//    QTranslator tradutorQt;
 
-//    tradutorExaro.load(":/translate/exaro_pt", QCoreApplication::applicationDirPath());
-    if(!tradutorQt.load("qt_pt.qm", "C:\\Dvl\\qrad"))
-        QMessageBox::information(NULL,"ERRO AO CARREGAR LINGUAGM", "Erro" );
-//    a.installTranslator(&tradutorExaro);
-    a.installTranslator(&tradutorQt);
+//    if(!tradutorQt.load("qt_pt.qm", "C:\\Dvl\\qrad"))
+//        QMessageBox::information(NULL,"ERRO AO CARREGAR LINGUAGM", "Erro" );
+//    a.installTranslator(&tradutorQt);
 
     Editlogin *el = new Editlogin;
 

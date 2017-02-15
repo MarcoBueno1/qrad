@@ -15,6 +15,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void resizeEvent(QResizeEvent *event);
+private slots:
+    void on_actionSobre_o_Blink_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -5,8 +5,8 @@
 #include <QMessageBox>
 #include <QDebug>
 
-#define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select id, description as \"Motivo\" from reason where tp = 1 and removed = false order by id"
+#define BN_DEFAULT_COLUMN_SEARCH 1
+#define SQL_ITEMS "select id, description as \"Motivo\" from reason where description <> '' and tp = 1 and removed = false order by id"
 
 Managerreason::Managerreason(QWidget *parent) :
     QDialog(parent),
@@ -36,8 +36,11 @@ Managerreason::Managerreason(QWidget *parent) :
 
 Managerreason::~Managerreason()
 {
-    m_keyinterval->stop();
-    delete m_keyinterval;
+    if( m_keyinterval )
+    {
+        m_keyinterval->stop();
+        delete m_keyinterval;
+    }
     delete m_Model;
 
     delete ui;
@@ -157,7 +160,8 @@ void Managerreason::refreshTable()
 
 void Managerreason::ConfigureTable()
 {
-      ui->tableViewSearch->addSearchColumn(0);
+      ui->tableViewSearch->addSearchColumn(1);
+      ui->tableViewSearch->addSearchColumnFilter(1);
 
 
    // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Conuna1"));

@@ -8,7 +8,7 @@
 #include <QUrl>
 #include "qradshared.h"
 #include "pdfwrapper.h"
-
+#include "qraddebug.h"
 
 ReportLauncher::ReportLauncher(QWidget *parent) :
     QDialog(parent),
@@ -146,6 +146,7 @@ QString ReportLauncher::BuildSQL()
         sql = QString(m_report->getSql()).arg(SqlWhere);
 
     qDebug() << "Sql:" << sql;
+    debug_message("SQL: %s\n",sql.toLatin1().data());
     return sql;
 }
 

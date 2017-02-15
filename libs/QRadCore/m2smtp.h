@@ -35,7 +35,7 @@ public:
             const QList<QString> file, const bool html = false);
     ~M2Smtp();
     
-    void send();
+    bool send();
     void getM2SmtpMsgError(int error, QString &);
     
 public slots:
@@ -68,5 +68,6 @@ private:
     int errorSocket;
     enum states{Rcpt,Mail,Data,Init,Body,Quit,Close,Auth};
     int state;
+    bool m_bSent;
 };
 #endif /* M2SMTP_H */

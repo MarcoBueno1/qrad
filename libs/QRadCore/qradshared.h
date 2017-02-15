@@ -175,6 +175,7 @@
 #define BG_COLOR_NOT_FOUND      QString("background: red;")
 
 #define FG_COLOR_RED            QString("color: red;")
+#define FG_COLOR_GREEN          QString("color: green;")
 
 #define BG_FIN_COLOR_GREEN      QColor(100, 240, 100)
 #define BG_FIN_COLOR_RED        QColor(240, 100, 100)

@@ -20,6 +20,7 @@ public:
     explicit Managervisit(QWidget *parent = 0);
     ~Managervisit();
 
+    void resizeEvent(QResizeEvent *event);
 public slots:
     void notFound();
     void Found( QModelIndex );

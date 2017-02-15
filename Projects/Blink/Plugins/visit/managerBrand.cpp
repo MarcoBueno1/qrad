@@ -5,8 +5,8 @@
 #include <QMessageBox>
 #include <QDebug>
 
-#define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select id, name as \"Marca\"from Brand where tp = 1 order by id"
+#define BN_DEFAULT_COLUMN_SEARCH 1
+#define SQL_ITEMS "select id, name as \"Marca\"from Brand where name <> '' and tp = 1 order by id"
 
 ManagerBrand::ManagerBrand(QWidget *parent) :
     QDialog(parent),
@@ -161,7 +161,8 @@ void ManagerBrand::refreshTable()
 
 void ManagerBrand::ConfigureTable()
 {
-      ui->tableViewSearch->addSearchColumn(0);
+      ui->tableViewSearch->addSearchColumn(BN_DEFAULT_COLUMN_SEARCH);
+      ui->tableViewSearch->addSearchColumnFilter(BN_DEFAULT_COLUMN_SEARCH);
 
 
    // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Conuna1"));

@@ -37,6 +37,7 @@ SOURCES += dweller.cpp \
     accounttoreceivemodel.cpp \
     debtmodel.cpp \
     paymentwaymodel.cpp \
+    paymentmodel.cpp \
     bankmodel.cpp \
     accounttoreceivehistorymodel.cpp \
     accounttopayhistorymodel.cpp \
@@ -66,6 +67,7 @@ HEADERS += dweller.h \
     accounttoreceivemodel.h \
     debtmodel.h \
     paymentwaymodel.h \
+    paymentmodel.h \
     bankmodel.h \
     accounttoreceivehistorymodel.h \
     accounttopayhistorymodel.h \

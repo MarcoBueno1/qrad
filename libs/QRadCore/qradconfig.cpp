@@ -21,6 +21,13 @@ bool QRadConfig::GetUserProfile(QString strPermsission)
    return  app->property(strPermsission.toLatin1().data()).toBool();
 }
 
+int QRadConfig::GetCurrentUserId()
+{
+   QCoreApplication *app = QCoreApplication::instance();
+   return app->property("CurrentUserId").toInt();
+}
+
+
 QString QRadConfig::GetCurrentUserLogin()
 {
 

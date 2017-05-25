@@ -15,6 +15,8 @@ public:
     static QString GetCurrentUserLogin();
     static void centralizarWidget(QWidget *widget);
     static void fullScreen(QWidget *widget);
+    static int GetCurrentUserId();
+
 private:
     static bool ShowFullScreen(void);
 

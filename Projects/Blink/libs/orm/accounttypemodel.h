@@ -9,6 +9,14 @@ typedef enum{
     AccountTypeBoth
 }DSM_AccountType_t;
 
+typedef enum{
+    AccountOpCreate = 1,
+    AccountOpEdit,
+    AccountOpRemove,
+    AccountOpPaid,
+    AccountOpRestore
+}DSM_AccountOperation_t;
+
 DECLARE_ORM(AccountTypeModel)
 
 DECLARE_CLASS(AccountTypeModel)

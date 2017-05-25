@@ -466,4 +466,8 @@
 
 #define MSG_QUESTION_DELETE_ACCOUNTTYPE     QString::fromUtf8("Deseja realmente excluir esse tipo de conta?")
 
+#define MSG_QUESTION_RESTORE_ACCOUNT        QString::fromUtf8("Deseja realmente estornar essa conta?")
+
+#define MSG_QUESTION_DELETE_ACCOUNTTOPAY    QString::fromUtf8("Deseja realmente excluir essa conta?")
+
 #endif // DSM_MESSAGES_H

@@ -78,7 +78,14 @@ HEADERS +=  qradplugincontainer.h \
     quotedprintable.h \
     mimemultipart.h \
     mimecontentformatter.h \
-    smtpexports.h
+    smtpexports.h \
+    dsmcalendar.h \
+    dsmdateeditenter.h \
+    dsmgroupboxenter.h \
+    dsmcomboboxenter.h \
+    dsmspinboxenter.h \
+    dsmtextedit.h \
+    dsmradiobuttonenter.h
 
 
 
@@ -137,7 +144,14 @@ SOURCES +=  qradplugininterface.cpp \
     smtpclient.cpp \
     quotedprintable.cpp \
     mimemultipart.cpp \
-    mimecontentformatter.cpp
+    mimecontentformatter.cpp \
+    dsmcalendar.cpp \
+    dsmdateeditenter.cpp \
+    dsmgroupboxenter.cpp \
+    dsmcomboboxenter.cpp \
+    dsmspinboxenter.cpp \
+    dsmtextedit.cpp \
+    dsmradiobuttonenter.cpp
 
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c

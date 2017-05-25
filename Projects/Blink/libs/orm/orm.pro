@@ -31,7 +31,13 @@ SOURCES += dweller.cpp \
     vehicle.cpp \
     Brand.cpp \
     veicname.cpp \
-    reason.cpp
+    reason.cpp \
+    accounttypemodel.cpp \
+    accounttopaymodel.cpp \
+    accounttoreceivemodel.cpp \
+    debtmodel.cpp \
+    paymentwaymodel.cpp \
+    bankmodel.cpp
             
 
 HEADERS += dweller.h \
@@ -51,7 +57,13 @@ HEADERS += dweller.h \
     vehicle.h \
     Brand.h \
     veicname.h \
-    reason.h
+    reason.h \
+    accounttypemodel.h \
+    accounttopaymodel.h \
+    accounttoreceivemodel.h \
+    debtmodel.h \
+    paymentwaymodel.h \
+    bankmodel.h
 		   
 win32:LIBS +=  -L../../../../libs/QRadCore\release
 unix:LIBS +=  -L../../../../libs/QRadCore

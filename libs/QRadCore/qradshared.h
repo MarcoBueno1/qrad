@@ -625,4 +625,12 @@ typedef struct
 
 Q_DECLARE_METATYPE(QList<int>);
 
+typedef struct
+{
+    QDate       date;
+    QStringList descriptionToPay;
+    QStringList descriptionToReceive;
+}DSM_AccountCalendar_t;
+
+
 #endif // QRadSHARED_H

@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include "ui_accounttypereport.h"
-#include "dsmreport.h"
 
 namespace Ui{
    class AccountTypeReport;

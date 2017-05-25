@@ -1,4 +1,6 @@
 #include "accountcalendaraux.h"
+#include "column2delegate.h"
+
 
 #define SQL_SELECT_ACCOUNTTOPAY     "select fac.id, fac.description, fac.issuedate, fac.vencdate, fac.value  from dsm_fin_accounttopay fac where fac.removed = false and fac.vencdate = '%1' and fac.paid = false order by fac.description"
 #define SQL_SELECT_ACCOUNTTORECEIVE "select fac.id, fac.description, fac.issuedate, fac.vencdate, fac.value  from dsm_fin_accounttoreceive fac where fac.removed = false and fac.vencdate = '%1' and fac.paid = false order by fac.description"

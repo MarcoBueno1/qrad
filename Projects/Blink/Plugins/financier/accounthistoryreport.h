@@ -3,8 +3,6 @@
 
 #include <QDialog>
 #include "ui_accounthistoryreport.h"
-#include "dsmreport.h"
-#include "column2delegate.h"
 #include "accounthistoryreportaux.h"
 
 namespace Ui{

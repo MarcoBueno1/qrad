@@ -6,6 +6,9 @@
 **/
 #include "accounttoreceivemanager.h"
 #include "ui_accounttoreceivemanager.h"
+#ifdef _OLD_REPORT_
+#include "dsmreport.h"
+#endif
 
 #define SQL_SELECT_ACCOUNTTORECEIVE         "select fac.id, %1 fac.description as description,%1 case when c.name is NULL then 'NAO INFORMADO' else c.name end as cliente, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.clientid from dsm_fin_accounttoreceive fac left join dsm_client_abstract c on c.id = fac.clientid where fac.removed = false %2 order by %3, fac.description"
 #define SQL_SELECT_ACCOUNTTORECEIVE_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, case when c.name is NULL then 'NAO INFORMADO' else c.name end as client from dsm_fin_accounttoreceive fac inner join dsm_fin_accounttype fat on fat.id = fac.accounttypeid left join dsm_client_abstract c on fac.clientid = c.id where fac.removed = false %1 order by %2, fac.description"
@@ -482,6 +485,7 @@ void AccountToReceiveManager::DeleteAccountToReceive(void)
 
 void AccountToReceiveManager::ShowReport(void)
 {
+#ifdef _OLD_REPORT_
     if (m_selectAccountToReceive->rowCount() > 0)
     {
         QSqlQueryModel *select = new QSqlQueryModel;
@@ -521,4 +525,5 @@ void AccountToReceiveManager::ShowReport(void)
         delete report;
         delete select;
     }
+#endif
 }

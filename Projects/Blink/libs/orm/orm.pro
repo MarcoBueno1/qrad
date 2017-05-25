@@ -39,6 +39,7 @@ SOURCES += dweller.cpp \
     paymentwaymodel.cpp \
     bankmodel.cpp \
     accounttoreceivehistorymodel.cpp \
+    accounttopayhistorymodel.cpp \
     userV2.cpp
             
 
@@ -67,6 +68,7 @@ HEADERS += dweller.h \
     paymentwaymodel.h \
     bankmodel.h \
     accounttoreceivehistorymodel.h \
+    accounttopayhistorymodel.h \
     userV2.h
 		   
 win32:LIBS +=  -L../../../../libs/QRadCore\release

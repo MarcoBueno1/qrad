@@ -1,4 +1,9 @@
 #include "accounthistoryreport.h"
+#ifdef _OLD_REPORT_
+#include "dsmreport.h"
+#endif
+#include "column2delegate.h"
+
 
 #define SQL_SELECT_ACCOUNTTOPAY     "select ah.id, a.id, ah.userid, a.description, 'A PAGAR' as accounttype, ah.typeoperation, u.name, ah.date, ah.time  from dsm_fin_accounttopay_history ah inner join dsm_fin_accounttopay a on ah.accounttopayid = a.id inner join dsm_user u on ah.userid = u.id "
 #define SQL_SELECT_ACCOUNTTORECEIVE "select ah.id, a.id, ah.userid, a.description, 'A RECEBER' as accounttype, ah.typeoperation, u.name, ah.date, ah.time  from dsm_fin_accounttoreceive_history ah inner join dsm_fin_accounttoreceive a on ah.accounttoreceiveid = a.id inner join dsm_user u on ah.userid = u.id "

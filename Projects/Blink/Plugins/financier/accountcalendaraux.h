@@ -3,8 +3,6 @@
 
 #include <QDialog>
 #include "ui_accountcalendaraux.h"
-#include "dsmreport.h"
-#include "column2delegate.h"
 
 namespace Ui{
    class AccountCalendarAux;

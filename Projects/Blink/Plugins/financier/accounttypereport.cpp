@@ -6,6 +6,10 @@
 **/
 #include "accounttypereport.h"
 
+#ifdef _OLD_REPORT
+#include "dsmreport.h"
+#endif
+
 #define SQL_SELECT_SUM_TOPAY "select case when sum(ap.valuepaid) is null then 0 else sum(ap.valuepaid) end as sum "\
 "   from dsm_fin_accounttype at "\
 "   left outer join dsm_fin_accounttopay ap on at.id = ap.accounttypeid and ap.paid = true and ap.removed = false and ap.paiddate between '%1' and '%2' "\
@@ -103,6 +107,8 @@ void AccountTypeReport::keyPressEvent(QKeyEvent *e)
 
 void AccountTypeReport::Launcher(void)
 {
+
+#ifdef _OLD_REPORT
     QSqlQueryModel  *getSumToPay = new QSqlQueryModel,
                     *getSumToReceive = new QSqlQueryModel,
                     *getTotalToPay = new QSqlQueryModel,
@@ -224,4 +230,6 @@ void AccountTypeReport::Launcher(void)
     delete getTotalToPay;
     delete getTotalToReceive;
     delete getSells;
+
+#endif
 }

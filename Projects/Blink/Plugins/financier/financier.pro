@@ -10,19 +10,9 @@ QT += core \
 TARGET = financier
 TEMPLATE = lib
 CONFIG += plugin
-INCLUDEPATH = ../../../libs/dsmcommon \
-    ../../dsm-sg \
-    ../../../libs/exaro \
-    ../../../libs/dsmlicense \
-    ../../../ecf/DSMIOCommon/inc \
-    ../../../libs/m2phi \
-    ../../../libs/dsmsecure \
-    ../../../libs/dsmmodel \
-    ../../../libs/openssl/include \
-    ../../../src/include \
-    ../../../src/widgets
-unix:INCLUDEPATH += ../../../ecf/DSMIOCommon/inc/lnx
-win32:INCLUDEPATH += ../../../ecf/DSMIOCommon/inc/win
+INCLUDEPATH = ../../../../libs/QRadCore \
+    ../../libs/orm \
+    ../../../../libs/QRadLic 
 DESTDIR = .
 SOURCES += financierplugin.cpp \
     accounttypemanager.cpp \
@@ -56,24 +46,13 @@ HEADERS += financierplugin.h \
     accounthistoryreportaux.h \
     accountcalendar.h \
     accountcalendaraux.h
-win32:LIBS += -L../../../installer/windows \
-    -L../../../libs/dsmlicense/release -L../../../libs/dsmlicense/debug\
-    -L../../../libs/dsmcommon/release -L../../../libs/dsmcommon/debug\
-        -L../../../libs/dsmmodel/release -L../../../libs/dsmmodel/debug\
-    -L../../../src/widgets/release -L../../../src/widgets/debug\
-    -L../../../libs/dsmround/release -L../../../libs/dsmround/debug\
-    -ldsmround
 
-unix:LIBS += -L../../../libs/exaro \
-    -L../../../libs/m2phi \
-    -L../../../libs/dsmlicense \
-    -L../../../libs/dsmcommon \
-	-L../../../libs/dsmmodel \
-    -L../../../src/widgets \
-    -lssl
-LIBS += -ldsmcommon \
-		-ldsmmodel \
-		-ldsmwidgets
+LIBS += -L../../../../libs/QRadCore \
+        -L../../libs/orm \
+        -L../../../../libs/QRadLic \
+        -l \
+	-ldsmmodel \
+	-ldsmwidgets
 
 win32:QMAKE_LFLAGS += --enable-auto-import
 

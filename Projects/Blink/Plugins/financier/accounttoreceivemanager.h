@@ -5,10 +5,9 @@
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 #include <QKeyEvent>
-#include "dsm.h"
+#include "qradshared.h"
 #include "accounttoreceiveregister.h"
 #include "paidaccount.h"
-#include "dsmreport.h"
 
 namespace Ui {
     class AccountToReceiveManager;

@@ -4,7 +4,7 @@
 #include <QSpinBox>
 #include <QEvent>
 #include <QKeyEvent>
-#include "dsmshared.h"
+#include "qradshared.h"
 
 class DSMSpinBoxEnter : public QSpinBox
 {

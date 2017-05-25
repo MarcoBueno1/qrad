@@ -6,7 +6,7 @@
 #include <QKeyEvent>
 #include <QApplication>
 #include <QTextCharFormat>
-#include "dsmshared.h"
+#include "qradshared.h"
 
 class DSMCalendar : public QCalendarWidget
 {

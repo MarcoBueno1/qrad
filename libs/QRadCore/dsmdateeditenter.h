@@ -3,7 +3,7 @@
 
 #include <QDateEdit>
 #include <QKeyEvent>
-#include "dsmshared.h"
+#include "qradshared.h"
 
 class DSMDateEditEnter : public QDateEdit
 {

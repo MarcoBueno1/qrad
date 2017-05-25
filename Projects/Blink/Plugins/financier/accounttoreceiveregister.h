@@ -7,7 +7,7 @@
 #include <QSqlQuery>
 #include <QRegExpValidator>
 #include <QSqlError>
-#include "dsm.h"
+#include "qradshared.h"
 #include "accounttoreceivemodel.h"
 #include "accounttoreceivehistorymodel.h"
 

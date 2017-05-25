@@ -6,7 +6,7 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 #include <QSqlError>
-#include "dsm.h"
+#include "qradshared.h"
 #include "bankmodel.h"
 
 namespace Ui {

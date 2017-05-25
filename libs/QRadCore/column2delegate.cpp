@@ -397,3 +397,5 @@ void ColumnDateTimeNull::paint(QPainter *painter,
     drawDisplay(painter, myOption, myOption.rect, strText);
     drawFocus(painter, myOption, myOption.rect);
 }
+
+

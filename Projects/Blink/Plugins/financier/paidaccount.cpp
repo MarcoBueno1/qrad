@@ -64,7 +64,7 @@ void PaidAccount::SavePaidAccount(void)
     if (DSMMoney::MoneyComputerForm2(m_ui->lineEditPaidValue->text()) == 0)
     {
         QMessageBox::information(this, MSG_INFO_TITLE, MSG_QUESTION_ACCOUNT_ZERO);
-        dsmConfig::GoTo(m_ui->lineEditPaidValue);
+        QRadConfig::GoTo(m_ui->lineEditPaidValue);
     }
     else
     {

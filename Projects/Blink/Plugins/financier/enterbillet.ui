@@ -971,7 +971,7 @@ selection-color: rgb(255, 255, 255);</string>
   <customwidget>
    <class>QRadLineEditEnter</class>
    <extends>QLineEdit</extends>
-   <header location="global">dsmlineeditenter.h</header>
+   <header location="global">qradlineeditenter.h</header>
   </customwidget>
   <customwidget>
    <class>DSMRadioButtonEnter</class>

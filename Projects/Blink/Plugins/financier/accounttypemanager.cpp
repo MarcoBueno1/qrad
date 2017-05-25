@@ -1,5 +1,10 @@
 #include "accounttypemanager.h"
 #include "ui_accounttypemanager.h"
+#include "column2delegate.h"
+#include "financierdelegates.h"
+
+#include "dsmsgmessages.h"
+
 
 #define SQL_SELECT_ACCOUNTTYPE  "select id, description, type from dsm_fin_accounttype where removed = false order by description"
 #define SQL_DELETE_ACCOUNTTYPE  "update dsm_fin_accounttype set removed = true where id = (%1)"
@@ -167,7 +172,7 @@ void AccountTypeManager::SearchAccountType(QString text)
 void AccountTypeManager::NewAccountType(void)
 {
     AccountTypeRegister *accountTypeRegister = new AccountTypeRegister(this);
-    dsmConfig::centralizarWidget(accountTypeRegister);
+    QRadConfig::centralizarWidget(accountTypeRegister);
 
     accountTypeRegister->exec();
     InitialConfig(accountTypeRegister->GetAccountTypeName());
@@ -180,7 +185,7 @@ void AccountTypeManager::EditAccountType(void)
     if (m_accountTypeId > 6)
     {
         AccountTypeRegister *accountTypeRegister = new AccountTypeRegister(this);
-        dsmConfig::centralizarWidget(accountTypeRegister);
+        QRadConfig::centralizarWidget(accountTypeRegister);
 
         accountTypeRegister->SendAccountTypeId(m_accountTypeId);
 

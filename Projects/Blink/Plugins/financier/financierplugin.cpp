@@ -24,7 +24,7 @@ FinancierPlugin::~FinancierPlugin()
     m_container->destroy();
 }
 
-void FinancierPlugin::onLoad(DSMPluginContainer* container)
+void FinancierPlugin::onLoad(QRadPluginContainer* container)
 {
     m_container = container;
 
@@ -40,8 +40,12 @@ void FinancierPlugin::onLoad(DSMPluginContainer* container)
 
 void FinancierPlugin::Process( const QString& action )
 {
+#if 0
     if (!CanExecute())
         return;
+#endif
+#pragma warning "Add lic interface to test if can execut"
+
 
     if ( ACTION_SHOW_FINANCIER_ACCOUNTTYPE == action )
     {
@@ -49,7 +53,7 @@ void FinancierPlugin::Process( const QString& action )
         {
             m_accountTypeManager = new AccountTypeManager(m_parent);
         }
-        dsmConfig::centralizarWidget(m_accountTypeManager);
+        QRadConfig::centralizarWidget(m_accountTypeManager);
         m_accountTypeManager->show();
     }
     if ( ACTION_SHOW_FINANCIER_BANK == action )
@@ -58,7 +62,7 @@ void FinancierPlugin::Process( const QString& action )
         {
             m_bankManager = new BankManager(m_parent);
         }
-        dsmConfig::centralizarWidget(m_bankManager);
+        QRadConfig::centralizarWidget(m_bankManager);
         m_bankManager->show();
     }
     else if ( ACTION_SHOW_FINANCIER_ACCOUNTTOPAY == action )
@@ -67,7 +71,7 @@ void FinancierPlugin::Process( const QString& action )
         {
             m_accountToPayManager = new AccountToPayManager(m_parent);
         }
-        dsmConfig::fullScreen(m_accountToPayManager);
+        QRadConfig::fullScreen(m_accountToPayManager);
         m_accountToPayManager->show();
     }
     else if ( ACTION_SHOW_FINANCIER_ACCOUNTTORECEIVE == action )
@@ -76,7 +80,7 @@ void FinancierPlugin::Process( const QString& action )
         {
             m_accountToReceiveManager = new AccountToReceiveManager(m_parent);
         }
-        dsmConfig::fullScreen(m_accountToReceiveManager);
+        QRadConfig::fullScreen(m_accountToReceiveManager);
         m_accountToReceiveManager->show();
     }
     else if ( ACTION_SHOW_FINANCIER_ACCOUNTHISTORYREPORT == action )
@@ -85,7 +89,7 @@ void FinancierPlugin::Process( const QString& action )
         {
             m_accountHistoryReport = new AccountHistoryReport(m_parent);
         }
-        dsmConfig::centralizarWidget(m_accountHistoryReport);
+        QRadConfig::centralizarWidget(m_accountHistoryReport);
         m_accountHistoryReport->show();
     }
     else if ( ACTION_SHOW_FINANCIER_ACCOUNTTYPEREPORT == action )
@@ -94,7 +98,7 @@ void FinancierPlugin::Process( const QString& action )
         {
             m_accountTypeReport = new AccountTypeReport(m_parent);
         }
-        dsmConfig::centralizarWidget(m_accountTypeReport);
+        QRadConfig::centralizarWidget(m_accountTypeReport);
         m_accountTypeReport->show();
     }
     else if ( ACTION_SHOW_FINANCIER_ACCOUNTCALENDAR == action )
@@ -103,16 +107,8 @@ void FinancierPlugin::Process( const QString& action )
         {
             m_accountCalendar = new AccountCalendar(m_parent);
         }
-        dsmConfig::centralizarWidget(m_accountCalendar);
+        QRadConfig::centralizarWidget(m_accountCalendar);
         m_accountCalendar->show();
-    }
-    else if ( ACTION_SHOW_ENTERBILLET == action )
-    {
-        EnterBillet *enterBillet = new EnterBillet(m_parent);
-        enterBillet->GetEntranceId(m_entranceId);
-        dsmConfig::centralizarWidget(enterBillet);
-        enterBillet->exec();
-        delete enterBillet;
     }
 }
 

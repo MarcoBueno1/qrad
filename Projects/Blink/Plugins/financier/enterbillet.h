@@ -6,7 +6,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QKeyEvent>
-#include "dsm.h"
+#include "qradshared.h"
 #include "dsmsgmessages.h"
 #include "entrancemodel.h"
 #include "accounttopayhistorymodel.h"

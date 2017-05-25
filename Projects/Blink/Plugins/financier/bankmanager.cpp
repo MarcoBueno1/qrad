@@ -168,7 +168,7 @@ void BankManager::SearchBank(QString text)
 void BankManager::NewBank(void)
 {
     BankRegister *bankRegister = new BankRegister(this);
-    dsmConfig::centralizarWidget(bankRegister);
+    QRadConfig::centralizarWidget(bankRegister);
 
     bankRegister->exec();
     InitialConfig(bankRegister->GetBankName());
@@ -179,7 +179,7 @@ void BankManager::NewBank(void)
 void BankManager::EditBank(void)
 {
     BankRegister *bankRegister = new BankRegister(this);
-    dsmConfig::centralizarWidget(bankRegister);
+    QRadConfig::centralizarWidget(bankRegister);
 
     bankRegister->SendBankId(m_bankId);
 

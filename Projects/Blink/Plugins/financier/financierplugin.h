@@ -3,9 +3,8 @@
 
 #include <QtCore>
 
-#include "dsmplugininterface.h"
-#include "dsmpluginreport.h"
-#include "dsmplugincontainer.h"
+#include "qradplugininterface.h"
+#include "qradplugincontainer.h"
 #include "accounttypemanager.h"
 #include "bankmanager.h"
 #include "accounttopaymanager.h"
@@ -13,23 +12,22 @@
 #include "accounthistoryreport.h"
 #include "accounttypereport.h"
 #include "accountcalendar.h"
-#include "enterbillet.h"
 #include "qradshared.h"
 #include "qradconfig.h"
 
-class FinancierPlugin : public DSMPluginInterface, public DSMPluginReport
+class FinancierPlugin : public QRadPluginInterface 
 {
     Q_OBJECT;
-    Q_INTERFACES( DSMPluginInterface );
+    Q_INTERFACES( QRadPluginInterface );
     Q_PLUGIN_METADATA(IID "financierplugin" FILE "financier.json")
 
     public:
         FinancierPlugin();
         ~FinancierPlugin();
 
-        void onLoad(DSMPluginContainer*);
+        void onLoad(QRadPluginContainer*);
     private:
-        DSMPluginContainer      *m_container;
+        QRadPluginContainer      *m_container;
         AccountTypeManager      *m_accountTypeManager;
         BankManager             *m_bankManager;
         AccountToPayManager     *m_accountToPayManager;

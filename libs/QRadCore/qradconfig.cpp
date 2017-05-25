@@ -34,5 +34,34 @@ void QRadConfig::centralizarWidget(QWidget *widget)
 //    widget->setMaximumHeight(HEIGHT_SCREEN);
     widget->move(rect.center() - widget->rect().center());
 }
+bool QRadConfig::ShowFullScreen(void)
+{
+ /*   QSqlQueryModel  *select = new QSqlQueryModel;
+    bool            result = false;
+    select->setQuery(QString(SQL_SELECT_CONFIG));
+    if (select->rowCount() != 0)
+    {
+        result = select->record(0).value("showfullscreen").toBool();
+    }
+    delete select;
+
+    return result;
+*/
+    return true;
+}
+
+void QRadConfig::fullScreen(QWidget *widget)
+{
+    if (ShowFullScreen())
+    {
+        QRect rect = QApplication::desktop()->availableGeometry(widget);
+        widget->move(rect.center() - widget->rect().center());
+        widget->showMaximized();
+    }
+    else
+    {
+        centralizarWidget(widget);
+    }
+}
 
 

@@ -316,7 +316,7 @@ void AccountToReceiveManager::keyPressEvent(QKeyEvent *event)
 void AccountToReceiveManager::NewAccountToReceive(void)
 {
     AccountToReceiveRegister *accountToReceiveRegister = new AccountToReceiveRegister(this);
-    dsmConfig::centralizarWidget(accountToReceiveRegister);
+    QRadConfig::centralizarWidget(accountToReceiveRegister);
 
     if (accountToReceiveRegister->exec() == QDialog::Accepted)
     {
@@ -325,7 +325,7 @@ void AccountToReceiveManager::NewAccountToReceive(void)
 
         accountToReceiveHistoryModel->setAccountToReceiveId(accountToReceiveModel->lastInsertId());
         accountToReceiveHistoryModel->setTypeOperation(AccountOpCreate);
-        accountToReceiveHistoryModel->setUserId(dsmConfig::GetCurrentUserId());
+        accountToReceiveHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
         accountToReceiveHistoryModel->setDate(QDate::currentDate());
         accountToReceiveHistoryModel->setTime(QTime::currentTime());
 
@@ -344,7 +344,7 @@ void AccountToReceiveManager::EditAccountToReceive(void)
     if (m_selectAccountToReceive->rowCount() > 0)
     {
         AccountToReceiveRegister *accountToReceiveRegister = new AccountToReceiveRegister(this);
-        dsmConfig::centralizarWidget(accountToReceiveRegister);
+        QRadConfig::centralizarWidget(accountToReceiveRegister);
 
         accountToReceiveRegister->SendAccountToReceiveId(m_accountToReceiveId);
 
@@ -354,7 +354,7 @@ void AccountToReceiveManager::EditAccountToReceive(void)
 
             accountToReceiveHistoryModel->setAccountToReceiveId(m_accountToReceiveId);
             accountToReceiveHistoryModel->setTypeOperation(AccountOpEdit);
-            accountToReceiveHistoryModel->setUserId(dsmConfig::GetCurrentUserId());
+            accountToReceiveHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
             accountToReceiveHistoryModel->setDate(QDate::currentDate());
             accountToReceiveHistoryModel->setTime(QTime::currentTime());
 
@@ -390,7 +390,7 @@ void AccountToReceiveManager::PayAccount(void)
 
                 accountToReceiveHistoryModel->setAccountToReceiveId(m_accountToReceiveId);
                 accountToReceiveHistoryModel->setTypeOperation(AccountOpRestore);
-                accountToReceiveHistoryModel->setUserId(dsmConfig::GetCurrentUserId());
+                accountToReceiveHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
                 accountToReceiveHistoryModel->setDate(QDate::currentDate());
                 accountToReceiveHistoryModel->setTime(QTime::currentTime());
 
@@ -406,7 +406,7 @@ void AccountToReceiveManager::PayAccount(void)
         else
         {
             PaidAccount *paidAccount = new PaidAccount(this);
-            dsmConfig::centralizarWidget(paidAccount);
+            QRadConfig::centralizarWidget(paidAccount);
 
             paidAccount->SendPaidAccountId(m_accountToReceiveId, AccountTypeToReceive);
 
@@ -416,7 +416,7 @@ void AccountToReceiveManager::PayAccount(void)
 
                 accountToReceiveHistoryModel->setAccountToReceiveId(m_accountToReceiveId);
                 accountToReceiveHistoryModel->setTypeOperation(AccountOpPaid);
-                accountToReceiveHistoryModel->setUserId(dsmConfig::GetCurrentUserId());
+                accountToReceiveHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
                 accountToReceiveHistoryModel->setDate(QDate::currentDate());
                 accountToReceiveHistoryModel->setTime(QTime::currentTime());
 
@@ -434,7 +434,7 @@ void AccountToReceiveManager::PayAccount(void)
                     payment->setTime(QTime::currentTime());
                     payment->setDebtId(account->getDebtId());
                     payment->setValue(account->getValuePaid());
-                    payment->setUserId(dsmConfig::GetCurrentUserId());
+                    payment->setUserId(QRadConfig::GetCurrentUserId());
                     payment->Create();
                     debt->checkPaid();
                     delete payment;
@@ -469,7 +469,7 @@ void AccountToReceiveManager::DeleteAccountToReceive(void)
 
             accountToReceiveHistoryModel->setAccountToReceiveId(m_accountToReceiveId);
             accountToReceiveHistoryModel->setTypeOperation(AccountOpRemove);
-            accountToReceiveHistoryModel->setUserId(dsmConfig::GetCurrentUserId());
+            accountToReceiveHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
             accountToReceiveHistoryModel->setDate(QDate::currentDate());
             accountToReceiveHistoryModel->setTime(QTime::currentTime());
 

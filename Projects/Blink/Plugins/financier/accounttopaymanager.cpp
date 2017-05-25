@@ -9,6 +9,8 @@
 #ifdef _OLD_REPORT_
 #include "dsmreport.h"
 #endif
+#include "dsmsgmessages.h"
+#include "financierdelegates.h"
 
 #define SQL_SELECT_ACCOUNTTOPAY         "select fac.id, %1 fac.description as description, %1 case when s.descricao is null then 'NAO INFORMADO' else s.descricao end as fornecedor, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.supplierid, fac.bankid from dsm_fin_accounttopay fac left outer join dsm_supplier s on fac.supplierid = s.id where fac.removed = false %2 order by %3, fac.description"
 #define SQL_SELECT_ACCOUNTTOPAY_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, s.descricao as supplier, fb.description as bank from dsm_fin_accounttopay fac inner join dsm_fin_accounttype fat on fat.id = fac.accounttypeid left outer join dsm_supplier s on fac.supplierid = s.id left outer join dsm_fin_bank fb on fac.bankid = fb.id where fac.removed = false %1 order by %2, fac.description"
@@ -346,7 +348,7 @@ void AccountToPayManager::keyPressEvent(QKeyEvent *event)
 void AccountToPayManager::NewAccountToPay(void)
 {
     AccountToPayRegister *accountToPayRegister = new AccountToPayRegister(this);
-    dsmConfig::centralizarWidget(accountToPayRegister);
+    QRadConfig::centralizarWidget(accountToPayRegister);
 
     if (accountToPayRegister->exec() == QDialog::Accepted)
     {
@@ -355,7 +357,7 @@ void AccountToPayManager::NewAccountToPay(void)
 
         accountToPayHistoryModel->setAccountToPayId(accountToPayModel->lastInsertId());
         accountToPayHistoryModel->setTypeOperation(AccountOpCreate);
-        accountToPayHistoryModel->setUserId(dsmConfig::GetCurrentUserId());
+        accountToPayHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
         accountToPayHistoryModel->setDate(QDate::currentDate());
         accountToPayHistoryModel->setTime(QTime::currentTime());
 
@@ -374,7 +376,7 @@ void AccountToPayManager::EditAccountToPay(void)
     if (m_selectAccountToPay->rowCount() > 0)
     {
         AccountToPayRegister *accountToPayRegister = new AccountToPayRegister(this);
-        dsmConfig::centralizarWidget(accountToPayRegister);
+        QRadConfig::centralizarWidget(accountToPayRegister);
 
         accountToPayRegister->SendAccountToPayId(m_accountToPayId);
 
@@ -384,7 +386,7 @@ void AccountToPayManager::EditAccountToPay(void)
 
             accountToPayHistoryModel->setAccountToPayId(m_accountToPayId);
             accountToPayHistoryModel->setTypeOperation(AccountOpEdit);
-            accountToPayHistoryModel->setUserId(dsmConfig::GetCurrentUserId());
+            accountToPayHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
             accountToPayHistoryModel->setDate(QDate::currentDate());
             accountToPayHistoryModel->setTime(QTime::currentTime());
 
@@ -420,7 +422,7 @@ void AccountToPayManager::PayAccount(void)
 
                 accountToPayHistoryModel->setAccountToPayId(m_accountToPayId);
                 accountToPayHistoryModel->setTypeOperation(AccountOpRestore);
-                accountToPayHistoryModel->setUserId(dsmConfig::GetCurrentUserId());
+                accountToPayHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
                 accountToPayHistoryModel->setDate(QDate::currentDate());
                 accountToPayHistoryModel->setTime(QTime::currentTime());
 
@@ -435,7 +437,7 @@ void AccountToPayManager::PayAccount(void)
         else
         {
             PaidAccount *paidAccount = new PaidAccount(this);
-            dsmConfig::centralizarWidget(paidAccount);
+            QRadConfig::centralizarWidget(paidAccount);
 
             paidAccount->SendPaidAccountId(m_accountToPayId, AccountTypeToPay);
 
@@ -445,7 +447,7 @@ void AccountToPayManager::PayAccount(void)
 
                 accountToPayHistoryModel->setAccountToPayId(m_accountToPayId);
                 accountToPayHistoryModel->setTypeOperation(AccountOpPaid);
-                accountToPayHistoryModel->setUserId(dsmConfig::GetCurrentUserId());
+                accountToPayHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
                 accountToPayHistoryModel->setDate(QDate::currentDate());
                 accountToPayHistoryModel->setTime(QTime::currentTime());
 
@@ -481,7 +483,7 @@ void AccountToPayManager::DeleteAccountToPay(void)
 
                 accountToPayHistoryModel->setAccountToPayId(m_accountToPayId);
                 accountToPayHistoryModel->setTypeOperation(AccountOpRemove);
-                accountToPayHistoryModel->setUserId(dsmConfig::GetCurrentUserId());
+                accountToPayHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
                 accountToPayHistoryModel->setDate(QDate::currentDate());
                 accountToPayHistoryModel->setTime(QTime::currentTime());
 

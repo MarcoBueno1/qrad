@@ -3,6 +3,12 @@
 
 #include "orm.h"
 
+typedef enum{
+    AccountTypeToPay = 0,
+    AccountTypeToReceive,
+    AccountTypeBoth
+}DSM_AccountType_t;
+
 DECLARE_ORM(AccountTypeModel)
 
 DECLARE_CLASS(AccountTypeModel)

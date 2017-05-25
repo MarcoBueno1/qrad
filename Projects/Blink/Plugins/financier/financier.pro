@@ -11,8 +11,9 @@ TARGET = financier
 TEMPLATE = lib
 CONFIG += plugin
 INCLUDEPATH = ../../../../libs/QRadCore \
-    ../../libs/orm \
-    ../../../../libs/QRadLic 
+              ../../libs/orm \
+              ../../../../libs/QRadLic \
+              . 
 DESTDIR = .
 SOURCES += financierplugin.cpp \
     accounttypemanager.cpp \
@@ -24,12 +25,13 @@ SOURCES += financierplugin.cpp \
     bankmanager.cpp \
     bankregister.cpp \
     paidaccount.cpp \
-    enterbillet.cpp \
     accounthistoryreport.cpp \
     accounttypereport.cpp \
     accounthistoryreportaux.cpp \
     accountcalendar.cpp \
-    accountcalendaraux.cpp
+    accountcalendaraux.cpp 
+    financierdelegates.cpp
+
 HEADERS += financierplugin.h \
     accounttypemanager.h \
     accounttyperegister.h \
@@ -40,19 +42,20 @@ HEADERS += financierplugin.h \
     bankmanager.h \
     bankregister.h \
     paidaccount.h \
-    enterbillet.h \
     accounthistoryreport.h \
     accounttypereport.h \
     accounthistoryreportaux.h \
     accountcalendar.h \
-    accountcalendaraux.h
+    accountcalendaraux.h \
+    financierdelegates.h
 
 LIBS += -L../../../../libs/QRadCore \
         -L../../libs/orm \
         -L../../../../libs/QRadLic \
         -l \
-	-ldsmmodel \
-	-ldsmwidgets
+        -lqradcore
+        -lqradlicup
+
 
 win32:QMAKE_LFLAGS += --enable-auto-import
 
@@ -67,7 +70,6 @@ FORMS += accounttypemanager.ui \
     bankmanager.ui \
     bankregister.ui \
     paidaccount.ui \
-    enterbillet.ui \
     accounthistoryreport.ui \
     accounttypereport.ui \
     accounthistoryreportaux.ui \

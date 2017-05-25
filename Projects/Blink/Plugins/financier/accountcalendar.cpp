@@ -91,7 +91,7 @@ void AccountCalendar::ShowDetail(QDate date)
     {
         AccountCalendarAux *accountCalendarAux = new AccountCalendarAux(this);
         accountCalendarAux->SendDate(date);
-        dsmConfig::centralizarWidget(accountCalendarAux);
+        QRadConfig::centralizarWidget(accountCalendarAux);
         accountCalendarAux->exec();
         delete accountCalendarAux;
     }

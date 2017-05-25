@@ -13,7 +13,11 @@ public:
 
     static bool GetUserProfile(QString strPermsission );
     static QString GetCurrentUserLogin();
-	static void centralizarWidget(QWidget *widget);
+    static void centralizarWidget(QWidget *widget);
+    static void fullScreen(QWidget *widget);
+private:
+    static bool ShowFullScreen(void);
+
 };
 
 #endif // QRADCONFIG_H

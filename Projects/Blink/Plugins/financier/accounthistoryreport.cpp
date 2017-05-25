@@ -77,7 +77,7 @@ void AccountHistoryReport::keyPressEvent(QKeyEvent *e)
             AccountHistoryReportAux *accountHistoryReportAux = new AccountHistoryReportAux(this);
             accountHistoryReportAux->SendAccountId(modelIndex.sibling(modelIndex.row(),1).data().toInt(),
                                                    (modelIndex.sibling(modelIndex.row(),4).data().toString() == "A PAGAR")?AccountTypeToPay:AccountTypeToReceive);
-            dsmConfig::centralizarWidget(accountHistoryReportAux);
+            QRadConfig::centralizarWidget(accountHistoryReportAux);
             accountHistoryReportAux->exec();
             delete accountHistoryReportAux;
         }

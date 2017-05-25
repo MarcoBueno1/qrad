@@ -138,9 +138,9 @@ void AccountTypeReport::Launcher(void)
     getSells->setQuery(QString(SQL_SELECT_SELLS)
                        .arg(m_ui->dateEditSince->date().toString(FMT_DATE_DB))
                        .arg(m_ui->dateEditUntil->date().toString(FMT_DATE_DB))
-                       .arg(dsmConfig::GetAccountId())
-                       .arg(dsmConfig::GetAgreementId())
-                       .arg(dsmConfig::GetPopDrugId()));
+                       .arg(QRadConfig::GetAccountId())
+                       .arg(QRadConfig::GetAgreementId())
+                       .arg(QRadConfig::GetPopDrugId()));
 
 
     totalSells = DSMMoney::StrToInt(getSells->record(0).value("sum").toString());

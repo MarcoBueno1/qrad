@@ -122,7 +122,7 @@ void EnterBillet::keyPressEvent(QKeyEvent* event)
 
                         accountToPayHistoryModel->setAccountToPayId(accountToPayModel->lastInsertId());
                         accountToPayHistoryModel->setTypeOperation(AccountOpCreate);
-                        accountToPayHistoryModel->setUserId(dsmConfig::GetCurrentUserId());
+                        accountToPayHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
                         accountToPayHistoryModel->setDate(QDate::currentDate());
                         accountToPayHistoryModel->setTime(QTime::currentTime());
 
@@ -211,7 +211,7 @@ void EnterBillet::ClearTable(void)
 
 void EnterBillet::ClearFields(void)
 {
-    dsmConfig::GoTo(m_ui->dateEditBilletVenc);
+    QRadConfig::GoTo(m_ui->dateEditBilletVenc);
     m_ui->spinBoxParcelas->setValue(1);
 }
 

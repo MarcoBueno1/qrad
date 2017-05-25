@@ -445,7 +445,7 @@
   <customwidget>
    <class>QRadLineEditEnter</class>
    <extends>QLineEdit</extends>
-   <header location="global">dsmlineeditenter.h</header>
+   <header location="global">qradlineeditenter.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

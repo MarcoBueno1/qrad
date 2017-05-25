@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_accounthistoryreportaux.h"
+#include "accounttypemodel.h"
 
 namespace Ui{
    class AccountHistoryReportAux;

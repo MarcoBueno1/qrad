@@ -1,4 +1,44 @@
 #include "financierdelegates.h"
+#include "qradshared.h"
+#include "dsmmoney.h"
+
+#include <QColor>
+#include <QPainter>
+#include <QStyle>
+
+#define BG_FIN_COLOR_GREEN      QColor(100, 240, 100)
+#define BG_FIN_COLOR_RED        QColor(240, 100, 100)
+#define BG_FIN_COLOR_ORANGE     QColor(240, 125, 40)
+#define BG_FIN_COLOR_YELLOW     QColor(255, 255, 0)
+#define BG_FIN_COLOR_PURPLE     QColor(85, 85, 255)
+#define BG_FIN_COLOR_BLACK      QColor(0, 0, 0)
+#define BG_FIN_COLOR_BLUE       QColor(0, 85, 255)
+
+
+#define FORMAT_FINACIER { \
+if (text.toString().mid(0,1) == "P") \
+{\
+ if (option.state & QStyle::State_Enabled)\
+ {\
+  painter->fillRect(option.rect, BG_FIN_COLOR_GREEN);\
+ }\
+}\
+else if (text.toString().mid(0,1) == "V")\
+{\
+ if (option.state & QStyle::State_Enabled)\
+ {\
+  painter->fillRect(option.rect, BG_FIN_COLOR_RED);\
+ }\
+}\
+else if (text.toString().mid(0,1) == "H")\
+{\
+ if (option.state & QStyle::State_Enabled)\
+ {\
+  painter->fillRect(option.rect, BG_FIN_COLOR_ORANGE);\
+ }\
+}\
+}
+
 
 void ColumnAccountType::paint(QPainter *painter,
                               const QStyleOptionViewItem &option,
@@ -41,7 +81,7 @@ void ColumnFinancierDescription::paint(QPainter *painter,
 
     drawDisplay(painter, myOption, myOption.rect, text.toString().mid(1));
     drawFocus(painter, myOption, myOption.rect);
-}:
+}
 
 void ColumnFinancierDate::paint(QPainter *painter,
                                 const QStyleOptionViewItem &option,
@@ -124,4 +164,38 @@ void ColumnFinancierAccountPaid::paint(QPainter *painter,
     drawFocus(painter, myOption, myOption.rect);
 }
 
+void ColumnFinancierAccountOperation::paint(QPainter *painter,
+                                            const QStyleOptionViewItem &option,
+                                            const QModelIndex &index) const
+{
+    QVariant text = index.model()->data(index, Qt::DisplayRole);
+    QStyleOptionViewItem myOption = option;
+    QString operation;
+
+    if (text.toInt() == AccountOpCreate)
+    {
+        operation = QString::fromUtf8("CRIAÇÃO");
+    }
+    else if (text.toInt() == AccountOpEdit)
+    {
+        operation = QString::fromUtf8("EDIÇÃO");
+    }
+    else if (text.toInt() == AccountOpRemove)
+    {
+        operation = QString::fromUtf8("REMOÇÃO");
+    }
+    else if (text.toInt() == AccountOpPaid)
+    {
+        operation = QString::fromUtf8("QUITAÇÃO");
+    }
+    else
+    {
+        operation = QString::fromUtf8("ESTORNO");
+    }
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+    drawDisplay(painter, myOption, myOption.rect, operation);
+    drawFocus(painter, myOption, myOption.rect);
+}
 

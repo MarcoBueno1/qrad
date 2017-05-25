@@ -12,11 +12,11 @@
 #include "qradconfig.h"
 #include "dsmsgmessages.h"
 #include "financierdelegates.h"
+#include "paymentmodel.h"
 
-
-#define SQL_SELECT_ACCOUNTTORECEIVE         "select fac.id, %1 fac.description as description,%1 case when c.name is NULL then 'NAO INFORMADO' else c.name end as cliente, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.clientid from dsm_fin_accounttoreceive fac left join dsm_client_abstract c on c.id = fac.clientid where fac.removed = false %2 order by %3, fac.description"
-#define SQL_SELECT_ACCOUNTTORECEIVE_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, case when c.name is NULL then 'NAO INFORMADO' else c.name end as client from dsm_fin_accounttoreceive fac inner join dsm_fin_accounttype fat on fat.id = fac.accounttypeid left join dsm_client_abstract c on fac.clientid = c.id where fac.removed = false %1 order by %2, fac.description"
-#define SQL_DELETE_ACCOUNTTORECEIVE         "update dsm_fin_accounttoreceive set removed = true where id = %1"
+#define SQL_SELECT_ACCOUNTTORECEIVE         "select fac.id, %1 fac.description as description,%1 case when c.name is NULL then 'NAO INFORMADO' else c.name end as cliente, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.clientid from fin_accounttoreceive fac left join dsm_client_abstract c on c.id = fac.clientid where fac.removed = false %2 order by %3, fac.description"
+#define SQL_SELECT_ACCOUNTTORECEIVE_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, case when c.name is NULL then 'NAO INFORMADO' else c.name end as client from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid left join dsm_client_abstract c on fac.clientid = c.id where fac.removed = false %1 order by %2, fac.description"
+#define SQL_DELETE_ACCOUNTTORECEIVE         "update fin_accounttoreceive set removed = true where id = %1"
 
 #define SQL_SELECT_FORMATED                 "case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else case when vencdate < current_date then 'V' else 'H' end end end || "
 
@@ -429,7 +429,7 @@ void AccountToReceiveManager::PayAccount(void)
                 AccountToReceiveModel *account = AccountToReceiveModel::findByPrimaryKey(m_accountToReceiveId);
                 Debt *debt = account->getDebt();
                 QSqlQueryModel paymentId;
-                paymentId.setQuery(QString("select id from dsm_payment where debtid = %1 order by date desc").arg(account->getDebtId()));
+                paymentId.setQuery(QString("select id from payment where debtid = %1 order by date desc").arg(account->getDebtId()));
 
                 if(!debt->getPaid())
                 {
@@ -440,7 +440,7 @@ void AccountToReceiveManager::PayAccount(void)
                     payment->setValue(account->getValuePaid());
                     payment->setUserId(QRadConfig::GetCurrentUserId());
                     payment->Create();
-                    debt->checkPaid();
+                    debt->setPaid(true);//checkPaid();
                     delete payment;
                 }
 

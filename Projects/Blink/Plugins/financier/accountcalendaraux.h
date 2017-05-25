@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include "ui_accountcalendaraux.h"
+#include <QSqlQueryModel>
+#include <QDate>
 
 namespace Ui{
    class AccountCalendarAux;

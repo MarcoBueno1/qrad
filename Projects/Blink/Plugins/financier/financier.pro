@@ -29,7 +29,7 @@ SOURCES += financierplugin.cpp \
     accounttypereport.cpp \
     accounthistoryreportaux.cpp \
     accountcalendar.cpp \
-    accountcalendaraux.cpp 
+    accountcalendaraux.cpp \ 
     financierdelegates.cpp
 
 HEADERS += financierplugin.h \

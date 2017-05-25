@@ -71,4 +71,13 @@ void QRadConfig::fullScreen(QWidget *widget)
     }
 }
 
+bool QRadConfig::IsSimpleInterest()
+{
+  return true;
+}
 
+void QRadConfig::GoTo(QLineEdit *item)
+{
+    item->setFocus();
+    item->selectAll();
+}

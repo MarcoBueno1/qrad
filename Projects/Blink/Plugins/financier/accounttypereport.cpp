@@ -11,13 +11,13 @@
 #endif
 
 #define SQL_SELECT_SUM_TOPAY "select case when sum(ap.valuepaid) is null then 0 else sum(ap.valuepaid) end as sum "\
-"   from dsm_fin_accounttype at "\
-"   left outer join dsm_fin_accounttopay ap on at.id = ap.accounttypeid and ap.paid = true and ap.removed = false and ap.paiddate between '%1' and '%2' "\
+"   from fin_accounttype at "\
+"   left outer join fin_accounttopay ap on at.id = ap.accounttypeid and ap.paid = true and ap.removed = false and ap.paiddate between '%1' and '%2' "\
 "   where (at.type = 0 or at.type = 2) and at.removed = false "
 
 #define SQL_SELECT_SUM_TORECEIVE "select case when sum(ar.valuepaid) is null then 0 else sum(ar.valuepaid) end as sum "\
-"   from dsm_fin_accounttype at "\
-"   left outer join dsm_fin_accounttoreceive ar on at.id = ar.accounttypeid and ar.paid = true and ar.removed = false and ar.paiddate between '%1' and '%2' "\
+"   from fin_accounttype at "\
+"   left outer join fin_accounttoreceive ar on at.id = ar.accounttypeid and ar.paid = true and ar.removed = false and ar.paiddate between '%1' and '%2' "\
 "   where (at.type = 1 or at.type = 2) and at.removed = false "
 
 #define SQL_ACCOUNT_GROUPS_TOPAY "select 	at.description, "\
@@ -26,8 +26,8 @@
 "   to_char(case when sum(ap.valuepaid) is null then 0 else sum(ap.valuepaid) end,'FM9G999G990D00') as valuepaid, "\
 "   to_char(case when sum(ap.valuepaid - ap.value) is null then 0 else sum(ap.valuepaid - ap.value) end,'FM9G999G990D00') as juros, "\
 "   to_char(case when sum(ap.valuepaid) is null then 0 else (sum(ap.valuepaid)/%3) * 100 end,'FM9G999G990D00') as porc "\
-"   from dsm_fin_accounttype at "\
-"   left outer join dsm_fin_accounttopay ap on at.id = ap.accounttypeid and ap.paid = true and ap.removed = false and ap.paiddate between '%1' and '%2' "\
+"   from fin_accounttype at "\
+"   left outer join fin_accounttopay ap on at.id = ap.accounttypeid and ap.paid = true and ap.removed = false and ap.paiddate between '%1' and '%2' "\
 "   where (at.type = 0 or at.type = 2) and at.removed = false  "\
 "   group by at.description "\
 "   order by at.description"
@@ -38,13 +38,13 @@
 "   to_char(case when sum(ar.valuepaid) is null then 0 else sum(ar.valuepaid) end,'FM9G999G990D00') as valuepaid, "\
 "   to_char(case when sum(ar.valuepaid - ar.value) is null then 0 else sum(ar.valuepaid - ar.value) end,'FM9G999G990D00') as juros, "\
 "   to_char(case when sum(ar.valuepaid) is null then 0 else (sum(ar.valuepaid)/%3) * 100 end,'FM9G999G990D00') as porc "\
-"   from dsm_fin_accounttype at "\
-"   left outer join dsm_fin_accounttoreceive ar on at.id = ar.accounttypeid and ar.paid = true and ar.removed = false and ar.paiddate between '%1' and '%2' "\
+"   from fin_accounttype at "\
+"   left outer join fin_accounttoreceive ar on at.id = ar.accounttypeid and ar.paid = true and ar.removed = false and ar.paiddate between '%1' and '%2' "\
 "   where (at.type = 1 or at.type = 2) and at.removed = false  "\
 "   group by at.description "\
 "   order by at.description"
 
-#define SQL_SELECT_SELLS    "select sum(ps.value) as sum from dsm_sale s inner join dsm_debt ps on ps.saleid = s.id and s.status = 1 and ps.paymentwayid <> %3 and ps.paymentwayid <> %4 and ps.paymentwayid <> %5 and s.date between '%1' and '%2'"
+#define SQL_SELECT_SELLS    "select sum(ps.value) as sum from dsm_sale s inner join debt ps on ps.saleid = s.id and s.status = 1 and ps.paymentwayid <> %3 and ps.paymentwayid <> %4 and ps.paymentwayid <> %5 and s.date between '%1' and '%2'"
 
 /**
  * Relatório de contas.

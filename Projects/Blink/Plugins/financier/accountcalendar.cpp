@@ -1,7 +1,10 @@
 #include "accountcalendar.h"
+#include "financierdelegates.h"
+#include "dsmsgmessages.h"
+#include "qradconfig.h"
 
-#define SQL_SELECT_ACCOUNTTOPAY     "select fac.id, fac.description, fac.vencdate  from dsm_fin_accounttopay fac where fac.removed = false and to_char(fac.vencdate, 'MM/yyyy') = '%1' and fac.paid = false order by fac.vencdate, fac.description"
-#define SQL_SELECT_ACCOUNTTORECEIVE "select fac.id, fac.description, fac.vencdate  from dsm_fin_accounttoreceive fac where fac.removed = false and to_char(fac.vencdate, 'MM/yyyy') = '%1' and fac.paid = false order by fac.vencdate, fac.description"
+#define SQL_SELECT_ACCOUNTTOPAY     "select fac.id, fac.description, fac.vencdate  from fin_accounttopay fac where fac.removed = false and to_char(fac.vencdate, 'MM/yyyy') = '%1' and fac.paid = false order by fac.vencdate, fac.description"
+#define SQL_SELECT_ACCOUNTTORECEIVE "select fac.id, fac.description, fac.vencdate  from fin_accounttoreceive fac where fac.removed = false and to_char(fac.vencdate, 'MM/yyyy') = '%1' and fac.paid = false order by fac.vencdate, fac.description"
 
 AccountCalendar::AccountCalendar(QWidget *parent) :
     QDialog(parent),

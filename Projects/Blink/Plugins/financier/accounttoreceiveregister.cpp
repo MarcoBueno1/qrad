@@ -1,6 +1,9 @@
 #include "accounttoreceiveregister.h"
 #include "ui_accounttoreceiveregister.h"
 
+#include "dsmmoney.h"
+#include "dsmsgmessages.h"
+
 AccountToReceiveRegister::AccountToReceiveRegister(QWidget *parent) :
     QDialog(parent),
     m_ui(new Ui::AccountToReceiveRegister)
@@ -64,7 +67,7 @@ void AccountToReceiveRegister::GetClientValues(void)
 
 void AccountToReceiveRegister::SendAccountToReceiveId(int accountToReceiveId)
 {
-    AccountToReceiveModel *accountToReceiveModel = AccountToReceiveModel::findById(accountToReceiveId);
+    AccountToReceiveModel *accountToReceiveModel = AccountToReceiveModel::findByPrimaryKey(accountToReceiveId);
 
     m_ui->comboBoxAccountType->setModelColumn(0);
 

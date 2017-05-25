@@ -398,4 +398,16 @@ void ColumnDateTimeNull::paint(QPainter *painter,
     drawFocus(painter, myOption, myOption.rect);
 }
 
+void ColumnMoney::paint(QPainter *painter,
+                        const QStyleOptionViewItem &option,
+                        const QModelIndex &index) const
+{
+    QVariant text = index.model()->data(index, Qt::DisplayRole);
+    QStyleOptionViewItem myOption = option;
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = (Qt::AlignRight | Qt::AlignVCenter);
+    drawDisplay(painter, myOption, myOption.rect, DSMMoney::MoneyHumanForm2(text.toDouble()));
+    drawFocus(painter, myOption, myOption.rect);
+}
 

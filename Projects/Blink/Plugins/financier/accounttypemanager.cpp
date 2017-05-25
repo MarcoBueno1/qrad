@@ -6,8 +6,8 @@
 #include "dsmsgmessages.h"
 
 
-#define SQL_SELECT_ACCOUNTTYPE  "select id, description, type from dsm_fin_accounttype where removed = false order by description"
-#define SQL_DELETE_ACCOUNTTYPE  "update dsm_fin_accounttype set removed = true where id = (%1)"
+#define SQL_SELECT_ACCOUNTTYPE  "select id, description, type from fin_accounttype where removed = false order by description"
+#define SQL_DELETE_ACCOUNTTYPE  "update fin_accounttype set removed = true where id = (%1)"
 
 AccountTypeManager::AccountTypeManager(QWidget *parent) :
     QDialog(parent),

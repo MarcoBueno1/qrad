@@ -1,8 +1,11 @@
 #include "bankmanager.h"
 #include "ui_bankmanager.h"
+#include "dsmsgmessages.h"
+#include "qradconfig.h"
+#include "column2delegate.h"
 
-#define SQL_SELECT_BANK  "select id, code, description from dsm_fin_bank where removed = false order by description"
-#define SQL_DELETE_BANK  "update dsm_fin_bank set removed = true where id = (%1)"
+#define SQL_SELECT_BANK  "select id, code, description from fin_bank where removed = false order by description"
+#define SQL_DELETE_BANK  "update fin_bank set removed = true where id = (%1)"
 
 BankManager::BankManager(QWidget *parent) :
     QDialog(parent),

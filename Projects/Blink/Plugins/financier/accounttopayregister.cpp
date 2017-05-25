@@ -1,5 +1,7 @@
 #include "accounttopayregister.h"
 #include "ui_accounttopayregister.h"
+#include "dsmmoney.h"
+#include "dsmsgmessages.h"
 
 AccountToPayRegister::AccountToPayRegister(QWidget *parent) :
     QDialog(parent),
@@ -75,7 +77,7 @@ void AccountToPayRegister::GetBankValues(void)
 
 void AccountToPayRegister::SendAccountToPayId(int accountToPayId)
 {
-    AccountToPayModel *accountToPayModel = AccountToPayModel::findById(accountToPayId);
+    AccountToPayModel *accountToPayModel = AccountToPayModel::findByPrimaryKey(accountToPayId);
 
     m_ui->comboBoxAccountType->setModelColumn(0);
 

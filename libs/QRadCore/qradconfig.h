@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QWidget>
+#include <QLineEdit>
 
 
 class QRadConfig
@@ -16,7 +17,8 @@ public:
     static void centralizarWidget(QWidget *widget);
     static void fullScreen(QWidget *widget);
     static int GetCurrentUserId();
-
+    static bool IsSimpleInterest();
+    static void GoTo(QLineEdit *item);
 private:
     static bool ShowFullScreen(void);
 

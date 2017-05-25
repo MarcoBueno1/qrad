@@ -2,9 +2,9 @@
 #include "ui_accounttyperegister.h"
 #include "dsmsgmessages.h"
 
-#define SQL_SELECT_ACCOUNTTYPE  "select * from dsm_fin_accounttype where id = (%1)"
-#define SQL_INSERT_ACCOUNTTYPE  "insert into dsm_fin_accounttype (description, type, removed) values (?, ?, false)"
-#define SQL_UPDATE_ACCOUNTTYPE  "update dsm_fin_accounttype set (description, type) = (?, ?)  where id = (?)"
+#define SQL_SELECT_ACCOUNTTYPE  "select * from fin_accounttype where id = (%1)"
+#define SQL_INSERT_ACCOUNTTYPE  "insert into fin_accounttype (description, type, removed) values (?, ?, false)"
+#define SQL_UPDATE_ACCOUNTTYPE  "update fin_accounttype set (description, type) = (?, ?)  where id = (?)"
 
 AccountTypeRegister::AccountTypeRegister(QWidget *parent) :
     QDialog(parent),

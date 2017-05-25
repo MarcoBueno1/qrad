@@ -206,4 +206,13 @@ public:
                             const QModelIndex &index) const;
 };
 
+class ColumnMoney : public QItemDelegate
+{
+    Q_OBJECT
+public:
+    void paint(QPainter *painter,
+                            const QStyleOptionViewItem &option,
+                            const QModelIndex &index) const;
+};
+
 #endif // COLUMN2DELEGATE_H

@@ -85,7 +85,8 @@ HEADERS +=  qradplugincontainer.h \
     dsmcomboboxenter.h \
     dsmspinboxenter.h \
     dsmtextedit.h \
-    dsmradiobuttonenter.h
+    dsmradiobuttonenter.h \
+    dsmmoney.h
 
 
 
@@ -151,7 +152,8 @@ SOURCES +=  qradplugininterface.cpp \
     dsmcomboboxenter.cpp \
     dsmspinboxenter.cpp \
     dsmtextedit.cpp \
-    dsmradiobuttonenter.cpp
+    dsmradiobuttonenter.cpp \
+    dsmmoney.cpp
 
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c

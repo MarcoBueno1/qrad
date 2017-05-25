@@ -470,4 +470,11 @@
 
 #define MSG_QUESTION_DELETE_ACCOUNTTOPAY    QString::fromUtf8("Deseja realmente excluir essa conta?")
 
+#define MSG_ERROR_SAVE_ACCOUNT              QString::fromUtf8("Não foi possível persistir as informações de conta no sistema.")
+
+#define MSG_QUESTION_DELETE_BANK            QString::fromUtf8("Deseja realmente excluir esse banco?")
+
+#define MSG_INFO_BANK_ALREADY_EXIST         QString::fromUtf8("O código desse banco já existe no sistema.")
+
+#define MSG_QUESTION_ACCOUNT_ZERO           QString::fromUtf8("Informe um valor maior que zero.")
 #endif // DSM_MESSAGES_H

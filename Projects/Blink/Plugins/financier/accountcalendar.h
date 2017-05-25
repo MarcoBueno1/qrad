@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "ui_accountcalendar.h"
 #include "accountcalendaraux.h"
+#include <QSqlQueryModel>
 
 namespace Ui{
    class AccountCalendar;

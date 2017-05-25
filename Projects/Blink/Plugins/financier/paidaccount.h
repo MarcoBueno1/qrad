@@ -10,6 +10,8 @@
 #include "accounttopaymodel.h"
 #include "accounttoreceivemodel.h"
 
+#include <QRegExpValidator>
+
 namespace Ui {
     class PaidAccount;
 }

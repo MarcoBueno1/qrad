@@ -1,8 +1,13 @@
 #include "paidaccount.h"
 #include "ui_paidaccount.h"
 
-#define SQL_UPDATE_PAIDACCOUNT      "update dsm_fin_accounttopay set (paiddate, paid, valuepaid) = (?, ?, ?)  where id = (?)"
-#define SQL_UPDATE_RECEIVEACCOUNT   "update dsm_fin_accounttoreceive set (paiddate, paid, valuepaid) = (?, ?, ?)  where id = (?)"
+#include "dsmsgmessages.h"
+#include "dsmmoney.h"
+#include "qradconfig.h"
+
+
+#define SQL_UPDATE_PAIDACCOUNT      "update fin_accounttopay set (paiddate, paid, valuepaid) = (?, ?, ?)  where id = (?)"
+#define SQL_UPDATE_RECEIVEACCOUNT   "update fin_accounttoreceive set (paiddate, paid, valuepaid) = (?, ?, ?)  where id = (?)"
 
 PaidAccount::PaidAccount(QWidget *parent) :
     QDialog(parent),
@@ -47,13 +52,13 @@ void PaidAccount::SendPaidAccountId(int accountId, DSM_AccountType_t accountType
 
     if (m_accountType == AccountTypeToPay)
     {
-        AccountToPayModel *accountToPayModel = AccountToPayModel::findById(m_accountId);
+        AccountToPayModel *accountToPayModel = AccountToPayModel::findByPrimaryKey(m_accountId);
         m_ui->lineEditPaidValue->setText(DSMMoney::MoneyHumanForm2(accountToPayModel->getValue()));
         delete accountToPayModel;
     }
     else
     {
-        AccountToReceiveModel *accountToReceiveModel = AccountToReceiveModel::findById(m_accountId);
+        AccountToReceiveModel *accountToReceiveModel = AccountToReceiveModel::findByPrimaryKey(m_accountId);
         m_ui->lineEditPaidValue->setText(DSMMoney::MoneyHumanForm2(accountToReceiveModel->getValue()));
         delete accountToReceiveModel;
     }

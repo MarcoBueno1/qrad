@@ -1,11 +1,11 @@
 #include "accounthistoryreportaux.h"
 
 #include "column2delegate.h"
+#include "financierdelegates.h"
 
 
-
-#define SQL_SELECT_ACCOUNTTOPAY     "select ah.id, ah.userid, a.description, 'A PAGAR' as accounttype, ah.typeoperation, u.name, ah.date, ah.time  from dsm_fin_accounttopay_history ah inner join dsm_fin_accounttopay a on ah.accounttopayid = a.id and a.id = %1 inner join dsm_user u on ah.userid = u.id order by date desc, time desc"
-#define SQL_SELECT_ACCOUNTTORECEIVE "select ah.id, ah.userid, a.description, 'A RECEBER' as accounttype, ah.typeoperation, u.name, ah.date, ah.time  from dsm_fin_accounttoreceive_history ah inner join dsm_fin_accounttoreceive a on ah.accounttoreceiveid = a.id and a.id = %1 inner join dsm_user u on ah.userid = u.id order by date desc, time desc"
+#define SQL_SELECT_ACCOUNTTOPAY     "select ah.id, ah.userid, a.description, 'A PAGAR' as accounttype, ah.typeoperation, u.name, ah.date, ah.time  from fin_accounttopay_history ah inner join fin_accounttopay a on ah.accounttopayid = a.id and a.id = %1 inner join dsm_user u on ah.userid = u.id order by date desc, time desc"
+#define SQL_SELECT_ACCOUNTTORECEIVE "select ah.id, ah.userid, a.description, 'A RECEBER' as accounttype, ah.typeoperation, u.name, ah.date, ah.time  from fin_accounttoreceive_history ah inner join fin_accounttoreceive a on ah.accounttoreceiveid = a.id and a.id = %1 inner join dsm_user u on ah.userid = u.id order by date desc, time desc"
 
 AccountHistoryReportAux::AccountHistoryReportAux(QWidget *parent) :
     QDialog(parent),

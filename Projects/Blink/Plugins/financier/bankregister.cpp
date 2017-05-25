@@ -1,9 +1,9 @@
 #include "bankregister.h"
 #include "ui_bankregister.h"
-
-#define SQL_SELECT_BANK  "select * from dsm_fin_bank where id = (%1)"
-#define SQL_INSERT_BANK  "insert into dsm_fin_bank (code, description, removed) values (?, ?, false)"
-#define SQL_UPDATE_BANK  "update dsm_fin_bank set (code, description) = (?, ?)  where id = (?)"
+#include "dsmsgmessages.h"
+#define SQL_SELECT_BANK  "select * from fin_bank where id = (%1)"
+#define SQL_INSERT_BANK  "insert into fin_bank (code, description, removed) values (?, ?, false)"
+#define SQL_UPDATE_BANK  "update fin_bank set (code, description) = (?, ?)  where id = (?)"
 
 BankRegister::BankRegister(QWidget *parent) :
     QDialog(parent),
@@ -57,8 +57,8 @@ void BankRegister::SaveBank(void)
          (!m_ui->lineEditDescription->text().isEmpty()) )
     {
 
-        BankModel *bankModel = BankModel::findByCode(m_ui->lineEditCode->text().toUpper().trimmed());
-        if ( (bankModel != NULL) && (bankModel->getId() != m_bankId) )
+        BankModelList *bankModels = BankModel::findByCode(m_ui->lineEditCode->text().toUpper().trimmed());
+        if ( (bankModels != NULL) && (bankModels->at(0)->getId() != m_bankId) )
         {
             QMessageBox::information(this, MSG_INFO_TITLE, MSG_INFO_BANK_ALREADY_EXIST);
         }

@@ -401,7 +401,7 @@
          </widget>
         </item>
         <item>
-         <widget class="DSMLineEditEnter" name="lineEditAccountType">
+         <widget class="QRadLineEditEnter" name="lineEditAccountType">
           <property name="maxLength">
            <number>80</number>
           </property>
@@ -458,7 +458,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DSMLineEditEnter</class>
+   <class>QRadLineEditEnter</class>
    <extends>QLineEdit</extends>
    <header location="global">dsmlineeditenter.h</header>
   </customwidget>

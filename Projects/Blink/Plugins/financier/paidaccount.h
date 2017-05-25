@@ -6,7 +6,7 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 #include <QSqlError>
-#include "dsm.h"
+//#include "dsm.h"
 #include "accounttopaymodel.h"
 #include "accounttoreceivemodel.h"
 

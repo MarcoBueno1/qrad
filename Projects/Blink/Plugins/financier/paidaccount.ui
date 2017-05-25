@@ -446,7 +446,7 @@
          </widget>
         </item>
         <item>
-         <widget class="DSMLineEditEnter" name="lineEditPaidValue">
+         <widget class="QRadLineEditEnter" name="lineEditPaidValue">
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -461,7 +461,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DSMLineEditEnter</class>
+   <class>QRadLineEditEnter</class>
    <extends>QLineEdit</extends>
    <header location="global">dsmlineeditenter.h</header>
   </customwidget>

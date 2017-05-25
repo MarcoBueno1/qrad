@@ -510,7 +510,7 @@
          </widget>
         </item>
         <item>
-         <widget class="DSMLineEditEnter" name="lineEditDesciption">
+         <widget class="QRadLineEditEnter" name="lineEditDesciption">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -623,7 +623,7 @@
            </widget>
           </item>
           <item>
-           <widget class="DSMLineEditEnter" name="lineEditValue">
+           <widget class="QRadLineEditEnter" name="lineEditValue">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -670,7 +670,7 @@
    <header location="global">dsmcomboboxenter.h</header>
   </customwidget>
   <customwidget>
-   <class>DSMLineEditEnter</class>
+   <class>QRadLineEditEnter</class>
    <extends>QLineEdit</extends>
    <header location="global">dsmlineeditenter.h</header>
   </customwidget>

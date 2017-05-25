@@ -744,7 +744,7 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
          </widget>
         </item>
         <item>
-         <widget class="DSMLineEditEnter" name="lineEditDesciption">
+         <widget class="QRadLineEditEnter" name="lineEditDesciption">
           <property name="maxLength">
            <number>50</number>
           </property>
@@ -863,7 +863,7 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
            </widget>
           </item>
           <item>
-           <widget class="DSMLineEditEnter" name="lineEditValue">
+           <widget class="QRadLineEditEnter" name="lineEditValue">
             <property name="maximumSize">
              <size>
               <width>120</width>
@@ -893,7 +893,7 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
            </widget>
           </item>
           <item>
-           <widget class="DSMLineEditEnter" name="lineEditDocNumber">
+           <widget class="QRadLineEditEnter" name="lineEditDocNumber">
             <property name="maximumSize">
              <size>
               <width>200</width>
@@ -913,7 +913,7 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DSMLineEditEnter</class>
+   <class>QRadLineEditEnter</class>
    <extends>QLineEdit</extends>
    <header location="global">dsmlineeditenter.h</header>
   </customwidget>

@@ -14,8 +14,8 @@
 #include "accounttypereport.h"
 #include "accountcalendar.h"
 #include "enterbillet.h"
-#include "dsmshared.h"
-#include "dsmconfig.h"
+#include "qradshared.h"
+#include "qradconfig.h"
 
 class FinancierPlugin : public DSMPluginInterface, public DSMPluginReport
 {

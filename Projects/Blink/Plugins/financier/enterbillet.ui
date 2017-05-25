@@ -322,7 +322,7 @@
          </widget>
         </item>
         <item>
-         <widget class="DSMLineEditEnter" name="lineEditNumber">
+         <widget class="QRadLineEditEnter" name="lineEditNumber">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -358,7 +358,7 @@
          </widget>
         </item>
         <item>
-         <widget class="DSMLineEditEnter" name="lineEditTotalValue">
+         <widget class="QRadLineEditEnter" name="lineEditTotalValue">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -969,7 +969,7 @@ selection-color: rgb(255, 255, 255);</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DSMLineEditEnter</class>
+   <class>QRadLineEditEnter</class>
    <extends>QLineEdit</extends>
    <header location="global">dsmlineeditenter.h</header>
   </customwidget>

@@ -401,7 +401,7 @@
          </widget>
         </item>
         <item>
-         <widget class="DSMLineEditEnter" name="lineEditCode">
+         <widget class="QRadLineEditEnter" name="lineEditCode">
           <property name="maximumSize">
            <size>
             <width>140</width>
@@ -428,7 +428,7 @@
          </widget>
         </item>
         <item>
-         <widget class="DSMLineEditEnter" name="lineEditDescription">
+         <widget class="QRadLineEditEnter" name="lineEditDescription">
           <property name="maxLength">
            <number>80</number>
           </property>
@@ -443,7 +443,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DSMLineEditEnter</class>
+   <class>QRadLineEditEnter</class>
    <extends>QLineEdit</extends>
    <header location="global">dsmlineeditenter.h</header>
   </customwidget>

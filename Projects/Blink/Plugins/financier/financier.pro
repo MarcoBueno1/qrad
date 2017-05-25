@@ -52,7 +52,6 @@ HEADERS += financierplugin.h \
 LIBS += -L../../../../libs/QRadCore \
         -L../../libs/orm \
         -L../../../../libs/QRadLic \
-        -l \
         -lqradcore
         -lqradlicup
 

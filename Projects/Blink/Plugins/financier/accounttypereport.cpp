@@ -44,7 +44,7 @@
 "   group by at.description "\
 "   order by at.description"
 
-#define SQL_SELECT_SELLS    "select sum(ps.value) as sum from dsm_sale s inner join debt ps on ps.saleid = s.id and s.status = 1 and ps.paymentwayid <> %3 and ps.paymentwayid <> %4 and ps.paymentwayid <> %5 and s.date between '%1' and '%2'"
+//#define SQL_SELECT_SELLS    "select sum(ps.value) as sum from dsm_sale s inner join debt ps on ps.saleid = s.id and s.status = 1 and ps.paymentwayid <> %3 and ps.paymentwayid <> %4 and ps.paymentwayid <> %5 and s.date between '%1' and '%2'"
 
 /**
  * Relatório de contas.
@@ -112,8 +112,8 @@ void AccountTypeReport::Launcher(void)
     QSqlQueryModel  *getSumToPay = new QSqlQueryModel,
                     *getSumToReceive = new QSqlQueryModel,
                     *getTotalToPay = new QSqlQueryModel,
-                    *getTotalToReceive = new QSqlQueryModel,
-                    *getSells = new QSqlQueryModel;
+                    *getTotalToReceive = new QSqlQueryModel;
+//                    *getSells = new QSqlQueryModel;
 
     DSMReport       *report = new DSMReport();
     int             totalToPayAmount = 0, totalToReceiveAmount = 0,
@@ -129,21 +129,21 @@ void AccountTypeReport::Launcher(void)
        delete getSumToReceive;
        delete getTotalToPay;
        delete getTotalToReceive;
-       delete getSells;
+//       delete getSells;
        return;
     }
 
     /** Sells */
 
-    getSells->setQuery(QString(SQL_SELECT_SELLS)
-                       .arg(m_ui->dateEditSince->date().toString(FMT_DATE_DB))
-                       .arg(m_ui->dateEditUntil->date().toString(FMT_DATE_DB))
-                       .arg(QRadConfig::GetAccountId())
-                       .arg(QRadConfig::GetAgreementId())
-                       .arg(QRadConfig::GetPopDrugId()));
+  // getSells->setQuery(QString(SQL_SELECT_SELLS)
+  //                     .arg(m_ui->dateEditSince->date().toString(FMT_DATE_DB))
+  //                     .arg(m_ui->dateEditUntil->date().toString(FMT_DATE_DB))
+  //                     .arg(QRadConfig::GetAccountId())
+  //                     .arg(QRadConfig::GetAgreementId())
+  //                     .arg(QRadConfig::GetPopDrugId()));
+  //
 
-
-    totalSells = DSMMoney::StrToInt(getSells->record(0).value("sum").toString());
+   // totalSells = DSMMoney::StrToInt(getSells->record(0).value("sum").toString());
 
     /** To Pay */
 
@@ -191,7 +191,7 @@ void AccountTypeReport::Launcher(void)
     report->setAttributeValue("START_DATE", m_ui->dateEditSince->date().toString(FMT_DATE));
     report->setAttributeValue("END_DATE", m_ui->dateEditUntil->date().toString(FMT_DATE));
 
-    report->setAttributeMoneyValue("TOTAL_SELL", totalSells);
+    report->setAttributeMoneyValue("TOTAL_SELL", /*totalSells*/ 0);
 
     report->setAttributeValue("TOTAL_TOPAY_AMOUNT", totalToPayAmount);
     report->setAttributeMoneyValue("TOTAL_TOPAY_VALUE", totalToPayValue);
@@ -206,7 +206,7 @@ void AccountTypeReport::Launcher(void)
     report->setAttributeMoneyValue("TOTAL_TORECEIVE_PORC", totalToReceivePorc);
 
 
-    double totalAll = totalSells + totalToReceive - totalToPay;
+    double totalAll = /*totalSells + */totalToReceive - totalToPay;
 
     if ( totalAll < 0 )
     {
@@ -229,7 +229,7 @@ void AccountTypeReport::Launcher(void)
     delete getSumToReceive;
     delete getTotalToPay;
     delete getTotalToReceive;
-    delete getSells;
+//    delete getSells;
 
 #endif
 }

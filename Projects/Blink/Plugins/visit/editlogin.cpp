@@ -84,6 +84,7 @@ void Editlogin::Save()
      return;
    }
 
+
    QCoreApplication *app = QCoreApplication::instance();
    app->setProperty("CurrentUserId", usr->getid());
    app->setProperty("usepreaut", pro->getusepreaut());

@@ -7,7 +7,11 @@ TEMPLATE = lib
 CONFIG += plugin
 
 INCLUDEPATH = ../../../../libs/QRadCore \
-              ../../libs/orm/
+              ../../../../libs/QRadCommonGui \
+              ../../../../libs/QRadOrm \
+              ../../../../libs/QRadHw \
+              ../../libs/orm \
+              ../../libs/common
 
 DESTDIR = .
 SOURCES = camera.cpp \
@@ -18,12 +22,8 @@ SOURCES = camera.cpp \
              editVisitante.cpp \
              managerdweller.cpp \ 
              editdweller.cpp \
-	     editphone.cpp \
-	     editaddress.cpp \
              editpreaut.cpp \
              managerpreaut.cpp \
-             edituser.cpp \
-             manageruser.cpp \ 
              editemailconf.cpp \
              editmaincompany.cpp \
     editvehicle.cpp \
@@ -32,7 +32,8 @@ SOURCES = camera.cpp \
     editveicname.cpp \
     managerveicname.cpp \
     editreason.cpp \
-    managerreason.cpp
+    managerreason.cpp \
+    editlogin.cpp
 
 HEADERS = \ 
              visitplugin.h \ 
@@ -43,12 +44,8 @@ HEADERS = \
              camera.h \
              managerdweller.h \ 
              editdweller.h \
-             editphone.h \
-	     editaddress.h \
              editpreaut.h \
              managerpreaut.h \
-             edituser.h \
-             manageruser.h \
              editemailconf.h \
              editmaincompany.h \
     editvehicle.h \
@@ -57,7 +54,8 @@ HEADERS = \
     editveicname.h \
     managerveicname.h \
     editreason.h \
-    managerreason.h
+    managerreason.h \
+    editlogin.h
 
 
 
@@ -69,12 +67,8 @@ FORMS = \
              camera.ui \
              editdweller.ui \
              managerdweller.ui \ 
-	     editphone.ui \
-	     editaddress.ui \
              editpreaut.ui \
              managerpreaut.ui \
-             edituser.ui \
-             manageruser.ui \ 
              editemailconf.ui \
              editmaincompany.ui \
     editvehicle.ui \
@@ -83,17 +77,24 @@ FORMS = \
     editveicname.ui \
     managerveicname.ui \
     editreason.ui \
-    managerreason.ui
+    managerreason.ui \
+    editlogin.ui
 
 
 
 win32:LIBS += -L../../../../libs/QRadCore/release \
-              -L../../libs/orm/release
+              -L../../../../libs/QRadCommonGui/release \
+              -L../../libs/orm/release \
+              -L../../libs/common/release
 unix:LIBS += -L../../../../libs/QRadCore \
-             -L../../libs/orm/
+             -L../../../../libs/QRadCommonGui \
+             -L../../libs/orm/ \
+             -L../../libs/common/
 
 LIBS += -lqradcore \
-        -lblinkorm
+        -lblinkorm \
+        -lblinkcommon \
+        -lqradcommongui
 
 win32:QMAKE_LFLAGS += --enable-auto-import 
 

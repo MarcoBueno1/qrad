@@ -12,21 +12,21 @@ TARGET = qradcommongui
 
 TEMPLATE = lib
 
-INCLUDEPATH += ../../../../libs/QRadCore \
-               ../../../../libs/QRadHw \
-               ../orm
+INCLUDEPATH += ../QRadCore \
+               ../QRadHw \
+               ../QRadOrm
 
-SOURCES += editlogin.cpp \
+SOURCES +=  \
            edituser.cpp \
            editphone.cpp \
            editaddress.cpp
 
-HEADERS += editlogin.h \
+HEADERS +=  \
            edituser.h \
            editphone.h \
            editaddress.h
 		   
-FORMS += editlogin.ui \
+FORMS +=  \
          edituser.ui \
          editphone.ui \
          editaddress.ui
@@ -36,7 +36,7 @@ win32:LIBS +=  -L../QRadCore\release \
                -L../QRadOrm/release  
 
 unix:LIBS +=  -L../QRadCore \
-              -L../libs/QRadHw \
+              -L../QRadHw \
               -L../QRadOrm
 
 LIBS += -lqradcore  \

@@ -12,14 +12,15 @@ TARGET = qradorm
 
 TEMPLATE = lib
 
-INCLUDEPATH += ../../../../libs/QRadCore
+INCLUDEPATH += ../QRadCore
 
 SOURCES +=  \
 	   phone.cpp \
 	   address.cpp \
            user.cpp \
            login.cpp \
-           userV2.cpp 
+           userV2.cpp \
+           machine.cpp 
             
 
 HEADERS +=  \
@@ -28,6 +29,7 @@ HEADERS +=  \
            user.h \
            login.h \
            userV2.h \
+           machine.h
 		   
 win32:LIBS +=  -L../QRadCore\release
 unix:LIBS +=  -L../QRadCore

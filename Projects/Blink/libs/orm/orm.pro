@@ -37,7 +37,8 @@ SOURCES += dweller.cpp \
     bankmodel.cpp \
     accounttoreceivehistorymodel.cpp \
     accounttopayhistorymodel.cpp \
-    supplier.cpp
+    supplier.cpp \
+    bankaccount.cpp
             
 
 HEADERS += dweller.h \
@@ -62,7 +63,8 @@ HEADERS += dweller.h \
     bankmodel.h \
     accounttoreceivehistorymodel.h \
     accounttopayhistorymodel.h \
-    supplier.h
+    supplier.h \
+    bankaccount.h
 		   
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadOrm\release

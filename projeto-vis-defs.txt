@@ -25,6 +25,11 @@
 
 -s supplier -t supplier -c id -i int -c cnpj.CNPJ -i QString:search -c nome.Nome -i QString:searchmaster -c fantasia.Fantasia -i QString:search -c data_cadastro.Data -i QDate -c hora_cadastro.Hora -i QTime 
   
+6. Conta Bancaria
+
+./qrad -s bankaccount -t bankaccount -c id -i int -c conta.Conta -i QString:searchmaster -c digconta.DigitoConta -i QString:searchmaster -c agencia.Agencia -i QString:search -c digagencia.DigitoAgencia -i QString -c banco.Banco -i int:multi:fin_bank.Description[]
+
+
     
 6. Relatorios:
     1. Que visitantes estão no predito

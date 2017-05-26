@@ -31,7 +31,9 @@ SOURCES += financierplugin.cpp \
     accounthistoryreportaux.cpp \
     accountcalendar.cpp \
     accountcalendaraux.cpp \ 
-    financierdelegates.cpp
+    financierdelegates.cpp \
+    editbankaccount.cpp \
+    managerbankaccount.cpp
 
 HEADERS += financierplugin.h \
     accounttypemanager.h \
@@ -48,7 +50,9 @@ HEADERS += financierplugin.h \
     accounthistoryreportaux.h \
     accountcalendar.h \
     accountcalendaraux.h \
-    financierdelegates.h
+    financierdelegates.h \
+    editbankaccount.h \
+    managerbankaccount.h
 
 LIBS += -L../../../../libs/QRadCore \
         -L../../../../libs/QRadOrm \
@@ -76,7 +80,9 @@ FORMS += accounttypemanager.ui \
     accounttypereport.ui \
     accounthistoryreportaux.ui \
     accountcalendar.ui \
-    accountcalendaraux.ui
+    accountcalendaraux.ui \
+    editbankaccount.ui \
+    managerbankaccount.ui
 
 target.path = $${PREFIX}/plugins
 INSTALLS += target

@@ -38,7 +38,13 @@ SOURCES += dweller.cpp \
     accounttoreceivehistorymodel.cpp \
     accounttopayhistorymodel.cpp \
     supplier.cpp \
-    bankaccount.cpp
+    bankaccount.cpp \
+         cnab.cpp \
+         tipocobranca.cpp \
+         layoutbol.cpp \
+         tipopessoa.cpp \
+         respemis.cpp \
+         ticketconfig.cpp
             
 
 HEADERS += dweller.h \
@@ -64,7 +70,13 @@ HEADERS += dweller.h \
     accounttoreceivehistorymodel.h \
     accounttopayhistorymodel.h \
     supplier.h \
-    bankaccount.h
+    bankaccount.h \
+         cnab.h \
+         tipocobranca.h \
+         layoutbol.h \ 
+         tipopessoa.h \ 
+         respemis.h \ 
+         ticketconfig.h
 		   
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadOrm\release

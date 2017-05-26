@@ -33,7 +33,19 @@ SOURCES += financierplugin.cpp \
     accountcalendaraux.cpp \ 
     financierdelegates.cpp \
     editbankaccount.cpp \
-    managerbankaccount.cpp
+    managerbankaccount.cpp \
+           managercnab.cpp \
+           editcnab.cpp \
+           edittipocobranca.cpp \
+           managertipocobranca.cpp \
+           editlayoutbol.cpp \
+           managerlayoutbol.cpp \
+           managertipopessoa.cpp \
+           edittipopessoa.cpp \
+           managerrespemis.cpp \
+           editrespemis.cpp \
+           managerticketconfig.cpp \
+           editticketconfig.cpp
 
 HEADERS += financierplugin.h \
     accounttypemanager.h \
@@ -52,7 +64,20 @@ HEADERS += financierplugin.h \
     accountcalendaraux.h \
     financierdelegates.h \
     editbankaccount.h \
-    managerbankaccount.h
+    managerbankaccount.h \
+           managercnab.h \
+           editcnab.h \
+           edittipocobranca.h \
+           managertipocobranca.h \
+           editlayoutbol.h \
+           managerlayoutbol.h \
+           edittipopessoa.h \
+           managertipopessoa.h \
+           editrespemis.h \
+           managerrespemis.h \
+           editticketconfig.h \
+           managerticketconfig.h
+
 
 LIBS += -L../../../../libs/QRadCore \
         -L../../../../libs/QRadOrm \
@@ -82,7 +107,19 @@ FORMS += accounttypemanager.ui \
     accountcalendar.ui \
     accountcalendaraux.ui \
     editbankaccount.ui \
-    managerbankaccount.ui
+    managerbankaccount.ui \
+           managercnab.ui \
+           editcnab.ui \
+           managertipocobranca.ui \
+           edittipocobranca.ui \
+           editlayoutbol.ui \
+           managerlayoutbol.ui \
+           managertipopessoa.ui \
+           edittipopessoa.ui \
+           managerrespemis.ui \
+           editrespemis.ui \
+           managerticketconfig.ui \
+           editticketconfig.ui
 
 target.path = $${PREFIX}/plugins
 INSTALLS += target

@@ -63,6 +63,8 @@ typedef enum ORMAttrType_en
     class ORMAttribute_##attrType : public ORMAttribute \
     {\
         public: \
+            ORMAttribute_##attrType(){}\
+            ~ORMAttribute_##attrType(){}\
             ORMAttrType type() { return ORM_ATTR_##attrType; }\
             attrType value() { return _convert_##attrType(m_value); }\
             virtual QString description() { return #attrType; } \
@@ -72,6 +74,8 @@ typedef enum ORMAttrType_en
 class ORMAttribute
 {
     public:
+        ORMAttribute(){}
+        virtual ~ORMAttribute(){}
         QString fieldName() { return m_fieldName; }
         void setFieldName(QString fieldName) { m_fieldName = fieldName; }
         void setValue(QVariant value) { m_value = value; }
@@ -402,13 +406,13 @@ public:
     static void InitAttribute(ORMAttribute *attr);
 protected:
     virtual QString className() = 0;
-protected:
+protected:    
     QString                 m_tableName;
     QList<ORMAttribute*>  m_attrList;
     ORMAttribute*         m_primaryKey;
     static QMap<QString, QString> m_fieldMap;
     QSqlError m_lastError;
-    QString CreateFieldTxt( ORMAttribute *attr );
+    QString CreateFieldTxt( ORMAttribute *attr, bool bDefault=false );
     void CreateTable();
     void EnsureFieldsExist();
     void fillORM(QSqlRecord record);
@@ -419,6 +423,8 @@ protected:
     void Audit();
     int  saveImage( QString path );
     QPixmap getImage(int nLoId);
+private:
+    bool m_IsAudit;
 
 };
 

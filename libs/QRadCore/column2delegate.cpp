@@ -407,7 +407,7 @@ void ColumnMoney::paint(QPainter *painter,
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = (Qt::AlignRight | Qt::AlignVCenter);
-    drawDisplay(painter, myOption, myOption.rect, DSMMoney::MoneyHumanForm2(text.toDouble()));
+    drawDisplay(painter, myOption, myOption.rect, QRadMoney::MoneyHumanForm2(text.toDouble()));
     drawFocus(painter, myOption, myOption.rect);
 }
 

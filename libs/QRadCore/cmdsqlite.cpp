@@ -43,12 +43,12 @@ QString CmdSqlite::CmdDouble(QString name, int precision, int decimals)
     return QString::fromUtf8(" %1 REAL ").arg(name);
 }
 
-QString CmdSqlite::CmdDate(QString name)
+QString CmdSqlite::CmdDate(QString name, bool bDefault)
 {
     return CmdString(name,0);
 }
 
-QString CmdSqlite::CmdTime(QString name)
+QString CmdSqlite::CmdTime(QString name, bool bDefault)
 {
     return CmdString(name,0);
 }

@@ -49,13 +49,13 @@ QString CmdMysql::CmdDouble(QString name, int precision, int decimals)
     return QString::fromUtf8(" %1 numeric(%2,%3)").arg(name).arg(precision).arg(decimals);
 }
 
-QString CmdMysql::CmdDate(QString name)
+QString CmdMysql::CmdDate(QString name, bool bDefault)
 {
     return QString::fromUtf8(" %1 DATE ").arg(name);
 
 }
 
-QString CmdMysql::CmdTime(QString name)
+QString CmdMysql::CmdTime(QString name, bool bDefault)
 {
 
     return QString::fromUtf8(" %1 TIME ").arg(name);

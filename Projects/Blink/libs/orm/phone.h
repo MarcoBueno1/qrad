@@ -1,30 +1,21 @@
 #ifndef Phone_H
 #define Phone_H
- 
-#include "model.h"
 
-DECLARE_MODEL(Phone)
+#include "orm.h"
 
-class Phone : public Model
-{
-     MODEL_DECLARE_ATTRIBUTE(int, id);
-     MODEL_DECLARE_ATTRIBUTE(int, dwellerid );
-     MODEL_DECLARE_ATTRIBUTE(QString, Number);
-     MODEL_DECLARE_ATTRIBUTE(int, Operator);
-     MODEL_DECLARE_ATTRIBUTE(int, Type);
-     MODEL_DECLARE_ATTRIBUTE(bool, WatsApp);
-     MODEL_DECLARE_ATTRIBUTE(int, Owner);
-     MODEL_DECLARE_ATTRIBUTE(int, OwnerType);
-     MODEL_DECLARE_ATTRIBUTE(bool, Removed);
+DECLARE_ORM(Phone)
 
-     MODEL_MATCH_TABLE(Phone, "phone")
+DECLARE_CLASS(Phone)
+     ORM_DECLARE_ATTRIBUTE(Phone, int, id)
+     ORM_DECLARE_ATTRIBUTE(Phone, QString, Number)
+     ORM_DECLARE_ATTRIBUTE(Phone, int, Operator)
+     ORM_DECLARE_ATTRIBUTE(Phone, int, Type)
+     ORM_DECLARE_ATTRIBUTE(Phone, bool, WatsApp)
+     ORM_DECLARE_ATTRIBUTE(Phone, int, Owner)
+     ORM_DECLARE_ATTRIBUTE(Phone, int, OwnerType)
+     ORM_DECLARE_ATTRIBUTE(Phone, bool, Removed)
 
-private:
-    static PhoneList* m_allList;
-public:
-    static PhoneList* findAll(void);
-    static Phone* findByid(int id);
-    static Phone* findByid(int id, QString database);
-};
+    ORM_MATCH_TABLE(Phone, "phone")
+ORM_END_MAP()
  
 #endif 

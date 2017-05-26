@@ -16,11 +16,17 @@ INCLUDEPATH += ../../../../libs/QRadCore \
                ../../../../libs/QRadHw \
                ../orm
 
-SOURCES += editlogin.cpp 
+SOURCES += editlogin.cpp \
+           editsupplier.cpp \
+           managersupplier.cpp
 
-HEADERS += editlogin.h 
+HEADERS += editlogin.h \
+           editsupplier.h \
+           managersupplier.h
 		   
-FORMS += editlogin.ui
+FORMS += editlogin.ui \
+         editsupplier.ui \
+         managersupplier.ui
  
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadHw\release \

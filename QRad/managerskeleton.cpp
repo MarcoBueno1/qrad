@@ -462,7 +462,7 @@
 "\n"\
 "    int nId = currentIndex.sibling(currentIndex.row(),ui->tableViewSearch->getColumnOf(\"id\")).data().toInt();\n"\
 "\n"\
-"    %1 *sa = %1::findByid(nId);\n"\
+"    %1 *sa = %1::findByPrimaryKey(nId);\n"\
 "    edt->SetModel(sa);\n"\
 "    if( edt->exec() == QDialog::Accepted )\n"\
 "    {\n"\

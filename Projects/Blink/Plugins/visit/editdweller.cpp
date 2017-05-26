@@ -284,7 +284,7 @@ void EditDweller::RemoveVeiculo()
 void EditDweller::RemovePhone()
 {
     int id = ui->tableViewPhone->model()->index(ui->tableViewPhone->currentIndex().row(),0).data().toInt();
-    Phone *p = Phone::findByid(id);
+    Phone *p = Phone::findByPrimaryKey(id);
     if(p)
     {
         p->updateRemoved( true );

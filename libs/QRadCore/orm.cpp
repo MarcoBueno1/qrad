@@ -34,7 +34,7 @@ QMap<QString, QString> ORM::m_fieldMap;
 
 ORM::ORM()
 {
-
+  m_IsAudit =false;
 }
 
 void ORM::setLastError(QSqlError error)
@@ -91,7 +91,7 @@ void ORM::EnsureFieldsExist()
     }
 }
 
-QString ORM::CreateFieldTxt( ORMAttribute *attr )
+QString ORM::CreateFieldTxt( ORMAttribute *attr, bool bDefault )
 {
     QString field;
 
@@ -115,10 +115,10 @@ QString ORM::CreateFieldTxt( ORMAttribute *attr )
                                field = builder->CmdBool(attr->fieldName());
                 break;
             case ORM_ATTR_QDate:
-                               field = builder->CmdDate(attr->fieldName());
+                               field = builder->CmdDate(attr->fieldName(), bDefault);
                 break;
             case ORM_ATTR_QTime:
-                               field = builder->CmdTime(attr->fieldName());
+                               field = builder->CmdTime(attr->fieldName(), bDefault);
                 break;
             case ORM_ATTR_QString:
             default:
@@ -133,7 +133,6 @@ QString ORM::CreateFieldTxt( ORMAttribute *attr )
 void ORM::CreateTable()
 {
     bool bFirst =  true;
-    ORMAttribute *pKey = NULL;
 
     QString strCreate = QString::fromUtf8("CREATE TABLE %1 ( ").arg(m_tableName);
 
@@ -142,19 +141,29 @@ void ORM::CreateTable()
         if( !bFirst )
             strCreate +=  " , ";
 
-        if( attr == m_primaryKey )
-        {
-            pKey =  attr;
-        }
-
         strCreate += CreateFieldTxt( attr );
         bFirst = false;
     }
 
-/*    if(pKey && getDatabase().driverName() != "QSQLITE")
-       strCreate += QString::fromUtf8(" , CONSTRAINT %1_pkey PRIMARY KEY (%2) ")
-                                      .arg(m_tableName)
-                                     .arg(pKey->fieldName());*/
+    if( m_IsAudit )
+    {
+        ORMAttribute_QDate *dtLastOp = new ORMAttribute_QDate();
+        dtLastOp->setFieldName("datelastop");
+        strCreate += " , " +CreateFieldTxt( dtLastOp, true );
+        delete dtLastOp;
+
+        ORMAttribute_QTime *tmLastOp = new ORMAttribute_QTime();
+        tmLastOp->setFieldName("timelastop");
+        strCreate += " , " +CreateFieldTxt( tmLastOp, true );
+        delete tmLastOp;
+
+        ORMAttribute_int *userid = new ORMAttribute_int();
+        userid->setFieldName("userid");
+        strCreate += " , " +CreateFieldTxt( userid);
+        delete userid;
+
+
+    }
 
     strCreate += QString::fromUtf8(");");
 
@@ -267,6 +276,11 @@ bool ORM::do_insert()
 
             count++;
         }
+        if( m_IsAudit)
+        {
+           fields += ",userid";
+           values += ",?";
+        }
 
         if(getDatabase().driverName() == "QSQLITE")
             query = QString("insert into %1 (%2)values(%3)")
@@ -296,6 +310,12 @@ bool ORM::do_insert()
                 continue;
 
             insert->addBindValue(attr->value());
+        }
+        if( m_IsAudit)
+        {
+           QCoreApplication *app = QCoreApplication::instance();
+           int CurrentUser = app->property("CurrentUserId").toInt();
+           insert->addBindValue(CurrentUser);
         }
 
         ret = insert->exec();
@@ -362,6 +382,12 @@ bool ORM::do_update()
             count++;
         }
 
+        if( m_IsAudit)
+        {
+           fields += ",userid";
+           values += ",?";
+        }
+
         query = QString("update %1 set (%2)=(%3) where %4 = %5")
                 .arg(m_tableName)
                 .arg(fields)
@@ -384,6 +410,12 @@ bool ORM::do_update()
                 continue;
 
             update->addBindValue(attr->value());
+        }
+        if( m_IsAudit)
+        {
+           QCoreApplication *app = QCoreApplication::instance();
+           int CurrentUser = app->property("CurrentUserId").toInt();
+           update->addBindValue(CurrentUser);
         }
 
         ret = update->exec();
@@ -455,12 +487,12 @@ bool ORM::Delete()
 }
 void  ORM::Audit()
 {
-   QCoreApplication *app = QCoreApplication::instance();
-   int CurrentUser = app->property("CurrentUserId").toInt();
    QString CurrentTable = m_tableName;
-   m_tableName += QString("_%1").arg(CurrentUser);
+   m_tableName += QString("_%1").arg("a");
 
+   m_IsAudit = true;
    Create();
+   m_IsAudit = false;
 
    m_tableName = CurrentTable;
 }

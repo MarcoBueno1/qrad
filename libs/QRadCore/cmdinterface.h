@@ -24,8 +24,8 @@ public:
     virtual  QString CmdInt(QString name, bool bAutoIncrement=0, bool bPrimaryKey=0) = 0;
     virtual  QString CmdLong(QString name, bool bAutoIncrement=0, bool bPrimaryKey=0) = 0;
     virtual  QString CmdDouble(QString name, int precision=0, int decimals=0) = 0;
-    virtual  QString CmdDate(QString name) = 0;
-    virtual  QString CmdTime(QString name) = 0;
+    virtual  QString CmdDate(QString name, bool bDefault=false) = 0;
+    virtual  QString CmdTime(QString name, bool bDefault=false) = 0;
     virtual  QString CmdBool(QString name) = 0;
     virtual  QString CmdString(QString name, int nSize=ORM_LARGE_SIZE) = 0;
 };

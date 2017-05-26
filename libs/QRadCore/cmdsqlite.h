@@ -20,8 +20,8 @@ public:
      QString CmdInt(QString name, bool bAutoIncrement=0, bool bPrimaryKey=0);
      QString CmdLong(QString name, bool bAutoIncrement=0, bool bPrimaryKey=0);
      QString CmdDouble(QString name, int precision=0, int decimals=0);
-     QString CmdDate(QString name);
-     QString CmdTime(QString name);
+     QString CmdDate(QString name, bool bDefault=false);
+     QString CmdTime(QString name, bool bDefault=false);
      QString CmdBool(QString name);
      QString CmdString(QString name, int nSize=ORM_LARGE_SIZE);
 };

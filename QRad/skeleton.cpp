@@ -123,15 +123,11 @@ void skeleton::CreateH()
         QString strBody = QString("#ifndef %1_H\n"\
                                     "#define %1_H\n"\
                                     " \n"\
-                                    "#include \"model.h\"\n"\
+                                    "#include \"orm.h\"\n"\
                                     "\n"\
-                                    "DECLARE_MODEL(%1)\n"\
+                                    "DECLARE_ORM(%1)\n"\
                                     "\n"\
-                                    "class %1 : public Model\n"\
-                                    "{\n").arg(m_tables->at(i)->getName());
-
-
-        strBody += "\n\n";
+                                    "DECLARE_CLASS(%1)\n").arg(m_tables->at(i)->getName());
 
 
 //        QList<QPair<QString, QString> > ::iterator i;
@@ -146,22 +142,14 @@ void skeleton::CreateH()
                 continue;
 			}
 
-            strBody += QString("     MODEL_DECLARE_ATTRIBUTE(%1, %2);\n")
-                    .arg(pFields->at(j)->getType()->getType()).arg(pFields->at(j)->getCaption());
+            strBody += QString("     ORM_DECLARE_ATTRIBUTE(%1, %2, %3);\n")
+                    .arg(m_tables->at(i)->getName()).arg(pFields->at(j)->getType()->getType()).arg(pFields->at(j)->getCaption());
         }
 
 
-        strBody += "\n\n";
-        strBody += QString("     MODEL_MATCH_TABLE(%1, \"%1\")\n\n"\
-                            "private:\n"\
-                            "    static %1List* m_allList;\n"\
-                            "public:\n"\
-                            "    static %1List* findAll(void);\n"\
-                            "    static %1* findBy%2(int %2);\n"\
-                            "    static %1* findBy%2(int %2, QString database);\n"\
-                            "};\n"\
-                            " \n"\
-                            "#endif \n").arg(m_tables->at(i)->getName()).arg(pFields->at(0)->getCaption());
+        strBody += QString("     ORM_MATCH_TABLE(%1, \"%1\")\n"\
+                            "ORM_END_MAP()\n"\
+                            "#endif \n").arg(m_tables->at(i)->getName());
 
 
         file->write(strBody.toUtf8());
@@ -195,13 +183,12 @@ void skeleton::CreateCpp()
 
         QString strBody = QString( "#include \"%1.h\""\
     "\n\n"\
-    "%1List* %1::m_allList = NULL;\n"\
     "\n"\
-    "MODEL_BEGIN_MAP(%1)\n").arg(m_tables->at(i)->getName());
+    "ORM_BEGIN_MAP(%1)\n").arg(m_tables->at(i)->getName());
 
         QList<CField *> *pFields=  m_tables->at(i)->getFields();
 		
-        strBody += QString( "     MODEL_MAP_PRIMARYKEY(%1, \"%2\");\n").arg(pFields->at(0)->getCaption()).arg(pFields->at(0)->getField());
+        strBody += QString( "     ORM_MAP_PRIMARYKEY(%1, \"%2\");\n").arg(pFields->at(0)->getCaption()).arg(pFields->at(0)->getField());
 
 
         for( int j = 1; pFields && (j< pFields->count()) ;j++)
@@ -209,43 +196,12 @@ void skeleton::CreateCpp()
             if( pFields->at(j)->getMode() == fNoModel )
                 continue;
 
-            strBody += QString("     MODEL_MAP_FIELD(%1, \"%2\");\n")
+            strBody += QString("     ORM_MAP_FIELD(%1, \"%2\");\n")
                     .arg(pFields->at(j)->getCaption()).arg(pFields->at(j)->getField());
         }
 
 
-        strBody += "MODEL_END_MAP()\n\n";
-
-        strBody += QString("QList<%1*>* %1::findAll()\n"\
-    "{\n"\
-    "    MODEL_INIT_LIST(%1, m_allList);\n"\
-    "\n"\
-    "    QString query = QString(\"select * from %1\");\n"\
-    "\n"\
-    "    if (!%1::fillModelList(m_allList, query))\n"\
-    "        return NULL;\n"\
-    "\n"\
-    "    return m_allList;\n"\
-    "}\n"\
-    "\n"\
-    "%1* %1::findBy%2(int %2)\n"\
-    "{\n"\
-    "    %1 *%1M = new %1();\n"\
-    "\n"\
-    "    QString query = QString(\"select * from %1 where %2 = %3\").arg(%2);\n"\
-    "\n"\
-    "    if (!%1M->fillModelFromQuery(query))\n"\
-    "    {\n"\
-    "        delete %1M;\n"\
-    "        return NULL;\n"\
-    "    }\n"\
-    "\n"\
-    "    return %1M;\n"\
-    "}\n"\
-    "%1* %1::findBy%2(int %2, QString database)\n"\
-    "{\n"\
-    "    return %1::findByPrimaryKey(%2, database);\n"\
-    "}\n").arg(m_tables->at(i)->getName()).arg(pFields->at(0)->getCaption());
+        strBody += "ORM_END_MAP()\n\n";
 
         file->write(strBody.toUtf8());
         file->flush();

@@ -6,7 +6,8 @@
 typedef enum
 {
    tpDweller,
-   tpVisit
+   tpVisit,
+   tpSupplier
 }ADDRESS_TYPE, PADDRESS_TYPE;
 
 DECLARE_MODEL(Address)

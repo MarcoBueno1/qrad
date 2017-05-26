@@ -62,16 +62,17 @@ QString CmdPostgres::CmdDouble(QString name, int precision, int decimals)
 
 }
 
-QString CmdPostgres::CmdDate(QString name)
+QString CmdPostgres::CmdDate(QString name, bool bDefault)
 {
-    return QString::fromUtf8(" %1 date ").arg(name);
+    QString strDefault = bDefault?QString(" DEFAULT CURRENT_DATE "):"";
+    return QString::fromUtf8(" %1 date %2").arg(name).arg(strDefault);
 
 }
 
-QString CmdPostgres::CmdTime(QString name)
+QString CmdPostgres::CmdTime(QString name, bool bDefault)
 {
-
-    return QString::fromUtf8(" %1 time without time zone ").arg(name);
+    QString strDefault = bDefault?QString(" default current_timestamp "):"";
+    return QString::fromUtf8(" %1 time without time zone %2").arg(name).arg(strDefault);
 }
 
 QString CmdPostgres::CmdBool(QString name)

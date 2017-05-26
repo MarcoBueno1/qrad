@@ -22,8 +22,6 @@ SOURCES = camera.cpp \
 	     editaddress.cpp \
              editpreaut.cpp \
              managerpreaut.cpp \
-             editprofile.cpp \
-             managerprofile.cpp  \
              edituser.cpp \
              manageruser.cpp \ 
              editemailconf.cpp \
@@ -49,8 +47,6 @@ HEADERS = \
 	     editaddress.h \
              editpreaut.h \
              managerpreaut.h \
-             editprofile.h \ 
-             managerprofile.h \
              edituser.h \
              manageruser.h \
              editemailconf.h \
@@ -77,8 +73,6 @@ FORMS = \
 	     editaddress.ui \
              editpreaut.ui \
              managerpreaut.ui \
-             editprofile.ui \
-             managerprofile.ui \
              edituser.ui \
              manageruser.ui \ 
              editemailconf.ui \

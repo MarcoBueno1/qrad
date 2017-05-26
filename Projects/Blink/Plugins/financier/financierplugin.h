@@ -15,6 +15,18 @@
 #include "qradshared.h"
 #include "qradconfig.h"
 
+#define ACTION_SHOW_FINANCIER_ACCOUNTTYPE           "ShowAccountType"
+#define ACTION_SHOW_FINANCIER_BANK                  "ShowBank"
+#define ACTION_SHOW_FINANCIER_ACCOUNTTOPAY          "ShowAccountToPay"
+#define ACTION_SHOW_FINANCIER_ACCOUNTTORECEIVE      "ShowAccountToReceive"
+#define ACTION_SHOW_FINANCIER_ACCOUNTHISTORYREPORT  "ShowAccountHistoryReport"
+#define ACTION_SHOW_FINANCIER_ACCOUNTTYPEREPORT     "ShowAccountTypeReport"
+#define ACTION_SHOW_FINANCIER_ACCOUNTCALENDAR       "ShowAccountCalendar"
+#define ACTION_SHOW_ENTERBILLET                     "ShowEnterBillet"
+#define ACTION_SHOW_FINANCIER_TICKETMANAGER         "ShowTicketManager"
+#define ACTION_SHOW_FINANCIER_BANKACCOUNTMANAGER    "ShowBankAccount"
+
+
 class FinancierPlugin : public QRadPluginInterface 
 {
     Q_OBJECT;

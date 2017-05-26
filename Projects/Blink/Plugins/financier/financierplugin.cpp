@@ -1,4 +1,6 @@
 #include "financierplugin.h"
+#include "managerticketconfig.h"
+#include "managerbankaccount.h"
 
 FinancierPlugin::FinancierPlugin()
 {
@@ -36,6 +38,9 @@ void FinancierPlugin::onLoad(QRadPluginContainer* container)
     appendAction(ACTION_SHOW_FINANCIER_ACCOUNTTYPEREPORT);
     appendAction(ACTION_SHOW_FINANCIER_ACCOUNTCALENDAR);
     appendAction(ACTION_SHOW_ENTERBILLET);
+    appendAction(ACTION_SHOW_FINANCIER_TICKETMANAGER);
+    appendAction(ACTION_SHOW_FINANCIER_BANKACCOUNTMANAGER);
+
 }
 
 void FinancierPlugin::Process( const QString& action )
@@ -110,6 +115,21 @@ void FinancierPlugin::Process( const QString& action )
         QRadConfig::centralizarWidget(m_accountCalendar);
         m_accountCalendar->show();
     }
+    else if( ACTION_SHOW_FINANCIER_TICKETMANAGER == action )
+    {
+        Managerticketconfig *tick = new Managerticketconfig ;
+        QRadConfig::centralizarWidget(tick);
+        tick->exec();
+        delete tick;
+    }
+    else if( ACTION_SHOW_FINANCIER_BANKACCOUNTMANAGER == action )
+    {
+        Managerbankaccount *baccount = new Managerbankaccount ;
+        QRadConfig::centralizarWidget(baccount);
+        baccount->exec();
+        delete baccount;
+    }
+
 }
 
 void FinancierPlugin::setParam(QString paramName, QVariant paramValue)

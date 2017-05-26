@@ -11,6 +11,7 @@ TARGET = financier
 TEMPLATE = lib
 CONFIG += plugin
 INCLUDEPATH = ../../../../libs/QRadCore \
+              ../../../../libs/QRadOrm \
               ../../libs/orm \
               ../../../../libs/QRadLic \
               . 
@@ -50,9 +51,11 @@ HEADERS += financierplugin.h \
     financierdelegates.h
 
 LIBS += -L../../../../libs/QRadCore \
+        -L../../../../libs/QRadOrm \
         -L../../libs/orm \
         -L../../../../libs/QRadLic \
-        -lqradcore
+        -lqradcore \
+        -lqradorm \
         -lqradlicup
 
 

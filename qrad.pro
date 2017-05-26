@@ -54,6 +54,7 @@ SUBDIRS = QRad \
           Projects\Blink\Main \
           Projects\Blink\MainPlate \
           Projects\Blink\Plugins\visit \
+          Projects\Blink\Plugins\financier \
           Projects\Blink\visitnotifier \
           Projects\Blink\Plugins\report
 

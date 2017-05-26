@@ -20,9 +20,13 @@
 4. Cadastro de visitantes.
 
 -s Visitantes -t visitante.Visitante -c id -i int -c data_cadastro.Data -i QDate -c hora_cadastro.Hora -i QTime -c rg.RG -i QString:search -c cpf.CPF -i QString:search -c nome.Nome -i QString:searchmaster -c entrdalivre.EntradaLivre -i bool -c liberadopor.LiberadoPor -i int:multi:morador.Nome[]
+
+5. Cadastro de Forneced
+
+-s supplier -t supplier -c id -i int -c cnpj.CNPJ -i QString:search -c nome.Nome -i QString:searchmaster -c fantasia.Fantasia -i QString:search -c data_cadastro.Data -i QDate -c hora_cadastro.Hora -i QTime 
   
     
-5. Relatorios:
+6. Relatorios:
     1. Que visitantes estão no predito
 	    - agora, hoje, esta semana, este mês. 
 		- periodo

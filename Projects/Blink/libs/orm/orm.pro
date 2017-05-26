@@ -12,19 +12,16 @@ TARGET = blinkorm
 
 TEMPLATE = lib
 
-INCLUDEPATH += ../../../../libs/QRadCore
+INCLUDEPATH += ../../../../libs/QRadCore \
+               ../../../../libs/QRadOrm
 
 SOURCES += dweller.cpp \
            Visitante.cpp \
 	   visit.cpp  \
 	   ap.cpp \
 	   tower.cpp \
-	   phone.cpp \
-	   address.cpp \
 	   preaut.cpp \
            profile.cpp \
-           user.cpp \
-           login.cpp \
            emailconf.cpp \
            maincompany.cpp \
            machine.cpp \ 
@@ -41,7 +38,6 @@ SOURCES += dweller.cpp \
     bankmodel.cpp \
     accounttoreceivehistorymodel.cpp \
     accounttopayhistorymodel.cpp \
-    userV2.cpp \
     supplier.cpp
             
 
@@ -50,12 +46,8 @@ HEADERS += dweller.h \
 	   visit.h \
 	   ap.h \
 	   tower.h \
-	   phone.h \
-	   address.h \
 	   preaut.h \
            profile.h \
-           user.h \
-           login.h \
            emailconf.h \
            maincompany.h \
            machine.h \ 
@@ -72,13 +64,15 @@ HEADERS += dweller.h \
     bankmodel.h \
     accounttoreceivehistorymodel.h \
     accounttopayhistorymodel.h \
-    userV2.h \
     supplier.h
 		   
-win32:LIBS +=  -L../../../../libs/QRadCore\release
-unix:LIBS +=  -L../../../../libs/QRadCore
+win32:LIBS +=  -L../../../../libs/QRadCore\release \
+               -L../../../../libs/QRadOrm\release
+unix:LIBS +=  -L../../../../libs/QRadCore \
+              -L../../../../libs/QRadOrm
 
-LIBS += -lqradcore 
+LIBS += -lqradcore \
+        -lqradorm
 
 target.path = $${PREFIX}/bin
 INSTALLS += target

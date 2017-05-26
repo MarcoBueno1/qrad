@@ -248,7 +248,7 @@ void AccountToReceiveManager::ConfigHeaderTable(void)
     m_ui->tableViewAccountToReceive->hideColumn(11);
 
     m_selectAccountToReceive->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Descrição"));
-    m_selectAccountToReceive->setHeaderData(2, Qt::Horizontal, QString::fromUtf8("Cliente"));
+    m_selectAccountToReceive->setHeaderData(2, Qt::Horizontal, QString::fromUtf8("Devedor"));
     m_selectAccountToReceive->setHeaderData(3, Qt::Horizontal, QString::fromUtf8("Data de\nLançamento"));
     m_selectAccountToReceive->setHeaderData(4, Qt::Horizontal, QString::fromUtf8("Data de\nVencimento"));
     m_selectAccountToReceive->setHeaderData(5, Qt::Horizontal, QString::fromUtf8("Data de\nQuitação"));

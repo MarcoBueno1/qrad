@@ -355,7 +355,7 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
         </font>
        </property>
        <property name="title" stdset="0">
-        <string>Filtrar por &amp;Cliente</string>
+        <string>Filtrar por &amp;Devedor</string>
        </property>
        <property name="checkable" stdset="0">
         <bool>true</bool>

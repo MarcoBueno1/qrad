@@ -289,7 +289,7 @@
    <item row="2" column="0">
     <widget class="DSMGroupBoxEnter" name="groupBoxClient" native="true">
      <property name="title" stdset="0">
-      <string>Associar conta a um Cliente</string>
+      <string>Associar conta a um Devedor</string>
      </property>
      <property name="checkable" stdset="0">
       <bool>true</bool>

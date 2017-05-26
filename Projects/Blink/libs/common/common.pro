@@ -16,19 +16,19 @@ INCLUDEPATH += ../../../../libs/QRadCore \
                ../../../../libs/QRadHw \
                ../orm
 
-SOURCES += editlogin.cpp \
+SOURCES +=  \
            editsupplier.cpp \
            managersupplier.cpp \
            managerprofile.cpp \
            editprofile.cpp
 
-HEADERS += editlogin.h \
+HEADERS +=  \
            editsupplier.h \
            managersupplier.h \
            managerprofile.h \
            editprofile.h 
 		   
-FORMS += editlogin.ui \
+FORMS +=  \
          editsupplier.ui \
          managersupplier.ui \
          managerprofile.ui \

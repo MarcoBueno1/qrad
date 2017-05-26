@@ -14,8 +14,10 @@ TEMPLATE = app
 INCLUDEPATH += ../../../libs/QRadCore \
                ../../../libs/QRadLicUp \
                ../../../libs/QRadLic \
+               ../../../libs/QRadOrm \
                ../libs/common \
-               ../libs/orm
+               ../libs/orm \
+               ../Plugins/visit/
 
 
 SOURCES += main.cpp\
@@ -28,7 +30,9 @@ FORMS    += mainwindow.ui
 LIBS += -L../../../libs/QRadCore \
         -L../../../libs/QRadCore/release \
         -L../../../libs/QRadLicUp/release \
+        -L../../../libs/QRadOrm/release \
         -L../../../libs/QRadLicUp \
+        -L../../../libs/QRadOrm \
         -L../libs/common/ \
         -L../libs/common/release \
         -L../libs/orm/ \
@@ -37,6 +41,7 @@ LIBS += -L../../../libs/QRadCore \
         -lqradlicup \
         -lblinkcommon \
         -lblinkorm \
+        -lqradorm
 
 
 target.path = $${PREFIX}/bin

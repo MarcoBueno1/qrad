@@ -24,7 +24,6 @@ SOURCES += dweller.cpp \
            profile.cpp \
            emailconf.cpp \
            maincompany.cpp \
-           machine.cpp \ 
     vehicle.cpp \
     Brand.cpp \
     veicname.cpp \
@@ -50,7 +49,6 @@ HEADERS += dweller.h \
            profile.h \
            emailconf.h \
            maincompany.h \
-           machine.h \ 
     vehicle.h \
     Brand.h \
     veicname.h \

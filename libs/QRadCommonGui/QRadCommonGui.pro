@@ -16,11 +16,20 @@ INCLUDEPATH += ../../../../libs/QRadCore \
                ../../../../libs/QRadHw \
                ../orm
 
-SOURCES += editlogin.cpp 
+SOURCES += editlogin.cpp \
+           edituser.cpp \
+           editphone.cpp \
+           editaddress.cpp
 
-HEADERS += editlogin.h 
+HEADERS += editlogin.h \
+           edituser.h \
+           editphone.h \
+           editaddress.h
 		   
-FORMS += editlogin.ui 
+FORMS += editlogin.ui \
+         edituser.ui \
+         editphone.ui \
+         editaddress.ui
  
 win32:LIBS +=  -L../QRadCore\release \
                -L../QRadHw\release \

@@ -18,15 +18,18 @@ INCLUDEPATH += ../../../../libs/QRadCore \
 
 SOURCES += editlogin.cpp \
            editsupplier.cpp \
-           managersupplier.cpp
+           managersupplier.cpp \
+           editprofile.cpp
 
 HEADERS += editlogin.h \
            editsupplier.h \
-           managersupplier.h
+           managersupplier.h \
+           editprofile.h 
 		   
 FORMS += editlogin.ui \
          editsupplier.ui \
-         managersupplier.ui
+         managersupplier.ui \
+         editprofile.ui
  
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadHw\release \

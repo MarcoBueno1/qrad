@@ -16,8 +16,7 @@ INCLUDEPATH += ../../../libs/QRadCore \
                ../../../libs/QRadLic \
                ../../../libs/QRadOrm \
                ../libs/common \
-               ../libs/orm \
-               ../Plugins/visit/
+               ../libs/orm 
 
 
 SOURCES += main.cpp\

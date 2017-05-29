@@ -52,12 +52,13 @@
 "ValorMoraJuros=%17"\
 "Vencimento=%18"
 
+#define TKT_BUILD_SHIPPING "GerarRemessa"
 
 
 #define TKT_PRINT "Imprimir"
 #define TKT_PRINT_PDF "GerarPDF"
 
-#define FILE_PATH "C:\\ACBRMonitor\\"
+#define FILE_PATH "/media/sf_Dvl/acbr/ent/"
 #define FILE_NAME "Send.txt"
 
 bool BuildTkt::Send(QString cmd)
@@ -81,7 +82,14 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
 {
    QString cmdPurge =  QString("%1%2").arg(TKT_PREFIX).arg(TKT_PURGE);
 
+
+   if(!pCompany || !pTktConfig || !pBank || !pAccount )
+   {
+       return false;
+   }
+
    m_TktCount = 0;
+   m_ShippNumber =0;
 
    if( !Send(cmdPurge))
        return false;
@@ -163,5 +171,22 @@ bool BuildTkt::AddTicket(Dweller *pDweller, QString strValue, QDate dtVencto)
     QString cmdPrint =  QString("%1%2(%3)").arg(TKT_PREFIX).arg(TKT_ADD_TICKET).arg(paramCfgTkt);
 
     return Send(cmdPrint);
+
+}
+//BOLETO.GerarRemessa("c:\remessa\",1,000001.rem ) – Irá gerar o arquivo de remessa no diretório "C:\Remessa",  com o nome formatado de acordo com o banco para o qual esta sendo feita a remessa .000001.rem
+
+
+bool BuildTkt::BuildShipping(QString strDir, QString FileName )
+{
+    m_ShippNumber++;
+
+    QString cmdShipping =  QString("%1%2").arg(TKT_PREFIX).arg(TKT_BUILD_SHIPPING);
+
+    QString params = QString("%1%2%3").arg(strDir).arg(m_ShippNumber).arg(FileName);
+
+    QString cmdSnd = QString("%1(%2)").arg(cmdShipping).arg(params);
+
+    return Send(cmdSnd);
+
 
 }

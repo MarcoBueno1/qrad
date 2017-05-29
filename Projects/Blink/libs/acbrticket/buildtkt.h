@@ -16,10 +16,11 @@ public:
       
        bool Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *pBank, bankaccount *pAccount);
        bool Print(bool bPrinter=false, QString strPath=TKT_DEFAULT_PDF_PATH );
-       bool BuildShipping(QString strDir, int nFileNumber, QString FileName );
+       bool BuildShipping(QString strDir, QString FileName );
        bool AddTicket(Dweller *pDweller, QString strValue, QDate dtVencto);
 
 private:
+      int m_ShippNumber;
       int m_TktCount;
        bool Send(QString cmd);
       MainCompany *m_pCompany;

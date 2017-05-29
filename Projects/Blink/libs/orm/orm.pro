@@ -24,6 +24,7 @@ SOURCES += dweller.cpp \
            profile.cpp \
            emailconf.cpp \
            maincompany.cpp \
+           maincompanyV2.cpp \
     vehicle.cpp \
     Brand.cpp \
     veicname.cpp \
@@ -44,7 +45,9 @@ SOURCES += dweller.cpp \
          layoutbol.cpp \
          tipopessoa.cpp \
          respemis.cpp \
-         ticketconfig.cpp
+         ticketconfig.cpp \
+         city.cpp \
+         state.cpp
             
 
 HEADERS += dweller.h \
@@ -56,6 +59,7 @@ HEADERS += dweller.h \
            profile.h \
            emailconf.h \
            maincompany.h \
+           maincompanyV2.h \
     vehicle.h \
     Brand.h \
     veicname.h \
@@ -76,7 +80,9 @@ HEADERS += dweller.h \
          layoutbol.h \ 
          tipopessoa.h \ 
          respemis.h \ 
-         ticketconfig.h
+         ticketconfig.h \
+    city.h \
+    state.h
 		   
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadOrm\release

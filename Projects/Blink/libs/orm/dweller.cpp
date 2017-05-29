@@ -9,8 +9,8 @@ MODEL_BEGIN_MAP(Dweller)
      MODEL_MAP_FIELD(CPF, "cpf");
      MODEL_MAP_FIELD(RG, "rg");
      MODEL_MAP_FIELD(Type, "type");
-     MODEL_MAP_FIELD(Ap, "ap");
-     MODEL_MAP_FIELD(Tower, "tower");
+     MODEL_MAP_FIELD(ap, "ap");
+     MODEL_MAP_FIELD(tower, "tower");
      MODEL_MAP_FIELD(Since, "since");
      MODEL_MAP_FIELD(MoveOut, "moveout");
      MODEL_MAP_FIELD(ImageId, "imageid" );

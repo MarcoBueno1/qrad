@@ -1,19 +1,31 @@
 #ifndef _BUILDTKT_H
 #define _BUILDTKT_H
 
+#include  "ticketconfig.h"
+#include  "bankaccount.h"
+#include  "bankmodel.h"
+#include  "maincompanyV2.h"
+#include  "dweller.h"
+
+#define TKT_DEFAULT_PDF_PATH "c:\\TEMP"
 class BuildTkt
 {
 public:
       BuildTkt(){}
       virtual ~BuildTkt(){}
       
-      static bool Init(int Id);
-      static bool Print();
-      static bool BuildPdfs();
-      static bool BuildShipping(QString strDir, int nFileNumber, QString FileName );
-      static bool AddTicket( CTicket *pTicket );
-       
+       bool Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *pBank, bankaccount *pAccount);
+       bool Print(bool bPrinter=false, QString strPath=TKT_DEFAULT_PDF_PATH );
+       bool BuildShipping(QString strDir, int nFileNumber, QString FileName );
+       bool AddTicket(Dweller *pDweller, QString strValue, QDate dtVencto);
 
+private:
+      int m_TktCount;
+       bool Send(QString cmd);
+      MainCompany *m_pCompany;
+      ticketconfig *m_pTktConfig;
+      BankModel *m_pBank;
+      bankaccount *m_pAccount;
 };
 
 

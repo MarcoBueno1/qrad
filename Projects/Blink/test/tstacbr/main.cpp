@@ -12,6 +12,10 @@ void PrintMenu()
   printf( "\n2. Print\n" );
   printf( "\n3. AddTicket\n" );
   printf( "\n4. BuildShipping\n" );
+  printf( "\n5. AppendAgenc\n" );
+  printf( "\n6. AppendBanco\n" );
+  printf( "\n7. AppendTkt\n" );
+  printf( "\n8. AppendCompany\n" );
 
 /*
 
@@ -103,6 +107,133 @@ void configureDatabase()
 
 }
 
+void AppendAgenc()
+{
+    char  szBuffer[200];
+
+    bankaccount *Ba = new bankaccount;
+
+    printf("\nAgencia:") ;
+    scanf("%s", szBuffer);
+    Ba->setAgencia(szBuffer);
+
+    printf("\nDigito Agencia:") ;
+    scanf("%s", szBuffer);
+    Ba->setDigitoAgencia(szBuffer);
+
+    printf("\nConta:") ;
+    scanf("%s", szBuffer);
+    Ba->setConta(szBuffer);
+
+    printf("\nDigito Conta:") ;
+    scanf("%s", szBuffer);
+    Ba->setDigitoConta(szBuffer);
+
+    printf("\nCodigo Banco:") ;
+    scanf("%s", szBuffer);
+
+
+    BankModelList *Bm = BankModel::findByCode(szBuffer);
+    if( !Bm )
+    {
+        delete Ba;
+        printf( "\nO banco informado não foi encontrado!\n");
+        return;
+    }
+
+    Ba->setBanco(Bm->at(0)->getId());
+
+    if(Ba->Save())
+    {
+        printf("\nDados Salvos!");
+    }
+    else
+    {
+        printf("\nProblema ao salvar dados!");
+
+    }
+    delete Ba;
+    delete Bm;
+}
+
+void AppendBanco()
+{
+    char  szBuffer[200];
+
+    BankModel *Ba = new BankModel;
+
+    printf("\nCod.Banco:") ;
+    scanf("%s", szBuffer);
+    Ba->setCode(szBuffer);
+
+    printf("\nNome.Banco:") ;
+    scanf("%s", szBuffer);
+
+    Ba->setDescription(szBuffer);
+    if(Ba->Save())
+    {
+       printf("\nDados Salvos!");
+    }
+    else
+    {
+       printf("\nProblema ao salvar dados!");
+    }
+    delete Ba;
+}
+
+void AppendTkt()
+{
+
+    ticketconfig *tk = new ticketconfig ;
+
+    tk->setCarteira(0);;
+    tk->setcnab(2);;
+    tk->setCodigoCedente("0001");;
+    tk->setJuros("1.50");
+    tk->setLayoutBol(2);
+    tk->setMensagem("Pagavel em qualquer banco ate o vencimento!");
+    tk->setNossoNumero("001");
+    tk->setRespEmis(0);
+
+    if(tk->Save())
+    {
+       printf("\nDados Salvos!");
+    }
+    else
+    {
+       printf("\nProblema ao salvar dados!");
+    }
+    delete tk;
+}
+void AddCompany()
+{
+   City *city = new  City ;
+   State *state = new State ;
+
+   city->setName("Manaus");
+   city->Save();
+
+   state->setSign("AM");
+   state->Save();
+
+   MainCompany * pCompany = new MainCompany;
+
+   pCompany->setAddrees("Av. Grande Otelo");
+   pCompany->setCEP("69055-021");
+   pCompany->setcity(city->getid());
+   pCompany->setstate(state->getid());
+   pCompany->setcnpj("091.009.0005/90");
+   pCompany->setComplement("Garden Club");
+   pCompany->setfantasyname("Residencial Garden Club");
+   pCompany->setHouseNumber("270");
+   pCompany->setNeighborhood("Parque 10");
+   pCompany->Save();
+
+}
+
+
+
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -138,11 +269,24 @@ int main(int argc, char *argv[])
            case 4:
                    BuildShipping();
                    break;
+           case 5:
+                  AppendAgenc();
+                  break;
+           case 6:
+                  AppendBanco();
+                  break;
+           case 7:
+                  AppendTkt();
+                  break;
+           case 8:
+                  AddCompany();
+                  break;
+
            default:
                    break;
         }
 
-      }while( cOption != 0x35 );
+      }while( cOption != 0x39 );
 
     delete g_tkt;
     exit(0);

@@ -1,56 +1,60 @@
 #include "buildtkt.h"
 #include <QFile>
+#include <QDebug>
+#include <QThread>
+#include <QEventLoop>
+#include <QCoreApplication>
 
 #define TKT_PREFIX "BOLETO."
 
 #define TKT_PURGE "LimparLista"
 #define TKT_CONFIG "ConfigurarDados"
- #define TKT_CONFIG_CEDENTE "   [Cedente]"\
-"Nome=%1"\
-"CNPJCPF=%2"\
-"Logradouro=%3"\
-"Numero=%4"\
-"Bairro=%5"\
-"Cidade=%6"\
-"CEP=%7"\
-"Complemento=%8"\
-"UF=%9"\
-"RespEmis=%10"\
-"TipoPessoa=%11"\
-"CodigoCedente=%12"\
-"LayoutBol=%13"\
-"CaracTitulo=%14"
+ #define TKT_CONFIG_CEDENTE "[Cedente]\n"\
+"Nome=%1\n"\
+"CNPJCPF=%2\n"\
+"Logradouro=%3\n"\
+"Numero=%4\n"\
+"Bairro=%5\n"\
+"Cidade=%6\n"\
+"CEP=%7\n"\
+"Complemento=%8\n"\
+"UF=%9\n"\
+"RespEmis=%10\n"\
+"TipoPessoa=%11\n"\
+"CodigoCedente=%12\n"\
+"LayoutBol=%13\n"\
+"CaracTitulo=%14\n"
 
- #define TKT_CONFIG_ACCOUNT "   [Conta]"\
-"Conta=%1"\
-"DigitoConta=%2"\
-"Agencia=%3"\
-"DigitoAgencia=%4"
-
-
- #define TKT_CONFIG_BANK "   [Banco]"\
-"Numero=%1"\
-"CNAB=%2"
+ #define TKT_CONFIG_ACCOUNT "[Conta]\n"\
+"Conta=%1\n"\
+"DigitoConta=%2\n"\
+"Agencia=%3\n"\
+"DigitoAgencia=%4\n"
 
 
-#define TKT_ADD_TICKET "IncluirTitulos"
- #define TKT_CONFIG_TICKET "[Titulo%1]"\
-"NumeroDocumento=%2"\
-"NossoNumero=%3"\
-"Carteira=%4"\
-"ValorDocumento=%5"\
-"Sacado.NomeSacado=%6"\
-"Sacado.CNPJCPF=%7"\
-"Sacado.Logradouro=%8"\
-"Sacado.Numero=%9"\
-"Sacado.Bairro=%10"\
-"Sacado.Complemento=%11"\
-"Sacado.Cidade=%12"\
-"Sacado.UF=%13"\
-"Sacado.CEP=%14"\
-"Mensagem=%16"\
-"ValorMoraJuros=%17"\
-"Vencimento=%18"
+ #define TKT_CONFIG_BANK "[Banco]\n"\
+"Numero=%1\n"\
+"CNAB=%2\n"
+
+
+#define TKT_ADD_TICKET "IncluirTitulos\n"
+ #define TKT_CONFIG_TICKET "[Titulo%1]\n"\
+"NumeroDocumento=%2\n"\
+"NossoNumero=%3\n"\
+"Carteira=%4\n"\
+"ValorDocumento=%5\n"\
+"Sacado.NomeSacado=%6\n"\
+"Sacado.CNPJCPF=%7\n"\
+"Sacado.Logradouro=%8\n"\
+"Sacado.Numero=%9\n"\
+"Sacado.Bairro=%10\n"\
+"Sacado.Complemento=%11\n"\
+"Sacado.Cidade=%12\n"\
+"Sacado.UF=%13\n"\
+"Sacado.CEP=%14\n"\
+"Mensagem=%16\n"\
+"ValorMoraJuros=%17\n"\
+"Vencimento=%18\n"
 
 #define TKT_BUILD_SHIPPING "GerarRemessa"
 
@@ -58,12 +62,52 @@
 #define TKT_PRINT "Imprimir"
 #define TKT_PRINT_PDF "GerarPDF"
 
-#define FILE_PATH "/media/sf_Dvl/acbr/ent/"
-#define FILE_NAME "Send.txt"
+#define SEND_PATH "/media/sf_Dvl/acbr/ent/"
+#define SEND_NAME "ent.txt"
+
+#define RECEIVE_PATH "/media/sf_Dvl/acbr/sai/"
+#define RECEIVE_NAME "ent-resp.txt"
+
+
+#ifdef Q_OS_WIN
+#include <windows.h> // for Sleep
+#endif
+void BuildTkt::qSleep(int ms)
+{
+    QTime dieTime= QTime::currentTime().addSecs(ms);
+    while (QTime::currentTime() < dieTime)
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+#if 0
+
+
+#ifdef Q_OS_WIN
+    Sleep(uint(ms));
+#else
+    struct timespec ts = { ms / 1000, (ms % 1000) * 1000 * 1000 };
+    nanosleep(&ts, NULL);
+#endif
+#endif
+}
+
+
+void BuildTkt::DirModified(QString dir )
+{
+   m_bDirModified = true;
+}
+
+BuildTkt::BuildTkt()
+{
+ //   m_watcher.addPath(RECEIVE_PATH);
+//    QObject::connect(&m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(DirModified(QString)));
+}
+
 
 bool BuildTkt::Send(QString cmd)
 {
-    QString filemane  = QString("%1%2").arg(FILE_PATH).arg(FILE_NAME);
+    int dwTimeout = 0;
+    QString filemane  = QString("%1%2").arg(SEND_PATH).arg(SEND_NAME);
+
+    m_bDirModified = false;
 
     QFile *file = new QFile(filemane);
     if( !file->open(QIODevice::WriteOnly))
@@ -74,7 +118,53 @@ bool BuildTkt::Send(QString cmd)
     bool result = file->write(cmd.toLatin1())?true:false;
     file->flush();
     file->close();
+    qDebug() << "Escrito:" << cmd.toLatin1();
     delete file;
+
+    if( result ) // verifica retorno
+    {
+/*        while( !m_bDirModified && (dwTimeout < 50))
+        {
+             qSleep(100);
+             dwTimeout++;
+        }
+        if( dwTimeout == 50 )
+        {
+            qDebug() << "timeout, retornando erro.:";
+            m_lastError = "Sem resposta para o comando de envio!";
+            return false;
+        }*/
+
+        qDebug() << "Depois da espera:";
+        qSleep(1);
+        QFile *receivefile = new QFile(QString("%1%2").arg(RECEIVE_PATH).arg(RECEIVE_NAME));
+        qDebug() << "Depois new:";
+        if( !receivefile->open(QIODevice::ReadOnly))
+        {
+            qDebug() << "Vai deletar receivefile:";
+            delete receivefile;
+            m_lastError = "Erro na abertura do arquivo de resposta!";
+            return false;
+        }
+        result = true;
+         qDebug() << "Vai ler dados:";
+        QString answer = receivefile->readAll();
+         qDebug() << "leu:";
+        if( !answer.startsWith("OK:"))
+        {
+            result = false;
+             qDebug() << "setando lasterror:" << answer;
+            m_lastError = answer;
+        }
+         qDebug() << "fehando o arquivo";
+        receivefile->close();
+         qDebug() << "Vai deletar receivefile 2:";
+        delete receivefile;
+         qDebug() << "Vai deletar arquivo receivefile:";
+        QFile::remove(QString("%1%2").arg(RECEIVE_PATH).arg(RECEIVE_NAME));
+        qDebug() << "recebido:" << answer;
+
+    }
     return result;
 }
 
@@ -92,7 +182,11 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
    m_ShippNumber =0;
 
    if( !Send(cmdPurge))
+   {
+        qDebug() << "Saindo da init com false :";
+      
        return false;
+   }
 
    m_pCompany = pCompany;
    m_pTktConfig = pTktConfig;
@@ -111,10 +205,10 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
            .arg(m_pCompany->getComplement())
            .arg(m_pCompany->getState()->getSign())
            .arg(m_pTktConfig->getRespEmis()-1)
-           .arg(m_pTktConfig->getTipoPessoa()-1)
+           .arg(m_pTktConfig->getTipoPessoa())
            .arg(m_pTktConfig->getCodigoCedente())
            .arg(m_pTktConfig->getLayoutBol()-1)
-           .arg(m_pTktConfig->getTipoCobranca()-1);
+           .arg(m_pTktConfig->getTipoCobranca());
 
    QString paramConta = QString(TKT_CONFIG_ACCOUNT)
            .arg(m_pAccount->getConta())
@@ -131,7 +225,6 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
                         .arg(TKT_CONFIG)
                         .arg(paramCedente)
                         .arg(paramConta)
-                        .arg(paramBank)
                         .arg(paramBank);
 
    return Send(cmdConfig);

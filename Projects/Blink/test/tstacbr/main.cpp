@@ -51,7 +51,7 @@ void AddTicket()
     Dweller *pDweller = Dweller::findByPrimaryKey(1);
 
     bool bRet = g_tkt->AddTicket(pDweller, "10.00", QDate::currentDate().addDays(15));
-    if( bRet )
+/*    if( bRet )
     {
         delete pDweller;
         pDweller = Dweller::findByPrimaryKey(2);
@@ -62,7 +62,7 @@ void AddTicket()
             pDweller = Dweller::findByPrimaryKey(3);
             bRet = g_tkt->AddTicket(pDweller, "15.50", QDate::currentDate().addDays(5));
         }
-    }
+    }*/
     if( bRet )
     {
         printf("\nAddTicket executado com sucesso!\n");
@@ -76,7 +76,7 @@ void AddTicket()
 
 void BuildShipping()
 {
-    if( g_tkt->BuildShipping("/media/sf_Dvl/acbr/","remessa.rem"))
+    if( g_tkt->BuildShipping("c:\\dvl\\","remessa.rem"))
     {
         printf("\nBuildShipping executado com Sucesso!\n");
     }

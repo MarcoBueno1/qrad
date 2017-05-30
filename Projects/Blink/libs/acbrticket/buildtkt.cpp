@@ -261,7 +261,7 @@ bool BuildTkt::AddTicket(Dweller *pDweller, QString strValue, QDate dtVencto)
             .arg(m_pTktConfig->getJuros().replace(".",","))
             .arg(dtVencto.toString("dd/MM/yyyy"));
 
-    QString cmdPrint =  QString("%1%2(%3)").arg(TKT_PREFIX).arg(TKT_ADD_TICKET).arg(paramCfgTkt);
+    QString cmdPrint =  QString("%1%2(\"%3\")").arg(TKT_PREFIX).arg(TKT_ADD_TICKET).arg(paramCfgTkt);
 
     return Send(cmdPrint);
 
@@ -275,7 +275,7 @@ bool BuildTkt::BuildShipping(QString strDir, QString FileName )
 
     QString cmdShipping =  QString("%1%2").arg(TKT_PREFIX).arg(TKT_BUILD_SHIPPING);
 
-    QString params = QString("%1%2%3").arg(strDir).arg(m_ShippNumber).arg(FileName);
+    QString params = QString("\"%1\",%2,%3").arg(strDir).arg(m_ShippNumber).arg(FileName);
 
     QString cmdSnd = QString("%1(%2)").arg(cmdShipping).arg(params);
 

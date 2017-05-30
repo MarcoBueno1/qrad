@@ -172,8 +172,8 @@ void EditDweller::Save()
     m_mod->setCPF(ui->lineEditCPF->text());
     m_mod->setRG(ui->lineEditRG->text());
 
-    m_mod->setAp( ui->comboBoxAp->model()->data(ui->comboBoxAp->model()->index(ui->comboBoxAp->currentIndex(), 0)).toInt());
-    m_mod->setTower( ui->comboBoxApTorre->model()->data(ui->comboBoxApTorre->model()->index(ui->comboBoxApTorre->currentIndex(), 0)).toInt() );
+    m_mod->setap( ui->comboBoxAp->model()->data(ui->comboBoxAp->model()->index(ui->comboBoxAp->currentIndex(), 0)).toInt());
+    m_mod->settower( ui->comboBoxApTorre->model()->data(ui->comboBoxApTorre->model()->index(ui->comboBoxApTorre->currentIndex(), 0)).toInt() );
     m_mod->setType( ui->comboBoxTipo->model()->data(ui->comboBoxTipo->model()->index(ui->comboBoxTipo->currentIndex(), 0)).toInt() );
     m_mod->setJobTitle( ui->comboBoxProfissao->model()->data(ui->comboBoxProfissao->model()->index(ui->comboBoxProfissao->currentIndex(), 0)).toInt() ) ;
     m_mod->setemail( ui->lineEditEmail->text());
@@ -209,8 +209,8 @@ void EditDweller::Load()
     ui->dateEditUntil->setDate(m_mod->getMoveOut());
     ui->textEditObs->setText(m_mod->getObs());
 
-    ui->comboBoxAp->setCurrentId(m_mod->getAp());
-    ui->comboBoxApTorre->setCurrentId(m_mod->getTower());
+    ui->comboBoxAp->setCurrentId(m_mod->getap());
+    ui->comboBoxApTorre->setCurrentId(m_mod->gettower());
     ui->comboBoxTipo->setCurrentId(m_mod->getType());
     ui->comboBoxProfissao->setCurrentId(m_mod->getJobTitle());
 

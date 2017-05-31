@@ -13,6 +13,7 @@ CONFIG += plugin
 INCLUDEPATH = ../../../../libs/QRadCore \
               ../../../../libs/QRadOrm \
               ../../libs/orm \
+              ../../libs/common \
               ../../../../libs/QRadLic \
               . 
 DESTDIR = .
@@ -82,10 +83,12 @@ HEADERS += financierplugin.h \
 LIBS += -L../../../../libs/QRadCore \
         -L../../../../libs/QRadOrm \
         -L../../libs/orm \
+        -L../../libs/common \
         -L../../../../libs/QRadLic \
         -lqradcore \
         -lqradorm \
-        -lqradlicup
+        -lqradlicup \
+        -lblinkcommon
 
 
 win32:QMAKE_LFLAGS += --enable-auto-import
@@ -121,5 +124,5 @@ FORMS += accounttypemanager.ui \
            managerticketconfig.ui \
            editticketconfig.ui
 
-target.path = $${PREFIX}/plugins
+target.path = $${PREFIX}/bin 
 INSTALLS += target

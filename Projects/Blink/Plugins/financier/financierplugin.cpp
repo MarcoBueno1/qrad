@@ -1,6 +1,7 @@
 #include "financierplugin.h"
 #include "managerticketconfig.h"
 #include "managerbankaccount.h"
+#include "managermetreage.h"
 
 FinancierPlugin::FinancierPlugin()
 {
@@ -40,6 +41,7 @@ void FinancierPlugin::onLoad(QRadPluginContainer* container)
     appendAction(ACTION_SHOW_ENTERBILLET);
     appendAction(ACTION_SHOW_FINANCIER_TICKETMANAGER);
     appendAction(ACTION_SHOW_FINANCIER_BANKACCOUNTMANAGER);
+    appendAction(ACTION_SHOW_METREAGE);
 
 }
 
@@ -129,7 +131,13 @@ void FinancierPlugin::Process( const QString& action )
         baccount->exec();
         delete baccount;
     }
-
+    else if ( ACTION_SHOW_METREAGE == action )
+    {
+        Managermetreage *pMetreage = new Managermetreage;
+        QRadConfig::centralizarWidget(pMetreage);
+        pMetreage->exec();
+        delete pMetreage;
+    }
 }
 
 void FinancierPlugin::setParam(QString paramName, QVariant paramValue)

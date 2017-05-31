@@ -25,6 +25,7 @@
 #define ACTION_SHOW_ENTERBILLET                     "ShowEnterBillet"
 #define ACTION_SHOW_FINANCIER_TICKETMANAGER         "ShowTicketManager"
 #define ACTION_SHOW_FINANCIER_BANKACCOUNTMANAGER    "ShowBankAccount"
+#define ACTION_SHOW_METREAGE                        "ManageMetreage"
 
 
 class FinancierPlugin : public QRadPluginInterface 

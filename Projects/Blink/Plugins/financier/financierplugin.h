@@ -23,9 +23,10 @@
 #define ACTION_SHOW_FINANCIER_ACCOUNTTYPEREPORT     "ShowAccountTypeReport"
 #define ACTION_SHOW_FINANCIER_ACCOUNTCALENDAR       "ShowAccountCalendar"
 #define ACTION_SHOW_ENTERBILLET                     "ShowEnterBillet"
-#define ACTION_SHOW_FINANCIER_TICKETMANAGER         "ShowTicketManager"
-#define ACTION_SHOW_FINANCIER_BANKACCOUNTMANAGER    "ShowBankAccount"
+#define ACTION_SHOW_FINANCIER_TICKETMANAGER         "ManageTicketConfig"
+#define ACTION_SHOW_FINANCIER_BANKACCOUNTMANAGER    "ManageBankAccount"
 #define ACTION_SHOW_METREAGE                        "ManageMetreage"
+#define ACTION_MANAGE_BANK_ACCOUNT                  "ManagerBankAccount"
 
 
 class FinancierPlugin : public QRadPluginInterface 

@@ -85,6 +85,7 @@ LIBS += -L../../../../libs/QRadCore \
         -L../../libs/orm \
         -L../../libs/common \
         -L../../../../libs/QRadLic \
+        -L../../../../libs/QRadLicUp \
         -lqradcore \
         -lqradorm \
         -lqradlicup \

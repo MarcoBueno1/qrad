@@ -80,7 +80,7 @@ QString QRadFile::GetDefaultParamValue(QString param)
 {
     if (param == "banco/hostname") return "localhost";
     if (param == "banco/database") return "QPSQL";
-    if (param == "banco/databasename") return "qrad";
+    if (param == "banco/databasename") return "qraddb";
 
     return "";
 }

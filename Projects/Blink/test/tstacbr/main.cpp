@@ -4,29 +4,7 @@
 
 BuildTkt *g_tkt;
 
-void PrintMenu()
-{
-  printf( "\nProgrma de teste acbr\n" );
-  printf( "\n---------------------\n" );
-  printf( "\n1. Init\n" );
-  printf( "\n2. Print\n" );
-  printf( "\n3. AddTicket\n" );
-  printf( "\n4. BuildShipping\n" );
-  printf( "\n5. AppendAgenc\n" );
-  printf( "\n6. AppendBanco\n" );
-  printf( "\n7. AppendTkt\n" );
-  printf( "\n8. AppendCompany\n" );
 
-/*
-
-       bool Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *pBank, bankaccount *pAccount);
-       bool Print(bool bPrinter=false, QString strPath=TKT_DEFAULT_PDF_PATH );
-       bool BuildShipping(QString strDir, int nFileNumber, QString FileName );
-       bool AddTicket(Dweller *pDweller, QString strValue, QDate dtVencto);
-*/
-
-
-}
 
 void Init()
 {
@@ -46,31 +24,67 @@ void Init()
    }
 }
 
-void AddTicket()
+void AppendTicket()
 {
     Dweller *pDweller = Dweller::findByPrimaryKey(1);
 
-    bool bRet = g_tkt->AddTicket(pDweller, "10.00", QDate::currentDate().addDays(15));
-/*    if( bRet )
-    {
-        delete pDweller;
-        pDweller = Dweller::findByPrimaryKey(2);
-        bRet = g_tkt->AddTicket(pDweller, "11.50", QDate::currentDate().addDays(10));
-        if( bRet )
-        {
-            delete pDweller;
-            pDweller = Dweller::findByPrimaryKey(3);
-            bRet = g_tkt->AddTicket(pDweller, "15.50", QDate::currentDate().addDays(5));
-        }
-    }*/
+    bool bRet = g_tkt->AppendTicket(pDweller, "10.00", QDate::currentDate().addDays(15));
     if( bRet )
     {
-        printf("\nAddTicket executado com sucesso!\n");
+//        delete pDweller;
+        pDweller = Dweller::findByPrimaryKey(2);
+        bRet = g_tkt->AppendTicket(pDweller, "11.50", QDate::currentDate().addDays(10));
+        if( bRet )
+        {
+//            delete pDweller;
+            pDweller = Dweller::findByPrimaryKey(3);
+            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5));
+        }
+        if( bRet )
+        {
+//            delete pDweller;
+            pDweller = Dweller::findByPrimaryKey(4);
+            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5));
+        }
+        if( bRet )
+        {
+//            delete pDweller;
+            pDweller = Dweller::findByPrimaryKey(5);
+            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5));
+        }
+        if( bRet )
+        {
+//            delete pDweller;
+            pDweller = Dweller::findByPrimaryKey(6);
+            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5));
+        }
+        if( bRet )
+        {
+//            delete pDweller;
+            pDweller = Dweller::findByPrimaryKey(7);
+            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5));
+        }
+
+    }
+    if( bRet )
+    {
+        printf("\nAppendTicket executado com sucesso!\n");
     }
     else
     {
-        printf("\nFalha no AddTicket!\n");
+        printf("\nFalha no AppendTicket!\n");
 
+    }
+}
+void AddTickets()
+{
+    if( g_tkt->AddTickets() )
+    {
+        printf("\nAddTickets executado com sucesso!\n");
+    }
+    else
+    {
+        printf("\nFalha no AddTickets!\n");
     }
 }
 
@@ -232,7 +246,32 @@ void AddCompany()
 }
 
 
+void PrintMenu()
+{
+  printf( "\nProgrma de teste acbr\n" );
+  printf( "\n---------------------\n" );
+  printf( "\n1. Init\n" );
+  printf( "\n2. AppendTicket( append 3 tkts..)\n" );
+  printf( "\n3. AddTickets( add to acbr )\n" );
+  printf( "\n4. BuildShipping\n" );
+  printf( "\n5. Print\n" );
 
+  printf( "\n6. DB_AppendAgenc\n" );
+  printf( "\n7. DB_AppendBanco\n" );
+  printf( "\n8. DB_AppendTkt\n" );
+  printf( "\n9. DB_AppendCompany\n" );
+  printf( "\n10. Close Program\n" );
+
+/*
+
+       bool Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *pBank, bankaccount *pAccount);
+       bool Print(bool bPrinter=false, QString strPath=TKT_DEFAULT_PDF_PATH );
+       bool BuildShipping(QString strDir, int nFileNumber, QString FileName );
+       bool AddTicket(Dweller *pDweller, QString strValue, QDate dtVencto);
+*/
+
+
+}
 
 int main(int argc, char *argv[])
 {
@@ -253,7 +292,16 @@ int main(int argc, char *argv[])
            case 1: 
                    Init();
                    break;
-           case 2: 
+           case 2:
+                   AppendTicket();
+                   break;
+           case 3:
+                   AddTickets();
+                   break;
+           case 4:
+                   BuildShipping();
+                   break;
+           case 5:
                    if(g_tkt->Print())
                    {
                        printf( "\nPrint executado com sucesso\n");
@@ -263,22 +311,16 @@ int main(int argc, char *argv[])
                        printf( "\nErro na execucao do Print\n");
                    }
                    break;
-           case 3: 
-                   AddTicket();
-                   break;
-           case 4:
-                   BuildShipping();
-                   break;
-           case 5:
+           case 6:
                   AppendAgenc();
                   break;
-           case 6:
+           case 7:
                   AppendBanco();
                   break;
-           case 7:
+           case 8:
                   AppendTkt();
                   break;
-           case 8:
+           case 9:
                   AddCompany();
                   break;
 
@@ -286,7 +328,7 @@ int main(int argc, char *argv[])
                    break;
         }
 
-      }while( cOption != 0x39 );
+      }while( cOption != 10 );
 
     delete g_tkt;
     exit(0);

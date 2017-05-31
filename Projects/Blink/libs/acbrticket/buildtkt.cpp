@@ -74,10 +74,11 @@
 #endif
 void BuildTkt::qSleep(int ms)
 {
+#if 0
     QTime dieTime= QTime::currentTime().addSecs(ms);
     while (QTime::currentTime() < dieTime)
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-#if 0
+#endif
 
 
 #ifdef Q_OS_WIN
@@ -86,7 +87,7 @@ void BuildTkt::qSleep(int ms)
     struct timespec ts = { ms / 1000, (ms % 1000) * 1000 * 1000 };
     nanosleep(&ts, NULL);
 #endif
-#endif
+
 }
 
 
@@ -97,8 +98,17 @@ void BuildTkt::DirModified(QString dir )
 
 BuildTkt::BuildTkt()
 {
- //   m_watcher.addPath(RECEIVE_PATH);
-//    QObject::connect(&m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(DirModified(QString)));
+    m_watcher.addPath(RECEIVE_PATH);
+    QObject::connect(&m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(DirModified(QString)));
+}
+
+BuildTkt::~BuildTkt()
+{
+    for( int i = 0; i < m_tickets.count(); i++)
+    {
+        delete m_tickets.at(i);
+    }
+    m_tickets.clear();
 }
 
 
@@ -123,44 +133,47 @@ bool BuildTkt::Send(QString cmd)
 
     if( result ) // verifica retorno
     {
-/*        while( !m_bDirModified && (dwTimeout < 50))
+        while( !m_bDirModified && (dwTimeout < 20))
         {
              qSleep(100);
              dwTimeout++;
         }
+        /*
         if( dwTimeout == 50 )
         {
             qDebug() << "timeout, retornando erro.:";
             m_lastError = "Sem resposta para o comando de envio!";
             return false;
-        }*/
+        }
+        */
 
-        qDebug() << "Depois da espera:";
-        qSleep(1);
+//        qDebug() << "Depois da espera:";
+        qSleep(100);
+        //qSleep(1);
         QFile *receivefile = new QFile(QString("%1%2").arg(RECEIVE_PATH).arg(RECEIVE_NAME));
-        qDebug() << "Depois new:";
+//        qDebug() << "Depois new:";
         if( !receivefile->open(QIODevice::ReadOnly))
         {
-            qDebug() << "Vai deletar receivefile:";
+//            qDebug() << "Vai deletar receivefile:";
             delete receivefile;
             m_lastError = "Erro na abertura do arquivo de resposta!";
             return false;
         }
         result = true;
-         qDebug() << "Vai ler dados:";
+//         qDebug() << "Vai ler dados:";
         QString answer = receivefile->readAll();
-         qDebug() << "leu:";
+//         qDebug() << "leu:";
         if( !answer.startsWith("OK:"))
         {
             result = false;
-             qDebug() << "setando lasterror:" << answer;
+//             qDebug() << "setando lasterror:" << answer;
             m_lastError = answer;
         }
-         qDebug() << "fehando o arquivo";
+//         qDebug() << "fehando o arquivo";
         receivefile->close();
-         qDebug() << "Vai deletar receivefile 2:";
+//         qDebug() << "Vai deletar receivefile 2:";
         delete receivefile;
-         qDebug() << "Vai deletar arquivo receivefile:";
+//         qDebug() << "Vai deletar arquivo receivefile:";
         QFile::remove(QString("%1%2").arg(RECEIVE_PATH).arg(RECEIVE_NAME));
         qDebug() << "recebido:" << answer;
 
@@ -238,14 +251,39 @@ bool BuildTkt::Print(bool bPrinter, QString strPath)
 }
 
 
-bool BuildTkt::AddTicket(Dweller *pDweller, QString strValue, QDate dtVencto)
+bool BuildTkt::AppendTicket(Dweller *pDweller, QString strValue, QDate dtVencto)
 {
     m_TktCount++;
 
-    QString paramCfgTkt = QString(TKT_CONFIG_TICKET)
-                          .arg(m_TktCount)
+    Ticket *tkt =  new Ticket(pDweller,strValue,dtVencto);
+
+    m_tickets.append(tkt);
+
+    return true;
+
+
+}
+
+bool BuildTkt::AddTickets()
+{
+    QString paramCfgTkt;
+
+    for( int i = 0; i < m_tickets.count(); i++ )
+    {
+       Dweller *pDweller = m_tickets.at(i)->getDweller();
+       QString strValue  = m_tickets.at(i)->getValue();
+       QDate   dtVencto  = m_tickets.at(i)->getDate();
+
+       QString aux;
+       Tower *pTower = Tower::findByPrimaryKey(pDweller->gettower());
+       Ap    *pAp    =  Ap::findByPrimaryKey(pDweller->getap());
+       if( pTower && pAp)
+           aux = QString("%1%2").arg(pDweller->gettower()).arg(pAp->getNumber());
+
+       paramCfgTkt += QString(TKT_CONFIG_TICKET)
+                          .arg(i+1)
                           .arg(m_pTktConfig->getNossoNumero())
-            .arg(QString("%1%2").arg(pDweller->getTower()->getid()).arg(pDweller->getAp()->getNumber()))
+            .arg(aux)
             .arg(m_pTktConfig->getCarteira())
             .arg(strValue.replace(".",","))
             .arg(pDweller->getName())
@@ -253,7 +291,7 @@ bool BuildTkt::AddTicket(Dweller *pDweller, QString strValue, QDate dtVencto)
             .arg(m_pCompany->getAddrees())
             .arg(m_pCompany->getHouseNumber())
             .arg(m_pCompany->getNeighborhood())
-            .arg(QString("%1-%2").arg(pDweller->getTower()->getName()).arg(pDweller->getAp()->getNumber()))
+            .arg(QString("%1-%2").arg(pTower?pTower->getName():" ").arg(pAp?pAp->getNumber():" "))
             .arg(m_pCompany->getCity()->getName())
             .arg(m_pCompany->getState()->getSign())
             .arg(m_pCompany->getCEP())
@@ -261,12 +299,18 @@ bool BuildTkt::AddTicket(Dweller *pDweller, QString strValue, QDate dtVencto)
             .arg(m_pTktConfig->getJuros().replace(".",","))
             .arg(dtVencto.toString("dd/MM/yyyy"));
 
+       if( pTower )
+           delete pTower;
+       if( pAp)
+           delete pAp;
+
+    }
+
     QString cmdPrint =  QString("%1%2(\"%3\")").arg(TKT_PREFIX).arg(TKT_ADD_TICKET).arg(paramCfgTkt);
 
     return Send(cmdPrint);
 
 }
-//BOLETO.GerarRemessa("c:\remessa\",1,000001.rem ) – Irá gerar o arquivo de remessa no diretório "C:\Remessa",  com o nome formatado de acordo com o banco para o qual esta sendo feita a remessa .000001.rem
 
 
 bool BuildTkt::BuildShipping(QString strDir, QString FileName )
@@ -282,4 +326,26 @@ bool BuildTkt::BuildShipping(QString strDir, QString FileName )
     return Send(cmdSnd);
 
 
+}
+
+
+Ticket::Ticket(Dweller *dweller, QString value, QDate date)
+{
+    m_dweller = dweller;
+    m_value =  value;
+    m_date = date;
+}
+
+Dweller *Ticket::getDweller()
+{
+    return m_dweller;
+}
+QString Ticket::getValue()
+{
+    return m_value;
+}
+
+QDate   Ticket::getDate()
+{
+    return m_date;
 }

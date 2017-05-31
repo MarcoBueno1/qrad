@@ -52,6 +52,7 @@ void Editmetreage::Save()
         mod = new metreage;
 
     mod->setDescricao(ui->LnEdtDescricao->text());
+    mod->setm2(ui->DblSpnBxm2->value());
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -72,6 +73,7 @@ void Editmetreage::Load()
     if( m_mod == NULL)
       return;
     ui->LnEdtDescricao->setText(m_mod->getDescricao());
+    ui->DblSpnBxm2->setValue(m_mod->getm2());
 
 }
 

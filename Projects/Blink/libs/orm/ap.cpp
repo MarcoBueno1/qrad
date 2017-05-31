@@ -7,8 +7,9 @@ MODEL_BEGIN_MAP(Ap)
 	 
      MODEL_MAP_FIELD(Number, "numero");
      MODEL_MAP_FIELD(tp, "tp");
-
-	 MODEL_END_MAP()
+     MODEL_MAP_FIELD(MonthValue, "monthvalue");
+     MODEL_MAP_FIELD(MetreageId, "metreageid");
+MODEL_END_MAP()
 
 QList<Ap*>* Ap::findAll()
 {

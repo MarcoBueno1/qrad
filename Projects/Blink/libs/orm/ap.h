@@ -7,9 +7,11 @@ DECLARE_MODEL(Ap)
 
 class Ap : public Model
 {
-     MODEL_DECLARE_ATTRIBUTE(int, id);
-     MODEL_DECLARE_ATTRIBUTE(QString, Number);
-     MODEL_DECLARE_ATTRIBUTE(int, tp);
+     MODEL_DECLARE_ATTRIBUTE(int, id)
+     MODEL_DECLARE_ATTRIBUTE(QString, Number)
+     MODEL_DECLARE_ATTRIBUTE(int, tp)
+     MODEL_DECLARE_DOUBLE_ATTRIBUTE(MonthValue)
+     MODEL_DECLARE_ATTRIBUTE(int, MetreageId)
 
      MODEL_MATCH_TABLE(Ap, "ap")
 

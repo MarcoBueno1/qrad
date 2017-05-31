@@ -47,7 +47,8 @@ SOURCES += dweller.cpp \
          respemis.cpp \
          ticketconfig.cpp \
          city.cpp \
-         state.cpp
+         state.cpp \
+         metreage.cpp
             
 
 HEADERS += dweller.h \
@@ -82,7 +83,8 @@ HEADERS += dweller.h \
          respemis.h \ 
          ticketconfig.h \
     city.h \
-    state.h
+    state.h \
+    metreage.h
 		   
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadOrm\release

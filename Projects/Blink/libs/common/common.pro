@@ -22,21 +22,27 @@ SOURCES +=  \
            managersupplier.cpp \
            managerprofile.cpp \
            editprofile.cpp \
-           editlogin.cpp
+           editlogin.cpp \
+           managermetreage.cpp \
+           editmetreage.cpp
 
 HEADERS +=  \
            editsupplier.h \
            managersupplier.h \
            managerprofile.h \
            editprofile.h  \
-           editlogin.h 
+           editlogin.h \
+           managermetreage.h \
+           editmetreage.h
 		   
 FORMS +=  \
          editsupplier.ui \
          managersupplier.ui \
          managerprofile.ui \
          editprofile.ui \
-         editlogin.ui 
+         editlogin.ui \
+         managermetreage.ui \
+         editmetreage.ui
  
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadHw\release \

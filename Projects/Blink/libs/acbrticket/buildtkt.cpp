@@ -106,6 +106,7 @@ BuildTkt::~BuildTkt()
 {
     for( int i = 0; i < m_tickets.count(); i++)
     {
+        qDebug() << "deletando: " <<m_tickets.at(i);
         delete m_tickets.at(i);
     }
     m_tickets.clear();

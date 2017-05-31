@@ -330,7 +330,11 @@ int main(int argc, char *argv[])
 
       }while( cOption != 10 );
 
+    qDebug() << "antes delete g_tkt";
     delete g_tkt;
-    exit(0);
+    qDebug() << "depois delete g_tkt";
+
+//    exit(0);
     //return a.exec();
+    return 0;
 }

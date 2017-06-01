@@ -40,6 +40,11 @@ Editticketconfig::Editticketconfig(QWidget *parent) :
     ui->CmbBxcnab->setCanAdd(true);
     ui->CmbBxcnab->setUserName("QRad");
     ui->CmbBxcnab->completer()->setFilterMode(Qt::MatchContains );
+    ui->CmbBxespecie->setTable("especie");
+    ui->CmbBxespecie->setField("Description");
+    ui->CmbBxespecie->setCanAdd(true);
+    ui->CmbBxespecie->setUserName("QRad");
+    ui->CmbBxespecie->completer()->setFilterMode(Qt::MatchContains );
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
@@ -87,6 +92,8 @@ void Editticketconfig::Save()
 
     mod->setcnab(ui->CmbBxcnab->model()->data(ui->CmbBxcnab->model()->index(ui->CmbBxcnab->currentIndex(), 0)).toInt());
 
+    mod->setespecie(ui->CmbBxespecie->model()->data(ui->CmbBxespecie->model()->index(ui->CmbBxespecie->currentIndex(), 0)).toInt());
+
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -112,6 +119,7 @@ void Editticketconfig::Load()
     ui->CmbBxLayoutBol->setCurrentId(m_mod->getLayoutBol());
     ui->CmbBxTipoCobranca->setCurrentId(m_mod->getTipoCobranca());
     ui->CmbBxcnab->setCurrentId(m_mod->getcnab());
+    ui->CmbBxespecie->setCurrentId(m_mod->getespecie());
 
 }
 

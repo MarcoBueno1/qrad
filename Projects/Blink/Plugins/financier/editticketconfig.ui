@@ -285,6 +285,45 @@
 </property>
 </item>
 </widget>
+<widget class="QLabel" name="Lblespecie">
+<property name="geometry">
+ <rect>
+  <x>30</x>
+  <y>220</y>
+  <width>59</width>
+  <height>17</height>
+ </rect>
+</property>
+<property name="text">
+ <string>especie</string>
+</property>
+</widget>
+<widget class="SComboBox" name="CmbBxespecie">
+<property name="geometry">
+ <rect>
+  <x>100</x>
+  <y>215</y>
+  <width>120</width>
+  <height>33</height>
+ </rect>
+</property>
+    <property name="editable">
+     <bool>true</bool>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QComboBox::AdjustToContents</enum>
+    </property>
+<item>
+<property name="text">
+ <string>EC</string>
+</property>
+</item>
+<item>
+<property name="text">
+ <string>DM</string>
+</property>
+</item>
+</widget>
     </widget>
 <widget class="QFrame" name="topmenu">
  <property name="geometry">

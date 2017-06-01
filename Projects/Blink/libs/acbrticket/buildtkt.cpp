@@ -219,10 +219,10 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
            .arg(m_pCompany->getComplement())
            .arg(m_pCompany->getState()->getSign())
            .arg(m_pTktConfig->getRespEmis()-1)
-           .arg(m_pTktConfig->getTipoPessoa())
+           .arg(m_pTktConfig->getTipoPessoa()-1)
            .arg(m_pTktConfig->getCodigoCedente())
            .arg(m_pTktConfig->getLayoutBol()-1)
-           .arg(m_pTktConfig->getTipoCobranca());
+           .arg(m_pTktConfig->getTipoCobranca()-1);
 
    QString paramConta = QString(TKT_CONFIG_ACCOUNT)
            .arg(m_pAccount->getConta())

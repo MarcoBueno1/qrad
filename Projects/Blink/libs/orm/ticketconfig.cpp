@@ -9,10 +9,6 @@ ORM_BEGIN_MAP(ticketconfig)
      ORM_MAP_FIELD(LayoutBol, "layoutbol");
      ORM_MAP_FIELD(TipoCobranca, "tipocobranca");
      ORM_MAP_FIELD(cnab, "cnab");
-     ORM_MAP_FIELD(NossoNumero, "nossonumero");
-     ORM_MAP_FIELD(Carteira, "carteira");
-     ORM_MAP_FIELD(Mensagem, "mensagem");
-     ORM_MAP_FIELD(Juros, "juros");
-     ORM_MAP_FIELD(Custo, "custo");
+     ORM_MAP_FIELD(especie, "especie");
 ORM_END_MAP()
 

@@ -14,5 +14,6 @@ ORM_BEGIN_MAP(ticketconfig)
      ORM_MAP_FIELD(Carteira, "carteira");
      ORM_MAP_FIELD(Mensagem, "mensagem");
      ORM_MAP_FIELD(Juros, "juros");
+     ORM_MAP_FIELD(Description, "description");
 ORM_END_MAP()
 

@@ -15,10 +15,11 @@ Editbankaccount::Editbankaccount(QWidget *parent) :
     
     m_mod = NULL;
     m_lastMod = NULL;
-        ui->CmbBxBanco->setTable("fin_bank");
+
+    ui->CmbBxBanco->setTable("fin_bank");
     ui->CmbBxBanco->setField("Description");
     ui->CmbBxBanco->setCanAdd(true);
-    ui->CmbBxBanco->setUserName("QRad");
+    ui->CmbBxBanco->setUserName("dsm");
     ui->CmbBxBanco->completer()->setFilterMode(Qt::MatchContains );
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));

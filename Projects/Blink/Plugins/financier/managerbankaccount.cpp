@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
-#define SQL_ITEMS "select conta, digconta, agencia,id from fin_bankaccount order by conta" 
+#define SQL_ITEMS "select conta as \"Conta\", digconta as \"Dig.\", agencia as \"Agência\" , digagencia as \"Dig.\", a.id, b.description as \"Banco\" from fin_bankaccount a inner join fin_bank b on b.id = a.fin_bank order by conta ;"
 
 Managerbankaccount::Managerbankaccount(QWidget *parent) :
     QDialog(parent),

@@ -18,12 +18,12 @@ Editmaincompany::Editmaincompany(QWidget *parent) :
         ui->CmbBxcity->setTable("city");
     ui->CmbBxcity->setField("name");
     ui->CmbBxcity->setCanAdd(true);
-    ui->CmbBxcity->setUserName("QRad");
+    ui->CmbBxcity->setUserName("dsm");
     ui->CmbBxcity->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxstate->setTable("state");
     ui->CmbBxstate->setField("name");
     ui->CmbBxstate->setCanAdd(true);
-    ui->CmbBxstate->setUserName("QRad");
+    ui->CmbBxstate->setUserName("dsm");
     ui->CmbBxstate->completer()->setFilterMode(Qt::MatchContains );
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));

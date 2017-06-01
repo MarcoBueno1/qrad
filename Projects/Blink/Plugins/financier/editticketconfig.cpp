@@ -18,32 +18,32 @@ Editticketconfig::Editticketconfig(QWidget *parent) :
         ui->CmbBxRespEmis->setTable("respemis");
     ui->CmbBxRespEmis->setField("Description");
     ui->CmbBxRespEmis->setCanAdd(true);
-    ui->CmbBxRespEmis->setUserName("QRad");
+    ui->CmbBxRespEmis->setUserName("dsm");
     ui->CmbBxRespEmis->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxTipoPessoa->setTable("tipopessoa");
     ui->CmbBxTipoPessoa->setField("Description");
     ui->CmbBxTipoPessoa->setCanAdd(true);
-    ui->CmbBxTipoPessoa->setUserName("QRad");
+    ui->CmbBxTipoPessoa->setUserName("dsm");
     ui->CmbBxTipoPessoa->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxLayoutBol->setTable("layoutbol");
     ui->CmbBxLayoutBol->setField("Description");
     ui->CmbBxLayoutBol->setCanAdd(true);
-    ui->CmbBxLayoutBol->setUserName("QRad");
+    ui->CmbBxLayoutBol->setUserName("dsm");
     ui->CmbBxLayoutBol->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxTipoCobranca->setTable("tipocobranca");
     ui->CmbBxTipoCobranca->setField("Description");
     ui->CmbBxTipoCobranca->setCanAdd(true);
-    ui->CmbBxTipoCobranca->setUserName("QRad");
+    ui->CmbBxTipoCobranca->setUserName("dsm");
     ui->CmbBxTipoCobranca->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxcnab->setTable("cnab");
     ui->CmbBxcnab->setField("Description");
     ui->CmbBxcnab->setCanAdd(true);
-    ui->CmbBxcnab->setUserName("QRad");
+    ui->CmbBxcnab->setUserName("dsm");
     ui->CmbBxcnab->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxespecie->setTable("especie");
     ui->CmbBxespecie->setField("Description");
     ui->CmbBxespecie->setCanAdd(true);
-    ui->CmbBxespecie->setUserName("QRad");
+    ui->CmbBxespecie->setUserName("dsm");
     ui->CmbBxespecie->completer()->setFilterMode(Qt::MatchContains );
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
@@ -98,6 +98,7 @@ void Editticketconfig::Save()
     mod->setCarteira(ui->LnEdtCarteira->text());
     mod->setMensagem(ui->LnEdtMensagem->text());
     mod->setJuros(ui->LnEdtJuros->text());
+    mod->setDescription(ui->LnEdtDescription->text());
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -128,6 +129,7 @@ void Editticketconfig::Load()
     ui->LnEdtCarteira->setText(m_mod->getCarteira());
     ui->LnEdtMensagem->setText(m_mod->getMensagem());
     ui->LnEdtJuros->setText(m_mod->getJuros());
+    ui->LnEdtDescription->setText(m_mod->getDescription());
 
 }
 

@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select codigocedente, id,id from ticketconfig order by id" 
+#define SQL_ITEMS "select codigocedente, carteira, id,id from ticketconfig order by id" 
 
 Managerticketconfig::Managerticketconfig(QWidget *parent) :
     QDialog(parent),
@@ -161,6 +161,8 @@ void Managerticketconfig::ConfigureTable()
       ui->tableViewSearch->addSearchColumn(0);
     ui->tableViewSearch->addSearchColumn(0);
     ui->tableViewSearch->addSearchColumnFilter(0);
+    ui->tableViewSearch->addSearchColumn(1);
+    ui->tableViewSearch->addSearchColumnFilter(1);
 
 
    // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Conuna1"));
@@ -172,6 +174,7 @@ void Managerticketconfig::ConfigureTable()
    // ui->tableViewSearch->setColumnWidth(0, 0.06 * ui->tableViewSearch->width());
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
      ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
+     ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnCenter);
 
 
 }

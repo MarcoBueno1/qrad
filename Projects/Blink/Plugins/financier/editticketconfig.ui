@@ -324,6 +324,101 @@
 </property>
 </item>
 </widget>
+<widget class="QLabel" name="LblNossoNumero">
+<property name="geometry">
+ <rect>
+  <x>30</x>
+  <y>255</y>
+  <width>59</width>
+  <height>17</height>
+ </rect>
+</property>
+<property name="text">
+ <string>NossoNumero</string>
+</property>
+</widget>
+<widget class="QDoubleSpinBox" name="DblSpnBxNossoNumero">
+<property name="geometry">
+ <rect>
+  <x>100</x>
+  <y>250</y>
+  <width>111</width>
+  <height>27</height>
+ </rect>
+</property>
+<property name="maximum">
+ <double>999999999999.989999999990687</double>
+</property>
+</widget>
+<widget class="QLabel" name="LblCarteira">
+<property name="geometry">
+ <rect>
+  <x>30</x>
+  <y>290</y>
+  <width>59</width>
+  <height>17</height>
+ </rect>
+</property>
+<property name="text">
+ <string>Carteira</string>
+</property>
+</widget>
+<widget class="QLineEdit" name="LnEdtCarteira">
+ <property name="geometry">
+  <rect>
+   <x>100</x>
+   <y>285</y>
+   <width>113</width>
+   <height>27</height>
+  </rect>
+ </property>
+</widget>
+<widget class="QLabel" name="LblMensagem">
+<property name="geometry">
+ <rect>
+  <x>30</x>
+  <y>325</y>
+  <width>59</width>
+  <height>17</height>
+ </rect>
+</property>
+<property name="text">
+ <string>Mensagem</string>
+</property>
+</widget>
+<widget class="QLineEdit" name="LnEdtMensagem">
+ <property name="geometry">
+  <rect>
+   <x>100</x>
+   <y>320</y>
+   <width>113</width>
+   <height>27</height>
+  </rect>
+ </property>
+</widget>
+<widget class="QLabel" name="LblJuros">
+<property name="geometry">
+ <rect>
+  <x>30</x>
+  <y>360</y>
+  <width>59</width>
+  <height>17</height>
+ </rect>
+</property>
+<property name="text">
+ <string>Juros</string>
+</property>
+</widget>
+<widget class="QLineEdit" name="LnEdtJuros">
+ <property name="geometry">
+  <rect>
+   <x>100</x>
+   <y>355</y>
+   <width>113</width>
+   <height>27</height>
+  </rect>
+ </property>
+</widget>
     </widget>
 <widget class="QFrame" name="topmenu">
  <property name="geometry">

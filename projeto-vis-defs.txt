@@ -31,8 +31,7 @@
 
 7. tiktconfig ( configuracao boleto )
 
-./qrad -s ticketconfig -t ticketconfig -c id -i int -c respemis.RespEmis -i int:multi:respemis.Description[ClienteEmite,BancoEmite,BancoReemite,BancoNãoReemite] -c tipopessoa.TipoPessoa -i int:multi:tipopessoa.Description[Física,Juridica,Outros] -c codigocedente.CodigoCedente -i QString:search -c layoutbol.LayoutBol -i int:multi:layoutbol.Description[Padrão,Carnê,Fatura,PadrãoEntrega] -c tipocobranca.TipoCobranca -i int:multi:tipocobranca.Description[Simples,Vinculada,Caucionada,Descontada,Vendor] -c cnab:CNAB -i int:multi:cnab.Description[CNAB240,CNAB400] -c especie -i int:multi:especie.Description[EC,DM]
-
+./qrad -s ticketconfig -t ticketconfig -c id -i int -c respemis.RespEmis -i int:multi:respemis.Description[ClienteEmite,BancoEmite,BancoReemite,BancoNãoReemite] -c tipopessoa.TipoPessoa -i int:multi:tipopessoa.Description[Física,Juridica,Outros] -c codigocedente.CodigoCedente -i QString:search -c layoutbol.LayoutBol -i int:multi:layoutbol.Description[Padrão,Carnê,Fatura,PadrãoEntrega] -c tipocobranca.TipoCobranca -i int:multi:tipocobranca.Description[Simples,Vinculada,Caucionada,Descontada,Vendor] -c cnab:CNAB -i int:multi:cnab.Description[CNAB240,CNAB400] -c especie -i int:multi:especie.Description[EC,DM] -c nossonumero.NossoNumero -i double -c carteira.Carteira -i QString:search -c mensagem.Mensagem -i QString -c juros.Juros -i QString
     
 6. Relatorios:
     1. Que visitantes estão no predito

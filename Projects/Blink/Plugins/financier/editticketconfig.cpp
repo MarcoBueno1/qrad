@@ -40,7 +40,7 @@ Editticketconfig::Editticketconfig(QWidget *parent) :
     ui->CmbBxcnab->setCanAdd(true);
     ui->CmbBxcnab->setUserName("QRad");
     ui->CmbBxcnab->completer()->setFilterMode(Qt::MatchContains );
-    ui->CmbBxespecie->setTable("tktespecie");
+    ui->CmbBxespecie->setTable("especie");
     ui->CmbBxespecie->setField("Description");
     ui->CmbBxespecie->setCanAdd(true);
     ui->CmbBxespecie->setUserName("QRad");
@@ -94,6 +94,10 @@ void Editticketconfig::Save()
 
     mod->setespecie(ui->CmbBxespecie->model()->data(ui->CmbBxespecie->model()->index(ui->CmbBxespecie->currentIndex(), 0)).toInt());
 
+    mod->setNossoNumero(ui->DblSpnBxNossoNumero->value());
+    mod->setCarteira(ui->LnEdtCarteira->text());
+    mod->setMensagem(ui->LnEdtMensagem->text());
+    mod->setJuros(ui->LnEdtJuros->text());
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -120,6 +124,10 @@ void Editticketconfig::Load()
     ui->CmbBxTipoCobranca->setCurrentId(m_mod->getTipoCobranca());
     ui->CmbBxcnab->setCurrentId(m_mod->getcnab());
     ui->CmbBxespecie->setCurrentId(m_mod->getespecie());
+    ui->DblSpnBxNossoNumero->setValue(m_mod->getNossoNumero());
+    ui->LnEdtCarteira->setText(m_mod->getCarteira());
+    ui->LnEdtMensagem->setText(m_mod->getMensagem());
+    ui->LnEdtJuros->setText(m_mod->getJuros());
 
 }
 

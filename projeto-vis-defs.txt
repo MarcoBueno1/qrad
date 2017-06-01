@@ -29,6 +29,9 @@
 
 ./qrad -s bankaccount -t bankaccount -c id -i int -c conta.Conta -i QString:searchmaster -c digconta.DigitoConta -i QString:searchmaster -c agencia.Agencia -i QString:search -c digagencia.DigitoAgencia -i QString -c banco.Banco -i int:multi:fin_bank.Description[]
 
+7. tiktconfig ( configuracao boleto )
+
+./qrad -s ticketconfig -t ticketconfig -c id -i int -c respemis.RespEmis -i int:multi:respemis.Description[ClienteEmite,BancoEmite,BancoReemite,BancoNãoReemite] -c tipopessoa.TipoPessoa -i int:multi:tipopessoa.Description[Física,Juridica,Outros] -c codigocedente.CodigoCedente -i QString:search -c layoutbol.LayoutBol -i int:multi:layoutbol.Description[Padrão,Carnê,Fatura,PadrãoEntrega] -c tipocobranca.TipoCobranca -i int:multi:tipocobranca.Description[Simples,Vinculada,Caucionada,Descontada,Vendor] -c cnab:CNAB -i int:multi:cnab.Description[CNAB240,CNAB400] -c especie -i int:multi:especie.Description[EC,DM]
 
     
 6. Relatorios:

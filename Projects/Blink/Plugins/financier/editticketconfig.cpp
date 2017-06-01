@@ -40,7 +40,7 @@ Editticketconfig::Editticketconfig(QWidget *parent) :
     ui->CmbBxcnab->setCanAdd(true);
     ui->CmbBxcnab->setUserName("QRad");
     ui->CmbBxcnab->completer()->setFilterMode(Qt::MatchContains );
-    ui->CmbBxespecie->setTable("especie");
+    ui->CmbBxespecie->setTable("tktespecie");
     ui->CmbBxespecie->setField("Description");
     ui->CmbBxespecie->setCanAdd(true);
     ui->CmbBxespecie->setUserName("QRad");

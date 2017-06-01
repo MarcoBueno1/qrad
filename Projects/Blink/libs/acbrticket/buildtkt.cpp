@@ -1,4 +1,5 @@
 #include "buildtkt.h"
+#include "tktspecie.h"
 #include <QFile>
 #include <QDebug>
 #include <QThread>
@@ -54,7 +55,9 @@
 "Sacado.CEP=%14\n"\
 "Mensagem=%16\n"\
 "ValorMoraJuros=%17\n"\
-"Vencimento=%18\n"
+"Vencimento=%18\n"\
+"Especie=%19\n"
+
 
 #define TKT_BUILD_SHIPPING "GerarRemessa"
 
@@ -274,6 +277,18 @@ bool BuildTkt::AddTickets()
        Dweller *pDweller = m_tickets.at(i)->getDweller();
        QString strValue  = m_tickets.at(i)->getValue();
        QDate   dtVencto  = m_tickets.at(i)->getDate();
+       int dwSpecie  =  m_pTktConfig->getespecie();
+       QString strSpecie;
+
+       if(dwSpecie)
+       {
+           TktSpecie *spec = TktSpecie::findByPrimaryKey(dwSpecie);
+           if(spec)
+           {
+               strSpecie = spec->getDescription();
+               delete spec;
+           }
+       }
 
        QString aux;
        Tower *pTower = Tower::findByPrimaryKey(pDweller->gettower());
@@ -298,7 +313,8 @@ bool BuildTkt::AddTickets()
             .arg(m_pCompany->getCEP())
             .arg(m_pTktConfig->getMensagem())
             .arg(m_pTktConfig->getJuros().replace(".",","))
-            .arg(dtVencto.toString("dd/MM/yyyy"));
+            .arg(dtVencto.toString("dd/MM/yyyy"))
+            .arg(strSpecie);
 
        if( pTower )
            delete pTower;

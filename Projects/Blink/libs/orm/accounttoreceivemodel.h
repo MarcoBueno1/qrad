@@ -24,7 +24,7 @@ DECLARE_CLASS(AccountToReceiveModel)
     ORM_DECLARE_ATTRIBUTE(AccountToReceiveModel,QString, DocNumber)
     ORM_DECLARE_FOREINGKEY(AccountToReceiveModel,int, DebtId, Debt, Debt)
    
-    ORM_MATCH_TABLE(AccountToReceiveModel, "fin_accounttoreceivemodel")
+    ORM_MATCH_TABLE(AccountToReceiveModel, "fin_accounttoreceive")
 ORM_END_MAP()
 
 #endif 

@@ -22,7 +22,7 @@ DECLARE_CLASS(AccountToPayModel)
     ORM_DECLARE_ATTRIBUTE(AccountToPayModel,bool, Removed)
     ORM_DECLARE_ATTRIBUTE(AccountToPayModel,QString, DocNumber)
    
-    ORM_MATCH_TABLE(AccountToPayModel, "fin_accounttopaymodel")
+    ORM_MATCH_TABLE(AccountToPayModel, "fin_accounttopay")
 ORM_END_MAP()
 
 #endif 

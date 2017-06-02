@@ -46,7 +46,9 @@ SOURCES += financierplugin.cpp \
            managerrespemis.cpp \
            editrespemis.cpp \
            managerticketconfig.cpp \
-           editticketconfig.cpp
+           editticketconfig.cpp \
+           managerticket.cpp \
+           editticket.cpp
 
 HEADERS += financierplugin.h \
     accounttypemanager.h \
@@ -77,7 +79,10 @@ HEADERS += financierplugin.h \
            editrespemis.h \
            managerrespemis.h \
            editticketconfig.h \
-           managerticketconfig.h
+           managerticketconfig.h \
+           managerticket.h \
+           editticket.h
+ 
 
 win32:LIBS += -L../../../../libs/QRadCore/release \
         -L../../../../libs/QRadOrm/release \
@@ -131,7 +136,9 @@ FORMS += accounttypemanager.ui \
            managerrespemis.ui \
            editrespemis.ui \
            managerticketconfig.ui \
-           editticketconfig.ui
+           editticketconfig.ui \
+           managerticket.ui \
+           editticket.ui
 
 target.path = $${PREFIX}/bin 
 INSTALLS += target

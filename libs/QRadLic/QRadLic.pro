@@ -16,3 +16,8 @@ win32:LIBS += -L../3rdpart/libpq/win/lib \
               -leay32
 unix:LIBS += -lssl
 
+win32:QMAKE_LFLAGS += --enable-auto-import
+
+target.path = $${PREFIX}/bin
+INSTALLS += target
+

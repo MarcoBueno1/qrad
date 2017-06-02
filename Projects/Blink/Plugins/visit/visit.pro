@@ -32,7 +32,8 @@ SOURCES = camera.cpp \
     editveicname.cpp \
     managerveicname.cpp \
     editreason.cpp \
-    managerreason.cpp 
+    managerreason.cpp \
+    manageruser.cpp
 
 HEADERS = \ 
              visitplugin.h \ 
@@ -53,7 +54,8 @@ HEADERS = \
     editveicname.h \
     managerveicname.h \
     editreason.h \
-    managerreason.h 
+    managerreason.h \
+    manageruser.h
 
 
 
@@ -75,21 +77,25 @@ FORMS = \
     editveicname.ui \
     managerveicname.ui \
     editreason.ui \
-    managerreason.ui 
+    managerreason.ui \
+    manageruser.ui
 
 
 
 win32:LIBS += -L../../../../libs/QRadCore/release \
               -L../../../../libs/QRadCommonGui/release \
+              -L../../../../libs/QRadOrm/release \
               -L../../libs/orm/release \
               -L../../libs/common/release
 unix:LIBS += -L../../../../libs/QRadCore \
              -L../../../../libs/QRadCommonGui \
+              -L../../../../libs/QRadOrm\
              -L../../libs/orm/ \
              -L../../libs/common/
 
 LIBS += -lqradcore \
         -lblinkorm \
+        -lqradorm \
         -lblinkcommon \
         -lqradcommongui
 

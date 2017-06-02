@@ -79,6 +79,12 @@ HEADERS += financierplugin.h \
            editticketconfig.h \
            managerticketconfig.h
 
+win32:LIBS += -L../../../../libs/QRadCore/release \
+        -L../../../../libs/QRadOrm/release \
+        -L../../libs/orm/release \
+        -L../../libs/common/release \
+        -L../../../../libs/QRadLic/release \
+        -L../../../../libs/QRadLicUp/release \
 
 LIBS += -L../../../../libs/QRadCore \
         -L../../../../libs/QRadOrm \
@@ -89,7 +95,9 @@ LIBS += -L../../../../libs/QRadCore \
         -lqradcore \
         -lqradorm \
         -lqradlicup \
-        -lblinkcommon
+        -lblinkcommon \
+        -lblinkorm \
+
 
 
 win32:QMAKE_LFLAGS += --enable-auto-import

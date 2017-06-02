@@ -47,9 +47,16 @@ itauticket * ItauParser::ParseLine( QString Line )
     if( -1 == index)
         return NULL;
 
-    QString Pagador = Line.mid(0,index);
-    Line.remove(0,index);
-    Line = Line.trimmed();
+    QString Pagador;
+    do
+    {
+      Pagador += Line.mid(0,index);
+      Line.remove(0,index);
+      Line = Line.trimmed();
+      if(Line.at(0).isNumber())
+          break;
+      Pagador += " ";
+    }while(1);
 
     index = Line.indexOf(" ");
     if( -1 == index)
@@ -129,10 +136,8 @@ itauticket * ItauParser::ParseLine( QString Line )
             || ValorPago.isEmpty())
         return NULL;
 
-    QDate  dtVencto;
-    dtVencto.fromString(Data,"dd/MM/yyyy");
-    QDate  dtPagto;
-    dtPagto.fromString(DataPago,"dd/MM/yyyy");
+    QDate  dtVencto = QDate::fromString(Data,"dd/MM/yyyy");
+    QDate  dtPagto = QDate::fromString(DataPago,"dd/MM/yyyy");
 
     return new itauticket(Cart,NossoNumero,SeuNumero,Pagador,dtVencto,Pago.startsWith("L")?true:false,dtPagto,Agencia,Valor,ValorPago);
 

@@ -11,7 +11,7 @@
     if (QCoreApplication::instance()->arguments().contains("--debug")) \
     {   \
       FILE *fp;\
-      fp = fopen( "c:\\lnx\\debug.txt", "a+t");\
+      fp = fopen( "debug.txt", "a+t");\
       if( fp )\
       {\
          fprintf(fp, "%s:%s:L:%d ", __FILE__,__PRETTY_FUNCTION__, __LINE__);  \

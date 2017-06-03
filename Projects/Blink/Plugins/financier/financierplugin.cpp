@@ -2,6 +2,8 @@
 #include "managerticketconfig.h"
 #include "managerbankaccount.h"
 #include "managermetreage.h"
+#include "managerticket.h"
+#include "managersupplier.h"
 
 FinancierPlugin::FinancierPlugin()
 {
@@ -42,6 +44,8 @@ void FinancierPlugin::onLoad(QRadPluginContainer* container)
     appendAction(ACTION_SHOW_FINANCIER_TICKETMANAGER);
     appendAction(ACTION_SHOW_FINANCIER_BANKACCOUNTMANAGER);
     appendAction(ACTION_SHOW_METREAGE);
+    appendAction(ACTION_MANAGE_TICKET);
+    appendAction(ACTION_MANAGE_SUPPLIER);
 
 }
 
@@ -137,6 +141,20 @@ void FinancierPlugin::Process( const QString& action )
         QRadConfig::centralizarWidget(pMetreage);
         pMetreage->exec();
         delete pMetreage;
+    }
+    else if ( ACTION_MANAGE_TICKET == action )
+    {
+        Managerticket *pTicket = new Managerticket;
+        QRadConfig::centralizarWidget(pTicket);
+        pTicket->exec();
+        delete pTicket;
+    }
+    else if ( ACTION_MANAGE_SUPPLIER == action )
+    {
+        Managersupplier *pSupplier = new Managersupplier;
+        QRadConfig::centralizarWidget(pSupplier);
+        pSupplier->exec();
+        delete pSupplier;
     }
 }
 

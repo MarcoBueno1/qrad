@@ -16,6 +16,22 @@
 #include "editemailconf.h"
 #include "editmaincompany.h"
 
+
+#define VISIT_MANAGE QString("Manage")
+#define VISIT_EDIT QString("Edit")
+#define VISIT_MANAGE_VISITANTE QString("ManageVisitante")
+#define VISIT_EDIT_DWELLER QString("EditMorador")
+#define VISIT_MANAGE_DWELLER QString("ManagerMorador")
+#define VISIT_MANAGE_PRE_AUT  QString("ManagerPreAut")
+#define VISIT_MANAGE_PROFILE QString("ManagerProfile")
+#define VISIT_MANAGE_USER QString("ManagerUser")
+#define VISIT_MANAGE_EMAIL_CONFIG QString("EmailConfig")
+#define VISIT_MANAGE_MAIN_COMPANY QString("MainCompany")
+#define VISIT_MANAGE_BRAND QString("ManageBrand")
+#define VISIT_MANAGE_VEHIC_NAME QString("ManageVeicname")
+#define VISIT_MANAGE_REASON QString("ManageReason")
+
+
 class visitPlugin : public QRadPluginInterface
 {
     Q_OBJECT;

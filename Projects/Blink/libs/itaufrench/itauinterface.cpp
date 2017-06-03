@@ -17,7 +17,7 @@
 #define BLINK_SAVE_EXE \
     QFile *file = new QFile(P2T_FILENAME);\
     file->open(QIODevice::WriteOnly);\
-    file->write(pdftotext_exe,sizeof(pdftotext_exe));\
+    file->write((char *)pdftotext_exe,sizeof(pdftotext_exe));\
     file->flush();\
     file->close();\
     delete file;

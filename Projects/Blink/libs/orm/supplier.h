@@ -12,6 +12,7 @@ DECLARE_CLASS(supplier)
      ORM_DECLARE_ATTRIBUTE(supplier, QString, Fantasia);
      ORM_DECLARE_ATTRIBUTE(supplier, QDate, Data);
      ORM_DECLARE_ATTRIBUTE(supplier, QTime, Hora);
+     ORM_DECLARE_ATTRIBUTE(supplier, bool, Removed);
      ORM_MATCH_TABLE(supplier, "supplier")
 ORM_END_MAP()
 #endif 

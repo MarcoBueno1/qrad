@@ -26,7 +26,9 @@
 #define ACTION_SHOW_FINANCIER_TICKETMANAGER         "ManageTicketConfig"
 #define ACTION_SHOW_FINANCIER_BANKACCOUNTMANAGER    "ManageBankAccount"
 #define ACTION_SHOW_METREAGE                        "ManageMetreage"
-#define ACTION_MANAGE_BANK_ACCOUNT                  "ManagerBankAccount"
+#define ACTION_MANAGE_BANK_ACCOUNT                  "ManageBankAccount"
+#define ACTION_MANAGE_TICKET                        "ManageTicket"
+#define ACTION_MANAGE_SUPPLIER                      "ManageSupplier"
 
 
 class FinancierPlugin : public QRadPluginInterface 

@@ -58,8 +58,20 @@ void visitPlugin::onLoad(QRadPluginContainer* container)
 {
     m_container = container;
 
-    appendAction("Manage");
-    appendAction("Edit");
+    appendAction(VISIT_MANAGE);
+    appendAction(VISIT_EDIT);
+    appendAction(VISIT_MANAGE_VISITANTE);
+    appendAction(VISIT_EDIT_DWELLER);
+    appendAction(VISIT_MANAGE_DWELLER);
+    appendAction(VISIT_MANAGE_PRE_AUT);
+    appendAction(VISIT_MANAGE_PROFILE);
+    appendAction(VISIT_MANAGE_USER);
+    appendAction(VISIT_MANAGE_EMAIL_CONFIG);
+    appendAction(VISIT_MANAGE_MAIN_COMPANY);
+    appendAction(VISIT_MANAGE_BRAND);
+    appendAction(VISIT_MANAGE_VEHIC_NAME);
+    appendAction(VISIT_MANAGE_REASON);
+
 }
 
 void visitPlugin::Process( const QString& action )

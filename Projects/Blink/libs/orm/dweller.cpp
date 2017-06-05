@@ -21,6 +21,7 @@ MODEL_BEGIN_MAP(Dweller)
      MODEL_MAP_FIELD(Ramal, "ramal");
      MODEL_MAP_FIELD(NotifByEmail, "notifbyemail");
      MODEL_MAP_FIELD(tp, "tp");
+     MODEL_MAP_FIELD(Payer, "payer");
      MODEL_MAP_FIELD(Removed, "removed");
 
 MODEL_END_MAP()

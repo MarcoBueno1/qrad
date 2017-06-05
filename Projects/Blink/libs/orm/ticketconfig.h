@@ -14,7 +14,9 @@ DECLARE_CLASS(ticketconfig)
      ORM_DECLARE_ATTRIBUTE(ticketconfig, int, TipoCobranca);
      ORM_DECLARE_ATTRIBUTE(ticketconfig, int, cnab);
      ORM_DECLARE_ATTRIBUTE(ticketconfig, int, especie);
-     ORM_DECLARE_ATTRIBUTE(ticketconfig, double, NossoNumero);
+     ORM_DECLARE_ATTRIBUTE(ticketconfig, int, NossoNumero);
+     ORM_DECLARE_ATTRIBUTE(ticketconfig, int, LastNossoNumero);
+     ORM_DECLARE_ATTRIBUTE(ticketconfig, int, LimitNossoNumero);
      ORM_DECLARE_ATTRIBUTE(ticketconfig, QString, Carteira);
      ORM_DECLARE_ATTRIBUTE(ticketconfig, QString, Mensagem);
      ORM_DECLARE_ATTRIBUTE(ticketconfig, QString, Juros);

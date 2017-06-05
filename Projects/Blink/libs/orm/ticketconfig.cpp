@@ -11,6 +11,8 @@ ORM_BEGIN_MAP(ticketconfig)
      ORM_MAP_FIELD(cnab, "cnab");
      ORM_MAP_FIELD(especie, "especie");
      ORM_MAP_FIELD(NossoNumero, "nossonumero");
+     ORM_MAP_FIELD(LastNossoNumero, "lastnossonumero");
+     ORM_MAP_FIELD(LastNossoNumero, "limitnossonumero");
      ORM_MAP_FIELD(Carteira, "carteira");
      ORM_MAP_FIELD(Mensagem, "mensagem");
      ORM_MAP_FIELD(Juros, "juros");

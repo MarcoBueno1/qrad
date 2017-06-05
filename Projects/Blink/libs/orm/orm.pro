@@ -50,7 +50,8 @@ SOURCES += dweller.cpp \
          state.cpp \
          metreage.cpp \
          tktspecie.cpp \
-         ticket.cpp
+         ticket.cpp\
+         configmodel.cpp
             
 
 HEADERS += dweller.h \
@@ -88,7 +89,8 @@ HEADERS += dweller.h \
     state.h \
     metreage.h \
     tktspecie.h \
-    ticket.h
+    ticket.h \
+    configmodel.h
 		   
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadOrm\release

@@ -61,8 +61,8 @@ void Editticket::Save()
     if( m_mod == NULL)
         mod = new ticket;
 
-    mod->setNossoNumero(ui->LnEdtNossoNumero->text());
-    mod->setSeuNumero(ui->LnEdtSeuNumero->text());
+    mod->setNossoNumero(ui->LnEdtNossoNumero->text().toInt());
+    mod->setSeuNumero(ui->LnEdtSeuNumero->text().toInt());
     mod->setclientid(ui->CmbBxclientid->model()->data(ui->CmbBxclientid->model()->index(ui->CmbBxclientid->currentIndex(), 0)).toInt());
 
     mod->setVencto(ui->DtEdtVencto->date());
@@ -90,8 +90,8 @@ void Editticket::Load()
 {
     if( m_mod == NULL)
       return;
-    ui->LnEdtNossoNumero->setText(m_mod->getNossoNumero());
-    ui->LnEdtSeuNumero->setText(m_mod->getSeuNumero());
+    ui->LnEdtNossoNumero->setText(QString("%1").arg(m_mod->getNossoNumero()));
+    ui->LnEdtSeuNumero->setText(QString("%1").arg(m_mod->getSeuNumero()));
     ui->CmbBxclientid->setCurrentId(m_mod->getclientid());
     ui->DtEdtVencto->setDate(m_mod->getVencto());
     ui->DblSpnBxValor->setValue(m_mod->getValor());

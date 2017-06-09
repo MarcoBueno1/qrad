@@ -51,20 +51,20 @@ win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadHw\release \
                -L../../../../libs/QRadOrm\release \
                -L../orm/release \
-               -L../itaufrench\release
+               -L../itaufrench/release
 
 unix:LIBS +=  -L../../../../libs/QRadCore \
               -L../../../../libs/QRadOrm \
               -L../../../../libs/QRadHw \
-              -L../orm \
-              -L../itaufrench
+              -L../itaufrench \
+              -L../orm
 
 
 LIBS += -lqradcore  \
+        -litaufrench \
         -lblinkorm \
         -lqradorm \
-        -lqradhw \
-        -litaufrench
+        -lqradhw
 
 target.path = $${PREFIX}/bin
 INSTALLS += target

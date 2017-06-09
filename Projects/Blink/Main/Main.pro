@@ -36,11 +36,15 @@ LIBS += -L../../../libs/QRadCore \
         -L../libs/common/release \
         -L../libs/orm/ \
         -L../libs/orm/release \
+        -L../libs/itaufrench \
+        -L../libs/itaufrench/release \
         -lqradcore \
         -lqradlicup \
         -lblinkcommon \
         -lblinkorm \
-        -lqradorm
+        -lqradorm \
+        -litaufrench
+
 
 
 target.path = $${PREFIX}/bin

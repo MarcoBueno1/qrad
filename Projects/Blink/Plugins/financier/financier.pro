@@ -15,6 +15,7 @@ INCLUDEPATH = ../../../../libs/QRadCore \
               ../../libs/orm \
               ../../libs/common \
               ../../../../libs/QRadLic \
+              ../../libs/acbrticket/
               . 
 DESTDIR = .
 SOURCES += financierplugin.cpp \
@@ -48,7 +49,9 @@ SOURCES += financierplugin.cpp \
            managerticketconfig.cpp \
            editticketconfig.cpp \
            managerticket.cpp \
-           editticket.cpp
+           editticket.cpp \
+           ticketcontroller.cpp \
+           managershipper.cpp
 
 HEADERS += financierplugin.h \
     accounttypemanager.h \
@@ -81,7 +84,9 @@ HEADERS += financierplugin.h \
            editticketconfig.h \
            managerticketconfig.h \
            managerticket.h \
-           editticket.h
+           editticket.h \
+    ticketcontroller.h \
+    managershipper.h
  
 
 win32:LIBS += -L../../../../libs/QRadCore/release \
@@ -90,6 +95,7 @@ win32:LIBS += -L../../../../libs/QRadCore/release \
         -L../../libs/common/release \
         -L../../../../libs/QRadLic/release \
         -L../../../../libs/QRadLicUp/release \
+        -L../../libs/acbrticket/release
 
 LIBS += -L../../../../libs/QRadCore \
         -L../../../../libs/QRadOrm \
@@ -97,11 +103,13 @@ LIBS += -L../../../../libs/QRadCore \
         -L../../libs/common \
         -L../../../../libs/QRadLic \
         -L../../../../libs/QRadLicUp \
+        -L../../libs/acbrticket/ \
         -lqradcore \
         -lqradorm \
         -lqradlicup \
         -lblinkcommon \
         -lblinkorm \
+        -lacbrticket
 
 
 
@@ -138,7 +146,8 @@ FORMS += accounttypemanager.ui \
            managerticketconfig.ui \
            editticketconfig.ui \
            managerticket.ui \
-           editticket.ui
+           editticket.ui \
+           managershipper.ui
 
 target.path = $${PREFIX}/bin 
 INSTALLS += target

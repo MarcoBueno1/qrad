@@ -492,6 +492,24 @@ ATTRIBUTE_CLASS(bool);
             }\
             return obj;\
         } \
+        public: static _className##List* findBy(QString Join, QString Where, QSqlDatabase db = QSqlDatabase::database())\
+        {\
+            _className##List *obj = new _className##List();\
+            QString query = QString("select * from %1 %2 %3 ")\
+                      .arg(_className::tableName())\
+                      .arg(Join)\
+                      .arg(Where);\
+            if (!_className::fillModelListDB(obj,query, db)) { delete obj; obj = NULL; } \
+            return obj;\
+        }\
+        public: static _className##List* findBy(QString SQL, QSqlDatabase db = QSqlDatabase::database())\
+        {\
+            _className##List *obj = new _className##List();\
+            QString query = QString("%1")\
+                      .arg(SQL);\
+            if (!_className::fillModelListDB(obj,query, db)) { delete obj; obj = NULL; } \
+            return obj;\
+        }\
         public: void mapFields();
 
 #define MODEL_BEGIN_MAP(className) \

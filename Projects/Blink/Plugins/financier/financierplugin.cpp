@@ -4,6 +4,7 @@
 #include "managermetreage.h"
 #include "managerticket.h"
 #include "managersupplier.h"
+#include "managershipper.h"
 
 FinancierPlugin::FinancierPlugin()
 {
@@ -46,6 +47,7 @@ void FinancierPlugin::onLoad(QRadPluginContainer* container)
     appendAction(ACTION_SHOW_METREAGE);
     appendAction(ACTION_MANAGE_TICKET);
     appendAction(ACTION_MANAGE_SUPPLIER);
+    appendAction(ACTION_MANAGE_SHIPPER);
 
 }
 
@@ -155,6 +157,13 @@ void FinancierPlugin::Process( const QString& action )
         QRadConfig::centralizarWidget(pSupplier);
         pSupplier->exec();
         delete pSupplier;
+    }
+    else if ( ACTION_MANAGE_SHIPPER == action )
+    {
+        Managershipper *pShipper = new Managershipper;
+        QRadConfig::centralizarWidget(pShipper);
+        pShipper->exec();
+        delete pShipper;
     }
 }
 

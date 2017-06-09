@@ -255,11 +255,13 @@ bool BuildTkt::Print(bool bPrinter, QString strPath)
 }
 
 
-bool BuildTkt::AppendTicket(Dweller *pDweller, QString strValue, QDate dtVencto)
+bool BuildTkt::AppendTicket(Dweller *pDweller, QString strValue, QDate dtVencto,
+                                                            QString NossoNumero,
+                                                            QString SeuNumero)
 {
     m_TktCount++;
 
-    Ticket *tkt =  new Ticket(pDweller,strValue,dtVencto);
+    Ticket *tkt =  new Ticket(pDweller,strValue,dtVencto, NossoNumero,SeuNumero);
 
     m_tickets.append(tkt);
 
@@ -279,6 +281,8 @@ bool BuildTkt::AddTickets()
        QDate   dtVencto  = m_tickets.at(i)->getDate();
        int dwSpecie  =  m_pTktConfig->getespecie();
        QString strSpecie;
+       QString NossoNumero = QString("%1").arg(m_pTktConfig->getNossoNumero());
+       QString SeuNumero = QString("%1").arg(m_tickets.at(i)->getSeuNumero());
 
        if(dwSpecie)
        {
@@ -296,10 +300,17 @@ bool BuildTkt::AddTickets()
        if( pTower && pAp)
            aux = QString("%1%2").arg(pDweller->gettower()).arg(pAp->getNumber());
 
+       if(NossoNumero.isEmpty())
+           NossoNumero = m_pTktConfig->getNossoNumero();
+
+
+       if(SeuNumero.isEmpty())
+           SeuNumero = aux;
+
        paramCfgTkt += QString(TKT_CONFIG_TICKET)
                           .arg(i+1)
-                          .arg(m_pTktConfig->getNossoNumero())
-            .arg(aux)
+                          .arg(SeuNumero)
+            .arg(NossoNumero)
             .arg(m_pTktConfig->getCarteira())
             .arg(strValue.replace(".",","))
             .arg(pDweller->getName())
@@ -346,11 +357,13 @@ bool BuildTkt::BuildShipping(QString strDir, QString FileName )
 }
 
 
-Ticket::Ticket(Dweller *dweller, QString value, QDate date)
+Ticket::Ticket(Dweller *dweller, QString value, QDate date, QString NossoNumero, QString SeuNumero)
 {
     m_dweller = dweller;
     m_value =  value;
     m_date = date;
+    m_NossoNumero = NossoNumero;
+    m_SeuNumero = SeuNumero;
 }
 
 Dweller *Ticket::getDweller()
@@ -360,6 +373,14 @@ Dweller *Ticket::getDweller()
 QString Ticket::getValue()
 {
     return m_value;
+}
+QString Ticket::getNossoNumero()
+{
+    return m_NossoNumero;
+}
+QString Ticket::getSeuNumero()
+{
+    return m_SeuNumero;
 }
 
 QDate   Ticket::getDate()

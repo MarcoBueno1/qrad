@@ -15,15 +15,19 @@
 class Ticket
 {
 public:
-    Ticket(Dweller *dweller, QString value, QDate date);
+    Ticket(Dweller *dweller, QString value, QDate date, QString NossoNumero, QString SeuNumero);
     virtual ~Ticket(){}
     Dweller *getDweller();
     QString getValue();
     QDate   getDate();
+    QString getNossoNumero();
+    QString getSeuNumero();
 private:
     Dweller *m_dweller;
     QString m_value;
     QDate   m_date;
+    QString m_NossoNumero;
+    QString m_SeuNumero;
 
 };
 
@@ -38,7 +42,9 @@ public:
        bool Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *pBank, bankaccount *pAccount);
        bool Print(bool bPrinter=false, QString strPath=TKT_DEFAULT_PDF_PATH );
        bool BuildShipping(QString strDir, QString FileName );
-       bool AppendTicket(Dweller *pDweller, QString strValue, QDate dtVencto);
+       bool AppendTicket(Dweller *pDweller, QString strValue, QDate dtVencto,
+                         QString NossoNumero="",
+                         QString SeuNumero="");
        bool AddTickets();
 
 public slots:

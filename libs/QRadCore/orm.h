@@ -244,6 +244,14 @@ ORM_ATTRIBUTE_CLASS(bool);
             if (!_className::fillORMList(obj,query, db)) { delete obj; obj = NULL; } \
             return obj;\
         }\
+        public: static _className##List* findBy(QString SQL, QSqlDatabase db = QSqlDatabase::database())\
+        {\
+            _className##List *obj = new _className##List();\
+            QString query = QString("%1")\
+                      .arg(SQL);\
+            if (!_className::fillORMList(obj,query, db)) { delete obj; obj = NULL; } \
+            return obj;\
+        }\
         public: static _className##List* findByAttribute(QString attrName, QVariant value, QSqlDatabase db = QSqlDatabase::database())\
         {\
              ORMAttribute *ORMattribute = NULL;\

@@ -15,7 +15,8 @@ TEMPLATE = lib
 INCLUDEPATH += ../../../../libs/QRadCore \
                ../../../../libs/QRadHw \
                ../../../../libs/QRadOrm \
-               ../orm
+               ../orm \
+               ../itaufrench
 
 SOURCES +=  \
            editsupplier.cpp \
@@ -24,7 +25,8 @@ SOURCES +=  \
            editprofile.cpp \
            editlogin.cpp \
            managermetreage.cpp \
-           editmetreage.cpp
+           editmetreage.cpp \
+    parsepayments.cpp
 
 HEADERS +=  \
            editsupplier.h \
@@ -33,7 +35,8 @@ HEADERS +=  \
            editprofile.h  \
            editlogin.h \
            managermetreage.h \
-           editmetreage.h
+           editmetreage.h \
+    parsepayments.h
 		   
 FORMS +=  \
          editsupplier.ui \
@@ -47,16 +50,21 @@ FORMS +=  \
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadHw\release \
                -L../../../../libs/QRadOrm\release \
-               -L../orm/release 
+               -L../orm/release \
+               -L../itaufrench\release
+
 unix:LIBS +=  -L../../../../libs/QRadCore \
               -L../../../../libs/QRadOrm \
               -L../../../../libs/QRadHw \
-              -L../orm
+              -L../orm \
+              -L../itaufrench
+
 
 LIBS += -lqradcore  \
         -lblinkorm \
         -lqradorm \
-        -lqradhw
+        -lqradhw \
+        -litaufrench
 
 target.path = $${PREFIX}/bin
 INSTALLS += target

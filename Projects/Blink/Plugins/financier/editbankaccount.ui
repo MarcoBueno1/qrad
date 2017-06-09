@@ -84,7 +84,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Agencia</string>
+     <string>Agência</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="LnEdtAgencia">
@@ -107,7 +107,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>DigitoAgencia</string>
+     <string>DigitoAgência</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="LnEdtDigitoAgencia">

@@ -37,7 +37,7 @@
  </rect>
 </property>
 <property name="text">
- <string>Description</string>
+ <string>Descrição</string>
 </property>
 </widget>
 <widget class="QLineEdit" name="LnEdtDescription">

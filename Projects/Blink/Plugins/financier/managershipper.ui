@@ -190,7 +190,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>&amp;Editar</string>
+      <string>&amp;Gerar Arquivo</string>
      </property>
     </widget>
     <widget class="QPushButton" name="PshBtnNovo">

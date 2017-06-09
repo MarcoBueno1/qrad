@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select data,id from shipper order by id" 
+#define SQL_ITEMS "select data as \"Gerada Em\", hora as \"Hora\", u.name as \"Por\", s.id from shipper s inner join vuser u on u.id = s.vuser order by s.id desc"
 
 Managershipper::Managershipper(QWidget *parent) :
     QDialog(parent),
@@ -158,8 +158,13 @@ void Managershipper::refreshTable()
 
 void Managershipper::ConfigureTable()
 {
-      ui->tableViewSearch->addSearchColumnFilter(0);
+    ui->tableViewSearch->addSearchColumnFilter(0);
+    ui->tableViewSearch->addSearchColumnFilter(1);
+    ui->tableViewSearch->addSearchColumnFilter(2);
+
     ui->tableViewSearch->addSearchColumn(0);
+    ui->tableViewSearch->addSearchColumn(1);
+    ui->tableViewSearch->addSearchColumn(2);
 
 
    // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Conuna1"));
@@ -170,7 +175,9 @@ void Managershipper::ConfigureTable()
 
    // ui->tableViewSearch->setColumnWidth(0, 0.06 * ui->tableViewSearch->width());
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
-     ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnDate);
+    ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnDate);
+    ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnDateTime);
+    ui->tableViewSearch->setItemDelegateForColumn(2, new ColumnCenter);
 
 
 }

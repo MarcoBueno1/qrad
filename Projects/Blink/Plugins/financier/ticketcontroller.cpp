@@ -5,6 +5,7 @@
 #include "configmodel.h"
 #include "qradshared.h"
 #include "qraddebug.h"
+#include "accounttoreceivemodel.h"
 
 #include <QMessageBox>
 
@@ -106,6 +107,20 @@ bool TicketController::BuildTicketCond(int id )
                  return false;
              }
 
+             AccountToReceiveModel *account  = new  AccountToReceiveModel;
+
+             account->setClientId(pDweller->getid());
+             account->setDescription(QString("TX CONDOMINIAL AP: %1-%2 (%3)").arg(ap->getNumber()).arg(pTower->getName()).arg(pDweller->getName()));
+             account->setIssueDate(QDate::currentDate());
+             account->setVencDate(date);
+             account->setValue(pMetr->getMontlyValue());
+             if( account->Save())
+             {
+                 tkt->updateAccountId(account->getId());
+             }
+
+
+             delete account;
              delete pMetr;
              delete pTower;
              delete tkt;

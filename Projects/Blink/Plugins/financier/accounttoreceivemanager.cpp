@@ -6,9 +6,7 @@
 **/
 #include "accounttoreceivemanager.h"
 #include "ui_accounttoreceivemanager.h"
-#ifdef _OLD_REPORT_
-#include "dsmreport.h"
-#endif
+#include "qradreportmanager.h"
 #include "qradconfig.h"
 #include "dsmsgmessages.h"
 #include "financierdelegates.h"
@@ -496,11 +494,10 @@ void AccountToReceiveManager::DeleteAccountToReceive(void)
 
 void AccountToReceiveManager::ShowReport(void)
 {
-#ifdef _OLD_REPORT_
     if (m_selectAccountToReceive->rowCount() > 0)
     {
         QSqlQueryModel *select = new QSqlQueryModel;
-        DSMReport   *report = new DSMReport();
+        QRadReportManager   *report = new QRadReportManager();
         int total = 0, totalPaid = 0;
 
         if ( !report->load( "accounttoreceive" ) )
@@ -517,8 +514,8 @@ void AccountToReceiveManager::ShowReport(void)
 
         for (int index = 0; index < select->rowCount(); index++)
         {
-            total       += DSMMoney::StrToInt(select->record(index).value("value").toString());
-            totalPaid   += DSMMoney::StrToInt(select->record(index).value("valuepaid").toString());
+            total       += QRadMoney::StrToInt(select->record(index).value("value").toString());
+            totalPaid   += QRadMoney::StrToInt(select->record(index).value("valuepaid").toString());
         }
 
         report->setQuery("account", QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
@@ -536,5 +533,4 @@ void AccountToReceiveManager::ShowReport(void)
         delete report;
         delete select;
     }
-#endif
 }

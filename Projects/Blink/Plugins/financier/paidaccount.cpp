@@ -2,7 +2,7 @@
 #include "ui_paidaccount.h"
 
 #include "dsmsgmessages.h"
-#include "dsmmoney.h"
+#include "qradmoney.h"
 #include "qradconfig.h"
 
 
@@ -53,20 +53,20 @@ void PaidAccount::SendPaidAccountId(int accountId, DSM_AccountType_t accountType
     if (m_accountType == AccountTypeToPay)
     {
         AccountToPayModel *accountToPayModel = AccountToPayModel::findByPrimaryKey(m_accountId);
-        m_ui->lineEditPaidValue->setText(DSMMoney::MoneyHumanForm2(accountToPayModel->getValue()));
+        m_ui->lineEditPaidValue->setText(QRadMoney::MoneyHumanForm2(accountToPayModel->getValue()));
         delete accountToPayModel;
     }
     else
     {
         AccountToReceiveModel *accountToReceiveModel = AccountToReceiveModel::findByPrimaryKey(m_accountId);
-        m_ui->lineEditPaidValue->setText(DSMMoney::MoneyHumanForm2(accountToReceiveModel->getValue()));
+        m_ui->lineEditPaidValue->setText(QRadMoney::MoneyHumanForm2(accountToReceiveModel->getValue()));
         delete accountToReceiveModel;
     }
 }
 
 void PaidAccount::SavePaidAccount(void)
 {
-    if (DSMMoney::MoneyComputerForm2(m_ui->lineEditPaidValue->text()) == 0)
+    if (QRadMoney::MoneyComputerForm2(m_ui->lineEditPaidValue->text()) == 0)
     {
         QMessageBox::information(this, MSG_INFO_TITLE, MSG_QUESTION_ACCOUNT_ZERO);
         QRadConfig::GoTo(m_ui->lineEditPaidValue);
@@ -91,7 +91,7 @@ void PaidAccount::SavePaidAccount(void)
         updateAccountType->addBindValue(true);
 
         /** valuepaid */
-        updateAccountType->addBindValue(DSMMoney::MoneyComputerForm2(m_ui->lineEditPaidValue->text()));
+        updateAccountType->addBindValue(QRadMoney::MoneyComputerForm2(m_ui->lineEditPaidValue->text()));
 
         /** id */
         updateAccountType->addBindValue(m_accountId);

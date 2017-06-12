@@ -6,9 +6,7 @@
 **/
 #include "accounttopaymanager.h"
 #include "ui_accounttopaymanager.h"
-#ifdef _OLD_REPORT_
-#include "dsmreport.h"
-#endif
+#include "qradreportmanager.h"
 #include "dsmsgmessages.h"
 #include "financierdelegates.h"
 #include "qradconfig.h"
@@ -509,11 +507,10 @@ void AccountToPayManager::DeleteAccountToPay(void)
 
 void AccountToPayManager::ShowReport(void)
 {
-#ifdef _OLD_REPORT_
     if (m_selectAccountToPay->rowCount() > 0)
     {
         QSqlQueryModel *select = new QSqlQueryModel;
-        DSMReport   *report = new DSMReport();
+        QRadReportManager   *report = new QRadReportManager();
         int total = 0, totalPaid = 0;
 
         if ( !report->load( "accounttopay" ) )
@@ -529,8 +526,8 @@ void AccountToPayManager::ShowReport(void)
 
         for (int index = 0; index < select->rowCount(); index++)
         {
-            total       += DSMMoney::StrToInt(select->record(index).value("value").toString());
-            totalPaid   += DSMMoney::StrToInt(select->record(index).value("valuepaid").toString());
+            total       += QRadMoney::StrToInt(select->record(index).value("value").toString());
+            totalPaid   += QRadMoney::StrToInt(select->record(index).value("valuepaid").toString());
         }
 
 
@@ -549,6 +546,5 @@ void AccountToPayManager::ShowReport(void)
         delete report;
         delete select;
     }
-#endif
 }
 

@@ -10,11 +10,11 @@
 //#include "version.h"
 #include "reportfactory.h"
 
-class QRadReportFactory
+class QRadReportManager
 {
 public:
-    QRadReportFactory();
-    ~QRadReportFactory();
+    QRadReportManager();
+    ~QRadReportManager();
 
     bool load(const QString& reportName);
     bool show(void);
@@ -33,7 +33,7 @@ public:
     void replace(QString, QString);
     void setQuery( QString queryName, QString query );
     bool CanExecute();
-    void ShowSetHeaderClientReport(QRadReportFactory *report);
+    void ShowSetHeaderClientReport(QRadReportManager *report);
     void setFriendlyName( QString name );
 
     QString lastError();

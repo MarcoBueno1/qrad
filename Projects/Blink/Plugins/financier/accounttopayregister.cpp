@@ -1,6 +1,6 @@
 #include "accounttopayregister.h"
 #include "ui_accounttopayregister.h"
-#include "dsmmoney.h"
+#include "qradmoney.h"
 #include "dsmsgmessages.h"
 
 AccountToPayRegister::AccountToPayRegister(QWidget *parent) :
@@ -85,7 +85,7 @@ void AccountToPayRegister::SendAccountToPayId(int accountToPayId)
     m_ui->dateEditVencDate->setDate(accountToPayModel->getVencDate());
     m_ui->comboBoxAccountType->setCurrentIndex(m_ui->comboBoxAccountType->findText(QString("%1").arg(accountToPayModel->getAccountTypeId())));
     m_ui->lineEditDocNumber->setText(accountToPayModel->getDocNumber());
-    m_ui->lineEditValue->setText(DSMMoney::MoneyHumanForm2(accountToPayModel->getValue()));
+    m_ui->lineEditValue->setText(QRadMoney::MoneyHumanForm2(accountToPayModel->getValue()));
 
     if (accountToPayModel->getSupplierId() == 0)
     {
@@ -178,7 +178,7 @@ void AccountToPayRegister::SaveAccountToPay(void)
         accountToPayModel->setVencDate(vencDate);
         accountToPayModel->setAccountTypeId(m_ui->comboBoxAccountType->currentText().toInt());
         accountToPayModel->setDocNumber(m_ui->lineEditDocNumber->text().toUpper());
-        accountToPayModel->setValue(DSMMoney::MoneyComputerForm2(m_ui->lineEditValue->text()));
+        accountToPayModel->setValue(QRadMoney::MoneyComputerForm2(m_ui->lineEditValue->text()));
 
         if (m_ui->groupBoxSupplier->isChecked())
         {

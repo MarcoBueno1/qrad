@@ -15,7 +15,9 @@ INCLUDEPATH = ../../../../libs/QRadCore \
               ../../libs/orm \
               ../../libs/common \
               ../../../../libs/QRadLic \
-              ../../libs/acbrticket/
+              ../../libs/acbrticket/ \
+              ../../../../libs/3rdpart/exaro
+
               . 
 DESTDIR = .
 SOURCES += financierplugin.cpp \

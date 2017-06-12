@@ -1,6 +1,6 @@
 #include "financierdelegates.h"
 #include "qradshared.h"
-#include "dsmmoney.h"
+#include "qradmoney.h"
 
 #include <QColor>
 #include <QPainter>
@@ -129,7 +129,7 @@ void ColumnFinancierMoney::paint(QPainter *painter,
     }
     else
     {
-        moneyPaid = DSMMoney::MoneyHumanForm2(DSMMoney::Round(text.toString().mid(1).toDouble()));
+        moneyPaid = QRadMoney::MoneyHumanForm2(QRadMoney::Round(text.toString().mid(1).toDouble()));
         myOption.displayAlignment = (Qt::AlignRight | Qt::AlignVCenter);
     }
 

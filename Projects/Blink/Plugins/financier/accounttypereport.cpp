@@ -5,10 +5,11 @@
  * Informa o período do relatório, vendas realizadas, contas recebidas, contas pagas e o total. Há informações também de contas a receber, a pagar e o total. 
 **/
 #include "accounttypereport.h"
+#include <QSqlQueryModel>
+#include <QMessageBox>
+#include <QSqlQuery>
 
-#ifdef _OLD_REPORT
-#include "dsmreport.h"
-#endif
+#include "qradreportmanager.h"
 
 #define SQL_SELECT_SUM_TOPAY "select case when sum(ap.valuepaid) is null then 0 else sum(ap.valuepaid) end as sum "\
 "   from fin_accounttype at "\
@@ -108,14 +109,13 @@ void AccountTypeReport::keyPressEvent(QKeyEvent *e)
 void AccountTypeReport::Launcher(void)
 {
 
-#ifdef _OLD_REPORT
     QSqlQueryModel  *getSumToPay = new QSqlQueryModel,
                     *getSumToReceive = new QSqlQueryModel,
                     *getTotalToPay = new QSqlQueryModel,
                     *getTotalToReceive = new QSqlQueryModel;
 //                    *getSells = new QSqlQueryModel;
 
-    DSMReport       *report = new DSMReport();
+    QRadReportManager *report = new QRadReportManager();
     int             totalToPayAmount = 0, totalToReceiveAmount = 0,
                     totalSells = 0, totalToPay = 0, totalToReceive = 0,
                     totalToPayValue = 0, totalToPayJuros = 0, totalToPayPorc = 0,
@@ -143,7 +143,7 @@ void AccountTypeReport::Launcher(void)
   //                     .arg(QRadConfig::GetPopDrugId()));
   //
 
-   // totalSells = DSMMoney::StrToInt(getSells->record(0).value("sum").toString());
+   // totalSells = QRadMoney::StrToInt(getSells->record(0).value("sum").toString());
 
     /** To Pay */
 
@@ -159,10 +159,10 @@ void AccountTypeReport::Launcher(void)
     for (int index = 0; index < getTotalToPay->rowCount(); index++)
     {
         totalToPayAmount    += getTotalToPay->record(index).value("quantity").toInt();
-        totalToPayValue     += DSMMoney::StrToInt(getTotalToPay->record(index).value("value").toString());
-        totalToPay          += DSMMoney::StrToInt(getTotalToPay->record(index).value("valuepaid").toString());
-        totalToPayJuros     += DSMMoney::StrToInt(getTotalToPay->record(index).value("juros").toString());
-        totalToPayPorc      += DSMMoney::StrToInt(getTotalToPay->record(index).value("porc").toString());
+        totalToPayValue     += QRadMoney::StrToInt(getTotalToPay->record(index).value("value").toString());
+        totalToPay          += QRadMoney::StrToInt(getTotalToPay->record(index).value("valuepaid").toString());
+        totalToPayJuros     += QRadMoney::StrToInt(getTotalToPay->record(index).value("juros").toString());
+        totalToPayPorc      += QRadMoney::StrToInt(getTotalToPay->record(index).value("porc").toString());
     }
 
     /** To Receive */
@@ -179,10 +179,10 @@ void AccountTypeReport::Launcher(void)
     for (int index = 0; index < getTotalToReceive->rowCount(); index++)
     {
         totalToReceiveAmount    += getTotalToReceive->record(index).value("quantity").toInt();
-        totalToReceiveValue     += DSMMoney::StrToInt(getTotalToReceive->record(index).value("value").toString());
-        totalToReceive          += DSMMoney::StrToInt(getTotalToReceive->record(index).value("valuepaid").toString());
-        totalToReceiveJuros     += DSMMoney::StrToInt(getTotalToReceive->record(index).value("juros").toString());
-        totalToReceivePorc      += DSMMoney::StrToInt(getTotalToReceive->record(index).value("porc").toString());
+        totalToReceiveValue     += QRadMoney::StrToInt(getTotalToReceive->record(index).value("value").toString());
+        totalToReceive          += QRadMoney::StrToInt(getTotalToReceive->record(index).value("valuepaid").toString());
+        totalToReceiveJuros     += QRadMoney::StrToInt(getTotalToReceive->record(index).value("juros").toString());
+        totalToReceivePorc      += QRadMoney::StrToInt(getTotalToReceive->record(index).value("porc").toString());
     }
 
     report->setQuery("accounttypetopay", getTotalToPay->query().lastQuery());
@@ -231,5 +231,4 @@ void AccountTypeReport::Launcher(void)
     delete getTotalToReceive;
 //    delete getSells;
 
-#endif
 }

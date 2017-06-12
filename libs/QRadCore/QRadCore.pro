@@ -168,9 +168,12 @@ SOURCES +=  qradplugininterface.cpp \
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c
 
-win32:LIBS += -L ../3rdpart/libpq/win/lib
+win32:LIBS += -L ../3rdpart/libpq/win/lib 
+              
 
-LIBS += -lpq
+LIBS += -lpq \
+        -L../3rdpart/exaro \
+        -lReport
 
 win32:QMAKE_LFLAGS += --enable-auto-import
 

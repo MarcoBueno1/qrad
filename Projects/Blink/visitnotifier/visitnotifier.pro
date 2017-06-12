@@ -25,10 +25,12 @@ SOURCES += main.cpp \
 win32:LIBS += -L../../../libs/QRadCore/release \
               -L../libs/orm/release
 unix:LIBS += -L../../../libs/QRadCore \
-             -L../libs/orm/
+             -L../libs/orm/ \
+             -L../../../libs/3rdpart/exaro
 
 LIBS += -lqradcore \
-        -lblinkorm
+        -lblinkorm \
+        -lReport
 
 win32:QMAKE_LFLAGS += --enable-auto-import
 

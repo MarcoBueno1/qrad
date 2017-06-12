@@ -38,12 +38,14 @@ LIBS += -L../../../libs/QRadCore \
         -L../libs/orm/release \
         -L../libs/itaufrench \
         -L../libs/itaufrench/release \
+        -L../../../libs/3rdpart/exaro \
         -lqradcore \
         -lqradlicup \
         -lblinkcommon \
         -lblinkorm \
         -lqradorm \
-        -litaufrench
+        -litaufrench \
+        -lReport
 
 
 

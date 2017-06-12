@@ -77,7 +77,7 @@ void EnterBillet::keyPressEvent(QKeyEvent* event)
         {
             if(dsmRound::PowerRound(m_totalPaid) < dsmRound::PowerRound(m_entranceTotalValue))
             {
-                QMessageBox::information(this, "Aviso!", QString::fromUtf8("Os valores indicados ao boleto não conferem com o valor total da nota.\nResta R$ %1").arg(DSMMoney::MoneyHumanForm2(dsmRound::PowerRound(m_entranceTotalValue - m_totalPaid))));
+                QMessageBox::information(this, "Aviso!", QString::fromUtf8("Os valores indicados ao boleto não conferem com o valor total da nota.\nResta R$ %1").arg(QRadMoney::MoneyHumanForm2(dsmRound::PowerRound(m_entranceTotalValue - m_totalPaid))));
                 return;
             }
 
@@ -184,7 +184,7 @@ void EnterBillet::UpdateTable(void)
     foreach (DSM_Billet_t billetItemList, m_billetList)
     {
         pitem1 = new QTableWidgetItem(billetItemList.venc.toString(FMT_DATE));
-        pItem2 = new QTableWidgetItem(DSMMoney::MoneyHumanForm2(billetItemList.value));
+        pItem2 = new QTableWidgetItem(QRadMoney::MoneyHumanForm2(billetItemList.value));
 
         row = m_ui->tableWidgetBilletsIndicated->rowCount();
         m_ui->tableWidgetBilletsIndicated->insertRow(row);
@@ -242,7 +242,7 @@ void EnterBillet::GetEntranceId(int entranceId)
     EntranceModel *entranceModel = EntranceModel::findById(m_entranceId);
 
     m_ui->lineEditNumber->setText(entranceModel->getTaxDocNumber());
-    m_ui->lineEditTotalValue->setText(QString("R$ %1").arg(DSMMoney::MoneyHumanForm2(entranceModel->getTotalValue())));
+    m_ui->lineEditTotalValue->setText(QString("R$ %1").arg(QRadMoney::MoneyHumanForm2(entranceModel->getTotalValue())));
 
     m_entranceTotalValue = dsmRound::PowerRound(entranceModel->getTotalValue());
     m_entranceDate = entranceModel->getTaxDocDate();
@@ -323,7 +323,7 @@ void EnterBillet::changeData(QModelIndex indexA, QModelIndex indexB)
     {
         if (m_billetList.count() > 0)
         {
-            double newValue = DSMMoney::MoneyComputerForm2(m_ui->tableWidgetBilletsIndicated->item(indexA.row(), 1)->data(Qt::EditRole).toString());
+            double newValue = QRadMoney::MoneyComputerForm2(m_ui->tableWidgetBilletsIndicated->item(indexA.row(), 1)->data(Qt::EditRole).toString());
             double total = 0;
 
             DSM_Billet_t billetItemList;
@@ -343,7 +343,7 @@ void EnterBillet::changeData(QModelIndex indexA, QModelIndex indexB)
             {
                 QMessageBox::information(this, "Aviso!", QString::fromUtf8("O valor desejado ultrapassa o valor total da nota"));
                 disconnect(m_ui->tableWidgetBilletsIndicated->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(changeData(QModelIndex,QModelIndex)));
-                m_ui->tableWidgetBilletsIndicated->item(indexA.row(),1)->setText(DSMMoney::MoneyHumanForm2(oldValue));
+                m_ui->tableWidgetBilletsIndicated->item(indexA.row(),1)->setText(QRadMoney::MoneyHumanForm2(oldValue));
                 connect(m_ui->tableWidgetBilletsIndicated->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(changeData(QModelIndex,QModelIndex)));
                 return;
             }

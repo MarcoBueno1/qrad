@@ -1,7 +1,7 @@
 #include "accounttoreceiveregister.h"
 #include "ui_accounttoreceiveregister.h"
 
-#include "dsmmoney.h"
+#include "qradmoney.h"
 #include "dsmsgmessages.h"
 
 AccountToReceiveRegister::AccountToReceiveRegister(QWidget *parent) :
@@ -74,7 +74,7 @@ void AccountToReceiveRegister::SendAccountToReceiveId(int accountToReceiveId)
     m_ui->lineEditDesciption->setText(accountToReceiveModel->getDescription());
     m_ui->dateEditVencDate->setDate(accountToReceiveModel->getVencDate());
     m_ui->comboBoxAccountType->setCurrentIndex(m_ui->comboBoxAccountType->findText(QString("%1").arg(accountToReceiveModel->getAccountTypeId())));
-    m_ui->lineEditValue->setText(DSMMoney::MoneyHumanForm2(accountToReceiveModel->getValue()));
+    m_ui->lineEditValue->setText(QRadMoney::MoneyHumanForm2(accountToReceiveModel->getValue()));
 
     if (accountToReceiveModel->getClientId() == 0)
     {
@@ -113,7 +113,7 @@ void AccountToReceiveRegister::SaveAccountToReceive(void)
         accountToReceiveModel->setIssueDate(QDate::currentDate());
         accountToReceiveModel->setVencDate(m_ui->dateEditVencDate->date());
         accountToReceiveModel->setAccountTypeId(m_ui->comboBoxAccountType->currentText().toInt());
-        accountToReceiveModel->setValue(DSMMoney::MoneyComputerForm2(m_ui->lineEditValue->text()));
+        accountToReceiveModel->setValue(QRadMoney::MoneyComputerForm2(m_ui->lineEditValue->text()));
 
         if (m_ui->groupBoxClient->isChecked())
         {

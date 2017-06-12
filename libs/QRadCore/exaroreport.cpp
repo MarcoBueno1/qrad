@@ -1,5 +1,6 @@
 #include "exaroreport.h"
 #include "qraddebug.h"
+#include "qradmoney.h"
 
 #define QRad_CHANGE_PICUTURE_CMD  "@#m2smart#@"
 #define QRad_REPORT_ATTRIBUTE( attrName )    "{" + attrName + "}"

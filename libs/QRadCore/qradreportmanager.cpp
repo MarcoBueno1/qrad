@@ -6,20 +6,21 @@
  */
 #include "qradreportmanager.h"
 #include "qraddebug.h"
+#include <QSqlQueryModel>
 
-QRadReportManager::QRadReportManager()
+QRadReportFactory::QRadReportFactory()
 {
     m_report = NULL;
     m_lastError = "";
 }
 
-QRadReportManager::~QRadReportManager()
+QRadReportFactory::~QRadReportFactory()
 {
     delete m_report;
 }
 
 
-bool QRadReportManager::load(const QString& reportName)
+bool QRadReportFactory::load(const QString& reportName)
 {
     if(!CanExecute())
     {
@@ -28,18 +29,18 @@ bool QRadReportManager::load(const QString& reportName)
         return false;
     }
 
-    m_report = ReportManager::getReport(reportName);
+    m_report = ReportFactory::getReport(reportName);
 
     if (NULL == m_report)
     {
-        debug_message("[QRadReportManager] m_report == NULL\n");
+        debug_message("[QRadReportFactory] m_report == NULL\n");
         return false;
     }
 
     return m_report->load();
 }
 
-bool QRadReportManager::show()
+bool QRadReportFactory::show()
 {
     if (NULL == m_report)
         return false;
@@ -47,63 +48,63 @@ bool QRadReportManager::show()
     return m_report->show();
 }
 
-void QRadReportManager::setAttributeValue( QString attrName, QString value )
+void QRadReportFactory::setAttributeValue( QString attrName, QString value )
 {
     if (NULL != m_report)
         m_report->setAttributeValue(attrName, value);
 
 }
 
-void QRadReportManager::setAttributeValue( QString attrName, int value )
+void QRadReportFactory::setAttributeValue( QString attrName, int value )
 {
     if (NULL != m_report)
         m_report->setAttributeValue(attrName, value);
 }
 
-void QRadReportManager::setAttributeMoneyValue( QString attrName, int value )
+void QRadReportFactory::setAttributeMoneyValue( QString attrName, int value )
 {
     QString money = QString::number( value );
 
     setAttributeValue( attrName, QRadMoney::MoneyHumanForm4(money));
 }
 
-void QRadReportManager::setAttributeValue( QString attrName, double value )
+void QRadReportFactory::setAttributeValue( QString attrName, double value )
 {
     if (NULL != m_report)
         m_report->setAttributeValue(attrName, value);
 }
 
-void QRadReportManager::setAttributeValue( QString attrName, float value )
+void QRadReportFactory::setAttributeValue( QString attrName, float value )
 {
     if (NULL != m_report)
         m_report->setAttributeValue(attrName, QRadMoney::MoneyHumanForm2( value ));
 }
 
-void QRadReportManager::setAttributeValue( QString attrName, QDate value )
+void QRadReportFactory::setAttributeValue( QString attrName, QDate value )
 {
     if (NULL != m_report)
         m_report->setAttributeValue(attrName, value.toString( FMT_DATE ));
 }
 
-void QRadReportManager::setAttributeValue( QString attrName, QTime value )
+void QRadReportFactory::setAttributeValue( QString attrName, QTime value )
 {
     if (NULL != m_report)
         m_report->setAttributeValue(attrName, value.toString( FMT_TIME ));
 }
 
-void QRadReportManager::replace(QString oldValue, QString newValue)
+void QRadReportFactory::replace(QString oldValue, QString newValue)
 {
     if (NULL != m_report)
         m_report->replace(oldValue, newValue);
 }
 
-void QRadReportManager::setQuery( QString queryName, QString query )
+void QRadReportFactory::setQuery( QString queryName, QString query )
 {
     if (NULL != m_report)
         m_report->setQuery(queryName, query);
 }
 
-bool QRadReportManager::CanExecute()
+bool QRadReportFactory::CanExecute()
 {
 #if 0
 #define DEVELOPMENT_VERSION 1
@@ -141,7 +142,7 @@ bool QRadReportManager::CanExecute()
 "FROM maincompany ul INNER JOIN state uf on ul.state = uf.id INNER JOIN city on ul.city=city.id"
 
 
-void QRadReportManager::ShowSetHeaderClientReport(QRadReportManager *report)
+void QRadReportFactory::ShowSetHeaderClientReport(QRadReportFactory *report)
 {
     QSqlQueryModel model;
 
@@ -156,12 +157,12 @@ void QRadReportManager::ShowSetHeaderClientReport(QRadReportManager *report)
 }
 
 
-QString QRadReportManager::lastError()
+QString QRadReportFactory::lastError()
 {
     return m_lastError;
 }
 
-bool QRadReportManager::printToPDF(QString strFile)
+bool QRadReportFactory::printToPDF(QString strFile)
 {
     if (NULL == m_report)
         return false;
@@ -170,7 +171,7 @@ bool QRadReportManager::printToPDF(QString strFile)
 
     return true;
 }
-void QRadReportManager::setFriendlyName( QString name )
+void QRadReportFactory::setFriendlyName( QString name )
 {
     m_report->setFriendlyName(name);
 }

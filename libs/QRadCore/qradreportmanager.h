@@ -5,16 +5,16 @@
 #include <QMap>
 
 #include "qradconfig.h"
-//#include "dsmmoney.h"
+#include "qradmoney.h"
 //#include "dsmshared.h"
-#include "version.h"
-#include "reportfactury.h"
+//#include "version.h"
+#include "reportfactory.h"
 
-class QRadReportManager
+class QRadReportFactory
 {
 public:
-    QRadReportManager();
-    ~QRadReportManager();
+    QRadReportFactory();
+    ~QRadReportFactory();
 
     bool load(const QString& reportName);
     bool show(void);
@@ -33,7 +33,7 @@ public:
     void replace(QString, QString);
     void setQuery( QString queryName, QString query );
     bool CanExecute();
-    void ShowSetHeaderClientReport(QRadReportManager *report);
+    void ShowSetHeaderClientReport(QRadReportFactory *report);
     void setFriendlyName( QString name );
 
     QString lastError();

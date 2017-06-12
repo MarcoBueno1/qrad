@@ -3,7 +3,7 @@
 
 #include "reportengine.h"
 #include "qradshared.h"
-#include "qradmoney.h"
+//#include "qradmoney.h"
 
 #include "qradreportinterface.h"
 

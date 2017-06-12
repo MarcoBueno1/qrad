@@ -7,6 +7,7 @@ QT += gui \
     xml \
     widgets \
     core \
+    script \
     printsupport \
     network
 
@@ -16,10 +17,12 @@ DEPENDPATH += .
 
 win32:INCLUDEPATH += . \
                ../3rdpart/libpq/include
+               ../3rdpart/exaro
 
 win32:INCLUDEPATH += ./system/inc/win
 unix:INCLUDEPATH += ./system/inc/lnx \
-                    /usr/include/postgresql
+                    /usr/include/postgresql\
+                   ../3rdpart/exaro
 
 HEADERS +=  qradplugincontainer.h \
               qradcoreplugin.h \
@@ -86,7 +89,11 @@ HEADERS +=  qradplugincontainer.h \
     dsmspinboxenter.h \
     dsmtextedit.h \
     dsmradiobuttonenter.h \
-    dsmmoney.h
+    dsmmoney.h \
+    qradreportmanager.h \
+    reportfactory.h \
+    exaroreport.h \
+    qradreportinterface.h
 
 
 
@@ -153,7 +160,10 @@ SOURCES +=  qradplugininterface.cpp \
     dsmspinboxenter.cpp \
     dsmtextedit.cpp \
     dsmradiobuttonenter.cpp \
-    dsmmoney.cpp
+    dsmmoney.cpp \
+    qradreportmanager.cpp \
+    reportfactory.cpp \
+    exaroreport.cpp
 
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c

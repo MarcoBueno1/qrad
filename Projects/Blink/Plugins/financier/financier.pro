@@ -13,6 +13,7 @@ CONFIG += plugin
 INCLUDEPATH = ../../../../libs/QRadCore \
               ../../../../libs/QRadOrm \
               ../../libs/orm \
+              ../../../../libs/QRadCommonGui \
               ../../libs/common \
               ../../../../libs/QRadLic \
               ../../libs/acbrticket/ \
@@ -94,6 +95,7 @@ HEADERS += financierplugin.h \
 win32:LIBS += -L../../../../libs/QRadCore/release \
         -L../../../../libs/QRadOrm/release \
         -L../../libs/orm/release \
+        -L../../../../libs/QRadCommonGui/release \
         -L../../libs/common/release \
         -L../../../../libs/QRadLic/release \
         -L../../../../libs/QRadLicUp/release \
@@ -101,6 +103,7 @@ win32:LIBS += -L../../../../libs/QRadCore/release \
 
 LIBS += -L../../../../libs/QRadCore \
         -L../../../../libs/QRadOrm \
+        -L../../../../libs/QRadCommonGui \
         -L../../libs/orm \
         -L../../libs/common \
         -L../../../../libs/QRadLic \
@@ -111,7 +114,8 @@ LIBS += -L../../../../libs/QRadCore \
         -lqradlicup \
         -lblinkcommon \
         -lblinkorm \
-        -lacbrticket
+        -lacbrticket\
+        -lqradcommongui
 
 
 

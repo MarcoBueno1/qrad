@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QKeyEvent>
 #include "supplier.h"
+#include <QSqlQueryModel>
+#include "column2delegate.h"
 
 namespace Ui {
 class Editsupplier;
@@ -22,14 +24,29 @@ public:
 public slots:
     void Save();
     void Cancel();
+    void AddPhone();
+    void RemovePhone();
+    void RemoveAddress();
+    void AddAddress();
+
     
 private:
     Ui::Editsupplier *ui;
     supplier* m_mod;
     supplier* m_lastMod;
+    QSqlQueryModel *m_model ;
+    QSqlQueryModel *m_AddressModel;
+    ColumnPhone *m_PhoneDelegate;
+    ColumnCenter *m_CenterDelegate;
+    ColumnBool   *m_BooleanDelegate;
+
+
+
     void Load();
     void showEvent(QShowEvent *event);
     void keyPressEvent(QKeyEvent *e);
+    void RefreshPhoneTable();
+    void RefreshAddressTable();
 };
 
 #endif // EDITsupplier_H

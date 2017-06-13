@@ -5,6 +5,10 @@
 #include <QModelIndex>
 #include <QAbstractItemModel>
 #include <QVariant>
+#include "editphone.h"
+#include "address.h"
+#include "editaddress.h"
+#include "column2delegate.h"
 
 
 Editsupplier::Editsupplier(QWidget *parent) :
@@ -18,11 +22,43 @@ Editsupplier::Editsupplier(QWidget *parent) :
     
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
+    connect(ui->pushButtonAddPhone, SIGNAL(clicked()),this,SLOT(AddPhone()));
+    connect(ui->pushButtonRemovePhone, SIGNAL(clicked()),this,SLOT(RemovePhone()));
+
+    connect(ui->pushButtonAddAddress, SIGNAL(clicked()),this,SLOT(AddAddress()));
+    connect(ui->pushButtonRemoveAddress, SIGNAL(clicked()),this,SLOT(RemoveAddress()));
+
+
+    m_mod = new supplier;
+    m_mod->setRemoved(true);
+    m_mod->Save();
+
+    m_model = new QSqlQueryModel;
+    m_AddressModel= new QSqlQueryModel;
+    m_PhoneDelegate = new ColumnPhone;
+    m_CenterDelegate = new ColumnCenter;
+    m_BooleanDelegate= new ColumnBool;
+
+
+
+
+    RefreshPhoneTable();
+
 }
 
 Editsupplier::~Editsupplier()
 {
+    delete m_model;
+    delete m_AddressModel;
+    delete m_PhoneDelegate;
+    delete m_CenterDelegate;   
+    delete m_BooleanDelegate;
+
+    if(  m_mod )
+       delete m_mod;
+
     delete ui;
+
 }
 void Editsupplier::showEvent(QShowEvent *event)
 {
@@ -54,8 +90,9 @@ void Editsupplier::Save()
     mod->setCNPJ(ui->LnEdtCNPJ->text());
     mod->setNome(ui->LnEdtNome->text());
     mod->setFantasia(ui->LnEdtFantasia->text());
-    mod->setData(ui->DtEdtData->date());
-    mod->setHora(ui->TmEdtHora->time());
+    mod->setData(QDate::currentDate());
+    mod->setHora(QTime::currentTime());
+    mod->setRemoved(false);
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -78,9 +115,7 @@ void Editsupplier::Load()
     ui->LnEdtCNPJ->setText(m_mod->getCNPJ());
     ui->LnEdtNome->setText(m_mod->getNome());
     ui->LnEdtFantasia->setText(m_mod->getFantasia());
-    ui->DtEdtData->setDate(m_mod->getData());
-    ui->TmEdtHora->setTime(m_mod->getHora());
-
+    RefreshPhoneTable();
 }
 
 void Editsupplier::Cancel()
@@ -94,3 +129,110 @@ supplier* Editsupplier::GetSaved()
 
 }
 
+void Editsupplier::AddPhone()
+{
+    Editphone *phone = new Editphone();
+
+    phone->setOwner(m_mod->getid());
+    phone->setOwnerType(tpSupplier);
+    if(phone->exec() == QDialog::Accepted )
+    {
+       RefreshPhoneTable();
+    }
+    delete phone;
+}
+
+void Editsupplier::RemovePhone()
+{
+    int id = ui->tableViewPhone->model()->index(ui->tableViewPhone->currentIndex().row(),0).data().toInt();
+    Phone *p = Phone::findByPrimaryKey(id);
+    if(p)
+    {
+        p->updateRemoved( true );
+        delete p;
+        RefreshPhoneTable();
+    }
+}
+
+void Editsupplier::RefreshPhoneTable()
+{
+   // qrad -s phone -t phone -c id -i int -c dwellerid -i int -c number -i QString -c operator -i int:multi:Operadora.Name[Tim,Oi,Claro,Vivo] -c type -i int:multi:phonetype.type[Celular,Casa,Trabalho] -c watsapp -i bool
+
+
+
+  QString SQL = QString("select p.id, p.Number as \"Numero\", o.name as \"Operadora\", t.type as \"Tipo\", watsapp as \"WatsApp\" "\
+                        "from phone p inner join operadora o on o.id = p.operator  "\
+                        "inner join phonetype t on t.id = p.type  "\
+                        "where p.owner = %1 and ownertype = 2 ").arg(m_mod?m_mod->getid():0);
+
+  m_model->setQuery(SQL);
+  ui->tableViewPhone->setModel(m_model);
+  ui->tableViewPhone->hideColumn(0);
+  ui->tableViewPhone->setItemDelegateForColumn(1, m_PhoneDelegate);
+  ui->tableViewPhone->setItemDelegateForColumn(2, m_CenterDelegate);
+  ui->tableViewPhone->setItemDelegateForColumn(3, m_CenterDelegate);
+  ui->tableViewPhone->setItemDelegateForColumn(4, m_BooleanDelegate);
+
+  ui->tableViewPhone->resizeColumnsToContents();
+  ui->tableViewPhone->resizeRowsToContents();
+ // ui->tableViewPhone->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+ // ui->tableViewPhone->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+  ui->tableViewPhone->horizontalHeader()->setStretchLastSection(true);
+
+}
+
+void Editsupplier::AddAddress()
+{
+    Editaddress *pAddress = new Editaddress();
+    pAddress->setOwner(m_mod->getid());
+    pAddress->setOwnerType(tpSupplier);
+    if(pAddress->exec() == QDialog::Accepted )
+    {
+       RefreshAddressTable();
+    }
+    delete pAddress;
+}
+
+void Editsupplier::RemoveAddress()
+{
+    int id = ui->tableViewAddress->model()->index(ui->tableViewAddress->currentIndex().row(),0).data().toInt();
+    Address *p = Address::findByid(id);
+    if(p)
+    {
+        p->updateRemoved( true );
+        delete p;
+        RefreshAddressTable();
+    }
+}
+
+void Editsupplier::RefreshAddressTable()
+{
+   // qrad -s phone -t phone -c id -i int -c dwellerid -i int -c number -i QString -c operator -i int:multi:Operadora.Name[Tim,Oi,Claro,Vivo] -c type -i int:multi:phonetype.type[Celular,Casa,Trabalho] -c watsapp -i bool
+
+
+    QString SQL = QString("select a.id, s.name as \"Rua\", a.number as \"Número\", c.Number as \"Cep\", n.name as \"Bairro\", ci.name as \"Cidade\", st.name as \"Estado\" "\
+                          " from address a "\
+                          " inner join street s on s.id = a.street"\
+                          " inner join cep c on c.id = a.cep"\
+                          " inner join neighborhood n on n.id = a.neighborhood"\
+                          " inner join city ci on ci.id = a.city"\
+                          " inner join state st on st.id = a.state"\
+                          " where ownertype = 2 and owner = %1").arg(m_mod->getid());
+
+  m_AddressModel->setQuery(SQL);
+  ui->tableViewAddress->setModel(m_AddressModel);
+  ui->tableViewAddress->hideColumn(0);
+  ui->tableViewAddress->setItemDelegateForColumn(1, m_CenterDelegate);
+  ui->tableViewAddress->setItemDelegateForColumn(2, m_CenterDelegate);
+  ui->tableViewAddress->setItemDelegateForColumn(3, m_CenterDelegate);
+  ui->tableViewAddress->setItemDelegateForColumn(4, m_CenterDelegate);
+  ui->tableViewAddress->setItemDelegateForColumn(5, m_CenterDelegate);
+  ui->tableViewAddress->setItemDelegateForColumn(6, m_CenterDelegate);
+
+//  ui->tableViewAddress->resizeColumnsToContents();
+//  ui->tableViewAddress->resizeRowsToContents();
+//  ui->tableViewAddress->horizontalHeader()->setStretchLastSection(true);
+  ui->tableViewAddress->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+  ui->tableViewAddress->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+}

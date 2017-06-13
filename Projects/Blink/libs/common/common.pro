@@ -14,6 +14,7 @@ TEMPLATE = lib
 
 INCLUDEPATH += ../../../../libs/QRadCore \
                ../../../../libs/QRadHw \
+              ../../../../libs/QRadCommonGui \
                ../../../../libs/QRadOrm \
                ../orm \
                ../itaufrench
@@ -49,12 +50,14 @@ FORMS +=  \
  
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadHw\release \
+               -L../../../../libs/QRadCommonGui/release \
                -L../../../../libs/QRadOrm\release \
                -L../orm/release \
                -L../itaufrench/release
 
 unix:LIBS +=  -L../../../../libs/QRadCore \
               -L../../../../libs/QRadOrm \
+              -L../../../../libs/QRadCommonGui \
               -L../../../../libs/QRadHw \
               -L../itaufrench \
               -L../orm
@@ -64,7 +67,8 @@ LIBS += -lqradcore  \
         -litaufrench \
         -lblinkorm \
         -lqradorm \
-        -lqradhw
+        -lqradhw \
+        -lqradcommongui
 
 target.path = $${PREFIX}/bin
 INSTALLS += target

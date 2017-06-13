@@ -11,7 +11,8 @@ HEADERS += mainwindow.h \
     highlighter.h
 FORMS += mainwindow.ui
 QMAKE_LFLAGS += -Wl,-rpath=./ \
-    -Wl,-rpath=$${SOURCE_TREE}/bin
+    -Wl,-rpath=$${SOURCE_TREE}/bin \
+    -Wl,-rpath=$${SOURCE_TREE}/libs/3rdpart/exaro
 INCLUDEPATH += ../../libs/QRadCore
 
 unix:INCLUDEPATH += ../../libs/QRadCore/system/inc/lnx
@@ -20,7 +21,10 @@ win32:INCLUDEPATH += ../../libs/QRadCore/system/inc/win
 win32:LIBS +=  -L../../libs/QRadCore\release
 unix:LIBS +=  -L../../libs/QRadCore
 
-LIBS += -lqradcore 
+LIBS += -lqradcore \
+        -L../../libs/3rdpart/exaro \
+        -lReport
+
 
 win32:QMAKE_LFLAGS += --enable-auto-import
 

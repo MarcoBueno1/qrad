@@ -153,3 +153,7 @@ FORMS += accounttypemanager.ui \
 
 target.path = $${PREFIX}/bin 
 INSTALLS += target
+
+RESOURCES += \
+    ../../icons/resources.qrc \
+    reports.qrc

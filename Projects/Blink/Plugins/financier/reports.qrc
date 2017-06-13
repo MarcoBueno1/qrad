@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/reports">
+        <file alias="accounttopay.bdrt">accounttopay.bdrt</file>
+        <file alias="sell_commissions.bdrt">sell_commissions.bdrt</file>
+        <file alias="accounttoreceive.bdrt">accounttoreceive.bdrt</file>
+        <file alias="accounttype.bdrt">accounttype.bdrt</file>
+    </qresource>
+</RCC>

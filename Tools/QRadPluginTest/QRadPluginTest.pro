@@ -20,10 +20,12 @@ INCLUDEPATH += ../../libs/QRadCore/
 
 
 unix:QMAKE_LFLAGS += \
-	-Wl,-rpath=$${SOURCE_TREE}/bin
+	-Wl,-rpath=$${SOURCE_TREE}/bin \ 
+	-Wl,-rpath=$${SOURCE_TREE}/libs/3rdpart/exaro
 
 win32:QMAKE_LFLAGS += \
-	-Wl,-rpath=$${SOURCE_TREE}/bin
+	-Wl,-rpath=$${SOURCE_TREE}/bin \
+	-Wl,-rpath=$${SOURCE_TREE}/libs/3rdpart/exaro
 
 
 win32:LIBS += \
@@ -33,6 +35,12 @@ win32:LIBS += \
 unix:LIBS += \
         -L$${SOURCE_TREE}/bin
 
-LIBS += -lqradcore
+LIBS += -lqradcore \
+         -L../../libs/3rdpart/exaro \
+         -lReport
+
 
 win32:QMAKE_LFLAGS += --enable-auto-import
+
+#RESOURCES += \
+#    ../../Projects/Blink/icons/resources.qrc

@@ -32,6 +32,9 @@ FinancierPlugin::~FinancierPlugin()
 
 void FinancierPlugin::onLoad(QRadPluginContainer* container)
 {
+
+//    Q_INIT_RESOURCE("resources.qrc");
+
     m_container = container;
 
     appendAction(ACTION_SHOW_FINANCIER_ACCOUNTTYPE);

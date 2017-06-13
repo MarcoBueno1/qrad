@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select description,id from metreage order by id" 
+#define SQL_ITEMS "select descricao as \"Descrição\", m2, montlyvalue as \"Valor\", id from metreage order by id"
 
 Managermetreage::Managermetreage(QWidget *parent) :
     QDialog(parent),
@@ -28,6 +28,8 @@ Managermetreage::Managermetreage(QWidget *parent) :
     connect(ui->PshBtnEditar, SIGNAL(clicked()), this, SLOT(doEditar()));
     connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
+
+    setWindowTitle("Metragens Disponíveis");
 
     DoRefresh();
 }

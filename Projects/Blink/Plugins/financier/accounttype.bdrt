@@ -2481,7 +2481,7 @@ accounttypetoreceive.exec();</script>
                                         <font type="QFont">Verdana,2.5,-1,5,50,0,0,0,0,0</font>
                                         <textFlags type="int">0</textFlags>
                                         <sizePolicy type="int">0</sizePolicy>
-                                        <text type="QString">*Não está sendo considerado vendas com pagamento em CONTA, CONVÊNIO E FARMÁCIA POPULAR.</text>
+                                        <text type="QString"></text>
                                     </properties>
                                 </Text>
                             </children>

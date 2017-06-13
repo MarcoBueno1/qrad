@@ -29,7 +29,7 @@
 #define ACTION_MANAGE_BANK_ACCOUNT                  "ManageBankAccount"
 #define ACTION_MANAGE_TICKET                        "ManageTicket"
 #define ACTION_MANAGE_SUPPLIER                      "ManageSupplier"
-#define ACTION_MANAGE_SHIPPER                      "ManageShipper"
+#define ACTION_MANAGE_SHIPPER                       "ManageShipper"
 
 
 class FinancierPlugin : public QRadPluginInterface 

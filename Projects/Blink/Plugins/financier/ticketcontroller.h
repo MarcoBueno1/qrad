@@ -12,7 +12,8 @@ public:
     TicketController();
     ~TicketController();
 
-    bool BuildTicketCond(int id );
+    bool BuildTicketCond(int id=0 );
+    void OpenRemDir();
 private:
     BuildTkt *g_tkt;
 

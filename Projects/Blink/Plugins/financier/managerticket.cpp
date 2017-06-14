@@ -4,6 +4,7 @@
 #include "column2delegate.h"
 #include <QMessageBox>
 #include <QDebug>
+#include "ticketcontroller.h"
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
 #define SQL_ITEMS "select nossonumero, seunumero,id from ticket order by nossonumero" 
@@ -25,8 +26,8 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->tableViewSearch,SIGNAL(clicked(QModelIndex)),this,SLOT(TableClicked(QModelIndex)));
     connect(ui->tableViewSearch,SIGNAL(CurrentChanged(QModelIndex)),this,SLOT(CurrentChanged(QModelIndex)));
 
-    connect(ui->PshBtnEditar, SIGNAL(clicked()), this, SLOT(doEditar()));
-    connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));
+    connect(ui->PshBtnTxExtra, SIGNAL(clicked()), this, SLOT(doTxExtra()));
+    connect(ui->PshBtnTxCondominial, SIGNAL(clicked()), this, SLOT(doTxCondominial()));
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
 
     DoRefresh();
@@ -214,7 +215,7 @@ void Managerticket::MatchNewest(ticket *newest )
         }
     }
 }
-void Managerticket::doEditar()
+void Managerticket::doTxExtra()
 {
     Editticket *edt = new Editticket;
 
@@ -232,8 +233,29 @@ void Managerticket::doEditar()
 
 }
 
-void Managerticket::doNovo()
+void Managerticket::doTxCondominial()
 {
+    TicketController *pController = new TicketController;
+
+
+    if(pController->BuildTicketCond())
+    {
+        QMessageBox::information( this,
+                                  "Boletos gerdos com sucesso!",
+                                  QString("Por favor envie o arquivo de remessa para o banco para que os boletos tenham validade!\nClique em \"Ok\" para abrir pasta que contem o arquivo"));
+        pController->OpenRemDir();
+
+        QMessageBox::information( this,
+                                  "Imprimir Boletos",
+                                  QString("Será aberto o arquivo de boletos. Para imprimir, por favor, verifique se a impressora está conectada e possui papel suficiente."));
+
+        pController->OpenPDF();
+        pController->SendEmails();
+    }
+
+    delete pController;
+
+    /*
     Editticket *edt = new Editticket;
 
     if( edt->exec() == QDialog::Accepted )
@@ -241,6 +263,7 @@ void Managerticket::doNovo()
         MatchNewest(edt->GetSaved());
     }
     delete edt;
+    */
 }
 
 void Managerticket::doSair()

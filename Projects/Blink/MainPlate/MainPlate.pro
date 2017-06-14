@@ -34,6 +34,8 @@ LIBS += -L../../../libs/QRadCore \
         -L../../../libs/QRadLicUp \
         -L../../../libs/QRadOrm \
         -L../../../libs/3rdpart/exaro \
+        -L../../../libs/QRadCommonGui \
+        -L../../../libs/QRadCommonGui/release \
         -L../libs/common/ \
         -L../libs/common/release \
         -L../libs/orm/ \
@@ -46,7 +48,8 @@ LIBS += -L../../../libs/QRadCore \
         -lblinkcommon \
         -lblinkorm \
         -litaufrench \
-        -lReport
+        -lReport \
+        -lqradcommongui
 
 
 target.path = $${PREFIX}/bin

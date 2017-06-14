@@ -18,12 +18,12 @@ Editticket::Editticket(QWidget *parent) :
         ui->CmbBxclientid->setTable("multi");
     ui->CmbBxclientid->setField("name");
     ui->CmbBxclientid->setCanAdd(true);
-    ui->CmbBxclientid->setUserName("QRad");
+    ui->CmbBxclientid->setUserName("dsm");
     ui->CmbBxclientid->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxidticket->setTable("ticketconfig");
     ui->CmbBxidticket->setField("Description");
     ui->CmbBxidticket->setCanAdd(true);
-    ui->CmbBxidticket->setUserName("QRad");
+    ui->CmbBxidticket->setUserName("dsm");
     ui->CmbBxidticket->completer()->setFilterMode(Qt::MatchContains );
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));

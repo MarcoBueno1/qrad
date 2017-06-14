@@ -19,17 +19,20 @@ INCLUDEPATH += ../QRadCore \
 SOURCES +=  \
            edituser.cpp \
            editphone.cpp \
-           editaddress.cpp
+           editaddress.cpp \
+           editemail.cpp
 
 HEADERS +=  \
            edituser.h \
            editphone.h \
-           editaddress.h
+           editaddress.h \
+           editemail.h
 		   
 FORMS +=  \
          edituser.ui \
          editphone.ui \
-         editaddress.ui
+         editaddress.ui \
+         editemail.ui
  
 win32:LIBS +=  -L../QRadCore\release \
                -L../QRadHw\release \

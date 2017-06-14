@@ -20,7 +20,8 @@ SOURCES +=  \
            user.cpp \
            login.cpp \
            userV2.cpp \
-           machine.cpp 
+           machine.cpp \
+           email.cpp 
             
 
 HEADERS +=  \
@@ -29,7 +30,8 @@ HEADERS +=  \
            user.h \
            login.h \
            userV2.h \
-           machine.h
+           machine.h \
+           email.h
 		   
 win32:LIBS +=  -L../QRadCore\release
 unix:LIBS +=  -L../QRadCore

@@ -26,9 +26,9 @@ public slots:
     void TableClicked( QModelIndex );
     void CurrentChanged( QModelIndex );
     void KeyPressTimeout();
-    void doEditar();
+    void doTxExtra();
     void doSair();
-    void doNovo();
+    void doTxCondominial();
 
 private:
     Ui::Managerticket *ui;

@@ -31,6 +31,8 @@ LIBS += -L../../../libs/QRadCore \
         -L../../../libs/QRadLicUp/release \
         -L../../../libs/QRadOrm/release \
         -L../../../libs/QRadLicUp \
+        -L../../../libs/QRadCommonGui \
+        -L../../../libs/QRadCommonGui/release \
         -L../../../libs/QRadOrm \
         -L../libs/common/ \
         -L../libs/common/release \
@@ -45,7 +47,8 @@ LIBS += -L../../../libs/QRadCore \
         -lblinkorm \
         -lqradorm \
         -litaufrench \
-        -lReport
+        -lReport \
+        -lqradcommongui
 
 
 

@@ -6,6 +6,7 @@
 #include "qradshared.h"
 #include "qraddebug.h"
 #include "accounttoreceivemodel.h"
+#include <QDesktopServices>
 
 #include <QMessageBox>
 
@@ -29,6 +30,13 @@
 #define UPDATE_ALL_TICKETS "update ticket set status = %3 where type = %1 and removed <> true and status = %2"
 
 #define FIN_PRINT_ALL_TICKETS "select * from  ticket where type = %1 and removed <> true and status = %2"
+
+
+#define DEFAULT_REM_DIR "C:\\DVL\\"
+#define DEFAULT_PDF_FILE "C:\\DVL\\BOLETOS.PDF"
+
+
+#define SELECT_EMAILS "select count(*) from dweller where notifbyemail = true and email <> ''"
 
 
 TicketController::TicketController()
@@ -158,11 +166,11 @@ bool TicketController::doPrint(BBO_TYPE type, BBO_TYPE status, int id)
 {
     if(!id)
     {
-        if( !doPrepare(type, status))
+        if( !doPrepare(type, status) )
         {
             return false;
         }
-        if(!g_tkt->Print())
+        if( !g_tkt->Print() )
         {
             return false;
         }
@@ -216,4 +224,30 @@ bool TicketController::InitAcbr()
        return false;
    }
    return true;
+}
+
+
+void TicketController::OpenRemDir()
+{
+    QDesktopServices::openUrl(QUrl(DEFAULT_REM_DIR, QUrl::TolerantMode));
+}
+void TicketController::OpenPDF()
+{
+    QDesktopServices::openUrl(QUrl(DEFAULT_PDF_FILE, QUrl::TolerantMode));
+
+}
+void TicketController::SendEmail()
+{
+    DwellerList *pEmails = Dweller::findBy(SELECT_EMAILS);
+    if( pEmails )
+    {
+        for( int i = 0; i < pEmails->count();i++)
+        {
+            Send(pEmailss->at(i));
+        }
+    }
+}
+void TicketController::Send(Dweller *pDweller )
+{
+
 }

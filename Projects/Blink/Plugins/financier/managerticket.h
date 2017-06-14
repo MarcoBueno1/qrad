@@ -21,6 +21,7 @@ public:
 
 public slots:
     void notFound();
+    void doRefresh();
     void Found( QModelIndex );
     void StartTimer( QString );
     void TableClicked( QModelIndex );

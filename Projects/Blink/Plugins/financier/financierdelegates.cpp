@@ -199,3 +199,84 @@ void ColumnFinancierAccountOperation::paint(QPainter *painter,
     drawFocus(painter, myOption, myOption.rect);
 }
 
+
+void ColumnEmail::paint(QPainter *painter,
+                       const QStyleOptionViewItem &option,
+                       const QModelIndex &index) const
+{
+    QVariant text = index.model()->data(index, Qt::DisplayRole);
+    QStyleOptionViewItem myOption = option;
+    QString status;
+
+    switch (text.toInt())
+    {
+    case -1:
+            status = QString::fromUtf8("Desabilitado");
+            break;
+    case 0:
+            status = QString::fromUtf8("Pendente");
+            break;
+    case 1:
+            status = QString::fromUtf8("Enviado");
+            break;
+    }
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+    drawDisplay(painter, myOption, myOption.rect, status);
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+void ColumnTktStatus::paint(QPainter *painter,
+                            const QStyleOptionViewItem &option,
+                            const QModelIndex &index) const
+{
+    QVariant text = index.model()->data(index, Qt::DisplayRole);
+    QStyleOptionViewItem myOption = option;
+    QString status;
+
+
+    switch (text.toInt())
+    {
+    case 0:
+         status = QString::fromUtf8("Criado");
+         break;
+    case 1:
+         status = QString::fromUtf8("Em Remessa");
+         break;
+    case 2:
+         status = QString::fromUtf8("Pago");
+         painter->fillRect(option.rect, BG_FIN_COLOR_GREEN);
+         break;
+    }
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+    drawDisplay(painter, myOption, myOption.rect, status);
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+void ColumnTktType::paint(QPainter *painter,
+                          const QStyleOptionViewItem &option,
+                          const QModelIndex &index) const
+{
+  QVariant text = index.model()->data(index, Qt::DisplayRole);
+  QStyleOptionViewItem myOption = option;
+  QString status;
+
+
+  switch (text.toInt())
+  {
+  case 0:
+       status = QString::fromUtf8("Tx Conominial");
+       break;
+  case 1:
+       status = QString::fromUtf8("Tx Extra");
+       break;
+  }
+
+  /* Como sera o alinhamento */
+  myOption.displayAlignment = Qt::AlignCenter;
+  drawDisplay(painter, myOption, myOption.rect, status);
+  drawFocus(painter, myOption, myOption.rect);
+}

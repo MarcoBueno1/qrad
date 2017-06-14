@@ -2,12 +2,15 @@
 #include "ui_managerticket.h"
 #include "editticket.h"
 #include "column2delegate.h"
+#include "financierdelegates.h"
 #include <QMessageBox>
 #include <QDebug>
 #include "ticketcontroller.h"
 
-#define BN_DEFAULT_COLUMN_SEARCH 1
-#define SQL_ITEMS "select nossonumero, seunumero,id from ticket order by nossonumero" 
+#define BN_DEFAULT_COLUMN_SEARCH 2
+#define SQL_ITEMS "select t.nossonumero as \"NossoNumero\", t.seunumero as \"SeuNumero\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\""\
+                  " t.valor as \"Valor R$\", t.valorpago as \"Pago R$\",u.name as \"Criado Por\", t.status as \"Estado\", t.sendstatus as \"e-mail\", t.type as \"Tipo\", t.id from "\
+                  " ticket t inner join dweller d on d.id = t.clientid inner join vuser u on u.id = t.vuser %1 order by id desc;"
 
 Managerticket::Managerticket(QWidget *parent) :
     QDialog(parent),
@@ -29,6 +32,10 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->PshBtnTxExtra, SIGNAL(clicked()), this, SLOT(doTxExtra()));
     connect(ui->PshBtnTxCondominial, SIGNAL(clicked()), this, SLOT(doTxCondominial()));
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
+
+    connect(ui->radioButtonAll,SIGNAL(clicked()), this, SLOT(doRefresh()));
+    connect(ui->radioButtonNotPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
+    connect(ui->radioButtonPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
 
     DoRefresh();
 }
@@ -117,7 +124,19 @@ void Managerticket::LoadTableView()
 {
     QApplication::processEvents();
 
-    m_Model->setQuery(SQL_ITEMS);
+    QString strSQL;
+
+    if(ui->radioButtonAll->isChecked())
+        strSQL = QString(SQL_ITEMS).arg("");
+    else if( ui->radioButtonPayed->isChecked())
+        strSQL = QString(SQL_ITEMS).arg(" where t.status = 2");
+    else
+    {
+        QString aux = QString(" where t.status <> 2 and t.vencto < '%1' ").arg(QDate::currentDate().addDays(-3).toString(FMT_DATE_DB));
+        strSQL = QString(SQL_ITEMS).arg(aux);
+    }
+
+    m_Model->setQuery(strSQL);
 
     QApplication::processEvents();
     ui->tableViewSearch->setModel( m_Model);
@@ -173,8 +192,18 @@ void Managerticket::ConfigureTable()
 
    // ui->tableViewSearch->setColumnWidth(0, 0.06 * ui->tableViewSearch->width());
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
-     ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
-     ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnCenter);
+    ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
+    ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnCenter);
+    ui->tableViewSearch->setItemDelegateForColumn(2, new ColumnCenter);
+    ui->tableViewSearch->setItemDelegateForColumn(3, new ColumnDate);
+    ui->tableViewSearch->setItemDelegateForColumn(4, new ColumnDate);
+    ui->tableViewSearch->setItemDelegateForColumn(5, new ColumnMoney);
+    ui->tableViewSearch->setItemDelegateForColumn(6, new ColumnMoney);
+    ui->tableViewSearch->setItemDelegateForColumn(7, new ColumnCenter);
+
+    ui->tableViewSearch->setItemDelegateForColumn(8, new ColumnTktStatus);
+    ui->tableViewSearch->setItemDelegateForColumn(9, new ColumnEmail);
+    ui->tableViewSearch->setItemDelegateForColumn(10, new ColumnTktType);
 
 
 }
@@ -270,4 +299,8 @@ void Managerticket::doSair()
 {
     if( QMessageBox::Yes ==  QMessageBox::question(this, "Sair?","Deseja sair desta pesquisa?",QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
            reject();
+}
+void Managerticket::doRefresh()
+{
+    DoRefresh();
 }

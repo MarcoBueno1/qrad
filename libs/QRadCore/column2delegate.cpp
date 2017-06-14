@@ -410,4 +410,3 @@ void ColumnMoney::paint(QPainter *painter,
     drawDisplay(painter, myOption, myOption.rect, QRadMoney::MoneyHumanForm2(text.toDouble()));
     drawFocus(painter, myOption, myOption.rect);
 }
-

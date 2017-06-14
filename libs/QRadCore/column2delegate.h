@@ -215,4 +215,5 @@ public:
                             const QModelIndex &index) const;
 };
 
+
 #endif // COLUMN2DELEGATE_H

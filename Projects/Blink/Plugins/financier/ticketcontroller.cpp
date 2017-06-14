@@ -106,7 +106,7 @@ bool TicketController::BuildTicketCond(int id )
              tkt->setType(tpTxCond);
              tkt->setValor(pMetr->getMontlyValue());
              tkt->setVencto(date);
-             tkt->setSendStatus(pDweller->getNotifByEmail()?stPending:stDisabled);
+             tkt->setSendStatus(pDweller->getNotifByEmail()&&!pDweller->getemail().isEmpty()?stPending:stDisabled);
 
              if( !tkt->Save() )
              {

@@ -196,7 +196,7 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>229</x>
+     <x>410</x>
      <y>510</y>
      <width>281</width>
      <height>80</height>
@@ -229,6 +229,61 @@
     </property>
     <property name="text">
      <string>Tx. &amp;Condominial</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>510</y>
+     <width>351</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Visualizar</string>
+   </property>
+   <widget class="QRadioButton" name="radioButtonAll">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>102</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Todos</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButtonPayed">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>30</y>
+      <width>102</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RadioButtonPayed</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButtonNotPayed">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>50</y>
+      <width>102</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RadioButtonNotPayed</string>
     </property>
    </widget>
   </widget>

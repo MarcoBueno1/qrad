@@ -57,5 +57,31 @@ public:
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
 };
+class ColumnEmail : public QItemDelegate
+{
+    Q_OBJECT
+public:
+    void paint(QPainter *painter,
+                            const QStyleOptionViewItem &option,
+                            const QModelIndex &index) const;
+};
+
+class ColumnTktStatus : public QItemDelegate
+{
+    Q_OBJECT
+public:
+    void paint(QPainter *painter,
+                            const QStyleOptionViewItem &option,
+                            const QModelIndex &index) const;
+};
+
+class ColumnTktType : public QItemDelegate
+{
+    Q_OBJECT
+public:
+    void paint(QPainter *painter,
+                            const QStyleOptionViewItem &option,
+                            const QModelIndex &index) const;
+};
 
 #endif

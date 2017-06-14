@@ -20,19 +20,19 @@ SOURCES +=  \
            edituser.cpp \
            editphone.cpp \
            editaddress.cpp \
-           editemail.cpp
+           editemailconf.cpp
 
 HEADERS +=  \
            edituser.h \
            editphone.h \
            editaddress.h \
-           editemail.h
+           editemailconf.h
 		   
 FORMS +=  \
          edituser.ui \
          editphone.ui \
          editaddress.ui \
-         editemail.ui
+         editemailconf.ui
  
 win32:LIBS +=  -L../QRadCore\release \
                -L../QRadHw\release \

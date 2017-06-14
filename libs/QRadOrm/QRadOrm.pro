@@ -21,7 +21,7 @@ SOURCES +=  \
            login.cpp \
            userV2.cpp \
            machine.cpp \
-           email.cpp 
+           emailconf.cpp 
             
 
 HEADERS +=  \
@@ -31,7 +31,7 @@ HEADERS +=  \
            login.h \
            userV2.h \
            machine.h \
-           email.h
+           emailconf.h
 		   
 win32:LIBS +=  -L../QRadCore\release
 unix:LIBS +=  -L../QRadCore

@@ -22,7 +22,6 @@ SOURCES += dweller.cpp \
 	   tower.cpp \
 	   preaut.cpp \
            profile.cpp \
-           emailconf.cpp \
            maincompany.cpp \
            maincompanyV2.cpp \
     vehicle.cpp \
@@ -62,7 +61,6 @@ HEADERS += dweller.h \
 	   tower.h \
 	   preaut.h \
            profile.h \
-           emailconf.h \
            maincompany.h \
            maincompanyV2.h \
     vehicle.h \

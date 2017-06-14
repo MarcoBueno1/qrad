@@ -5,6 +5,7 @@ TEMPLATE = lib
 CONFIG += plugin
 
 INCLUDEPATH = ../../libs/QRadCore \
+              ../../libs/QRadOrm \
               ../../libs/pdfwrapper
 
 DESTDIR = .
@@ -18,10 +19,11 @@ HEADERS = \
              ormreport.h \
     reportlauncher.h
 
-win32:LIBS += -L../../libs/QRadCore/release -L../../libs/QRadCore -L../../libs/pdfwrapper/release
-unix:LIBS += -L../../libs/QRadCore -L../../libs/pdfwrapper
+win32:LIBS += -L../../libs/QRadCore/release -L../../libs/QRadOrm/release -L../../libs/pdfwrapper/release
+unix:LIBS += -L../../libs/QRadCore -L../../libs/QRadOrm -L../../libs/pdfwrapper
 
 LIBS += -lqradcore \
+        -lqradorm \
         -lpdfwrapper
 
 win32:QMAKE_LFLAGS += --enable-auto-import 

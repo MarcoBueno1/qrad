@@ -24,6 +24,8 @@ unix:INCLUDEPATH += ./system/inc/lnx \
                     /usr/include/postgresql\
                    ../3rdpart/exaro
 
+INCLUDEPATH += ../QRadOrm
+
 HEADERS +=  qradplugincontainer.h \
               qradcoreplugin.h \
               qradpluginaction.h \

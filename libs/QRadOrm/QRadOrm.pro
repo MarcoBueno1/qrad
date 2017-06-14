@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core sql
+QT       += gui core sql widgets
 
 #QT       -= gui
 

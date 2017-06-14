@@ -13,6 +13,7 @@ CONFIG   += console
 CONFIG   -= app_bundle
 
 INCLUDEPATH = ../../../libs/QRadCore \
+              ../../../libs/QRadOrm \
               ../libs/orm/
 
 
@@ -23,12 +24,15 @@ SOURCES += main.cpp \
     task.cpp
 
 win32:LIBS += -L../../../libs/QRadCore/release \
+              -L../../../libs/QRadOrm/release \
               -L../libs/orm/release
 unix:LIBS += -L../../../libs/QRadCore \
+             -L../../../libs/QRadOrm \
              -L../libs/orm/ \
              -L../../../libs/3rdpart/exaro
 
 LIBS += -lqradcore \
+        -lqradorm \
         -lblinkorm \
         -lReport
 

@@ -169,7 +169,7 @@ void visitPlugin::Process( const QString& action )
             delete m_emailConfig;
 
         m_emailConfig =  new Editemailconf(m_parent);
-        emailconf *conf = emailconf::findByid(1);
+        emailconf *conf = emailconf::findById(1,true);
         if( conf )
             m_emailConfig->SetModel(conf);
         m_emailConfig->exec();

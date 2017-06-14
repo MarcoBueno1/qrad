@@ -28,7 +28,6 @@ HEADERS +=  qradplugincontainer.h \
               qradcoreplugin.h \
               qradpluginaction.h \
               qradround.h \
-              model.h \
               qradlineeditfakeenter.h \
               qradtableviewsearch.h \
               qradmodellog.h \
@@ -61,7 +60,6 @@ HEADERS +=  qradplugincontainer.h \
     qraddateeditfakeenter.h \
     qradtimeeditenter.h \
     smtp.h \
-    orm.h \
     fieldfactory.h \
     cmdsqlite.h \
     cmdpostgres.h \
@@ -107,7 +105,6 @@ SOURCES +=  qradplugininterface.cpp \
              qradcoreplugin.cpp \
              scombobox.cpp \
              qradround.cpp \
-             model.cpp \
              qradlineeditfakeenter.cpp \
              qradtableviewsearch.cpp \
              qradmodellog.cpp \
@@ -139,7 +136,6 @@ SOURCES +=  qradplugininterface.cpp \
     cmdpostgres.cpp \
     cmdsqlite.cpp \
     fieldfactory.cpp \
-    orm.cpp \
     m2smtp.cpp \
     emailaddress.cpp \
     mimeattachment.cpp \
@@ -173,7 +169,10 @@ win32:LIBS += -L ../3rdpart/libpq/win/lib
 
 LIBS += -lpq \
         -L../3rdpart/exaro \
-        -lReport
+        -L../QRadOrm/release \
+        -L../QRadOrm/ \
+        -lReport \
+        -lqradorm
 
 win32:QMAKE_LFLAGS += --enable-auto-import
 

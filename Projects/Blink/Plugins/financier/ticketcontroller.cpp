@@ -1,12 +1,12 @@
 #include "ticketcontroller.h"
 #include "ticketconfig.h"
-#include "dweller.h"
 #include "metreage.h"
 #include "configmodel.h"
 #include "qradshared.h"
 #include "qraddebug.h"
 #include "accounttoreceivemodel.h"
 #include <QDesktopServices>
+#include <QUrl>
 
 #include <QMessageBox>
 
@@ -243,7 +243,7 @@ void TicketController::SendEmail()
     {
         for( int i = 0; i < pEmails->count();i++)
         {
-            Send(pEmailss->at(i));
+            Send(pEmails->at(i));
         }
     }
 }

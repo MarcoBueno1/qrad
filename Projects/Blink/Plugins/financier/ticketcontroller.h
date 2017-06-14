@@ -4,6 +4,8 @@
 #include "ticket.h"
 
 #include "buildtkt.h"
+#include "dweller.h"
+
 
 
 class TicketController
@@ -14,6 +16,8 @@ public:
 
     bool BuildTicketCond(int id=0 );
     void OpenRemDir();
+    void OpenPDF();
+    void SendEmail();
 private:
     BuildTkt *g_tkt;
 
@@ -22,6 +26,7 @@ private:
     bool doPrepare(BBO_TYPE type, BBO_TYPE status);
     bool doPrint(BBO_TYPE type, BBO_TYPE status, int id=0);
 
+    void Send(Dweller *pDweller);
 };
 
 #endif // TICKETCONTROLLER_H

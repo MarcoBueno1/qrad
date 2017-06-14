@@ -15,6 +15,8 @@ TEMPLATE = lib
 INCLUDEPATH += ../QRadCore
 
 SOURCES +=  \
+           orm.cpp \
+           model.cpp \
 	   phone.cpp \
 	   address.cpp \
            user.cpp \
@@ -25,6 +27,8 @@ SOURCES +=  \
             
 
 HEADERS +=  \
+           orm.h \
+           model.h \
 	   phone.h \
 	   address.h \
            user.h \
@@ -33,10 +37,10 @@ HEADERS +=  \
            machine.h \
            emailconf.h
 		   
-win32:LIBS +=  -L../QRadCore\release
-unix:LIBS +=  -L../QRadCore
+#win32:LIBS +=  -L../QRadCore\release
+#unix:LIBS +=  -L../QRadCore
 
-LIBS += -lqradcore 
+#LIBS += -lqradcore
 
 target.path = $${PREFIX}/bin
 INSTALLS += target

@@ -24,7 +24,6 @@ SOURCES = camera.cpp \
              editdweller.cpp \
              editpreaut.cpp \
              managerpreaut.cpp \
-             editemailconf.cpp \
              editmaincompany.cpp \
     editvehicle.cpp \
     editBrand.cpp \
@@ -46,7 +45,6 @@ HEADERS = \
              editdweller.h \
              editpreaut.h \
              managerpreaut.h \
-             editemailconf.h \
              editmaincompany.h \
     editvehicle.h \
     editBrand.h \
@@ -69,7 +67,6 @@ FORMS = \
              managerdweller.ui \ 
              editpreaut.ui \
              managerpreaut.ui \
-             editemailconf.ui \
              editmaincompany.ui \
     editvehicle.ui \
     editBrand.ui \

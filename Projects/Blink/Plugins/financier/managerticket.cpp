@@ -250,7 +250,7 @@ void Managerticket::doTxCondominial()
                                   QString("Será aberto o arquivo de boletos. Para imprimir, por favor, verifique se a impressora está conectada e possui papel suficiente."));
 
         pController->OpenPDF();
-        pController->SendEmails();
+        pController->SendEmail();
     }
 
     delete pController;

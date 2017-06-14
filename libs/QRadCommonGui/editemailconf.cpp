@@ -82,10 +82,10 @@ void Editemailconf::Save()
     if( m_mod == NULL)
         mod = new emailconf;
 
-    mod->setusername(ui->LnEdtusername->text());
-    mod->setpassword(ui->LnEdtpassword->text());
-    mod->setserver(ui->LnEdtserver->text());
-    mod->setport(ui->LnEdtport->text());
+    mod->setUserName(ui->LnEdtusername->text());
+    mod->setPassword(ui->LnEdtpassword->text());
+    mod->setServer(ui->LnEdtserver->text());
+    mod->setPort(ui->LnEdtport->text());
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -105,10 +105,10 @@ void Editemailconf::Load()
 {
     if( m_mod == NULL)
       return;
-    ui->LnEdtusername->setText(m_mod->getusername());
-    ui->LnEdtpassword->setText(m_mod->getpassword());
-    ui->LnEdtserver->setText(m_mod->getserver());
-    ui->LnEdtport->setText(m_mod->getport());
+    ui->LnEdtusername->setText(m_mod->getUserName());
+    ui->LnEdtpassword->setText(m_mod->getPassword());
+    ui->LnEdtserver->setText(m_mod->getServer());
+    ui->LnEdtport->setText(m_mod->getPort());
 
 }
 

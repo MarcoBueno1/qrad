@@ -41,12 +41,12 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS = QRad \
+          libs/QRadOrm \
           libs/QRadHw \
           libs/QRadCore \
           libs/QRadLic \
           libs/QRadLicUp \
           libs/pdfwrapper \
-          libs/QRadOrm \
           libs/QRadCommonGui \
           plugins/QRadReport \
           Projects\Blink\libs\orm \

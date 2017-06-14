@@ -106,6 +106,8 @@ bool TicketController::BuildTicketCond(int id )
              tkt->setType(tpTxCond);
              tkt->setValor(pMetr->getMontlyValue());
              tkt->setVencto(date);
+             tkt->setSendStatus(pDweller->getNotifByEmail()?stPending:stDisabled);
+
              if( !tkt->Save() )
              {
                  QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel gerar o boleto de %1 - %2 %3!").arg(pDweller->getName()).arg(pTower->getName()));

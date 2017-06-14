@@ -1,4 +1,4 @@
-#ifndef ticketmodel_H
+﻿#ifndef ticketmodel_H
 #define ticketmodel_H
  
 #include "orm.h"
@@ -10,6 +10,16 @@ typedef enum enu_status_tkt
   stBuiltShipp,
   stPaid 
 }BBOL_STATUS, *PBBOL_STATUS;
+
+
+typedef enum enu_sendstatus_tkt
+{
+  stDisabled = -1,
+  stPending,
+  stSent,
+  stErrSent // future use
+}BBOL_SEND_STATUS, *PBBOL_SEND_STATUS;
+
 
 typedef enum enu_type_tkt
 {
@@ -35,6 +45,7 @@ DECLARE_CLASS(ticket)
      ORM_DECLARE_ATTRIBUTE(ticket, QString, Obs)
      ORM_DECLARE_ATTRIBUTE(ticket, int, User)
      ORM_DECLARE_ATTRIBUTE(ticket, int, AccountId)
+     ORM_DECLARE_ATTRIBUTE(ticket, int, SendStatus)
      ORM_DECLARE_ATTRIBUTE(ticket, bool, Removed)
      ORM_MATCH_TABLE(ticket, "ticket")
 ORM_END_MAP()

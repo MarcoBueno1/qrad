@@ -79,7 +79,7 @@ QString GetTo(visit *pCurrent)
 {
     QString Name;
     Dweller *d =  Dweller::findByid(pCurrent->getautorizador());
-    if( d )
+    if( d && d->getNotifByEmail())
     {
         Name = d->getemail();
         delete d;
@@ -88,7 +88,7 @@ QString GetTo(visit *pCurrent)
 }
 
 
-bool ProcessEmail(visit *pCurrent)
+bool ProcessVisitNotify(visit *pCurrent)
 {
   QString to  = GetTo(pCurrent);
   if( to.isEmpty())
@@ -187,7 +187,7 @@ void Task::run()
             qDebug() << "item a ser processado .. ";
             printf("item a ser processado .. \n");
             visit *pCurrent = visits->at(i);
-            if( ProcessEmail(pCurrent) )
+            if( ProcessVisitNotify(pCurrent) )
                 pCurrent->updateNotified(true);
         }
         qDebug() << "WaitForChange.... ";

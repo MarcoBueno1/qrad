@@ -16,6 +16,7 @@ ORM_BEGIN_MAP(ticket)
      ORM_MAP_FIELD(Obs, "obs");
      ORM_MAP_FIELD(User, "vuser");
      ORM_MAP_FIELD(AccountId, "accountid");
+     ORM_MAP_FIELD(SendStatus, "sendstatus");
      ORM_MAP_FIELD(Removed, "removed");
 ORM_END_MAP()
 

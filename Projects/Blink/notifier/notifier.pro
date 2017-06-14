@@ -8,7 +8,7 @@ QT       += gui core sql network widgets
 
 #QT       -= gui
 
-TARGET = visitnotifier
+TARGET = notifier
 CONFIG   += console
 CONFIG   -= app_bundle
 

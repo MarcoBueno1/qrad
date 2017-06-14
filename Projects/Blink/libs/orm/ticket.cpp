@@ -17,6 +17,19 @@ ORM_BEGIN_MAP(ticket)
      ORM_MAP_FIELD(User, "vuser");
      ORM_MAP_FIELD(AccountId, "accountid");
      ORM_MAP_FIELD(SendStatus, "sendstatus");
+     ORM_MAP_FIELD(LoId, "loid");
      ORM_MAP_FIELD(Removed, "removed");
 ORM_END_MAP()
 
+
+int ticket::saveFile(QString path)
+{
+    int loid = ORM::saveFile(path);
+    setLoId(loid);
+    return loid;
+}
+
+void ticket::getFile(QString path, int Loid)
+{
+    ORM::getFile(path, Loid);
+}

@@ -22,9 +22,9 @@ private:
     BuildTkt *g_tkt;
 
     bool InitAcbr();
-    bool doShipp(QString dir, QString filename,BBO_TYPE type, BBO_TYPE status);
-    bool doPrepare(BBO_TYPE type, BBO_TYPE status);
-    bool doPrint(BBO_TYPE type, BBO_TYPE status, int id=0);
+    bool doShipp(QString dir, QString filename,BBO_TYPE type, BBOL_STATUS status);
+    bool doPrepare(BBO_TYPE type, BBOL_STATUS status);
+    bool doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt=0);
 
     void Send(Dweller *pDweller);
 };

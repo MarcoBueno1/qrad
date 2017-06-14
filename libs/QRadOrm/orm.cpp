@@ -534,3 +534,22 @@ QPixmap ORM::getImage(int nLoId )
 
     return QPixmap::fromImage(myImage);
 }
+
+void ORM::getFile(QString filename, int nLoId )
+{
+  QSqlDatabase db = QSqlDatabase::database();
+
+
+  PGSQLAsync::Receive( (unsigned int)nLoId,
+                       filename,
+                       db.hostName(),
+                       db.databaseName(),
+                       db.userName(),
+                       db.password() );
+
+}
+int ORM::saveFile( QString path )
+{
+   return saveImage( path );
+}
+

@@ -108,6 +108,7 @@ bool TicketController::BuildTicketCond(int id )
              tkt->setVencto(date);
              tkt->setSendStatus(pDweller->getNotifByEmail()&&!pDweller->getemail().isEmpty()?stPending:stDisabled);
 
+
              if( !tkt->Save() )
              {
                  QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel gerar o boleto de %1 - %2 %3!").arg(pDweller->getName()).arg(pTower->getName()));
@@ -116,6 +117,7 @@ bool TicketController::BuildTicketCond(int id )
                  delete tkt;
                  return false;
              }
+             doPrint(tpTxCond,stCreated,tkt);
 
              AccountToReceiveModel *account  = new  AccountToReceiveModel;
 
@@ -140,7 +142,7 @@ bool TicketController::BuildTicketCond(int id )
     return false;
 }
 
-bool TicketController::doPrepare(BBO_TYPE type, BBO_TYPE status)
+bool TicketController::doPrepare(BBO_TYPE type, BBOL_STATUS status)
 {
     ticketList *tktList =  ticket::findBy(QString(FIN_PRINT_ALL_TICKETS).arg(type).arg(status));
     if( !tktList)
@@ -164,9 +166,9 @@ bool TicketController::doPrepare(BBO_TYPE type, BBO_TYPE status)
     return g_tkt->AddTickets();
 }
 
-bool TicketController::doPrint(BBO_TYPE type, BBO_TYPE status, int id)
+bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
 {
-    if(!id)
+    if(!ptkt)
     {
         if( !doPrepare(type, status) )
         {
@@ -178,11 +180,31 @@ bool TicketController::doPrint(BBO_TYPE type, BBO_TYPE status, int id)
         }
         return true;
     }
+    else
+    {
+        if(!InitAcbr())
+        {
+            return false;
+        }
+        Dweller *pDweller = Dweller::findByid(ptkt->getclientid());
+
+        QString value = QString("%1").arg(ptkt->getValor());
+        value.replace(".",",");
+        g_tkt->AppendTicket(pDweller, value, ptkt->getVencto(),QString("%1").arg(ptkt->getNossoNumero()),QString("%1").arg(ptkt->getSeuNumero()));
+        if(g_tkt->AddTickets())
+        {
+            if(g_tkt->Print())
+            {
+                ptkt->updateLoId(ptkt->saveFile(DEFAULT_PDF_FILE));
+                return true;
+            }
+        }
+    }
 
     return false;
 }
 
-bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBO_TYPE status)
+bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBOL_STATUS status)
 {
     if( !doPrepare(type, status))
     {
@@ -240,7 +262,7 @@ void TicketController::OpenPDF()
 }
 void TicketController::SendEmail()
 {
-    DwellerList *pEmails = Dweller::findBy(SELECT_EMAILS);
+/*    DwellerList *pEmails = Dweller::findBy(SELECT_EMAILS);
     if( pEmails )
     {
         for( int i = 0; i < pEmails->count();i++)
@@ -248,6 +270,7 @@ void TicketController::SendEmail()
             Send(pEmails->at(i));
         }
     }
+   */
 }
 void TicketController::Send(Dweller *pDweller )
 {

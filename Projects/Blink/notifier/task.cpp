@@ -1,6 +1,8 @@
 #include <QPixmap>
 #include "visit.h"
+#include "ticket.h"
 #include "Visitante.h"
+#include "emailconf.h"
 #include "pgsqlasync.h"
 //#include "reason.h"
 #include "smtp.h"
@@ -87,6 +89,51 @@ QString GetTo(visit *pCurrent)
     return Name;
 }
 
+bool ProcessTicket(ticket *pTkt)
+{
+    Dweller *pDweller = Dweller::findByid(pTkt->getclientid());
+    if( !pDweller)
+        return false ;
+
+    QString to = pDweller->getemail();
+    if( to.isEmpty())
+    {
+        delete pDweller;
+        return false;
+    }
+    emailconf *pEmail = emailconf::findById(1,true);
+
+    QString from = pEmail->getUserName();
+    QString body  = QString("Prezado Morador,<br/><br/>        Segue em anexo boleto para pagamento.<br/><br/><br/><br/>Atenciosamente\n");
+    QString subject  = QString("Taxa Condominial");
+
+    QStringList list;
+
+    QString filename = "boleto.pdf";
+    pTkt->getFile(filename, pTkt->getLoId());
+
+    list.append(filename);
+
+    qDebug() << "Linha:" << __LINE__;
+
+    QList<QString> listTo;
+    QStringList listcoo;
+    listTo.append(to);
+
+    M2Smtp *newEmail  = new M2Smtp(g_host,
+                                   g_user,
+                                   g_password,
+                                   g_port,
+                                   g_user,
+                                   listTo ,
+                                   true,listcoo,subject,body,list, false);
+
+    bool bRet = false;
+    if(newEmail->send())
+        bRet = true;
+
+    return bRet;
+}
 
 bool ProcessVisitNotify(visit *pCurrent)
 {
@@ -177,12 +224,13 @@ Task::~Task()
 void Task::run()
 {
     // Do processing here
+    int i ;
 
     do
     {
         PGSQLAsync::WaitChange("visit",10000,"localhost","qraddb", "dsm", "dsmpassword");
         visitList *visits = visit::findNotNotified();
-        for( int i =0; visits && ( i < visits->count()); i++)
+        for( i =0; visits && ( i < visits->count()); i++)
         {
             qDebug() << "item a ser processado .. ";
             printf("item a ser processado .. \n");
@@ -191,6 +239,16 @@ void Task::run()
                 pCurrent->updateNotified(true);
         }
         qDebug() << "WaitForChange.... ";
+
+        PGSQLAsync::WaitChange("ticket",1000,"localhost","qraddb", "dsm", "dsmpassword");
+        ticketList *tickets = ticket::findBy("select * from ticket where sendstatus = 1");
+        for( i =0; tickets && (i < tickets->count()); i++)
+        {
+             ticket *tkt = tickets->at(i);
+             if( ProcessTicket(tkt))
+                  tkt->updateSendStatus(stSent);
+        }
+
 
 
     }while(1);

@@ -430,7 +430,9 @@ protected:
     bool do_delete();
     void Audit();
     int  saveImage( QString path );
+    int  saveFile( QString path );
     QPixmap getImage(int nLoId);
+    void getFile(QString filename, int nLoId );
 private:
     bool m_IsAudit;
 

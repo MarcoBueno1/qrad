@@ -46,7 +46,12 @@ DECLARE_CLASS(ticket)
      ORM_DECLARE_ATTRIBUTE(ticket, int, User)
      ORM_DECLARE_ATTRIBUTE(ticket, int, AccountId)
      ORM_DECLARE_ATTRIBUTE(ticket, int, SendStatus)
+     ORM_DECLARE_ATTRIBUTE(ticket, int, LoId)
      ORM_DECLARE_ATTRIBUTE(ticket, bool, Removed)
      ORM_MATCH_TABLE(ticket, "ticket")
+public:
+    int saveFile(QString path);
+    void getFile(QString path, int Loid);
+
 ORM_END_MAP()
 #endif 

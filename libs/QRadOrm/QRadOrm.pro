@@ -12,7 +12,8 @@ TARGET = qradorm
 
 TEMPLATE = lib
 
-INCLUDEPATH += ../QRadCore
+INCLUDEPATH += ../QRadCore \
+               ../3rdpart/libpq/include \
 
 SOURCES +=  \
            orm.cpp \
@@ -24,11 +25,12 @@ SOURCES +=  \
            userV2.cpp \
            machine.cpp \
            emailconf.cpp \
-           fieldfactory.cpp
+           fieldfactory.cpp \
            cmdmysql.cpp \
            cmdpostgres.cpp \
-           cmdsqlite.cpp
-
+           cmdsqlite.cpp \
+           pgsqlasync.cpp \
+           qradmodellog.cpp
 
 HEADERS +=  \
            orm.h \
@@ -44,12 +46,14 @@ HEADERS +=  \
            cmdinterface.h \
            cmdmysql.h \
            cmdpostgres.h \
-           cmdsqlite.h
-		   
+           cmdsqlite.h \
+           pgsqlasync.h \
+           qradmodellog.h
+
 #win32:LIBS +=  -L../QRadCore\release
 #unix:LIBS +=  -L../QRadCore
 
-#LIBS += -lqradcore
+LIBS += -lpq
 
 target.path = $${PREFIX}/bin
 INSTALLS += target

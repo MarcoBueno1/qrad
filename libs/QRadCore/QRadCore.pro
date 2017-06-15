@@ -32,7 +32,6 @@ HEADERS +=  qradplugincontainer.h \
               qradround.h \
               qradlineeditfakeenter.h \
               qradtableviewsearch.h \
-              qradmodellog.h \
               qradmoney.h \
               column2delegate.h \
               qradsplashscreen.h \
@@ -53,7 +52,6 @@ HEADERS +=  qradplugincontainer.h \
     ssltypes.h \ 
     qradlineeditcompleter.h \
     qradlineeditenter.h \
-    pgsqlasync.h \
     coid.h \
 #    profilemanager.h \
 #    profileregister.h \
@@ -104,7 +102,6 @@ SOURCES +=  qradplugininterface.cpp \
              qradround.cpp \
              qradlineeditfakeenter.cpp \
              qradtableviewsearch.cpp \
-             qradmodellog.cpp \
              qradmoney.cpp \
              column2delegate.cpp \
              qradsplashscreen.cpp \
@@ -120,7 +117,6 @@ SOURCES +=  qradplugininterface.cpp \
     ssltypes.cpp \
     qradlineeditcompleter.cpp \
     qradlineeditenter.cpp \
-    pgsqlasync.cpp \
     coid.cpp \
 #    profilemanager.cpp \
 #    profileregister.cpp \

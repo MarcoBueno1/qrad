@@ -23,8 +23,12 @@ SOURCES +=  \
            login.cpp \
            userV2.cpp \
            machine.cpp \
-           emailconf.cpp 
-            
+           emailconf.cpp \
+           fieldfactory.cpp
+           cmdmysql.cpp \
+           cmdpostgres.cpp \
+           cmdsqlite.cpp
+
 
 HEADERS +=  \
            orm.h \
@@ -35,7 +39,12 @@ HEADERS +=  \
            login.h \
            userV2.h \
            machine.h \
-           emailconf.h
+           emailconf.h \
+           fieldfactory.h \
+           cmdinterface.h \
+           cmdmysql.h \
+           cmdpostgres.h \
+           cmdsqlite.h
 		   
 #win32:LIBS +=  -L../QRadCore\release
 #unix:LIBS +=  -L../QRadCore

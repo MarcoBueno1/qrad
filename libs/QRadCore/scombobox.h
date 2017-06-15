@@ -154,6 +154,10 @@ private:
   void ConnectDB();
   bool PersistObjects();
   void CreateTableIfNoExist();
+  QString TableName();
+  QString TableCaption();
+  QString FieldName();
+  QString FieldCaption();
 };
 
 #endif

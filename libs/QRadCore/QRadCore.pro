@@ -16,7 +16,7 @@ TARGET = qradcore
 DEPENDPATH += .
 
 win32:INCLUDEPATH += . \
-               ../3rdpart/libpq/include
+               ../3rdpart/libpq/include \
                ../3rdpart/exaro
 
 win32:INCLUDEPATH += ./system/inc/win
@@ -62,11 +62,6 @@ HEADERS +=  qradplugincontainer.h \
     qraddateeditfakeenter.h \
     qradtimeeditenter.h \
     smtp.h \
-    fieldfactory.h \
-    cmdsqlite.h \
-    cmdpostgres.h \
-    cmdmysql.h \
-    cmdinterface.h \
     m2smtp.h \
     emailaddress.h \
     mimeattachment.h \
@@ -134,10 +129,6 @@ SOURCES +=  qradplugininterface.cpp \
     qraddateeditfakeenter.cpp \
     qradtimeeditenter.cpp \
     smtp.cpp \
-    cmdmysql.cpp \
-    cmdpostgres.cpp \
-    cmdsqlite.cpp \
-    fieldfactory.cpp \
     m2smtp.cpp \
     emailaddress.cpp \
     mimeattachment.cpp \

@@ -211,9 +211,9 @@ QString SComboBox::CreateEditUi()
     QFormLayout *Layout = new QFormLayout(Window);
     QPushButton *Button = new QPushButton(Window);
     QLineEdit *LineEdit = new QLineEdit(Window);
-    QLabel *Label = new QLabel(QString::fromUtf8("%1:").arg(Field()),Window);
+    QLabel *Label = new QLabel(QString::fromUtf8("%1:").arg(FieldCaption()),Window);
 
-    Window->setWindowTitle(QString::fromUtf8("Adicionar %1").arg(Table()));
+    Window->setWindowTitle(QString::fromUtf8("Adicionar %1").arg(TableCaption()));
     Button->setText("Salvar");
     Layout->addRow( Label );
     Layout->addRow( LineEdit );
@@ -230,16 +230,16 @@ QString SComboBox::CreateEditUi()
         {
             QSqlQueryModel *AlreadyExist = new QSqlQueryModel;
             AlreadyExist->setQuery(QString("select %1 from %2 where %1 = '%3' order by tp, %1")
-                                   .arg(Field().toLower())
-                                   .arg(Table().toLower())
+                                   .arg(FieldName().toLower())
+                                   .arg(TableName().toLower())
                                    .arg(LineEdit->text().trimmed()),
                                    m_currentdb);
 
             if( !AlreadyExist->rowCount() )
             {
                 AlreadyExist->setQuery(QString("insert into %1 (%2) values ('%3')")
-                                         .arg(Table().toLower())
-                                         .arg(Field().toLower())
+                                         .arg(TableName().toLower())
+                                         .arg(FieldName().toLower())
                                          .arg(LineEdit->text().trimmed()),
                                        m_currentdb);
                 New = LineEdit->text().trimmed();
@@ -272,7 +272,7 @@ void SComboBox::doEdit(void)
 void SComboBox::doUpdate(QString New)
 {
             m_pModelLocal->setQuery(QString("select id, %2 from %1 order by tp, %2")
-                               .arg(Table().toLower()).arg(Field().toLower()), m_currentdb);
+                               .arg(TableName().toLower()).arg(FieldName().toLower()), m_currentdb);
 
             setModel(m_pModelLocal);
             setModelColumn(1);
@@ -319,7 +319,7 @@ bool SComboBox::PersistObjects()
   //  {
         QSqlQueryModel *pList = new QSqlQueryModel;
 
-        pList->setQuery(QString("select %1 from %2 ").arg(Field().toLower()).arg(Table().toLower()),m_currentdb);
+        pList->setQuery(QString("select %1 from %2 ").arg(FieldName().toLower()).arg(TableName().toLower()),m_currentdb);
         if(pList && pList->rowCount())
         {
             for( int j = 0; j < pList->rowCount(); j++)
@@ -360,8 +360,8 @@ bool SComboBox::PersistObjects()
             {
                 QSqlQueryModel *Add = new QSqlQueryModel;
                 Add->setQuery(QString("insert into %1 (%2) values ('%3')")
-                                         .arg(Table().toLower())
-                                         .arg(Field().toLower())
+                                         .arg(TableName().toLower())
+                                         .arg(FieldName().toLower())
                                          .arg(Text),m_currentdb);
 
                 if( Add->lastError().isValid())
@@ -378,8 +378,8 @@ bool SComboBox::PersistObjects()
     {
         QSqlQueryModel *Add = new QSqlQueryModel;
         Add->setQuery(QString("insert into %1 (%2, tp) values ('%3', 2)")
-                                 .arg(Table().toLower())
-                                 .arg(Field().toLower())
+                                 .arg(TableName().toLower())
+                                 .arg(FieldName().toLower())
                                  .arg(strTokenNew),m_currentdb);
         delete Add;
     }
@@ -388,15 +388,15 @@ bool SComboBox::PersistObjects()
     if( CanAdd())
     {
         m_pModelLocal->setQuery(QString("select id, %1 from %2 where %1 <> '' order by tp, %1")
-                                .arg(Field().toLower())
-                                .arg(Table().toLower())
+                                .arg(FieldName().toLower())
+                                .arg(TableName().toLower())
                                ,m_currentdb);
     }
     else
     {
         m_pModelLocal->setQuery(QString("select id, %1 from %2 where %1 <> '%3' and %1 <> '' order by tp, %1")
-                                .arg(Field().toLower())
-                                .arg(Table().toLower())
+                                .arg(FieldName().toLower())
+                                .arg(TableName().toLower())
                                 .arg(strTokenNew)
                                ,m_currentdb);
     }
@@ -447,7 +447,7 @@ void SComboBox::CreateTableIfNoExist()
     ///
 //    select relname, relnamespace from pg_class join pg_catalog.pg_namespace n ON n.oid = pg_class.relnamespace where n.nspname='public' and relname='%1';
 
-    QString strChecExist = QString("SELECT true FROM pg_tables WHERE tablename = '%1'").arg(Table().toLower().toLower());
+    QString strChecExist = QString("SELECT true FROM pg_tables WHERE tablename = '%1'").arg(TableName().toLower().toLower());
     CrateTable->setQuery(strChecExist, m_currentdb);
     if( CrateTable->rowCount())
     {
@@ -467,11 +467,11 @@ void SComboBox::CreateTableIfNoExist()
                                  "id %3, "\
                                  "%2 character varying ,"\
                                  "tp integer default 1 );")
-                                .arg(Table().toLower()).arg(Field().toLower()).arg(strPrimType);
+                                .arg(TableName().toLower()).arg(FieldName().toLower()).arg(strPrimType);
 
     CrateTable->setQuery( strCreate, m_currentdb );
 
-    QString strOwner = QString("ALTER TABLE %1 OWNER TO %2;").arg(Table().toLower()).arg(UserName());
+    QString strOwner = QString("ALTER TABLE %1 OWNER TO %2;").arg(TableName().toLower()).arg(UserName());
 
     CrateTable->setQuery( strOwner, m_currentdb );
 
@@ -481,32 +481,64 @@ void SComboBox::CreateTableIfNoExist()
                                         " INCREMENT BY 1 "\
                                         " NO MINVALUE "\
                                         " NO MAXVALUE "\
-                                        "CACHE 1;").arg(Table().toLower());
+                                        "CACHE 1;").arg(TableName().toLower());
 
     CrateTable->setQuery( strCreateSequence, m_currentdb );
 
-    QString strSeqOwner = QString( "ALTER TABLE %1_id_seq OWNER TO %2; ").arg(Table().toLower()).arg(UserName());
+    QString strSeqOwner = QString( "ALTER TABLE %1_id_seq OWNER TO %2; ").arg(TableName().toLower()).arg(UserName());
 
     CrateTable->setQuery( strSeqOwner, m_currentdb );
 
-    QString strOwned = QString("ALTER SEQUENCE %1_id_seq OWNED BY %1.id;").arg(Table().toLower());
+    QString strOwned = QString("ALTER SEQUENCE %1_id_seq OWNED BY %1.id;").arg(TableName().toLower());
 
     CrateTable->setQuery( strOwned, m_currentdb );
 
     QString strAlterCol = QString("ALTER TABLE ONLY %1 ALTER COLUMN id SET DEFAULT nextval('%1_id_seq'::regclass);")
-            .arg(Table().toLower());
+            .arg(TableName().toLower());
 
     CrateTable->setQuery( strAlterCol, m_currentdb );
 
-    QString strCata = QString("SELECT pg_catalog.setval('%1_id_seq', 1, false);").arg(Table().toLower());
+    QString strCata = QString("SELECT pg_catalog.setval('%1_id_seq', 1, false);").arg(TableName().toLower());
 
     CrateTable->setQuery( strCata, m_currentdb );
 
-    QString strpKey = QString("ALTER TABLE ONLY %1 ADD CONSTRAINT prmary_key_%1 PRIMARY KEY (id); ").arg(Table().toLower());
+    QString strpKey = QString("ALTER TABLE ONLY %1 ADD CONSTRAINT prmary_key_%1 PRIMARY KEY (id); ").arg(TableName().toLower());
 
     CrateTable->setQuery( strpKey, m_currentdb );
 
     delete CrateTable;
     debug_message("<--CreateTableIfNoExist() L:%d\n", __LINE__);
+
+}
+
+QString SComboBox::TableName()
+{
+   QString strAux = Table();
+   if( strAux.contains("."))
+       strAux.truncate(strAux.indexOf("."));
+   return strAux;
+}
+QString SComboBox::TableCaption()
+{
+    QString strAux = Table();
+    if( strAux.contains("."))
+        strAux = strAux.mid(strAux.indexOf(".")+1);
+    return strAux;
+
+}
+QString SComboBox::FieldName()
+{
+    QString strAux = Field();
+    if( strAux.contains("."))
+        strAux.truncate(strAux.indexOf("."));
+    return strAux;
+
+}
+QString SComboBox::FieldCaption()
+{
+    QString strAux = Table();
+    if( strAux.contains("."))
+        strAux = strAux.mid(strAux.indexOf(".")+1);
+    return strAux;
 
 }

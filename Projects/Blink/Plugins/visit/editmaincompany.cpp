@@ -15,7 +15,7 @@ Editmaincompany::Editmaincompany(QWidget *parent) :
     
     m_mod = NULL;
     m_lastMod = NULL;
-        ui->CmbBxcity->setTable("city");
+    ui->CmbBxcity->setTable("city");
     ui->CmbBxcity->setField("name");
     ui->CmbBxcity->setCanAdd(true);
     ui->CmbBxcity->setUserName("dsm");
@@ -67,7 +67,7 @@ void Editmaincompany::Save()
     mod->setie(ui->LnEdtie->text());
     mod->setphone(ui->LnEdtphone->text());
     mod->setemail(ui->LnEdtemail->text());
-    mod->setlicense(ui->LnEdtlicense->text());
+//    mod->setlicense(ui->LnEdtlicense->text());
     mod->setcity(ui->CmbBxcity->model()->data(ui->CmbBxcity->model()->index(ui->CmbBxcity->currentIndex(), 0)).toInt());
 
     mod->setstate(ui->CmbBxstate->model()->data(ui->CmbBxstate->model()->index(ui->CmbBxstate->currentIndex(), 0)).toInt());
@@ -93,11 +93,13 @@ void Editmaincompany::Load()
       return;
     ui->LnEdtname->setText(m_mod->getname());
     ui->LnEdtfantasyname->setText(m_mod->getfantasyname());
+    if( !m_mod->getcnpj().isEmpty())
+        ui->LnEdtcnpj->setReadOnly(true);
     ui->LnEdtcnpj->setText(m_mod->getcnpj());
     ui->LnEdtie->setText(m_mod->getie());
     ui->LnEdtphone->setText(m_mod->getphone());
     ui->LnEdtemail->setText(m_mod->getemail());
-    ui->LnEdtlicense->setText(m_mod->getlicense());
+//    ui->LnEdtlicense->setText(m_mod->getlicense());
     ui->CmbBxcity->setCurrentId(m_mod->getcity());
     ui->CmbBxstate->setCurrentId(m_mod->getstate());
 

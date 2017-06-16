@@ -60,6 +60,10 @@ bool TicketController::BuildTicketCond(int id )
         date.setDate(date.year(),date.month(),pConfig->at(0)->getDefaultPayDate().day());
     }
 
+    if(!InitAcbr())
+        return false;
+
+
     if( !id ) /// for all
     {
         ///
@@ -234,8 +238,9 @@ bool TicketController::InitAcbr()
    ticketconfig *pTktConfig = ticketconfig::findByPrimaryKey(1); // default only one ticket
    bankaccount *pAccount    = bankaccount::findByPrimaryKey(1);   // default only one banckaccount
 
-   if(pCompany || !pTktConfig || !pAccount)
+   if(!pCompany || !pTktConfig || !pAccount)
    {
+       debug_message("Company=%x, tktconfig=%x, bAccount=%x\n",pCompany, pTktConfig, pAccount );
        QMessageBox::warning(NULL, "Oops!", QString("Configurações incompletas, por favor configure Conta, Empresa, Boleto!"));
 
    }

@@ -63,6 +63,10 @@ private:
       bankaccount *m_pAccount;
       QFileSystemWatcher m_watcher;
       QString m_lastError;
+      QString m_SendPath;
+      QString m_ReceivePath;
+      QString m_SendFile;
+      QString m_ReceiveFile;
 };
 
 

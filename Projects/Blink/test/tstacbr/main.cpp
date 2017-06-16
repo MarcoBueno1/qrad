@@ -10,8 +10,8 @@ void Init()
 {
    MainCompany *pCompany    = MainCompany::findByPrimaryKey(1);
    ticketconfig *pTktConfig = ticketconfig::findByPrimaryKey(1);
-   BankModel *pBank         = BankModel::findByPrimaryKey(1);
    bankaccount *pAccount    = bankaccount::findByPrimaryKey(1);
+   BankModel *pBank         = BankModel::findByPrimaryKey(pAccount->getBanco());
 
    if( g_tkt->Init(pCompany,pTktConfig,pBank, pAccount ))
    {
@@ -206,7 +206,7 @@ void AppendTkt()
     tk->setJuros("1.50");
     tk->setLayoutBol(2);
     tk->setMensagem("Pagavel em qualquer banco ate o vencimento!");
-    tk->setNossoNumero("001");
+    tk->setNossoNumero(001);
     tk->setRespEmis(0);
 
     if(tk->Save())

@@ -55,8 +55,14 @@
     </property>
     <addaction name="actionSobre_o_Blink"/>
    </widget>
+   <widget class="QMenu" name="menuFinanceiro">
+    <property name="title">
+     <string>Financeiro</string>
+    </property>
+   </widget>
    <addaction name="menuCadastro"/>
    <addaction name="menuPortaria"/>
+   <addaction name="menuFinanceiro"/>
    <addaction name="menuRelatorios"/>
    <addaction name="menuConfigura_es"/>
    <addaction name="menuAjuda"/>

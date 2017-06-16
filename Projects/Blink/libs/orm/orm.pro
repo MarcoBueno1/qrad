@@ -51,7 +51,8 @@ SOURCES += dweller.cpp \
          tktspecie.cpp \
          ticket.cpp\
          configmodel.cpp \
-         shipper.cpp
+         shipper.cpp \
+     acbr.cpp
             
 
 HEADERS += dweller.h \
@@ -90,8 +91,9 @@ HEADERS += dweller.h \
     tktspecie.h \
     ticket.h \
     configmodel.h \
-    shipper.h
-		   
+    shipper.h \
+    acbr.h
+
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadOrm\release
 unix:LIBS +=  -L../../../../libs/QRadCore \

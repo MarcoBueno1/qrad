@@ -31,4 +31,5 @@ LIBS += -L../../libs/acbrticket/ \
         -lblinkorm \
         -lacbrticket
 
-
+target.path = $${PREFIX}/bin
+INSTALLS += target

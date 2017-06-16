@@ -17,32 +17,32 @@ Editticketconfig::Editticketconfig(QWidget *parent) :
     m_lastMod = NULL;
         ui->CmbBxRespEmis->setTable("respemis");
     ui->CmbBxRespEmis->setField("Description");
-    ui->CmbBxRespEmis->setCanAdd(true);
+    ui->CmbBxRespEmis->setCanAdd(false);
     ui->CmbBxRespEmis->setUserName("dsm");
     ui->CmbBxRespEmis->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxTipoPessoa->setTable("tipopessoa");
     ui->CmbBxTipoPessoa->setField("Description");
-    ui->CmbBxTipoPessoa->setCanAdd(true);
+    ui->CmbBxTipoPessoa->setCanAdd(false);
     ui->CmbBxTipoPessoa->setUserName("dsm");
     ui->CmbBxTipoPessoa->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxLayoutBol->setTable("layoutbol");
     ui->CmbBxLayoutBol->setField("Description");
-    ui->CmbBxLayoutBol->setCanAdd(true);
+    ui->CmbBxLayoutBol->setCanAdd(false);
     ui->CmbBxLayoutBol->setUserName("dsm");
     ui->CmbBxLayoutBol->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxTipoCobranca->setTable("tipocobranca");
     ui->CmbBxTipoCobranca->setField("Description");
-    ui->CmbBxTipoCobranca->setCanAdd(true);
+    ui->CmbBxTipoCobranca->setCanAdd(false);
     ui->CmbBxTipoCobranca->setUserName("dsm");
     ui->CmbBxTipoCobranca->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxcnab->setTable("cnab");
     ui->CmbBxcnab->setField("Description");
-    ui->CmbBxcnab->setCanAdd(true);
+    ui->CmbBxcnab->setCanAdd(false);
     ui->CmbBxcnab->setUserName("dsm");
     ui->CmbBxcnab->completer()->setFilterMode(Qt::MatchContains );
     ui->CmbBxespecie->setTable("especie");
     ui->CmbBxespecie->setField("Description");
-    ui->CmbBxespecie->setCanAdd(true);
+    ui->CmbBxespecie->setCanAdd(false);
     ui->CmbBxespecie->setUserName("dsm");
     ui->CmbBxespecie->completer()->setFilterMode(Qt::MatchContains );
 
@@ -96,8 +96,9 @@ void Editticketconfig::Save()
 
     mod->setNossoNumero(ui->DblSpnBxNossoNumero->value());
     mod->setCarteira(ui->LnEdtCarteira->text());
-    mod->setMensagem(ui->LnEdtMensagem->text());
-    mod->setJuros(ui->LnEdtJuros->text());
+    mod->setMensagem(ui->textEditMensagem->document()->toPlainText());
+    mod->setJuros(QString("%1").arg(ui->doubleSpinBoxJuros->value()).replace(".",","));
+    mod->setMulta(QString("%1").arg(ui->doubleSpinBoxMulta->value()).replace(".",","));
     mod->setDescription(ui->LnEdtDescription->text());
     bool bRet = mod->Save();
     if( m_lastMod )
@@ -127,8 +128,9 @@ void Editticketconfig::Load()
     ui->CmbBxespecie->setCurrentId(m_mod->getespecie());
     ui->DblSpnBxNossoNumero->setValue(m_mod->getNossoNumero());
     ui->LnEdtCarteira->setText(m_mod->getCarteira());
-    ui->LnEdtMensagem->setText(m_mod->getMensagem());
-    ui->LnEdtJuros->setText(m_mod->getJuros());
+    ui->textEditMensagem->setText(m_mod->getMensagem());
+    ui->doubleSpinBoxJuros->setValue(m_mod->getJuros().replace(",",".").toDouble());
+    ui->doubleSpinBoxMulta->setValue(m_mod->getMulta().replace(",",".").toDouble());
     ui->LnEdtDescription->setText(m_mod->getDescription());
 
 }

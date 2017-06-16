@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QThread>
 #include <QEventLoop>
+#include "acbr.h"
 #include <QCoreApplication>
 
 #define TKT_PREFIX "BOLETO."
@@ -55,8 +56,9 @@
 "Sacado.CEP=%14\n"\
 "Mensagem=%16\n"\
 "ValorMoraJuros=%17\n"\
-"Vencimento=%18\n"\
-"Especie=%19\n"
+"PercentualMulta=%18\n"\
+"Vencimento=%19\n"\
+"Especie=%20\n"
 
 
 #define TKT_BUILD_SHIPPING "GerarRemessa"
@@ -101,7 +103,13 @@ void BuildTkt::DirModified(QString dir )
 
 BuildTkt::BuildTkt()
 {
-    m_watcher.addPath(RECEIVE_PATH);
+
+    m_SendPath = SEND_PATH;
+    m_ReceivePath = RECEIVE_PATH;
+    m_SendFile = SEND_NAME;
+    m_ReceiveFile = RECEIVE_NAME;
+
+    m_watcher.addPath(m_ReceivePath);
     QObject::connect(&m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(DirModified(QString)));
 }
 
@@ -119,7 +127,7 @@ BuildTkt::~BuildTkt()
 bool BuildTkt::Send(QString cmd)
 {
     int dwTimeout = 0;
-    QString filemane  = QString("%1%2").arg(SEND_PATH).arg(SEND_NAME);
+    QString filemane  = QString("%1%2").arg(m_SendPath).arg(m_SendFile);
 
     m_bDirModified = false;
 
@@ -154,7 +162,7 @@ bool BuildTkt::Send(QString cmd)
 //        qDebug() << "Depois da espera:";
         qSleep(100);
         //qSleep(1);
-        QFile *receivefile = new QFile(QString("%1%2").arg(RECEIVE_PATH).arg(RECEIVE_NAME));
+        QFile *receivefile = new QFile(QString("%1%2").arg(m_ReceivePath).arg(m_ReceiveFile));
 //        qDebug() << "Depois new:";
         if( !receivefile->open(QIODevice::ReadOnly))
         {
@@ -178,7 +186,7 @@ bool BuildTkt::Send(QString cmd)
 //         qDebug() << "Vai deletar receivefile 2:";
         delete receivefile;
 //         qDebug() << "Vai deletar arquivo receivefile:";
-        QFile::remove(QString("%1%2").arg(RECEIVE_PATH).arg(RECEIVE_NAME));
+        QFile::remove(QString("%1%2").arg(m_ReceivePath).arg(m_ReceiveFile));
         qDebug() << "recebido:" << answer;
 
     }
@@ -193,6 +201,15 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
    if(!pCompany || !pTktConfig || !pBank || !pAccount )
    {
        return false;
+   }
+
+   Acbr *pAcbr = Acbr::findByid(1, true);
+   if( pAcbr )
+   {
+       m_SendPath = pAcbr->getSendPath();
+       m_ReceivePath = pAcbr->getReceivePath();
+       m_SendFile = pAcbr->getSendName();
+       m_ReceiveFile = pAcbr->getReceiveName();
    }
 
    m_TktCount = 0;
@@ -324,6 +341,7 @@ bool BuildTkt::AddTickets()
             .arg(m_pCompany->getCEP())
             .arg(m_pTktConfig->getMensagem())
             .arg(m_pTktConfig->getJuros().replace(".",","))
+            .arg(m_pTktConfig->getMulta().replace(".",","))
             .arg(dtVencto.toString("dd/MM/yyyy"))
             .arg(strSpecie);
 

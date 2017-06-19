@@ -18,13 +18,13 @@ public:
     void OpenRemDir();
     void OpenPDF();
     void SendEmail();
+    bool doShipp(QString dir="", QString filename="",BBO_TYPE type=tpTxCond, BBOL_STATUS status=stCreated);
+    bool doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt=0);
 private:
     BuildTkt *g_tkt;
 
     bool InitAcbr();
-    bool doShipp(QString dir, QString filename,BBO_TYPE type, BBOL_STATUS status);
     bool doPrepare(BBO_TYPE type, BBOL_STATUS status);
-    bool doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt=0);
 
     void Send(Dweller *pDweller);
 };

@@ -15,7 +15,7 @@ DECLARE_CLASS(AccountToReceiveModel)
     ORM_DECLARE_ATTRIBUTE(AccountToReceiveModel,QString, Obs)
     ORM_DECLARE_ATTRIBUTE(AccountToReceiveModel,double, Value)
     ORM_DECLARE_ATTRIBUTE(AccountToReceiveModel,double, ValuePaid)
-    ORM_DECLARE_FOREINGKEY(AccountToReceiveModel,int, AccountTypeId, AccountTypeModel, AccountTypeModel);
+    ORM_DECLARE_FOREINGKEY(AccountToReceiveModel,int, AccountTypeId, AccountTypeModel, AccountTypeModel)
     ORM_DECLARE_ATTRIBUTE(AccountToReceiveModel,QString, Description)
     ORM_DECLARE_ATTRIBUTE(AccountToReceiveModel,int, ClientId)
     ORM_DECLARE_ATTRIBUTE(AccountToReceiveModel,bool, Paid)

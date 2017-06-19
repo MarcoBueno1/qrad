@@ -8,7 +8,7 @@
 #include "ticketcontroller.h"
 
 #define BN_DEFAULT_COLUMN_SEARCH 2
-#define SQL_ITEMS "select t.nossonumero as \"NossoNumero\", t.seunumero as \"SeuNumero\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\""\
+#define SQL_ITEMS "select t.nossonumero as \"NossoNumero\", t.seunumero as \"SeuNumero\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
                   " t.valor as \"Valor R$\", t.valorpago as \"Pago R$\",u.name as \"Criado Por\", t.status as \"Estado\", t.sendstatus as \"e-mail\", t.type as \"Tipo\", t.id from "\
                   " ticket t inner join dweller d on d.id = t.clientid inner join vuser u on u.id = t.vuser %1 order by id desc;"
 
@@ -36,6 +36,11 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonAll,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonNotPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
+
+    Qt::WindowFlags flags = windowFlags();
+    flags |= Qt::WindowMaximizeButtonHint;
+    setWindowFlags(flags);
+    setWindowState(Qt::WindowMaximized);
 
     DoRefresh();
 }
@@ -178,10 +183,12 @@ void Managerticket::refreshTable()
 
 void Managerticket::ConfigureTable()
 {
-      ui->tableViewSearch->addSearchColumnFilter(1);
+    ui->tableViewSearch->addSearchColumnFilter(2);
+    ui->tableViewSearch->addSearchColumnFilter(1);
+    ui->tableViewSearch->addSearchColumnFilter(0);
+    ui->tableViewSearch->addSearchColumn(2);
     ui->tableViewSearch->addSearchColumn(1);
     ui->tableViewSearch->addSearchColumn(0);
-    ui->tableViewSearch->addSearchColumnFilter(0);
 
 
    // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Conuna1"));
@@ -272,17 +279,21 @@ void Managerticket::doTxCondominial()
         QMessageBox::information( this,
                                   "Boletos gerdos com sucesso!",
                                   QString("Por favor envie o arquivo de remessa para o banco para que os boletos tenham validade!\nClique em \"Ok\" para abrir pasta que contem o arquivo"));
+
+        pController->doShipp();
         pController->OpenRemDir();
 
         QMessageBox::information( this,
                                   "Imprimir Boletos",
                                   QString("Será aberto o arquivo de boletos. Para imprimir, por favor, verifique se a impressora está conectada e possui papel suficiente."));
 
+        pController->doPrint(tpTxCond,stCreated);
         pController->OpenPDF();
         pController->SendEmail();
     }
 
     delete pController;
+    doRefresh();
 
     /*
     Editticket *edt = new Editticket;

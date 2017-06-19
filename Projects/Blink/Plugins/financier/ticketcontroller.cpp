@@ -4,7 +4,9 @@
 #include "configmodel.h"
 #include "qradshared.h"
 #include "qraddebug.h"
+#include "qradconfig.h"
 #include "accounttoreceivemodel.h"
+#include "accounttoreceivehistorymodel.h"
 #include <QDesktopServices>
 #include <QUrl>
 
@@ -33,7 +35,7 @@
 
 
 #define DEFAULT_REM_DIR "C:\\DVL\\"
-#define DEFAULT_PDF_FILE "C:\\DVL\\BOLETOS.PDF"
+#define DEFAULT_PDF_FILE "C:\\ACBrMonitorPLUS\\BOLETOS.PDF"
 
 
 #define SELECT_EMAILS "select count(*) from dweller where notifbyemail = true and email <> ''"
@@ -111,6 +113,7 @@ bool TicketController::BuildTicketCond(int id )
              tkt->setValor(pMetr->getMontlyValue());
              tkt->setVencto(date);
              tkt->setSendStatus(pDweller->getNotifByEmail()&&!pDweller->getemail().isEmpty()?stPending:stDisabled);
+             tkt->setUser(QRadConfig::GetCurrentUserId());
 
 
              if( !tkt->Save() )
@@ -121,7 +124,9 @@ bool TicketController::BuildTicketCond(int id )
                  delete tkt;
                  return false;
              }
-             doPrint(tpTxCond,stCreated,tkt);
+            // doPrint(tpTxCond,stCreated,tkt);
+            // g_tkt->AppendTicket(pDweller,  QString("%1").arg(tkt->getValor()), tkt->getVencto(),QString("%1").arg(tkt->getNossoNumero()),QString("%1").arg(tkt->getSeuNumero()));
+
 
              AccountToReceiveModel *account  = new  AccountToReceiveModel;
 
@@ -134,6 +139,26 @@ bool TicketController::BuildTicketCond(int id )
              {
                  tkt->updateAccountId(account->getId());
              }
+             else
+             {
+                 QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel salvar conta: Boleto %1 - %2!").arg(tkt->getid()).arg(account->lastError().text()));
+
+             }
+             ///
+             /// History
+             AccountToReceiveHistoryModel *accountToReceiveHistoryModel = new AccountToReceiveHistoryModel;
+
+             accountToReceiveHistoryModel->setAccountToReceiveId(account->getId());
+             accountToReceiveHistoryModel->setTypeOperation(AccountOpCreate);
+             accountToReceiveHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
+             accountToReceiveHistoryModel->setDate(QDate::currentDate());
+             accountToReceiveHistoryModel->setTime(QTime::currentTime());
+
+             accountToReceiveHistoryModel->Save();
+
+             delete accountToReceiveHistoryModel;
+
+             ///
 
 
              delete account;
@@ -141,6 +166,19 @@ bool TicketController::BuildTicketCond(int id )
              delete pTower;
              delete tkt;
         }
+/*        if( !g_tkt->AddTickets() )
+        {
+            QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel adicionar boletos!"));
+            return false;
+        }
+*/
+/*
+        if( g_tkt->BuildShipping(DEFAULT_REM_DIR, "rem001.rem"))
+        {
+            QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel criar o arquivo de remessa!"));
+            return false;
+        }
+*/
         return true;
     }
     return false;
@@ -210,6 +248,11 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
 
 bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBOL_STATUS status)
 {
+    if( dir.isEmpty() || filename.isEmpty())
+    {
+        dir = DEFAULT_REM_DIR;
+        filename = "rem001.rem";
+    }
     if( !doPrepare(type, status))
     {
         return false;
@@ -258,11 +301,11 @@ bool TicketController::InitAcbr()
 
 void TicketController::OpenRemDir()
 {
-    QDesktopServices::openUrl(QUrl(DEFAULT_REM_DIR, QUrl::TolerantMode));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(DEFAULT_REM_DIR));//, QUrl::TolerantMode);
 }
 void TicketController::OpenPDF()
 {
-    QDesktopServices::openUrl(QUrl(DEFAULT_PDF_FILE, QUrl::TolerantMode));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(DEFAULT_PDF_FILE));//, QUrl::TolerantMode);
 
 }
 void TicketController::SendEmail()

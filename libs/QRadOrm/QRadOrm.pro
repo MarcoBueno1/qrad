@@ -12,8 +12,11 @@ TARGET = qradorm
 
 TEMPLATE = lib
 
-INCLUDEPATH += ../QRadCore \
-               ../3rdpart/libpq/include \
+INCLUDEPATH += ../QRadCore
+
+win32:INCLUDEPATH += ../3rdpart/libpq/include
+
+unix:INCLUDEPATH += /usr/include/postgresql\
 
 SOURCES +=  \
            orm.cpp \

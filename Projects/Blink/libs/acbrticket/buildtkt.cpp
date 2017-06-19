@@ -203,6 +203,7 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
        return false;
    }
 
+#ifdef WIN32
    Acbr *pAcbr = Acbr::findByid(1, true);
    if( pAcbr )
    {
@@ -210,7 +211,9 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
        m_ReceivePath = pAcbr->getReceivePath();
        m_SendFile = pAcbr->getSendName();
        m_ReceiveFile = pAcbr->getReceiveName();
+       delete pAcbr;
    }
+#endif
 
    m_TktCount = 0;
    m_ShippNumber =0;
@@ -298,7 +301,7 @@ bool BuildTkt::AddTickets()
        QDate   dtVencto  = m_tickets.at(i)->getDate();
        int dwSpecie  =  m_pTktConfig->getespecie();
        QString strSpecie;
-       QString NossoNumero = QString("%1").arg(m_pTktConfig->getNossoNumero());
+       QString NossoNumero = QString("%1").arg(m_tickets.at(i)->getNossoNumero());
        QString SeuNumero = QString("%1").arg(m_tickets.at(i)->getSeuNumero());
 
        if(dwSpecie)

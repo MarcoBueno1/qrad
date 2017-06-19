@@ -1,4 +1,6 @@
 ﻿#include <QRegExp>
+#include <QCheckBox>
+
 
 #include "column2delegate.h"
 #include "qradmoney.h"
@@ -410,3 +412,59 @@ void ColumnMoney::paint(QPainter *painter,
     drawDisplay(painter, myOption, myOption.rect, QRadMoney::MoneyHumanForm2(text.toDouble()));
     drawFocus(painter, myOption, myOption.rect);
 }
+
+
+ColumnCheckBox::ColumnCheckBox(QObject *parent)
+    : QItemDelegate(parent)
+{
+}
+
+QWidget *ColumnCheckBox::createEditor(QWidget *parent,
+                                      const QStyleOptionViewItem &/*option*/,
+                                      const QModelIndex &/* index */) const
+{
+    QCheckBox *editor = new QCheckBox(parent);
+    editor->setAutoFillBackground(true);
+    return editor;
+}
+
+void ColumnCheckBox::setEditorData(QWidget *editor,const QModelIndex &index) const
+{
+    bool value = index.model()->data(index, Qt::EditRole).toBool();
+
+    QCheckBox *checkBox = static_cast<QCheckBox*>(editor);
+    checkBox->setChecked(value);
+}
+
+void ColumnCheckBox::setModelData(QWidget *editor, QAbstractItemModel *model,
+                                  const QModelIndex &index) const
+{
+    QCheckBox *checkBox = static_cast<QCheckBox*>(editor);
+    bool value = checkBox->isChecked();
+
+    model->setData(index, value, Qt::EditRole);
+}
+void ColumnCheckBox::updateEditorGeometry(QWidget *editor,
+                                          const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const
+{
+    editor->setGeometry(option.rect);
+}
+
+bool ColumnCheckBox::eventFilter(QObject *object, QEvent *event)
+{
+    QWidget *editor = qobject_cast<QWidget*>(object);
+    if (!editor)
+        return false;
+    if (event->type() == QEvent::KeyPress) {
+        switch (static_cast<QKeyEvent *>(event)->key()) {
+        case Qt::Key_Tab:
+        case Qt::Key_Escape:
+            return false;
+        default:
+            return QItemDelegate::eventFilter(object,event);
+        }
+    }
+    return QItemDelegate::eventFilter(object,event);
+}
+
+

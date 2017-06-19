@@ -54,7 +54,8 @@ SOURCES += financierplugin.cpp \
            managerticket.cpp \
            editticket.cpp \
            ticketcontroller.cpp \
-           managershipper.cpp
+           managershipper.cpp \
+    showpayments.cpp
 
 HEADERS += financierplugin.h \
     accounttypemanager.h \
@@ -89,7 +90,8 @@ HEADERS += financierplugin.h \
            managerticket.h \
            editticket.h \
     ticketcontroller.h \
-    managershipper.h
+    managershipper.h \
+    showpayments.h
  
 
 win32:LIBS += -L../../../../libs/QRadCore/release \
@@ -153,7 +155,8 @@ FORMS += accounttypemanager.ui \
            editticketconfig.ui \
            managerticket.ui \
            editticket.ui \
-           managershipper.ui
+           managershipper.ui \
+    showpayments.ui
 
 target.path = $${PREFIX}/bin 
 INSTALLS += target

@@ -28,41 +28,41 @@ void AppendTicket()
 {
     Dweller *pDweller = Dweller::findByPrimaryKey(1);
 
-    bool bRet = g_tkt->AppendTicket(pDweller, "10.00", QDate::currentDate().addDays(15));
+    bool bRet = g_tkt->AppendTicket(pDweller, "10.00", QDate::currentDate().addDays(15), "1", "11");
     if( bRet )
     {
 //        delete pDweller;
         pDweller = Dweller::findByPrimaryKey(2);
-        bRet = g_tkt->AppendTicket(pDweller, "11.50", QDate::currentDate().addDays(10));
+        bRet = g_tkt->AppendTicket(pDweller, "11.50", QDate::currentDate().addDays(10), "2", "22");
         if( bRet )
         {
 //            delete pDweller;
             pDweller = Dweller::findByPrimaryKey(3);
-            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5));
+            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5), "3", "33");
         }
         if( bRet )
         {
 //            delete pDweller;
             pDweller = Dweller::findByPrimaryKey(4);
-            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5));
+            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5), "4", "44");
         }
         if( bRet )
         {
 //            delete pDweller;
             pDweller = Dweller::findByPrimaryKey(5);
-            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5));
+            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5), "5", "55");
         }
         if( bRet )
         {
 //            delete pDweller;
             pDweller = Dweller::findByPrimaryKey(6);
-            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5));
+            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5), "6", "66");
         }
         if( bRet )
         {
 //            delete pDweller;
             pDweller = Dweller::findByPrimaryKey(7);
-            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5));
+            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5), "7", "77");
         }
 
     }

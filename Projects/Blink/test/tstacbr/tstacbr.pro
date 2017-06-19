@@ -26,10 +26,12 @@ LIBS += -L../../libs/acbrticket/ \
         -L../../libs/orm \
         -L../../../../libs/QRadCore \
         -L../../../../libs/QRadOrm \
+        -L../../../../libs/3rdpart/exaro \
         -lqradorm \
         -lqradcore \
         -lblinkorm \
-        -lacbrticket
+        -lacbrticket \
+        -lReport
 
 target.path = $${PREFIX}/bin
 INSTALLS += target

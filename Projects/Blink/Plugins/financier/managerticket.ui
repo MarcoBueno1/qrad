@@ -14,7 +14,49 @@
    <string/>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
-   <item row="0" column="0" colspan="2">
+   <item row="1" column="3">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string> Gerar</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="PshBtnTxCondominial">
+        <property name="text">
+         <string>T. &amp;Con</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="PshBtnTxExtra">
+        <property name="text">
+         <string>T &amp;Extra</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QPushButton" name="PshBtnSair">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>200</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>&amp;Sair</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="4">
     <widget class="QTabWidget" name="tabWidget">
      <property name="font">
       <font>
@@ -113,7 +155,7 @@
           </font>
          </property>
          <property name="title">
-          <string>Boletos</string>
+          <string>ATMs</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -160,7 +202,7 @@
      </widget>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="1" column="2">
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
       <string>Visualizar</string>
@@ -197,46 +239,30 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string> Gerar</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <widget class="QPushButton" name="PshBtnTxCondominial">
-        <property name="text">
-         <string>Tx. &amp;Condominial</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="PshBtnTxExtra">
-        <property name="text">
-         <string>Tx &amp;Extra</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QPushButton" name="PshBtnSair">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
+   <item row="1" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBoxCurrent">
      <property name="maximumSize">
       <size>
        <width>200</width>
        <height>16777215</height>
       </size>
      </property>
-     <property name="text">
-      <string>&amp;Sair</string>
+     <property name="title">
+      <string> Corrente</string>
      </property>
+     <widget class="QPushButton" name="pushButtonReprint">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Re-Imprimir</string>
+      </property>
+     </widget>
     </widget>
    </item>
   </layout>

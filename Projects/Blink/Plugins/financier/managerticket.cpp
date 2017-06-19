@@ -36,6 +36,7 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonAll,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonNotPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
+    connect(ui->pushButtonReprint, SIGNAL(clicked()),this, SLOT(doReprint()));
 
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
@@ -123,6 +124,12 @@ void Managerticket::ShowCurrentInformations( void )
                          ui->tableViewSearch->currentIndex().row() + 1,
                          m_Model->rowCount() );
          ui->groupBoxItens->setTitle(strTemp);
+
+
+         QString dwName = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),2).data().toString();
+         dwName.truncate(30);
+         dwName+="...";
+         ui->groupBoxCurrent->setTitle(dwName);
     }
 }
 void Managerticket::LoadTableView()
@@ -314,4 +321,33 @@ void Managerticket::doSair()
 void Managerticket::doRefresh()
 {
     DoRefresh();
+}
+
+void Managerticket::doReprint()
+{
+
+    int id = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
+                                                         ui->tableViewSearch->getColumnOf("id")).data().toInt();
+
+
+    ticket *tkt = ticket::findByid(id,true);
+    if( !tkt)
+    {
+        QMessageBox::warning(this, "Oops!","Selecione um boleto para poder reimprimir!");
+        return;
+    }
+
+    TicketController *pController = new TicketController;
+    if(pController->doPrint((BBO_TYPE)tkt->getType(),(BBOL_STATUS)tkt->getStatus(), tkt))
+    {
+        QMessageBox::warning(this, "Oops!","Problema na reimpressão do boleto!");
+    }
+    else
+    {
+        QMessageBox::information(this, "Ok!","Boleto reimpresso em PDF!\nClique em \"Ok\" para abrir a pasta que contém o arquivo.");
+        pController->OpenPDF();
+
+    }
+    delete pController;
+    delete tkt;
 }

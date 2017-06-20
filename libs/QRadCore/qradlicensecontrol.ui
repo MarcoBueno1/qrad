@@ -491,24 +491,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
+  <include location="../../Projects/Blink/icons/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

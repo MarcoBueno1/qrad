@@ -170,6 +170,9 @@ LIBS += -lpq \
         -lqradorm \
         -lqradlic
 
+RESOURCES += \
+    ../../Projects/Blink/icons/resources.qrc
+
 win32:QMAKE_LFLAGS += --enable-auto-import
 
 #INSTALLS += target

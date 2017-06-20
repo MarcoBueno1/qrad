@@ -21,27 +21,23 @@ SOURCES +=  \
            edituser.cpp \
            editphone.cpp \
            editaddress.cpp \
-           editemailconf.cpp \
-    qradlicensecontrol.cpp
+           editemailconf.cpp
 
 HEADERS +=  \
            edituser.h \
            editphone.h \
            editaddress.h \
-           editemailconf.h \
-    qradlicensecontrol.h
+           editemailconf.h
 		   
 FORMS +=  \
          edituser.ui \
          editphone.ui \
          editaddress.ui \
-         editemailconf.ui \
-    qradlicensecontrol.ui
+         editemailconf.ui
  
 win32:LIBS +=  -L../QRadCore\release \
                -L../QRadHw\release \
-               -L../QRadOrm/release \
-               -leay32
+               -L../QRadOrm/release
 
 unix:LIBS +=   \
               -L../QRadCore \
@@ -51,8 +47,7 @@ unix:LIBS +=   \
 LIBS += -L../bin \
         -lqradcore  \
         -lqradorm \
-        -lqradhw \
-        -lqradlic
+        -lqradhw
 
 target.path = $${PREFIX}/bin
 INSTALLS += target

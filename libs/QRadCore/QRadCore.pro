@@ -24,7 +24,8 @@ unix:INCLUDEPATH += ./system/inc/lnx \
                     /usr/include/postgresql\
                    ../3rdpart/exaro
 
-INCLUDEPATH += ../QRadOrm
+INCLUDEPATH += ../QRadOrm \
+               ../QRadLic
 
 HEADERS +=  qradplugincontainer.h \
               qradcoreplugin.h \
@@ -86,7 +87,9 @@ HEADERS +=  qradplugincontainer.h \
     qradreportmanager.h \
     reportfactory.h \
     exaroreport.h \
-    qradreportinterface.h
+    qradreportinterface.h \
+    qradlicensecontrol.h
+
 
 
 
@@ -148,28 +151,32 @@ SOURCES +=  qradplugininterface.cpp \
     dsmmoney.cpp \
     qradreportmanager.cpp \
     reportfactory.cpp \
-    exaroreport.cpp
+    exaroreport.cpp\
+    qradlicensecontrol.cpp
 
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c
 
-win32:LIBS += -L ../3rdpart/libpq/win/lib 
-              
+win32:LIBS += -L ../3rdpart/libpq/win/lib   \
+             -leay32
+unix:LIBS += -lssl
 
 LIBS += -lpq \
         -L../3rdpart/exaro \
         -L../QRadOrm/release \
         -L../QRadOrm/ \
+        -L../QRadLic/ \
         -lReport \
-        -lqradorm
+        -lqradorm \
+        -lqradlic
 
 win32:QMAKE_LFLAGS += --enable-auto-import
 
 #INSTALLS += target
 #INSTALLS += target
 
-#FORMS += \
-#    profilemanager.ui \
+FORMS += \
+    qradlicensecontrol.ui
 #    profileregister.ui
 
 target.path = $${PREFIX}/bin

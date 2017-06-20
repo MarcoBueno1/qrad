@@ -12,6 +12,7 @@
 #include "qradlicup.h"
 #include "clicense.h"
 #include <QMessageBox>
+#include "qradlicensecontrol.h"
 
 void centerWidget(QWidget *widget)
 {
@@ -87,6 +88,13 @@ int main(int argc, char *argv[])
     if( pl->IsValidlicense() != DSM_SUCCESS )
     {
        debug_message("Licenca invalida, preparar janela de entrada de licenca... atualize!!!!!");
+       LicenseControl *pLC = new LicenseControl(pl) ;
+       if( QDialog::Accepted != pLC->exec())
+       {
+           delete pLC;
+           return 0;
+       }
+       delete pLC;
     }
 
     delete pl;

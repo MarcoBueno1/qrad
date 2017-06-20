@@ -10,11 +10,11 @@
 #define _CLIENT_SIDE 1
 
 #define QRADL_SELECT_MACHINES        "select id, machine, id from machine order by id"
-#define QRADL_MAX_USERS              "select max from license"
-#define QRADL_SELECT_STOREDLICENSE   "select lastlicense from license"
-#define QRADL_SELECT_CNPJ            "select cnpj from license"
-#define QRADL_UPDATE_LICENSE         "update license set lastlicense = "
-#define QRADL_UPDATE_MAX_USERS       "update license set max = "
+#define QRADL_MAX_USERS              "select max from maincompany"
+#define QRADL_SELECT_STOREDLICENSE   "select lastlicense from maincompany"
+#define QRADL_SELECT_CNPJ            "select cnpj from maincompany"
+#define QRADL_UPDATE_LICENSE         "update maincompany set lastlicense = "
+#define QRADL_UPDATE_MAX_USERS       "update maincompany set max = "
 
 /// FIX: Adjust next line to provide safe fraud verification.
 #define QRADL_SELECT_SELL_DATE       "select data_entrada from visit order by date"
@@ -140,10 +140,10 @@ bool Clicense::IsNewlicenseValid( QString strNewlicense )
 	
     if( strNewlicense.length() > 32 )
     {
-	// has max users information
-	QString strmax = strNewlicense.mid(32);
-	StoreMaxUsers(strmax);
-	strNewlicense.truncate(32);
+        // has max users information
+        QString strmax = strNewlicense.mid(32);
+        StoreMaxUsers(strmax);
+        strNewlicense.truncate(32);
     }
 
     objDate = QDate::currentDate();

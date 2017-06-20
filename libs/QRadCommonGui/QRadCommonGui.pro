@@ -14,37 +14,45 @@ TEMPLATE = lib
 
 INCLUDEPATH += ../QRadCore \
                ../QRadHw \
-               ../QRadOrm
+               ../QRadOrm \
+               ../QRadLic
 
 SOURCES +=  \
            edituser.cpp \
            editphone.cpp \
            editaddress.cpp \
-           editemailconf.cpp
+           editemailconf.cpp \
+    qradlicensecontrol.cpp
 
 HEADERS +=  \
            edituser.h \
            editphone.h \
            editaddress.h \
-           editemailconf.h
+           editemailconf.h \
+    qradlicensecontrol.h
 		   
 FORMS +=  \
          edituser.ui \
          editphone.ui \
          editaddress.ui \
-         editemailconf.ui
+         editemailconf.ui \
+    qradlicensecontrol.ui
  
 win32:LIBS +=  -L../QRadCore\release \
                -L../QRadHw\release \
-               -L../QRadOrm/release  
+               -L../QRadOrm/release \
+               -leay32
 
-unix:LIBS +=  -L../QRadCore \
+unix:LIBS +=   \
+              -L../QRadCore \
               -L../QRadHw \
               -L../QRadOrm
 
-LIBS += -lqradcore  \
+LIBS += -L../bin \
+        -lqradcore  \
         -lqradorm \
-        -lqradhw
+        -lqradhw \
+        -lqradlic
 
 target.path = $${PREFIX}/bin
 INSTALLS += target

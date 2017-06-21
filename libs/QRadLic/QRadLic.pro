@@ -6,6 +6,8 @@ QT += network \
 TARGET = qradlic
 TEMPLATE = lib
 CONFIG += staticlib
+INCLUDEPATH += ../QRadCore
+
 SOURCES += ccrypt.cpp \
     clicense.cpp
 HEADERS += ccrypt.h \

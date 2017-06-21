@@ -6,7 +6,7 @@
 #include <QSqlField>
 #include <QSqlRecord>
 #include <QCryptographicHash>
-
+#include "qraddebug.h"
 #define _CLIENT_SIDE 1
 
 #define QRADL_SELECT_MACHINES        "select id, machine, id from machine order by id"
@@ -55,6 +55,8 @@ int Clicense::IsValidlicense( QString strlicense )
             int nUsers = TooMuchUsers();
             if( nUsers )
             {
+                 debug_message("retornou no too much user=%d\n",nUsers);
+
                  return nUsers;
             }
 
@@ -151,6 +153,9 @@ bool Clicense::IsNewlicenseValid( QString strNewlicense )
     for( int iIndex = 0; iIndex < MAX_MONTHS_LICENSE; iIndex++ )
     {
         strGenratedKey = BuildKey( objDate );
+        debug_message("strGenratedKey=%s strNewlicense=%s\n",
+                      strGenratedKey.toLatin1().data(),
+                      strNewlicense.toLatin1().data());
 //        //qDebug() << "Buind=" << strGenratedKey;
 
         if( strGenratedKey.length()

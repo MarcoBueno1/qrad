@@ -7,6 +7,8 @@
 #include <QDebug>
 #include "ticketcontroller.h"
 #include "editextratx.h"
+#include "accounttoreceivehistorymodel.h"
+
 
 #define BN_DEFAULT_COLUMN_SEARCH 2
 #define SQL_ITEMS "select t.nossonumero as \"NossoNumero\", t.seunumero as \"SeuNumero\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
@@ -39,6 +41,7 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->pushButtonReprint, SIGNAL(clicked()),this, SLOT(doReprint()));
     connect(ui->pushButtonEdit, SIGNAL(clicked()),this, SLOT(doEdit()));
+    connect(ui->pushButtonRemove, SIGNAL(clicked()),this, SLOT(doRemove()));
 
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
@@ -389,4 +392,47 @@ void Managerticket::doEdit()
 
     delete tkt;
     delete pTkt;
+}
+
+void Managerticket::doRemove()
+{
+
+    int id = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
+                                                         ui->tableViewSearch->getColumnOf("id")).data().toInt();
+
+    ticket *tkt = ticket::findByid(id,true);
+    if( !tkt)
+    {
+        QMessageBox::warning(this, "Oops!","Selecione um boleto para poder REmover!");
+        return;
+    }
+
+    QString Obs = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
+                                                         2).data().toString();
+
+    if( QMessageBox::Yes == QMessageBox::question(this,
+                                              QString("Atenção!"),
+                                              QString("Tem certeza que deseja remover o boleto : %1").arg(Obs),
+                                              QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes ))
+    {
+        tkt->setRemoved(true);
+        AccountToReceiveModel *account = AccountToReceiveModel::findById(tkt->getAccountId(),true);
+        if( account )
+        {
+            account->setRemoved(true);
+            if(account->Save())
+            {
+             AccountToReceiveHistoryModel *his = new AccountToReceiveHistoryModel;
+             his->setDate(QDate::currentDate());
+             his->setTime(QTime::currentTime());
+             his->setTypeOperation(AccountOpRemove);
+             his->setUserId(QRadConfig::GetCurrentUserId());
+             his->Save();
+             delete his;
+            }
+            delete account;
+        }
+    }
+
+    delete tkt;
 }

@@ -243,7 +243,7 @@
     <widget class="QGroupBox" name="groupBoxCurrent">
      <property name="maximumSize">
       <size>
-       <width>200</width>
+       <width>350</width>
        <height>16777215</height>
       </size>
      </property>
@@ -274,6 +274,19 @@
       </property>
       <property name="text">
        <string>Editar</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButtonRemove">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>30</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Excluir</string>
       </property>
      </widget>
     </widget>

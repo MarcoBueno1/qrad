@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include "ticketcontroller.h"
+#include "editextratx.h"
 
 #define BN_DEFAULT_COLUMN_SEARCH 2
 #define SQL_ITEMS "select t.nossonumero as \"NossoNumero\", t.seunumero as \"SeuNumero\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
@@ -260,6 +261,7 @@ void Managerticket::MatchNewest(ticket *newest )
 }
 void Managerticket::doTxExtra()
 {
+    /*
     Editticket *edt = new Editticket;
 
     QModelIndex currentIndex = ui->tableViewSearch->currentIndex();
@@ -273,6 +275,17 @@ void Managerticket::doTxExtra()
         MatchNewest(edt->GetSaved());
     }
     delete edt;
+   */
+    Editextratx *edt = new Editextratx;
+    if( QDialog::Accepted  == edt->exec())
+    {
+        TicketController *pt = new TicketController;
+        pt->BuildTicketExtra(edt->GetSaved());
+
+        delete pt;
+    }
+    delete edt;
+
 
 }
 

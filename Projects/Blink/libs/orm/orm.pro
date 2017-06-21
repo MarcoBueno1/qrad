@@ -52,7 +52,8 @@ SOURCES += dweller.cpp \
          ticket.cpp\
          configmodel.cpp \
          shipper.cpp \
-     acbr.cpp
+     acbr.cpp \
+    extratx.cpp
             
 
 HEADERS += dweller.h \
@@ -92,7 +93,8 @@ HEADERS += dweller.h \
     ticket.h \
     configmodel.h \
     shipper.h \
-    acbr.h
+    acbr.h \
+    extratx.h
 
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadOrm\release

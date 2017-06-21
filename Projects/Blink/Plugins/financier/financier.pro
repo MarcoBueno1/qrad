@@ -39,23 +39,24 @@ SOURCES += financierplugin.cpp \
     financierdelegates.cpp \
     editbankaccount.cpp \
     managerbankaccount.cpp \
-           managercnab.cpp \
-           editcnab.cpp \
-           edittipocobranca.cpp \
-           managertipocobranca.cpp \
-           editlayoutbol.cpp \
-           managerlayoutbol.cpp \
-           managertipopessoa.cpp \
-           edittipopessoa.cpp \
-           managerrespemis.cpp \
-           editrespemis.cpp \
-           managerticketconfig.cpp \
-           editticketconfig.cpp \
-           managerticket.cpp \
-           editticket.cpp \
-           ticketcontroller.cpp \
-           managershipper.cpp \
-    showpayments.cpp
+    managercnab.cpp \
+    editcnab.cpp \
+    edittipocobranca.cpp \
+    managertipocobranca.cpp \
+    editlayoutbol.cpp \
+    managerlayoutbol.cpp \
+    managertipopessoa.cpp \
+    edittipopessoa.cpp \
+    managerrespemis.cpp \
+    editrespemis.cpp \
+    managerticketconfig.cpp \
+    editticketconfig.cpp \
+    managerticket.cpp \
+    editticket.cpp \
+    ticketcontroller.cpp \
+    managershipper.cpp \
+    showpayments.cpp \
+    editextratx.cpp
 
 HEADERS += financierplugin.h \
     accounttypemanager.h \
@@ -75,23 +76,24 @@ HEADERS += financierplugin.h \
     financierdelegates.h \
     editbankaccount.h \
     managerbankaccount.h \
-           managercnab.h \
-           editcnab.h \
-           edittipocobranca.h \
-           managertipocobranca.h \
-           editlayoutbol.h \
-           managerlayoutbol.h \
-           edittipopessoa.h \
-           managertipopessoa.h \
-           editrespemis.h \
-           managerrespemis.h \
-           editticketconfig.h \
-           managerticketconfig.h \
-           managerticket.h \
-           editticket.h \
+    managercnab.h \
+    editcnab.h \
+    edittipocobranca.h \
+    managertipocobranca.h \
+    editlayoutbol.h \
+    managerlayoutbol.h \
+    edittipopessoa.h \
+    managertipopessoa.h \
+    editrespemis.h \
+    managerrespemis.h \
+    editticketconfig.h \
+    managerticketconfig.h \
+    managerticket.h \
+    editticket.h \
     ticketcontroller.h \
     managershipper.h \
-    showpayments.h
+    showpayments.h \
+    editextratx.h
  
 
 win32:LIBS += -L../../../../libs/QRadCore/release \
@@ -141,22 +143,23 @@ FORMS += accounttypemanager.ui \
     accountcalendaraux.ui \
     editbankaccount.ui \
     managerbankaccount.ui \
-           managercnab.ui \
-           editcnab.ui \
-           managertipocobranca.ui \
-           edittipocobranca.ui \
-           editlayoutbol.ui \
-           managerlayoutbol.ui \
-           managertipopessoa.ui \
-           edittipopessoa.ui \
-           managerrespemis.ui \
-           editrespemis.ui \
-           managerticketconfig.ui \
-           editticketconfig.ui \
-           managerticket.ui \
-           editticket.ui \
-           managershipper.ui \
-    showpayments.ui
+    managercnab.ui \
+    editcnab.ui \
+    managertipocobranca.ui \
+    edittipocobranca.ui \
+    editlayoutbol.ui \
+    managerlayoutbol.ui \
+    managertipopessoa.ui \
+    edittipopessoa.ui \
+    managerrespemis.ui \
+    editrespemis.ui \
+    managerticketconfig.ui \
+    editticketconfig.ui \
+    managerticket.ui \
+    editticket.ui \
+    managershipper.ui \
+    showpayments.ui \
+    editextratx.ui
 
 target.path = $${PREFIX}/bin 
 INSTALLS += target

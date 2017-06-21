@@ -5,6 +5,7 @@
 
 #include "buildtkt.h"
 #include "dweller.h"
+#include "extratx.h"
 
 
 
@@ -15,6 +16,7 @@ public:
     ~TicketController();
 
     bool BuildTicketCond(int id=0 );
+    bool BuildTicketExtra( extratx *pTx );
     void OpenRemDir();
     void OpenPDF();
     void SendEmail();
@@ -27,6 +29,10 @@ private:
     bool doPrepare(BBO_TYPE type, BBOL_STATUS status);
 
     void Send(Dweller *pDweller);
+    bool BuildTicket( DwellerList *dlist,
+                      QDate date,
+                      int type,
+                      QString Obs );
 };
 
 #endif // TICKETCONTROLLER_H

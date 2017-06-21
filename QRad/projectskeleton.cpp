@@ -8,7 +8,8 @@
 "TEMPLATE = lib\n"\
 "CONFIG += plugin\n"\
 "\n"\
-"INCLUDEPATH = ../../../libs/QRadCore \n"\
+"INCLUDEPATH = ../../../libs/QRadCore \\ \n"\
+"              ../../../libs/QRadOrm  \n"\
 "\n"\
 "DESTDIR = .\n"\
 "SOURCES = \\ \n"\
@@ -23,7 +24,9 @@
 "%4"\
 "\n"\
 "LIBS += -L../../../libs/QRadCore \\ \n"\
-"        -lqradcore \n"\
+"        -L../../../libs/QRadOrm \\ \n"\
+"        -lqradcore \\ \n"\
+"        -lqradorm  \n"\
 "\n"\
 "win32:QMAKE_LFLAGS += --enable-auto-import \n"\
 "\n"\

@@ -19,6 +19,7 @@ ORM_BEGIN_MAP(ticket)
      ORM_MAP_FIELD(SendStatus, "sendstatus");
      ORM_MAP_FIELD(LoId, "loid");
      ORM_MAP_FIELD(Removed, "removed");
+     ORM_MAP_FIELD(ExtraTxId, "extratxid");
 ORM_END_MAP()
 
 

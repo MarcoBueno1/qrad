@@ -24,7 +24,7 @@
 
 
 #define FIN_AP_WITH_NO_PAYER " select ap.numero as \"Ap\", tower.name as \"Torre\" from ap, tower  where not exists( select a2,b2 from ( select d.ap a2 , "\
-                             " d.tower b2 from dweller d where d.payer = true and d.removed <> true) as foo where a2=ap.id and b2=tower.id) "
+                             " d.tower b2 from dweller d where d.payer = true and d.removed <> true) as foo where a2=ap.id and b2=tower.id) and tower.tp = 1"
 
 
 #define FIN_GET_LAST_NUMBER  "select * from ticket order by nossonumero desc limit 1"
@@ -40,7 +40,7 @@
 
 #define SELECT_EMAILS "select count(*) from dweller where notifbyemail = true and email <> ''"
 
-
+#define SELECT_DWELER_FOR_EXTRA_TAX "select * form dweller where removed = false and payer = true"
 TicketController::TicketController()
 {
   g_tkt = new BuildTkt;
@@ -50,6 +50,147 @@ TicketController::~TicketController()
 {
 
     delete g_tkt ;
+}
+
+bool TicketController::BuildTicket(DwellerList *dlist,
+                                  QDate date,
+                                  int type,
+                                  QString Obs)
+{
+
+    int nLastNumber = 0;
+    ticketList *ptList = ticket::findBy(FIN_GET_LAST_NUMBER);
+    if ( ptList)
+        nLastNumber = ptList->at(0)->getNossoNumero();
+    if( !nLastNumber)
+    {
+        ticketconfigList *ptktConfig = ticketconfig::findAll();
+        if(ptktConfig)
+            nLastNumber = ptktConfig->at(0)->getNossoNumero();
+
+    }
+
+
+
+    for( int i = 0; i < dlist->count(); i++)
+    {
+         nLastNumber++;
+         Dweller *pDweller = dlist->at(i);
+         Ap *ap = pDweller->getAp();
+         Tower *pTower = Tower::findByid(pDweller->gettower());
+         metreage *pMetr = metreage::findByid(ap->getMetreageId(), true);
+         if( !pMetr )
+         {
+             QMessageBox::warning(NULL, "Oops!", QString("O apartamento %1 não possui metragem configurada, não poderá ser gerado boleto para este apartamento!").arg(ap->getNumber()));
+             continue;
+         }
+
+         ticket *tkt = new ticket ;
+
+         tkt->setNossoNumero(nLastNumber);
+         tkt->setclientid(pDweller->getid());
+         tkt->setidticket(1); // as default
+         tkt->setObs(QString("%1 %2").arg(Obs).arg(date.toString(FMT_DATE)));
+         tkt->setSeuNumero(QString("%1%2").arg(pDweller->gettower()).arg(pDweller->getAp()->getNumber()).toInt());
+         tkt->setType(type);
+         tkt->setValor(pMetr->getMontlyValue());
+         tkt->setVencto(date);
+         tkt->setSendStatus(pDweller->getNotifByEmail()&&!pDweller->getemail().isEmpty()?stPending:stDisabled);
+         tkt->setUser(QRadConfig::GetCurrentUserId());
+
+
+         if( !tkt->Save() )
+         {
+             QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel gerar o boleto de %1 - %2 %3!").arg(pDweller->getName()).arg(pTower->getName()));
+             delete pMetr;
+             delete pTower;
+             delete tkt;
+             return false;
+         }
+        // doPrint(tpTxCond,stCreated,tkt);
+        // g_tkt->AppendTicket(pDweller,  QString("%1").arg(tkt->getValor()), tkt->getVencto(),QString("%1").arg(tkt->getNossoNumero()),QString("%1").arg(tkt->getSeuNumero()));
+
+
+         AccountToReceiveModel *account  = new  AccountToReceiveModel;
+
+         account->setClientId(pDweller->getid());
+         account->setDescription(QString("%1 AP: %2-%3 (%4)").arg(Obs).arg(ap->getNumber()).arg(pTower->getName()).arg(pDweller->getName()));
+         account->setIssueDate(QDate::currentDate());
+         account->setVencDate(date);
+         account->setValue(pMetr->getMontlyValue());
+         if( account->Save())
+         {
+             tkt->updateAccountId(account->getId());
+         }
+         else
+         {
+             QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel salvar conta: Boleto %1 - %2!").arg(tkt->getid()).arg(account->lastError().text()));
+
+         }
+         ///
+         /// History
+         AccountToReceiveHistoryModel *accountToReceiveHistoryModel = new AccountToReceiveHistoryModel;
+
+         accountToReceiveHistoryModel->setAccountToReceiveId(account->getId());
+         accountToReceiveHistoryModel->setTypeOperation(AccountOpCreate);
+         accountToReceiveHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
+         accountToReceiveHistoryModel->setDate(QDate::currentDate());
+         accountToReceiveHistoryModel->setTime(QTime::currentTime());
+
+         accountToReceiveHistoryModel->Save();
+
+         delete accountToReceiveHistoryModel;
+
+         ///
+
+
+         delete account;
+         delete pMetr;
+         delete pTower;
+         delete tkt;
+    }
+}
+
+bool TicketController::BuildTicketExtra( extratx *pTx )
+{
+    Dweller *pD;
+    DwellerList *dlist ;
+    QDate date = pTx->getData();
+
+    if(pTx->getAll())
+    {
+        dlist = Dweller::findBy(QString(SELECT_DWELER_FOR_EXTRA_TAX));
+        if( !dlist )
+        {
+          QMessageBox::information(NULL, "Oops!", "Nenhum morador pagador encontrado, por favor ajustar o cadastro!");
+          return false;
+        }
+    }
+    else
+    {
+         dlist = new DwellerList;
+
+         pD = Dweller::findByid(pTx->getDweller());
+         dlist->append(pD);
+    }
+
+    for( int i = 0; i < pTx->getTimes(); i++ )
+    {
+        BuildTicket( dlist,
+                     date,
+                     tpTxExtr,
+                     "TX EXTRA");
+
+        date.addMonths(1);
+    }
+
+    if(!pTx->getAll())
+    {
+        delete pD;
+        delete dlist;
+    }
+
+    return true;
 }
 
 bool TicketController::BuildTicketCond(int id )
@@ -77,95 +218,13 @@ bool TicketController::BuildTicketCond(int id )
           QMessageBox::information(NULL, "Oops!", "Todos os boletos de taixa condominial deste mes ja foram emitidos!");
           return false;
         }
-        int nLastNumber = 0;
-        ticketList *ptList = ticket::findBy(FIN_GET_LAST_NUMBER);
-        if ( ptList)
-            nLastNumber = ptList->at(0)->getNossoNumero();
-        if( !nLastNumber)
-        {
-            ticketconfigList *ptktConfig = ticketconfig::findAll();
-            if(ptktConfig)
-                nLastNumber = ptktConfig->at(0)->getNossoNumero();
-        }
+
+        BuildTicket( dlist,
+                     date,
+                     tpTxCond,
+                     "TAXA CONDOMINIAL");
 
 
-        for( int i = 0; i < dlist->count(); i++)
-        {
-             nLastNumber++;
-             Dweller *pDweller = dlist->at(i);
-             Ap *ap = pDweller->getAp();
-             Tower *pTower = Tower::findByid(pDweller->gettower());
-             metreage *pMetr = metreage::findByid(ap->getMetreageId(), true);
-             if( !pMetr )
-             {
-                 QMessageBox::warning(NULL, "Oops!", QString("O apartamento %1 não possui metragem configurada, não poderá ser gerado boleto para este apartamento!").arg(ap->getNumber()));
-                 continue;
-             }
-
-             ticket *tkt = new ticket ;
-
-             tkt->setNossoNumero(nLastNumber);
-             tkt->setclientid(pDweller->getid());
-             tkt->setidticket(1); // as default
-             tkt->setObs(QString("TAXA CONDOMINIAL %1").arg(date.toString(FMT_DATE)));
-             tkt->setSeuNumero(QString("%1%2").arg(pDweller->gettower()).arg(pDweller->getAp()->getNumber()).toInt());
-             tkt->setType(tpTxCond);
-             tkt->setValor(pMetr->getMontlyValue());
-             tkt->setVencto(date);
-             tkt->setSendStatus(pDweller->getNotifByEmail()&&!pDweller->getemail().isEmpty()?stPending:stDisabled);
-             tkt->setUser(QRadConfig::GetCurrentUserId());
-
-
-             if( !tkt->Save() )
-             {
-                 QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel gerar o boleto de %1 - %2 %3!").arg(pDweller->getName()).arg(pTower->getName()));
-                 delete pMetr;
-                 delete pTower;
-                 delete tkt;
-                 return false;
-             }
-            // doPrint(tpTxCond,stCreated,tkt);
-            // g_tkt->AppendTicket(pDweller,  QString("%1").arg(tkt->getValor()), tkt->getVencto(),QString("%1").arg(tkt->getNossoNumero()),QString("%1").arg(tkt->getSeuNumero()));
-
-
-             AccountToReceiveModel *account  = new  AccountToReceiveModel;
-
-             account->setClientId(pDweller->getid());
-             account->setDescription(QString("TX CONDOMINIAL AP: %1-%2 (%3)").arg(ap->getNumber()).arg(pTower->getName()).arg(pDweller->getName()));
-             account->setIssueDate(QDate::currentDate());
-             account->setVencDate(date);
-             account->setValue(pMetr->getMontlyValue());
-             if( account->Save())
-             {
-                 tkt->updateAccountId(account->getId());
-             }
-             else
-             {
-                 QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel salvar conta: Boleto %1 - %2!").arg(tkt->getid()).arg(account->lastError().text()));
-
-             }
-             ///
-             /// History
-             AccountToReceiveHistoryModel *accountToReceiveHistoryModel = new AccountToReceiveHistoryModel;
-
-             accountToReceiveHistoryModel->setAccountToReceiveId(account->getId());
-             accountToReceiveHistoryModel->setTypeOperation(AccountOpCreate);
-             accountToReceiveHistoryModel->setUserId(QRadConfig::GetCurrentUserId());
-             accountToReceiveHistoryModel->setDate(QDate::currentDate());
-             accountToReceiveHistoryModel->setTime(QTime::currentTime());
-
-             accountToReceiveHistoryModel->Save();
-
-             delete accountToReceiveHistoryModel;
-
-             ///
-
-
-             delete account;
-             delete pMetr;
-             delete pTower;
-             delete tkt;
-        }
 /*        if( !g_tkt->AddTickets() )
         {
             QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel adicionar boletos!"));

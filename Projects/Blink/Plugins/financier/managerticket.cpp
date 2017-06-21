@@ -38,6 +38,7 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonNotPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->pushButtonReprint, SIGNAL(clicked()),this, SLOT(doReprint()));
+    connect(ui->pushButtonEdit, SIGNAL(clicked()),this, SLOT(doEdit()));
 
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
@@ -363,4 +364,29 @@ void Managerticket::doReprint()
     }
     delete pController;
     delete tkt;
+}
+
+void Managerticket::doEdit()
+{
+
+    int id = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
+                                                         ui->tableViewSearch->getColumnOf("id")).data().toInt();
+
+    ticket *tkt = ticket::findByid(id,true);
+    if( !tkt)
+    {
+        QMessageBox::warning(this, "Oops!","Selecione um boleto para poder Editar!");
+        return;
+    }
+
+    Editticket *pTkt =  new Editticket;
+    pTkt->SetModel(tkt);
+    if( QDialog::Accepted == pTkt->exec())
+    {
+        doRefresh();
+
+    }
+
+    delete tkt;
+    delete pTkt;
 }

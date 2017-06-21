@@ -31,6 +31,7 @@ public slots:
     void doSair();
     void doTxCondominial();
     void doReprint();
+    void doEdit();
 
 private:
     Ui::Managerticket *ui;

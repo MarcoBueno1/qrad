@@ -6,6 +6,9 @@
 #include <QAbstractItemModel>
 #include <QVariant>
 #include <QSqlField>
+#include "accounttoreceivemodel.h"
+#include "accounttoreceivehistorymodel.h"
+#include "qradconfig.h"
 
 
 Editticket::Editticket(QWidget *parent) :
@@ -62,6 +65,23 @@ void Editticket::Save()
     m_mod = NULL;
     if( bRet )
     {
+       AccountToReceiveModel *account = AccountToReceiveModel::findById(mod->getAccountId(),true);
+       if( account )
+       {
+           account->setValue(mod->getValor());
+           account->setVencDate(mod->getVencto());
+           if(account->Save())
+           {
+            AccountToReceiveHistoryModel *his = new AccountToReceiveHistoryModel;
+            his->setDate(QDate::currentDate());
+            his->setTime(QTime::currentTime());
+            his->setTypeOperation(AccountOpEdit);
+            his->setUserId(QRadConfig::GetCurrentUserId());
+            his->Save();
+            delete his;
+           }
+           delete account;
+       }
        QMessageBox::information(this, "Sucesso!","Informações foram salvas com sucesso!");
        accept();
     }

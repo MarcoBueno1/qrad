@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QKeyEvent>
 #include "ticket.h"
+#include <QSqlQueryModel>
+
 
 namespace Ui {
 class Editticket;

@@ -55,7 +55,8 @@ TicketController::~TicketController()
 bool TicketController::BuildTicket(DwellerList *dlist,
                                   QDate date,
                                   int type,
-                                  QString Obs)
+                                  QString Obs,
+                                  int ExtraTxId)
 {
 
     int nLastNumber = 0;
@@ -97,6 +98,7 @@ bool TicketController::BuildTicket(DwellerList *dlist,
          tkt->setVencto(date);
          tkt->setSendStatus(pDweller->getNotifByEmail()&&!pDweller->getemail().isEmpty()?stPending:stDisabled);
          tkt->setUser(QRadConfig::GetCurrentUserId());
+         tkt->setExtraTxId(ExtraTxId);
 
 
          if( !tkt->Save() )
@@ -179,7 +181,8 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
         BuildTicket( dlist,
                      date,
                      tpTxExtr,
-                     "TX EXTRA");
+                     "TX EXTRA",
+                     pTx->getId());
 
         date.addMonths(1);
     }

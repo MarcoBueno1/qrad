@@ -32,7 +32,8 @@ private:
     bool BuildTicket( DwellerList *dlist,
                       QDate date,
                       int type,
-                      QString Obs );
+                      QString Obs,
+                      int ExtraTxId=0 );
 };
 
 #endif // TICKETCONTROLLER_H

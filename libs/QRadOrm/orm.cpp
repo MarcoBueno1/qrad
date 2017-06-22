@@ -162,6 +162,10 @@ void ORM::CreateTable()
         strCreate += " , " +CreateFieldTxt( userid);
         delete userid;
 
+        ORMAttribute_int *origin = new ORMAttribute_int();
+        origin->setFieldName("originid");
+        strCreate += " , " +CreateFieldTxt( origin);
+        delete origin;
 
     }
 
@@ -247,8 +251,14 @@ int ORM::lastInsertId()
 
 bool ORM::do_insert()
 {
+    int nTempId = 0;
     QString query;
     bool ret = false;
+    if( m_IsAudit)
+    {
+        nTempId = m_primaryKey->value().toInt();
+        m_primaryKey->setValue(0);
+    }
     for( int i = 0; i < 2; i++)
     {
         QString fields = "";
@@ -278,8 +288,8 @@ bool ORM::do_insert()
         }
         if( m_IsAudit)
         {
-           fields += ",userid";
-           values += ",?";
+           fields += ",userid, originid ";
+           values += ",?,?";
         }
 
         if(getDatabase().driverName() == "QSQLITE")
@@ -316,10 +326,15 @@ bool ORM::do_insert()
            QCoreApplication *app = QCoreApplication::instance();
            int CurrentUser = app->property("CurrentUserId").toInt();
            insert->addBindValue(CurrentUser);
+           insert->addBindValue( nTempId );
         }
 
         ret = insert->exec();
 
+        if( m_IsAudit)
+        {
+            m_primaryKey->setValue(nTempId);
+        }
 
         if (ret)
         {

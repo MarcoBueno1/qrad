@@ -50,6 +50,7 @@ int Clicense::IsValidlicense( QString strlicense )
             // step 3 -- Verify date Fraud ..
             if( IsLocalDateWrong())
             {
+                debug_message("<--IsValidlicense()=DSM_ERR_DATE_FRAUD\n");
                 return DSM_ERR_DATE_FRAUD;
             }
             int nUsers = TooMuchUsers();
@@ -60,9 +61,11 @@ int Clicense::IsValidlicense( QString strlicense )
                  return nUsers;
             }
 
+            debug_message("<--IsValidlicense()=DSM_SUCCESS\n");
             return DSM_SUCCESS;
         }
 
+        debug_message("<--IsValidlicense()=DSM_ERR_INVALID_LICENSE\n");
         return DSM_ERR_INVALID_LICENSE;
     }
 
@@ -73,12 +76,15 @@ int Clicense::IsValidlicense( QString strlicense )
          // step 5 -- Verify date Fraud ..
          if( IsLocalDateWrong())
          {
+                debug_message("<--IsValidlicense()=DSM_ERR_DATE_FRAUD\n");
                 return DSM_ERR_DATE_FRAUD;
          }
+         debug_message("<--IsValidlicense()=DSM_SUCCESS\n");
          return DSM_SUCCESS;
     }
 
 
+    debug_message("<--IsValidlicense()=DSM_ERR_INVALID_LICENSE\n");
     return DSM_ERR_INVALID_LICENSE;
 }
 
@@ -135,6 +141,8 @@ bool Clicense::IsNewlicenseValid( QString strNewlicense )
     QDate objDate;
     QString strGenratedKey;
 
+    debug_message("-->IsNewlicenseValid()\n");
+
     if( 0 == strNewlicense.length())
     {
         return false;
@@ -161,6 +169,7 @@ bool Clicense::IsNewlicenseValid( QString strNewlicense )
         if( strGenratedKey.length()
             && ( strGenratedKey == strNewlicense ) )
         {
+            debug_message("<--IsNewlicenseValid()=true\n");
             return true;
         }
         //qDebug() << "Index=" << iIndex << "Buind=" << strGenratedKey;
@@ -168,6 +177,7 @@ bool Clicense::IsNewlicenseValid( QString strNewlicense )
         objDate = objDate.addMonths(1);
     }
 
+    debug_message("<--IsNewlicenseValid()=false\n");
     return false;
 }
 
@@ -242,6 +252,8 @@ QString Clicense::GetStoredKey()
 
 int Clicense::TooMuchUsers()
 {
+     return 0; /// verificar implementacao futura desta parte...
+
      QSqlQuery query;
      QString strMax = GetMaxUsers( GetCNPJ() );
 	 

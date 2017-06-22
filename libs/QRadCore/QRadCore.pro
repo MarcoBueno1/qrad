@@ -166,6 +166,7 @@ LIBS += -lpq \
         -L../QRadOrm/release \
         -L../QRadOrm/ \
         -L../QRadLic/ \
+        -L../QRadLic/release \
         -lReport \
         -lqradorm \
         -lqradlic

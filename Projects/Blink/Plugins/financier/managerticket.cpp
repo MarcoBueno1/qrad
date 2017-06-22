@@ -10,10 +10,12 @@
 #include "accounttoreceivehistorymodel.h"
 
 
-#define BN_DEFAULT_COLUMN_SEARCH 2
-#define SQL_ITEMS "select t.nossonumero as \"NossoNumero\", t.seunumero as \"SeuNumero\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
+#define BN_DEFAULT_COLUMN_SEARCH 1
+#define SQL_ITEMS "select t.nossonumero as \"Nº.Banco\", t.seunumero as \"Nº.Sis\", a.numero as \"Ap\", tw.name as \"Torre\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
                   " t.valor as \"Valor R$\", t.valorpago as \"Pago R$\",u.name as \"Criado Por\", t.status as \"Estado\", t.sendstatus as \"e-mail\", t.type as \"Tipo\", t.id from "\
-                  " ticket t inner join dweller d on d.id = t.clientid inner join vuser u on u.id = t.vuser %1 order by id desc;"
+                  " ticket t inner join dweller d on d.id = t.clientid inner join vuser u on u.id = t.vuser "\
+                  " inner join ap a on a.id = d.ap inner join tower tw on tw.id = d.tower "\
+                  " %1 order by id desc; "
 
 Managerticket::Managerticket(QWidget *parent) :
     QDialog(parent),
@@ -195,9 +197,13 @@ void Managerticket::refreshTable()
 
 void Managerticket::ConfigureTable()
 {
+    ui->tableViewSearch->addSearchColumnFilter(4);
+    ui->tableViewSearch->addSearchColumnFilter(3);
     ui->tableViewSearch->addSearchColumnFilter(2);
     ui->tableViewSearch->addSearchColumnFilter(1);
     ui->tableViewSearch->addSearchColumnFilter(0);
+    ui->tableViewSearch->addSearchColumn(4);
+    ui->tableViewSearch->addSearchColumn(3);
     ui->tableViewSearch->addSearchColumn(2);
     ui->tableViewSearch->addSearchColumn(1);
     ui->tableViewSearch->addSearchColumn(0);
@@ -211,18 +217,21 @@ void Managerticket::ConfigureTable()
 
    // ui->tableViewSearch->setColumnWidth(0, 0.06 * ui->tableViewSearch->width());
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
+    ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("Criado Por"));
     ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
     ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnCenter);
     ui->tableViewSearch->setItemDelegateForColumn(2, new ColumnCenter);
-    ui->tableViewSearch->setItemDelegateForColumn(3, new ColumnDate);
-    ui->tableViewSearch->setItemDelegateForColumn(4, new ColumnDate);
-    ui->tableViewSearch->setItemDelegateForColumn(5, new ColumnMoney);
-    ui->tableViewSearch->setItemDelegateForColumn(6, new ColumnMoney);
-    ui->tableViewSearch->setItemDelegateForColumn(7, new ColumnCenter);
+    ui->tableViewSearch->setItemDelegateForColumn(3, new ColumnCenter);
+    ui->tableViewSearch->setItemDelegateForColumn(4, new ColumnCenter);
+    ui->tableViewSearch->setItemDelegateForColumn(5, new ColumnDate);
+    ui->tableViewSearch->setItemDelegateForColumn(6, new ColumnDateTimeNull);
+    ui->tableViewSearch->setItemDelegateForColumn(7, new ColumnMoney);
+    ui->tableViewSearch->setItemDelegateForColumn(8, new ColumnMoney);
+    ui->tableViewSearch->setItemDelegateForColumn(9, new ColumnCenter);
 
-    ui->tableViewSearch->setItemDelegateForColumn(8, new ColumnTktStatus);
-    ui->tableViewSearch->setItemDelegateForColumn(9, new ColumnEmail);
-    ui->tableViewSearch->setItemDelegateForColumn(10, new ColumnTktType);
+    ui->tableViewSearch->setItemDelegateForColumn(10, new ColumnTktStatus);
+    ui->tableViewSearch->setItemDelegateForColumn(11, new ColumnEmail);
+    ui->tableViewSearch->setItemDelegateForColumn(12, new ColumnTktType);
 
 
 }
@@ -287,6 +296,7 @@ void Managerticket::doTxExtra()
         pt->BuildTicketExtra(edt->GetSaved());
 
         delete pt;
+        doRefresh();
     }
     delete edt;
 
@@ -407,12 +417,21 @@ void Managerticket::doRemove()
         return;
     }
 
-    QString Obs = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
+    QString Obs = "\nAp: "+ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
                                                          2).data().toString();
+    Obs += "\nTorre: "+ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
+                                                         3).data().toString();
+    Obs += "\nMorador: "+ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
+                                                         4).data().toString();
 
+    Obs += "\nValorR$: "+ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
+                                                         7).data().toString();
+
+    Obs += "\nVencimento: "+ QDate::fromString(ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
+                                                         5).data().toString(),FMT_DATE_DB).toString(FMT_DATE);
     if( QMessageBox::Yes == QMessageBox::question(this,
                                               QString("Atenção!"),
-                                              QString("Tem certeza que deseja remover o boleto : %1").arg(Obs),
+                                              QString("Tem certeza que deseja remover este boleto? \n%1").arg(Obs),
                                               QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes ))
     {
         tkt->setRemoved(true);

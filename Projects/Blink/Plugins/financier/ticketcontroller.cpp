@@ -40,7 +40,7 @@
 
 #define SELECT_EMAILS "select count(*) from dweller where notifbyemail = true and email <> ''"
 
-#define SELECT_DWELER_FOR_EXTRA_TAX "select * form dweller where removed = false and payer = true"
+#define SELECT_DWELER_FOR_EXTRA_TAX "select * from dweller d where removed = false and payer = true order by d.id"
 TicketController::TicketController()
 {
   g_tkt = new BuildTkt;
@@ -59,6 +59,7 @@ bool TicketController::BuildTicket(DwellerList *dlist,
                                   int ExtraTxId)
 {
 
+    double txValue = 0;
     int nLastNumber = 0;
     ticketList *ptList = ticket::findBy(FIN_GET_LAST_NUMBER);
     if ( ptList)
@@ -70,7 +71,15 @@ bool TicketController::BuildTicket(DwellerList *dlist,
             nLastNumber = ptktConfig->at(0)->getNossoNumero();
 
     }
-
+    if( ExtraTxId )
+    {
+        extratx *ext = extratx::findById(ExtraTxId,true);
+        if( ext )
+        {
+            txValue = ext->getValue();
+            delete ext;
+        }
+    }
 
 
     for( int i = 0; i < dlist->count(); i++)
@@ -94,7 +103,11 @@ bool TicketController::BuildTicket(DwellerList *dlist,
          tkt->setObs(QString("%1 %2").arg(Obs).arg(date.toString(FMT_DATE)));
          tkt->setSeuNumero(QString("%1%2").arg(pDweller->gettower()).arg(pDweller->getAp()->getNumber()).toInt());
          tkt->setType(type);
-         tkt->setValor(pMetr->getMontlyValue());
+         if( type == tpTxCond)
+             tkt->setValor(pMetr->getMontlyValue());
+         else
+             tkt->setValor(txValue);
+
          tkt->setVencto(date);
          tkt->setSendStatus(pDweller->getNotifByEmail()&&!pDweller->getemail().isEmpty()?stPending:stDisabled);
          tkt->setUser(QRadConfig::GetCurrentUserId());
@@ -119,7 +132,7 @@ bool TicketController::BuildTicket(DwellerList *dlist,
          account->setDescription(QString("%1 AP: %2-%3 (%4)").arg(Obs).arg(ap->getNumber()).arg(pTower->getName()).arg(pDweller->getName()));
          account->setIssueDate(QDate::currentDate());
          account->setVencDate(date);
-         account->setValue(pMetr->getMontlyValue());
+         account->setValue( tkt->getValor());
          if( account->Save())
          {
              tkt->updateAccountId(account->getId());

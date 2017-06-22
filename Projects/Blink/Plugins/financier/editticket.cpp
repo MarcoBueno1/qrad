@@ -103,7 +103,7 @@ void Editticket::Load()
     QString Sql = QString("select d.id, d.name, a.numero, t.name, d.email "\
              "from dweller d "\
              "inner join tower t on t.id= d.tower "\
-             "inner join ap a on a.id = d.ap  where id = %1").arg(m_mod->getclientid());
+             "inner join ap a on a.id = d.ap  where d.id = %1").arg(m_mod->getclientid());
     QSqlQuery *pQ = new QSqlQuery ;
     if(pQ->exec(Sql))
     {
@@ -113,8 +113,28 @@ void Editticket::Load()
         ui->LnEdtTower->setText(pQ->record().field(3).value().toString());
         ui->LnEdtemail->setText(pQ->record().field(4).value().toString());
     }
-    delete pQ;
+    if(pQ->exec(QString("select number from phone where owertype = 0 and owner = %1")
+             .arg(pQ->record().field(0).value().toInt())))
+    {
+        pQ->first();
+        QString cat;
+        for (int i=0; i < pQ->size();i++)
+        {
+            cat += pQ->record().field(0).value().toString() + "  ";
+            pQ->next();
+        }
+        ui->LnEdtPhone->setText(cat);
+    }
 
+    delete pQ;
+    ui->LnEdtNome->setReadOnly(true);
+    ui->LnEdtAp->setReadOnly(true);
+    ui->LnEdtTower->setReadOnly(true);
+    ui->LnEdtemail->setReadOnly(true);
+    ui->comboBox->setEnabled(false);
+    ui->LnEdtNossoNumero->setReadOnly(true);
+    ui->LnEdtSeuNumero->setReadOnly(true);
+    ui->LnEdtPhone->setReadOnly(true);
 }
 
 void Editticket::Cancel()

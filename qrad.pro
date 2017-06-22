@@ -43,8 +43,8 @@ CONFIG += ordered
 SUBDIRS = QRad \
           libs/QRadOrm \
           libs/QRadHw \
-          libs/QRadCore \
           libs/QRadLic \
+          libs/QRadCore \
           libs/QRadLicUp \
           libs/pdfwrapper \
           libs/QRadCommonGui \

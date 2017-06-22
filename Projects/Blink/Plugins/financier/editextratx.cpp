@@ -87,7 +87,7 @@ void Editextratx::Save()
        accept();
     }
     else
-       QMessageBox::warning(this, "Oops","Não foi possivel salvar");
+       QMessageBox::warning(this, "Oops",QString("Não foi possivel salvar\n%1").arg(mod->lastError().text()));
     
 }
 

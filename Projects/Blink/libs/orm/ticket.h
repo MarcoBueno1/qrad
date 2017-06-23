@@ -8,7 +8,8 @@ typedef enum enu_status_tkt
 {
   stCreated,
   stBuiltShipp,
-  stPaid 
+  stPaid,
+  stModified
 }BBOL_STATUS, *PBBOL_STATUS;
 
 

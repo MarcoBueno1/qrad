@@ -8,6 +8,7 @@
 #include "accounttoreceivemodel.h"
 #include "accounttoreceivehistorymodel.h"
 #include <QDesktopServices>
+#include "editticket.h"
 #include <QUrl>
 
 #include <QMessageBox>
@@ -418,4 +419,81 @@ void TicketController::SendEmail()
 void TicketController::Send(Dweller *pDweller )
 {
 
+}
+
+bool TicketController::Edit(int id)
+{
+    bool bRet = false;
+    ticket *tkt = ticket::findByid(id,true);
+    if( !tkt)
+    {
+        QMessageBox::warning(NULL, "Oops!","Selecione um boleto para poder Editar!");
+        return bRet;
+    }
+    if( tkt->getStatus() == stPaid)
+    {
+        QMessageBox::warning(NULL, "Oops!","Este boleto NÃO pode ser editado, Ele já foi pago!");
+        return bRet;
+    }
+
+    Editticket *pTkt =  new Editticket;
+    pTkt->SetModel(tkt);
+    if( QDialog::Accepted == pTkt->exec())
+    {
+        bRet = true;
+
+    }
+
+    delete tkt;
+    delete pTkt;
+    return bRet;
+}
+
+bool TicketController::Remove(int id, QString strMsgText)
+{
+    bool bRet = false ;
+
+    ticket *tkt = ticket::findByid(id,true);
+    if( !tkt)
+    {
+        QMessageBox::warning(NULL, "Oops!","Selecione um boleto para poder Remover!");
+        return bRet;
+    }
+
+    if( tkt->getStatus() == stPaid)
+    {
+        QMessageBox::warning(NULL, "Oops!","Este boleto NÃO pode ser editado, Ele já foi pago!");
+        return bRet;
+    }
+
+
+    if( QMessageBox::Yes == QMessageBox::question(NULL,
+                                              QString("Atenção!"),
+                                              QString("Tem certeza que deseja remover este boleto? \n%1").arg(strMsgText),
+                                              QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes ))
+    {
+        if(tkt->updateRemoved(true))
+        {
+            bRet = true;
+            AccountToReceiveModel *account = AccountToReceiveModel::findById(tkt->getAccountId(),true);
+            if( account )
+            {
+                account->setRemoved(true);
+                if(account->Save())
+                {
+                 AccountToReceiveHistoryModel *his = new AccountToReceiveHistoryModel;
+                 his->setDate(QDate::currentDate());
+                 his->setTime(QTime::currentTime());
+                 his->setTypeOperation(AccountOpRemove);
+                 his->setUserId(QRadConfig::GetCurrentUserId());
+                 his->Save();
+                 delete his;
+                }
+                delete account;
+            }
+        }
+    }
+
+   delete tkt;
+   return bRet;
 }

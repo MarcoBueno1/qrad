@@ -103,6 +103,7 @@ private:
     bool MixFilteredSearch(QString text);
     int m_nDefaultColumnSearch;
 
+    QString BuildClmnTableName();
 };
 
 #endif // QRadTABLEVIEWSEARCH_H

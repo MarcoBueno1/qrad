@@ -20,7 +20,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    QPixmap bkgnd("C:\\Dvl\\qrad\\Projects\\Blink\\redario-garden-club.jpg");
+#ifdef _WIN32_
+    QPixmap bkgnd("C:\\Dvl\\qrad\\Projects\\Blink\\background.jpg");
+#else
+    QPixmap bkgnd("/home/marco/cpcs/qrad/Projects/Blink/background.jpg");
+#endif
     bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
     QPalette palette;
     palette.setBrush(QPalette::Background, bkgnd);

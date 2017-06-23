@@ -26,24 +26,24 @@ void Init()
 
 void AppendTicket()
 {
-    Dweller *pDweller = Dweller::findByPrimaryKey(1);
+    Dweller *pDweller = Dweller::findByPrimaryKey(8);
 
-    bool bRet = g_tkt->AppendTicket(pDweller, "10.00", QDate::currentDate().addDays(15), "1", "11");
+    bool bRet = g_tkt->AppendTicket(pDweller, "1.00", QDate::currentDate().addDays(15), "11", "1");
     if( bRet )
     {
 //        delete pDweller;
-        pDweller = Dweller::findByPrimaryKey(2);
-        bRet = g_tkt->AppendTicket(pDweller, "11.50", QDate::currentDate().addDays(10), "2", "22");
+        pDweller = Dweller::findByPrimaryKey(9);
+        bRet = g_tkt->AppendTicket(pDweller, "2.50", QDate::currentDate().addDays(10), "12", "2");
         if( bRet )
         {
 //            delete pDweller;
-            pDweller = Dweller::findByPrimaryKey(3);
-            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5), "3", "33");
+            pDweller = Dweller::findByPrimaryKey(10);
+            bRet = g_tkt->AppendTicket(pDweller, "3.50", QDate::currentDate().addDays(5), "13", "3");
         }
-        if( bRet )
+/*        if( bRet )
         {
 //            delete pDweller;
-            pDweller = Dweller::findByPrimaryKey(4);
+            pDweller = Dweller::findByPrimaryKey(11);
             bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5), "4", "44");
         }
         if( bRet )
@@ -63,7 +63,7 @@ void AppendTicket()
 //            delete pDweller;
             pDweller = Dweller::findByPrimaryKey(7);
             bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5), "7", "77");
-        }
+        }*/
 
     }
     if( bRet )

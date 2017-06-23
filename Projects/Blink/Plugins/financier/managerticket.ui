@@ -17,13 +17,13 @@
    <item row="1" column="3">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string> Gerar</string>
+      <string> Novo</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
        <widget class="QPushButton" name="PshBtnTxCondominial">
         <property name="text">
-         <string>T. &amp;Con</string>
+         <string>Tx. &amp;Con</string>
         </property>
        </widget>
       </item>
@@ -152,7 +152,7 @@
             <property name="title">
              <string>Mês</string>
             </property>
-            <widget class="QComboBox" name="comboBox">
+            <widget class="QComboBox" name="comboBoxMonth">
              <property name="geometry">
               <rect>
                <x>10</x>
@@ -222,7 +222,7 @@
               </property>
              </item>
             </widget>
-            <widget class="QComboBox" name="comboBox_2">
+            <widget class="QComboBox" name="comboBoxYear">
              <property name="geometry">
               <rect>
                <x>100</x>
@@ -330,43 +330,6 @@
      </widget>
     </widget>
    </item>
-   <item row="1" column="2">
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="title">
-      <string>Visualizar</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QRadioButton" name="radioButtonAll">
-          <property name="text">
-           <string>Todos</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="radioButtonPayed">
-          <property name="text">
-           <string>Pagos</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="radioButtonNotPayed">
-          <property name="text">
-           <string>Em Atrazo</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="1" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBoxCurrent">
      <property name="maximumSize">
@@ -416,6 +379,129 @@
       <property name="text">
        <string>Excluir</string>
       </property>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="2" rowspan="2">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="minimumSize">
+      <size>
+       <width>300</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Visualizar</string>
+     </property>
+     <widget class="QGroupBox" name="groupBox_5">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>183</width>
+        <height>67</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Situação</string>
+      </property>
+      <widget class="QRadioButton" name="radioButtonPayed">
+       <property name="geometry">
+        <rect>
+         <x>21</x>
+         <y>42</y>
+         <width>64</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Pagos</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="radioButtonAll">
+       <property name="geometry">
+        <rect>
+         <x>21</x>
+         <y>20</y>
+         <width>63</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Todos</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="radioButtonNotPayed">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>20</y>
+         <width>87</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Em Atraso</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_6">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>20</y>
+        <width>90</width>
+        <height>65</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Tipo</string>
+      </property>
+      <widget class="QRadioButton" name="radioButtonAllType">
+       <property name="geometry">
+        <rect>
+         <x>19</x>
+         <y>20</y>
+         <width>63</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Todos</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="radioButtonTxCond">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>64</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Tx.Con</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="radioButtonTxExtra">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>50</y>
+         <width>64</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Tx.Extra</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </item>

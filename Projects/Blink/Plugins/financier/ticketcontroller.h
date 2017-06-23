@@ -22,6 +22,8 @@ public:
     void SendEmail();
     bool doShipp(QString dir="", QString filename="",BBO_TYPE type=tpTxCond, BBOL_STATUS status=stCreated);
     bool doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt=0);
+    bool Edit(int id);
+    bool Remove(int id, QString strMsgText );
 private:
     BuildTkt *g_tkt;
 

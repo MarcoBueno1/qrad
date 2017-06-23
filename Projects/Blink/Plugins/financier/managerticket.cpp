@@ -49,6 +49,9 @@ Managerticket::Managerticket(QWidget *parent) :
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
+    
+    ui->comboBoxMonth->setCurrentIndex(QDate::currentDate().month()-1);
+    ui->comboBoxYear->setCurrentIndex(QDate::currentDate().year()-2017);
 
     DoRefresh();
     setWindowTitle("Gerenciamento de Boletos");
@@ -147,16 +150,35 @@ void Managerticket::LoadTableView()
     QApplication::processEvents();
 
     QString strSQL;
+    QString aux ;
+    bool bHasWhere = false;
+    bool bNeedOr = false;
 
     if(ui->radioButtonAll->isChecked())
         strSQL = QString(SQL_ITEMS).arg("");
     else if( ui->radioButtonPayed->isChecked())
-        strSQL = QString(SQL_ITEMS).arg(" where t.status = 2");
+    {
+        aux = " where t.status = 2";
+        bHasWhere = true;
+    }
     else
     {
-        QString aux = QString(" where t.status <> 2 and t.vencto < '%1' ").arg(QDate::currentDate().addDays(-3).toString(FMT_DATE_DB));
-        strSQL = QString(SQL_ITEMS).arg(aux);
+        aux = QString(" where (t.status <> 2 and t.vencto < '%1') ").arg(QDate::currentDate().addDays(-3).toString(FMT_DATE_DB));
+//        strSQL = QString(SQL_ITEMS).arg(aux);
+        bHasWhere = true;
+        bNeedOr = true;
     }
+    QDate dtInicio = QDate(2017+ui->comboBoxYear->currentIndex(),  ui->comboBoxMonth->currentIndex()+1, 1);
+    QDate dtFim = QDate(dtInicio.year(), dtInicio.month(),dtInicio.daysInMonth());
+    aux += QString(" %1 %2 (t.vencto beteween '%3' and '%4' )").arg(bHasWhere?"":" Where ").arg(bNeedOr?" Or ":" and ").arg(dtInicio.toString(FMT_DATE_DB)).arg(dtFim.toString(FMT_DATE_DB));
+    if( !ui->radioButtonAllType->isChecked())
+    {
+       aux += QString(" and t.type = %1 ").arg(ui->radioButtonTxCond->isChecked()?"0":"1");
+    }
+
+    strSQL = QString(SQL_ITEMS).arg(aux);
+
+
 
     m_Model->setQuery(strSQL);
 
@@ -389,23 +411,12 @@ void Managerticket::doEdit()
     int id = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
                                                          ui->tableViewSearch->getColumnOf("id")).data().toInt();
 
-    ticket *tkt = ticket::findByid(id,true);
-    if( !tkt)
-    {
-        QMessageBox::warning(this, "Oops!","Selecione um boleto para poder Editar!");
-        return;
-    }
+    TicketController *pController = new TicketController;
 
-    Editticket *pTkt =  new Editticket;
-    pTkt->SetModel(tkt);
-    if( QDialog::Accepted == pTkt->exec())
-    {
+    if( pController->Edit(id) )
         doRefresh();
 
-    }
-
-    delete tkt;
-    delete pTkt;
+    delete pController;
 }
 
 void Managerticket::doRemove()
@@ -414,12 +425,7 @@ void Managerticket::doRemove()
     int id = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
                                                          ui->tableViewSearch->getColumnOf("id")).data().toInt();
 
-    ticket *tkt = ticket::findByid(id,true);
-    if( !tkt)
-    {
-        QMessageBox::warning(this, "Oops!","Selecione um boleto para poder REmover!");
-        return;
-    }
+    TicketController *pController = new TicketController;
 
     QString Obs = "\nAp: "+ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
                                                          2).data().toString();
@@ -433,48 +439,12 @@ void Managerticket::doRemove()
 
     Obs += "\nVencimento: "+ QDate::fromString(ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
                                                          5).data().toString(),FMT_DATE_DB).toString(FMT_DATE);
-    if( QMessageBox::Yes == QMessageBox::question(this,
-                                              QString("Atenção!"),
-                                              QString("Tem certeza que deseja remover este boleto? \n%1").arg(Obs),
-                                              QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes ))
-    {
-        tkt->setRemoved(true);
-        AccountToReceiveModel *account = AccountToReceiveModel::findById(tkt->getAccountId(),true);
-        if( account )
-        {
-            account->setRemoved(true);
-            if(account->Save())
-            {
-             AccountToReceiveHistoryModel *his = new AccountToReceiveHistoryModel;
-             his->setDate(QDate::currentDate());
-             his->setTime(QTime::currentTime());
-             his->setTypeOperation(AccountOpRemove);
-             his->setUserId(QRadConfig::GetCurrentUserId());
-             his->Save();
-             delete his;
-            }
-            delete account;
-        }
-    }
 
-    delete tkt;
+
+    if(pController->Remove(id, Obs))
+        doRefresh();
+
+
+    delete pController;
+
 }
-
-//void Managerticket::resizeEvent(QResizeEvent* event)
-//{
-//  // Managerticket::resizeEvent(event);
-//   // Your code here.
-
-//   ui->tableViewSearch->setColumnWidth(0, 6.076923076923077 * ui->tableViewSearch->width());
-//   ui->tableViewSearch->setColumnWidth(1, 6.538461538461539 * ui->tableViewSearch->width());
-//   ui->tableViewSearch->setColumnWidth(2, 5.461538461538462 * ui->tableViewSearch->width());
-//   ui->tableViewSearch->setColumnWidth(3, 7.6923076923076925 * ui->tableViewSearch->width());
-//   ui->tableViewSearch->setColumnWidth(4, 22.46153846153846 * ui->tableViewSearch->width());
-//   ui->tableViewSearch->setColumnWidth(5, 7.000000000000001 * ui->tableViewSearch->width());
-//   ui->tableViewSearch->setColumnWidth(6, 7.153846153846153 * ui->tableViewSearch->width());
-//   ui->tableViewSearch->setColumnWidth(7, 5.461538461538462 * ui->tableViewSearch->width());
-//   ui->tableViewSearch->setColumnWidth(8, 5.3076923076923075 * ui->tableViewSearch->width());
-//   ui->tableViewSearch->setColumnWidth(10, 8.307692307692308 * ui->tableViewSearch->width());
-//   ui->tableViewSearch->setColumnWidth(11, 7.615384615384616 * ui->tableViewSearch->width());
-//   ui->tableViewSearch->setColumnWidth(12, 9.461538461538462 * ui->tableViewSearch->width());
-//}

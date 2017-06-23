@@ -371,10 +371,9 @@ int QRadTableViewSearch::getColumnOf(QString Title)
     return ColId;
 
 }
-void QRadTableViewSearch::AferShowSlot()
-{
-    debug_message("-->QRadTableViewSearch::AferShowSlot()\n");
 
+QString QRadTableViewSearch::BuildClmnTableName()
+{
     QString sWindowTitle = "view_columns";
     QWidget *pWidget = QApplication::activeWindow();
 
@@ -384,6 +383,14 @@ void QRadTableViewSearch::AferShowSlot()
         sWindowTitle.replace(" ", "_");
         sWindowTitle = sWindowTitle.toLower();
     }
+    return sWindowTitle;
+}
+
+void QRadTableViewSearch::AferShowSlot()
+{
+    debug_message("-->QRadTableViewSearch::AferShowSlot()\n");
+
+    QString sWindowTitle = BuildClmnTableName();
 
     QSqlDatabase database = QSqlDatabase::database();
     QStringList list=  database.driver()->tables(QSql::Tables);
@@ -878,15 +885,7 @@ void QRadTableViewSearch::MatchNewest( Model *newest )
 
 void QRadTableViewSearch::TblColumnResized(int logicalIndex, int oldSize, int newSize)
 {
-    QString sWindowTitle = "view_columns";
-    QWidget *pWidget = QApplication::activeWindow();
-
-    if(pWidget)
-    {
-        sWindowTitle += "_"+pWidget->windowTitle();
-        sWindowTitle.replace(" ", "_");
-        sWindowTitle = sWindowTitle.toLower();
-    }
+    QString sWindowTitle = BuildClmnTableName();
 
     QSqlDatabase database = QSqlDatabase::database();
     QStringList list=  database.driver()->tables(QSql::Tables);

@@ -58,7 +58,8 @@
 "ValorMoraJuros=%17\n"\
 "PercentualMulta=%18\n"\
 "Vencimento=%19\n"\
-"Especie=%20\n"
+"DataMoraJuros=%20\n"\
+"Especie=%21\n"
 
 
 #define TKT_BUILD_SHIPPING "GerarRemessa"
@@ -347,6 +348,7 @@ bool BuildTkt::AddTickets()
             .arg(m_pTktConfig->getJuros().replace(".",","))
             .arg(m_pTktConfig->getMulta().replace(".",","))
             .arg(dtVencto.toString("dd/MM/yyyy"))
+            .arg(dtVencto.addDays(1).toString("dd/MM/yyyy"))
             .arg(strSpecie);
 
        if( pTower )

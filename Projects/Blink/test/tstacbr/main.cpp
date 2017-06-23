@@ -28,17 +28,17 @@ void AppendTicket()
 {
     Dweller *pDweller = Dweller::findByPrimaryKey(8);
 
-    bool bRet = g_tkt->AppendTicket(pDweller, "1.00", QDate::currentDate().addDays(15), "11", "1");
+    bool bRet = g_tkt->AppendTicket(pDweller, "650.00", QDate::currentDate().addDays(15), "14", "4");
     if( bRet )
     {
 //        delete pDweller;
         pDweller = Dweller::findByPrimaryKey(9);
-        bRet = g_tkt->AppendTicket(pDweller, "2.50", QDate::currentDate().addDays(10), "12", "2");
+        bRet = g_tkt->AppendTicket(pDweller, "651.00", QDate::currentDate().addDays(10), "15", "5");
         if( bRet )
         {
 //            delete pDweller;
             pDweller = Dweller::findByPrimaryKey(10);
-            bRet = g_tkt->AppendTicket(pDweller, "3.50", QDate::currentDate().addDays(5), "13", "3");
+            bRet = g_tkt->AppendTicket(pDweller, "652.00", QDate::currentDate().addDays(5), "16", "6");
         }
 /*        if( bRet )
         {

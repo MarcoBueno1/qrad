@@ -22,6 +22,9 @@
 #define FIN_MISSING_TICKETS_THIS_MONTH "select * from dweller d where payer = true and removed <> true and id not in "\
                              "( select clientid from ticket t where t.removed <> true and t.vencto = '%1' and type = %2 );"
 
+#define FIN_MISSING_TICKETS_THIS_MONTH_VALUE "select * from dweller d where payer = true and removed <> true and id not in "\
+                             "( select clientid from ticket t where t.removed <> true and t.valor=%1 and t.vencto = '%2' and type = %3 %4 );"
+
 
 #define FIN_AP_WITH_NO_PAYER " select ap.numero as \"Ap\", tower.name as \"Torre\" from ap, tower  where not exists( select a2,b2 from ( select d.ap a2 , "\
                              " d.tower b2 from dweller d where d.payer = true and d.removed <> true) as foo where a2=ap.id and b2=tower.id) and tower.tp = 1"
@@ -168,10 +171,11 @@ bool TicketController::BuildTicket(DwellerList *dlist,
 
 bool TicketController::BuildTicketExtra( extratx *pTx )
 {
-    Dweller *pD;
+//    Dweller *pD;
     DwellerList *dlist ;
     QDate date = pTx->getData();
 
+    /*
     if(pTx->getAll())
     {
         dlist = Dweller::findBy(QString(SELECT_DWELER_FOR_EXTRA_TAX));
@@ -188,9 +192,25 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
          pD = Dweller::findByid(pTx->getDweller());
          dlist->append(pD);
     }
+    */
 
+    QString SQL;
     for( int i = 0; i < pTx->getTimes(); i++ )
     {
+
+        if( pTx->getAll() )
+        {
+           SQL = QString(FIN_MISSING_TICKETS_THIS_MONTH_VALUE).arg(pTx->getValue()).arg(date.toString(FMT_DATE_DB)).arg(tpTxExtr).arg("");
+        }
+        else
+        {
+           SQL = QString(FIN_MISSING_TICKETS_THIS_MONTH_VALUE).arg(pTx->getValue()).arg(date.toString(FMT_DATE_DB)).arg(tpTxExtr).arg(QString(" and clientid = %1").arg(pTx->getDweller()));
+
+        }
+        dlist = Dweller::findBy(SQL);
+        if( !dlist )
+            continue;
+
         BuildTicket( dlist,
                      date,
                      tpTxExtr,
@@ -200,11 +220,11 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
         date.addMonths(1);
     }
 
-    if(!pTx->getAll())
+/*    if(!pTx->getAll())
     {
         delete pD;
         delete dlist;
-    }
+    }*/
 
     return true;
 }

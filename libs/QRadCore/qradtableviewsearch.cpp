@@ -6,6 +6,9 @@
 #include "qraddebug.h"
 #include <QMimeData>
 #include "qradshared.h"
+#include <QSqlDriver>
+#include <QSqlField>
+#include "qraddebug.h"
 
 
 QRadTableViewSearch::QRadTableViewSearch(QWidget *parent) :
@@ -18,6 +21,7 @@ QRadTableViewSearch::QRadTableViewSearch(QWidget *parent) :
     m_timerAfterShowEvent = NULL;
     m_keyinterval = NULL;
 
+    connect(horizontalHeader(), SIGNAL(sectionResized(int,int,int)),this, SLOT(TblColumnResized(int,int,int)));
 }
 
 QRadTableViewSearch::~QRadTableViewSearch()
@@ -370,6 +374,44 @@ int QRadTableViewSearch::getColumnOf(QString Title)
 void QRadTableViewSearch::AferShowSlot()
 {
     debug_message("-->QRadTableViewSearch::AferShowSlot()\n");
+
+    QString sWindowTitle = "view_columns";
+    QWidget *pWidget = QApplication::activeWindow();
+
+    if(pWidget)
+    {
+        sWindowTitle += "_"+pWidget->windowTitle();
+        sWindowTitle.replace(" ", "_");
+        sWindowTitle = sWindowTitle.toLower();
+    }
+
+    QSqlDatabase database = QSqlDatabase::database();
+    QStringList list=  database.driver()->tables(QSql::Tables);
+    debug_message("\nNome da tabela: %s\n", sWindowTitle.toLatin1().data());
+    if( list.contains(sWindowTitle))
+    {
+        /// Load column sizes
+        debug_message("\nBanco Possui: %s\n", sWindowTitle.toLatin1().data());
+        QSqlQuery *qry =  new QSqlQuery(database);
+        if(qry->exec(QString("select * from %1 order by logicalindex").arg(sWindowTitle)))
+        {
+            debug_message("\nEncontrou dados para: %s\n", sWindowTitle.toLatin1().data());
+            qry->first();
+            for( int i= 0; i < qry->size();i++)
+            {
+                int nColumn = qry->record().field(0).value().toInt();
+                int nSize = qry->record().field(1).value().toInt();
+                debug_message("\nSetando: %d %d\n", nColumn, nSize);
+                setColumnWidth(nColumn,nSize);
+                qry->next();
+            }
+        }
+        else
+        {
+            debug_message("\nErro: %s\n", qry->lastError().text().toLatin1().data());
+        }
+        delete qry;
+    }
     emit AfterShowEvent();
 }
 
@@ -832,4 +874,44 @@ void QRadTableViewSearch::MatchNewest( Model *newest )
             this->Search(newest->attributes().at(j)->value().toString());
         }
     }
+}
+
+void QRadTableViewSearch::TblColumnResized(int logicalIndex, int oldSize, int newSize)
+{
+    QString sWindowTitle = "view_columns";
+    QWidget *pWidget = QApplication::activeWindow();
+
+    if(pWidget)
+    {
+        sWindowTitle += "_"+pWidget->windowTitle();
+        sWindowTitle.replace(" ", "_");
+        sWindowTitle = sWindowTitle.toLower();
+    }
+
+    QSqlDatabase database = QSqlDatabase::database();
+    QStringList list=  database.driver()->tables(QSql::Tables);
+    if(!list.contains(sWindowTitle))
+    {
+
+        QString strCreate = QString("create table %1 ("\
+                            "logicalindex integer, size integer );").arg(sWindowTitle);
+
+        QSqlQuery *q = new QSqlQuery();
+        q->exec(strCreate);
+        delete q;
+    }
+
+    QSqlQueryModel *qAsk = new QSqlQueryModel();
+    qAsk->setQuery(QString("select logicalindex from %1 where logicalindex= %2").arg(sWindowTitle).arg(logicalIndex));
+    if(qAsk->rowCount())
+    {
+        /// up
+        qAsk->setQuery(QString("update %3 set size = %2 where logicalindex= %1").arg(logicalIndex).arg(newSize).arg(sWindowTitle));
+    }
+    else
+    {
+        qAsk->setQuery(QString("insert into %3(logicalindex, size) values(%1,%2)").arg(logicalIndex).arg(newSize).arg(sWindowTitle));
+    }
+
+    delete qAsk;
 }

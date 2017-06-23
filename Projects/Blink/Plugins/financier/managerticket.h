@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 #include <QSqlQueryModel>
 #include "editticket.h"
+#include <QResizeEvent>
 
 namespace Ui {
 class Managerticket;
@@ -19,6 +20,7 @@ public:
     explicit Managerticket(QWidget *parent = 0);
     ~Managerticket();
 
+//    void resizeEvent(QResizeEvent* event);
 public slots:
     void notFound();
     void doRefresh();

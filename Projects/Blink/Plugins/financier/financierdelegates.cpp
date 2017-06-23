@@ -1,6 +1,7 @@
 #include "financierdelegates.h"
 #include "qradshared.h"
 #include "qradmoney.h"
+#include "ticket.h"
 
 #include <QColor>
 #include <QPainter>
@@ -256,6 +257,28 @@ void ColumnTktStatus::paint(QPainter *painter,
     drawFocus(painter, myOption, myOption.rect);
 }
 
+
+void ColumnDateLate::paint(QPainter *painter,
+                         const QStyleOptionViewItem &option,
+                         const QModelIndex &index) const
+{
+ QVariant text = index.model()->data(index, Qt::DisplayRole);
+ int status = index.model()->data(index.model()->index(index.row(),10)).toInt();
+ QStyleOptionViewItem myOption = option;
+
+ QDate date = text.toDate();
+ if(( QDate::currentDate() > date.addDays(3)) && (stPaid!= status))
+ {
+      painter->fillRect(option.rect, BG_FIN_COLOR_RED);
+ }
+
+ /* Como sera o alinhamento */
+ myOption.displayAlignment = Qt::AlignCenter;
+ drawDisplay(painter, myOption, myOption.rect, text.toDate().toString(FMT_DATE));
+ drawFocus(painter, myOption, myOption.rect);
+}
+
+
 void ColumnTktType::paint(QPainter *painter,
                           const QStyleOptionViewItem &option,
                           const QModelIndex &index) const
@@ -279,4 +302,29 @@ void ColumnTktType::paint(QPainter *painter,
   myOption.displayAlignment = Qt::AlignCenter;
   drawDisplay(painter, myOption, myOption.rect, status);
   drawFocus(painter, myOption, myOption.rect);
+}
+
+void ColumnDateTicketNull::paint(QPainter *painter,
+                           const QStyleOptionViewItem &option,
+                           const QModelIndex &index) const
+{
+    QDate date = index.model()->data(index, Qt::DisplayRole).toDate();
+//    QTime time = index.model()->data(index.model()->index(index.row(),4)).toTime();
+
+    QVariant text = index.model()->data(index, Qt::DisplayRole);
+    QStyleOptionViewItem myOption = option;
+    QString strText= text.toString(); //toDate().toString(QString("%1").arg(FMT_DATE));
+
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+
+    if( date == QDate(2000,1,1) )
+    {
+       //painter->fillRect(option.rect, BG_COLOR_YELLOW);
+        strText = "PENDENTE";
+    }
+
+    drawDisplay(painter, myOption, myOption.rect, strText);
+    drawFocus(painter, myOption, myOption.rect);
 }

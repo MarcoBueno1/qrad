@@ -73,6 +73,7 @@ public slots:
     void OnNotFound();
     void OnCurrentChanged(QModelIndex currentIndex);
     void KeyPressTimeout();
+    void TblColumnResized(int logicalIndex, int oldSize, int newSize);
 signals:
     void found(QModelIndex index);
     void notFound();

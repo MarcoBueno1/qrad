@@ -51,6 +51,7 @@ Managerticket::Managerticket(QWidget *parent) :
     setWindowState(Qt::WindowMaximized);
 
     DoRefresh();
+    setWindowTitle("Gerenciamento de Boletos");
 }
 
 Managerticket::~Managerticket()
@@ -133,8 +134,10 @@ void Managerticket::ShowCurrentInformations( void )
          ui->groupBoxItens->setTitle(strTemp);
 
 
-         QString dwName = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),2).data().toString();
-         dwName.truncate(30);
+         QString dwName = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),3).data().toString();
+         dwName += " - " + ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),2).data().toString();
+         dwName += " - " +ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),4).data().toString();
+         dwName.truncate(150);
          dwName+="...";
          ui->groupBoxCurrent->setTitle(dwName);
     }
@@ -216,6 +219,7 @@ void Managerticket::ConfigureTable()
   //  m_Model->setHeaderData(5, Qt::Horizontal, QString::fromUtf8("Conuna4"));
 
    // ui->tableViewSearch->setColumnWidth(0, 0.06 * ui->tableViewSearch->width());
+
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("Criado Por"));
     ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
@@ -223,8 +227,8 @@ void Managerticket::ConfigureTable()
     ui->tableViewSearch->setItemDelegateForColumn(2, new ColumnCenter);
     ui->tableViewSearch->setItemDelegateForColumn(3, new ColumnCenter);
     ui->tableViewSearch->setItemDelegateForColumn(4, new ColumnCenter);
-    ui->tableViewSearch->setItemDelegateForColumn(5, new ColumnDate);
-    ui->tableViewSearch->setItemDelegateForColumn(6, new ColumnDateTimeNull);
+    ui->tableViewSearch->setItemDelegateForColumn(5, new ColumnDateLate);
+    ui->tableViewSearch->setItemDelegateForColumn(6, new ColumnDateTicketNull);
     ui->tableViewSearch->setItemDelegateForColumn(7, new ColumnMoney);
     ui->tableViewSearch->setItemDelegateForColumn(8, new ColumnMoney);
     ui->tableViewSearch->setItemDelegateForColumn(9, new ColumnCenter);
@@ -455,3 +459,22 @@ void Managerticket::doRemove()
 
     delete tkt;
 }
+
+//void Managerticket::resizeEvent(QResizeEvent* event)
+//{
+//  // Managerticket::resizeEvent(event);
+//   // Your code here.
+
+//   ui->tableViewSearch->setColumnWidth(0, 6.076923076923077 * ui->tableViewSearch->width());
+//   ui->tableViewSearch->setColumnWidth(1, 6.538461538461539 * ui->tableViewSearch->width());
+//   ui->tableViewSearch->setColumnWidth(2, 5.461538461538462 * ui->tableViewSearch->width());
+//   ui->tableViewSearch->setColumnWidth(3, 7.6923076923076925 * ui->tableViewSearch->width());
+//   ui->tableViewSearch->setColumnWidth(4, 22.46153846153846 * ui->tableViewSearch->width());
+//   ui->tableViewSearch->setColumnWidth(5, 7.000000000000001 * ui->tableViewSearch->width());
+//   ui->tableViewSearch->setColumnWidth(6, 7.153846153846153 * ui->tableViewSearch->width());
+//   ui->tableViewSearch->setColumnWidth(7, 5.461538461538462 * ui->tableViewSearch->width());
+//   ui->tableViewSearch->setColumnWidth(8, 5.3076923076923075 * ui->tableViewSearch->width());
+//   ui->tableViewSearch->setColumnWidth(10, 8.307692307692308 * ui->tableViewSearch->width());
+//   ui->tableViewSearch->setColumnWidth(11, 7.615384615384616 * ui->tableViewSearch->width());
+//   ui->tableViewSearch->setColumnWidth(12, 9.461538461538462 * ui->tableViewSearch->width());
+//}

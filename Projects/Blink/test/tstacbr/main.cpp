@@ -24,9 +24,10 @@ void Init()
    }
 }
 
+
 void AppendTicket()
 {
-    Dweller *pDweller = Dweller::findByPrimaryKey(8);
+    Dweller *pDweller = Dweller::findByPrimaryKey(284); // 8
 
     bool bRet = g_tkt->AppendTicket(pDweller, "650.00", QDate::currentDate().addDays(15), "14", "4");
     if( bRet )
@@ -99,6 +100,19 @@ void BuildShipping()
         printf("\nProblema no BuildShipping!\n");
     }
 }
+void ExtractReturn()
+{
+    if( g_tkt->ExtractReturn(NULL,"c:\\dvl\\","remessa.ret"))
+    {
+        printf("\nExtractReturn executado com Sucesso!\n");
+    }
+    else
+    {
+        printf("\nProblema no ExtractReturn!\n");
+    }
+
+}
+
 
 void configureDatabase()
 {
@@ -256,11 +270,12 @@ void PrintMenu()
   printf( "\n4. BuildShipping\n" );
   printf( "\n5. Print\n" );
 
-  printf( "\n6. DB_AppendAgenc\n" );
-  printf( "\n7. DB_AppendBanco\n" );
-  printf( "\n8. DB_AppendTkt\n" );
-  printf( "\n9. DB_AppendCompany\n" );
-  printf( "\n10. Close Program\n" );
+//  printf( "\n6. DB_AppendAgenc\n" );
+//  printf( "\n7. DB_AppendBanco\n" );
+//  printf( "\n8. DB_AppendTkt\n" );
+//  printf( "\n9. DB_AppendCompany\n" );
+  printf( "\n10. ExtractReturn(\n" );
+  printf( "\n11. Close Program\n" );
 
 /*
 
@@ -323,12 +338,15 @@ int main(int argc, char *argv[])
            case 9:
                   AddCompany();
                   break;
+           case 10:
+                  ExtractReturn();
+                  break;
 
            default:
                    break;
         }
 
-      }while( cOption != 10 );
+      }while( cOption != 11 );
 
     qDebug() << "antes delete g_tkt";
     delete g_tkt;

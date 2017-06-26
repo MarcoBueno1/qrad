@@ -21,7 +21,7 @@
 */
 
 #define FIN_MISSING_TICKETS_THIS_MONTH "select * from dweller d where payer = true and removed <> true and id not in "\
-                             "( select clientid from ticket t where t.removed <> true and t.vencto = '%1' and type = %2 );"
+                             "( select clientid from ticket t where t.removed <> true and t.vencto = '%1' and type = %2 ) and free <> true;"
 
 #define FIN_MISSING_TICKETS_THIS_MONTH_VALUE "select * from dweller d where payer = true and removed <> true and id not in "\
                              "( select clientid from ticket t where t.removed <> true and t.valor=%1 and t.vencto = '%2' and type = %3 %4 );"

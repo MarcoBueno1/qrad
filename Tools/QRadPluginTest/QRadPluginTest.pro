@@ -44,3 +44,6 @@ win32:QMAKE_LFLAGS += --enable-auto-import
 
 #RESOURCES += \
 #    ../../Projects/Blink/icons/resources.qrc
+
+target.path = $${PREFIX}/bin
+INSTALLS += target

@@ -6,6 +6,8 @@
 #include <QEventLoop>
 #include "acbr.h"
 #include <QCoreApplication>
+#include <QSettings>
+
 
 #define TKT_PREFIX "BOLETO."
 
@@ -74,6 +76,7 @@
 #define RECEIVE_PATH "/media/sf_Dvl/acbr/sai/"
 #define RECEIVE_NAME "ent-resp.txt"
 
+#define TKT_EXTRACT_RETURN "BOLETO.LerRetorno(\"%1\",\"%2\" )"
 
 #ifdef Q_OS_WIN
 #include <windows.h> // for Sleep
@@ -291,6 +294,34 @@ bool BuildTkt::AppendTicket(Dweller *pDweller, QString strValue, QDate dtVencto,
 
 }
 
+
+QString diacriticLetters_;
+QStringList noDiacriticLetters_;
+
+QString removeAccents(QString s) {
+    if (diacriticLetters_.isEmpty()) {
+        diacriticLetters_ = QString::fromUtf8("ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ");
+        noDiacriticLetters_ << "S"<<"OE"<<"Z"<<"s"<<"oe"<<"z"<<"Y"<<"Y"<<"u"<<"A"<<"A"<<"A"<<"A"<<"A"<<"A"<<"AE"<<"C"<<"E"<<"E"<<"E"<<"E"<<"I"<<"I"<<"I"<<"I"<<"D"<<"N"<<"O"<<"O"<<"O"<<"O"<<"O"<<"O"<<"U"<<"U"<<"U"<<"U"<<"Y"<<"s"<<"a"<<"a"<<"a"<<"a"<<"a"<<"a"<<"ae"<<"c"<<"e"<<"e"<<"e"<<"e"<<"i"<<"i"<<"i"<<"i"<<"o"<<"n"<<"o"<<"o"<<"o"<<"o"<<"o"<<"o"<<"u"<<"u"<<"u"<<"u"<<"y"<<"y";
+    }
+
+    QString output = "";
+    for (int i = 0; i < s.length(); i++) {
+        QChar c = s[i];
+        int dIndex = diacriticLetters_.indexOf(c);
+        if (dIndex < 0) {
+            output.append(c);
+        } else {
+            QString replacement = noDiacriticLetters_[dIndex];
+            output.append(replacement);
+        }
+    }
+
+    return output;
+}
+
+
+
+
 bool BuildTkt::AddTickets()
 {
     QString paramCfgTkt;
@@ -335,7 +366,7 @@ bool BuildTkt::AddTickets()
             .arg(m_pTktConfig->getCarteira())
             .arg(strValue.replace(".",","))
 //            .arg(strValue)
-            .arg(pDweller->getName())
+            .arg(removeAccents(pDweller->getName()))
             .arg(pDweller->getCPF())
             .arg(m_pCompany->getAddrees())
             .arg(m_pCompany->getHouseNumber())
@@ -376,9 +407,76 @@ bool BuildTkt::BuildShipping(QString strDir, QString FileName )
     QString cmdSnd = QString("%1(%2)").arg(cmdShipping).arg(params);
 
     return Send(cmdSnd);
-
-
 }
+
+
+/*
+[Titulo1]
+Sacado.Nome=
+Sacado.CNPJCPF=
+Vencimento=29/06/2012
+DataDocumento=30/12/1899
+NumeroDocumento=NF 12345
+DataProcessamento=06/06/2013
+NossoNumero=12345
+Carteira=123
+ValorDocumento=300
+DataOcorrencia=27/06/2012
+DataCredito=28/06/2012
+DataBaixa=29/06/2012
+ValorDespesaCobranca=3,26
+ValorAbatimento=0
+ValorDesconto=0
+ValorMoraJuros=0
+ValorIOF=0
+ValorOutrasDespesas=0
+ValorOutrosCreditos=0
+ValorRecebido=300
+SeuNumero=NF 00548   12345
+CodTipoOcorrencia=toRetornoLiquidado
+DescricaoTipoOcorrencia=06-Liquidação
+MotivoRejeicao1=04-Compensação Eletrônica.
+
+*/
+
+bool BuildTkt::ExtractReturn(QList<Ticket *> *tickets, QString strDir, QString FileName )
+{
+
+    QString cmd =  QString(TKT_EXTRACT_RETURN).arg(strDir).arg(FileName);
+
+    if( !Send(cmd))
+    {
+        return false;
+    }
+
+    QSettings settings(QString("%1Retorno.Ini").arg(strDir),
+                       QSettings::IniFormat);
+
+
+    QString Nome         ;
+    QString cpf          ;
+    QString vencto       ;
+    QString NossoNumero  ;
+    QString SeuNumero    ;
+    QString VlrRecebido  ;
+    QString VlrDocumento ;
+
+    for( int i= 0; ; i++)
+    {
+      Nome         = settings.value(QString("Titulo%1/Sacado.Nome").arg(i+1)).toString();
+      cpf          = settings.value(QString("Titulo%1/Sacado.CNPJCPF").arg(i+1)).toString();
+      vencto       = settings.value(QString("Titulo%1/Vencimento").arg(i+1)).toString();
+      NossoNumero  = settings.value(QString("Titulo%1/NossoNumero").arg(i+1)).toString();
+      SeuNumero    = settings.value(QString("Titulo%1/SeuNumero").arg(i+1)).toString();
+      VlrRecebido  = settings.value(QString("Titulo%1/ValorRecebido").arg(i+1)).toString();
+      VlrDocumento = settings.value(QString("Titulo%1/ValorDocumento").arg(i+1)).toString();
+      if( Nome.isEmpty() && cpf.isEmpty() && vencto.isEmpty() && NossoNumero.isEmpty() && SeuNumero.isEmpty() && VlrRecebido.isEmpty() && VlrDocumento.isEmpty() )
+              break;
+    }
+
+    return true;
+}
+
 
 
 Ticket::Ticket(Dweller *dweller, QString value, QDate date, QString NossoNumero, QString SeuNumero)

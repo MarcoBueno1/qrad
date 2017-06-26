@@ -46,6 +46,7 @@ public:
                          QString NossoNumero="",
                          QString SeuNumero="");
        bool AddTickets();
+       bool ExtractReturn(QList<Ticket *> *tickets, QString strDir, QString FileName );
 
 public slots:
        void DirModified(QString dir );

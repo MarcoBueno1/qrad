@@ -170,7 +170,8 @@ void Managerticket::LoadTableView()
     }
     QDate dtInicio = QDate(2017+ui->comboBoxYear->currentIndex(),  ui->comboBoxMonth->currentIndex()+1, 1);
     QDate dtFim = QDate(dtInicio.year(), dtInicio.month(),dtInicio.daysInMonth());
-    aux += QString(" %1 %2 (t.vencto beteween '%3' and '%4' )").arg(bHasWhere?"":" Where ").arg(bNeedOr?" Or ":" and ").arg(dtInicio.toString(FMT_DATE_DB)).arg(dtFim.toString(FMT_DATE_DB));
+    aux += QString(" %1 %2 (t.vencto between '%3' and '%4' )").arg(bHasWhere?"":" Where ").arg(!bHasWhere?"":bNeedOr?" Or ":" and ").arg(dtInicio.toString(FMT_DATE_DB)).arg(dtFim.toString(FMT_DATE_DB));
+
     if( !ui->radioButtonAllType->isChecked())
     {
        aux += QString(" and t.type = %1 ").arg(ui->radioButtonTxCond->isChecked()?"0":"1");
@@ -179,6 +180,8 @@ void Managerticket::LoadTableView()
     strSQL = QString(SQL_ITEMS).arg(aux);
 
 
+
+    debug_message("\nsqlquery: %s\n",strSQL.toLatin1().data());
 
     m_Model->setQuery(strSQL);
 

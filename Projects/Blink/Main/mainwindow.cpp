@@ -20,7 +20,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-#ifdef _WIN32_
+#ifdef _WIN32
     QPixmap bkgnd("C:\\Dvl\\qrad\\Projects\\Blink\\background.jpg");
 #else
     QPixmap bkgnd("/home/marco/cpcs/qrad/Projects/Blink/background.jpg");

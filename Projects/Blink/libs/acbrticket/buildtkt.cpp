@@ -7,6 +7,8 @@
 #include "acbr.h"
 #include <QCoreApplication>
 #include <QSettings>
+#include "qradround.h"
+#include "qradshared.h"
 
 
 #define TKT_PREFIX "BOLETO."
@@ -61,7 +63,10 @@
 "PercentualMulta=%18\n"\
 "Vencimento=%19\n"\
 "DataMoraJuros=%20\n"\
-"Especie=%21\n"
+"Especie=%21\n"\
+"DataDesconto=%22\n"\
+"ValorDesconto=%23\n"
+
 
 
 #define TKT_BUILD_SHIPPING "GerarRemessa"
@@ -320,7 +325,18 @@ QString removeAccents(QString s) {
 }
 
 
+QString BuildTkt::MountYourNumvber(QString SeuNumero, QString ap, QString tow )
+{
+    if(SeuNumero.isEmpty())
+        return SeuNumero;
 
+    QString ret = QString("%1 %2").arg(ap).arg(tow.mid(0,1).toUpper());
+
+    if( ret.trimmed().isEmpty())
+        return SeuNumero;
+
+    return ret;
+}
 
 bool BuildTkt::AddTickets()
 {
@@ -356,12 +372,21 @@ bool BuildTkt::AddTickets()
            NossoNumero = m_pTktConfig->getNossoNumero();
 
 
-       if(SeuNumero.isEmpty())
-           SeuNumero = aux;
+       QString MountedYourNumber = MountYourNumvber(SeuNumero, pAp?pAp->getNumber():"",pTower?pTower->getName():"" );
+       if( MountedYourNumber.isEmpty())
+           MountedYourNumber = aux;
+
+       QString msg = QString("%1%2/%3").arg(m_pTktConfig->getMensagem()).arg(dtVencto.longMonthName(dtVencto.month()).toUpper()).arg(dtVencto.year());
+       double valor       = strValue.replace(",", ".").toDouble();
+       double percentJuros = m_pTktConfig->getJuros().replace(",",".").toDouble();
+       QString JurosDia = QString("%1").arg(QRadRound::PowerRound(QRadRound::PowerRound(valor/dtVencto.daysInMonth()/100)*percentJuros));
+       JurosDia.replace(".", ",");
+       QString ValorDiscount = QString("%1").arg(QRadRound::PowerRound(QRadRound::PowerRound(valor/100)*(m_pTktConfig->getDiscount())));
+       ValorDiscount.replace(".", ",");
 
        paramCfgTkt += QString(TKT_CONFIG_TICKET)
                           .arg(i+1)
-                          .arg(SeuNumero)
+                          .arg(MountedYourNumber)
             .arg(NossoNumero)
             .arg(m_pTktConfig->getCarteira())
             .arg(strValue.replace(".",","))
@@ -375,12 +400,14 @@ bool BuildTkt::AddTickets()
             .arg(m_pCompany->getCity()->getName())
             .arg(m_pCompany->getState()->getSign())
             .arg(m_pCompany->getCEP())
-            .arg(m_pTktConfig->getMensagem())
-            .arg(m_pTktConfig->getJuros().replace(".",","))
+            .arg(msg)
+            .arg(JurosDia)
             .arg(m_pTktConfig->getMulta().replace(".",","))
             .arg(dtVencto.toString("dd/MM/yyyy"))
-            .arg(dtVencto.addDays(1).toString("dd/MM/yyyy"))
-            .arg(strSpecie);
+            .arg(dtVencto.toString("dd/MM/yyyy"))
+            .arg(strSpecie)
+            .arg(dtVencto.toString("dd/MM/yyyy"))
+            .arg(ValorDiscount);
 
        if( pTower )
            delete pTower;
@@ -438,6 +465,8 @@ DescricaoTipoOcorrencia=06-Liquidação
 MotivoRejeicao1=04-Compensação Eletrônica.
 
 */
+#define TKT_LIQUIDATED "toRetornoLiquidado"
+#define TKT_REGISTERED "toRetornoRegistroConfirmado"
 
 bool BuildTkt::ExtractReturn(QList<Ticket *> *tickets, QString strDir, QString FileName )
 {
@@ -449,8 +478,13 @@ bool BuildTkt::ExtractReturn(QList<Ticket *> *tickets, QString strDir, QString F
         return false;
     }
 
+#ifdef _WIN32
     QSettings settings(QString("%1Retorno.Ini").arg(strDir),
                        QSettings::IniFormat);
+#else
+    QSettings settings(QString("/media/sf_Dvl/Retorno.Ini"),
+                       QSettings::IniFormat);
+#endif
 
 
     QString Nome         ;
@@ -460,6 +494,9 @@ bool BuildTkt::ExtractReturn(QList<Ticket *> *tickets, QString strDir, QString F
     QString SeuNumero    ;
     QString VlrRecebido  ;
     QString VlrDocumento ;
+    QString TipoOperacao ;
+    QString dtPagto;
+    BLNK_TKT_TYPEOP tpOp = tpOther;
 
     for( int i= 0; ; i++)
     {
@@ -467,11 +504,46 @@ bool BuildTkt::ExtractReturn(QList<Ticket *> *tickets, QString strDir, QString F
       cpf          = settings.value(QString("Titulo%1/Sacado.CNPJCPF").arg(i+1)).toString();
       vencto       = settings.value(QString("Titulo%1/Vencimento").arg(i+1)).toString();
       NossoNumero  = settings.value(QString("Titulo%1/NossoNumero").arg(i+1)).toString();
-      SeuNumero    = settings.value(QString("Titulo%1/SeuNumero").arg(i+1)).toString();
-      VlrRecebido  = settings.value(QString("Titulo%1/ValorRecebido").arg(i+1)).toString();
-      VlrDocumento = settings.value(QString("Titulo%1/ValorDocumento").arg(i+1)).toString();
+      SeuNumero    = settings.value(QString("Titulo%1/NumeroDocumento").arg(i+1)).toString();
+      VlrRecebido  = settings.value(QString("Titulo%1/ValorRecebido").arg(i+1)).toStringList().join(",");
+      VlrDocumento = settings.value(QString("Titulo%1/ValorDocumento").arg(i+1)).toStringList().join(",");
+      TipoOperacao = settings.value(QString("Titulo%1/CodTipoOcorrencia").arg(i+1)).toString();
+      dtPagto      = settings.value(QString("Titulo%1/DataCredito").arg(i+1)).toString();
+
       if( Nome.isEmpty() && cpf.isEmpty() && vencto.isEmpty() && NossoNumero.isEmpty() && SeuNumero.isEmpty() && VlrRecebido.isEmpty() && VlrDocumento.isEmpty() )
               break;
+      else
+      {
+#ifdef __DEBUG__
+
+          qDebug() << "Titulo......:" << i+1;
+          qDebug() << "Nome........:" << Nome;
+          qDebug() << "cpf.........:" <<cpf;
+          qDebug() << "vencto......:"  << vencto;
+          qDebug() << "NossoNumero.:" <<NossoNumero;
+          qDebug() << "SeuNumero...:"   << SeuNumero;
+          qDebug() << "VlrRecebido.:" <<VlrRecebido;
+          qDebug() << "VlrDocumento:" <<VlrDocumento;
+          qDebug() << "TipoOperacao:" <<TipoOperacao;
+#endif
+
+          if(tickets)
+          {
+              if( TKT_LIQUIDATED == TipoOperacao )
+                  tpOp = tpLiquidated;
+              else if(TKT_REGISTERED == TipoOperacao )
+                  tpOp = tpRegistered;
+              else
+                  tpOp = tpOther;
+
+
+              Ticket *pNew = new Ticket(NULL,VlrDocumento,QDate::fromString(vencto,FMT_DATE),NossoNumero,SeuNumero,VlrRecebido,QDate::fromString(dtPagto, FMT_DATE), tpOp);
+              tickets->append(pNew);
+          }
+       }
+
+
+
     }
 
     return true;
@@ -479,13 +551,20 @@ bool BuildTkt::ExtractReturn(QList<Ticket *> *tickets, QString strDir, QString F
 
 
 
-Ticket::Ticket(Dweller *dweller, QString value, QDate date, QString NossoNumero, QString SeuNumero)
+Ticket::Ticket(Dweller *dweller, QString value, QDate date, QString NossoNumero, QString SeuNumero,
+               QString paivalue,
+               QDate dtpgto,
+               BLNK_TKT_TYPEOP tpOp)
 {
     m_dweller = dweller;
     m_value =  value;
     m_date = date;
     m_NossoNumero = NossoNumero;
     m_SeuNumero = SeuNumero;
+    m_paivalue= paivalue;
+    m_dtpgto= dtpgto;
+    m_tpOp= tpOp;
+
 }
 
 Dweller *Ticket::getDweller()
@@ -508,4 +587,19 @@ QString Ticket::getSeuNumero()
 QDate   Ticket::getDate()
 {
     return m_date;
+}
+
+QString Ticket::getPaidValue()
+{
+    return m_paivalue;
+}
+
+QDate   Ticket::getDatePagto()
+{
+    return m_dtpgto;
+}
+
+BLNK_TKT_TYPEOP Ticket::getTpOp()
+{
+    return m_tpOp;
 }

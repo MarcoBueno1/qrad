@@ -22,6 +22,7 @@ DECLARE_CLASS(ticketconfig)
      ORM_DECLARE_ATTRIBUTE(ticketconfig, QString, Juros);
      ORM_DECLARE_ATTRIBUTE(ticketconfig, QString, Multa);
      ORM_DECLARE_ATTRIBUTE(ticketconfig, QString, Description);
+     ORM_DECLARE_ATTRIBUTE(ticketconfig, double, Discount);
      ORM_MATCH_TABLE(ticketconfig, "ticketconfig")
 ORM_END_MAP()
 #endif 

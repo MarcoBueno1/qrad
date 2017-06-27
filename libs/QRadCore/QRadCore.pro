@@ -88,7 +88,8 @@ HEADERS +=  qradplugincontainer.h \
     reportfactory.h \
     exaroreport.h \
     qradreportinterface.h \
-    qradlicensecontrol.h
+    qradlicensecontrol.h \
+    bankticket.h
 
 
 
@@ -152,7 +153,8 @@ SOURCES +=  qradplugininterface.cpp \
     qradreportmanager.cpp \
     reportfactory.cpp \
     exaroreport.cpp\
-    qradlicensecontrol.cpp
+    qradlicensecontrol.cpp\
+    bankticket.cpp
 
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c

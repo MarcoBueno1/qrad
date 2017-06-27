@@ -158,12 +158,12 @@ void Managerticket::LoadTableView()
         strSQL = QString(SQL_ITEMS).arg("");
     else if( ui->radioButtonPayed->isChecked())
     {
-        aux = " where t.status = 2";
+        aux = " where t.status = 3 ";
         bHasWhere = true;
     }
     else
     {
-        aux = QString(" where (t.status <> 2 and t.vencto < '%1') ").arg(QDate::currentDate().addDays(-3).toString(FMT_DATE_DB));
+        aux = QString(" where (t.status <> 3 and t.vencto < '%1') ").arg(QDate::currentDate().addDays(-3).toString(FMT_DATE_DB));
 //        strSQL = QString(SQL_ITEMS).arg(aux);
         bHasWhere = true;
         bNeedOr = true;

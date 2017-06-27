@@ -18,5 +18,6 @@ ORM_BEGIN_MAP(ticketconfig)
      ORM_MAP_FIELD(Juros, "juros");
      ORM_MAP_FIELD(Multa, "multa");
      ORM_MAP_FIELD(Description, "description");
+     ORM_MAP_FIELD(Discount, "discount");
 ORM_END_MAP()
 

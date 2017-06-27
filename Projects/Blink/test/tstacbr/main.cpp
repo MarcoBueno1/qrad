@@ -1,6 +1,8 @@
 #include <QCoreApplication>
 
 #include "buildtkt.h"
+#include "ticket.h"
+#include "qradshared.h"
 
 BuildTkt *g_tkt;
 
@@ -41,30 +43,6 @@ void AppendTicket()
             pDweller = Dweller::findByPrimaryKey(10);
             bRet = g_tkt->AppendTicket(pDweller, "652.00", QDate::currentDate().addDays(5), "16", "6");
         }
-/*        if( bRet )
-        {
-//            delete pDweller;
-            pDweller = Dweller::findByPrimaryKey(11);
-            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5), "4", "44");
-        }
-        if( bRet )
-        {
-//            delete pDweller;
-            pDweller = Dweller::findByPrimaryKey(5);
-            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5), "5", "55");
-        }
-        if( bRet )
-        {
-//            delete pDweller;
-            pDweller = Dweller::findByPrimaryKey(6);
-            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5), "6", "66");
-        }
-        if( bRet )
-        {
-//            delete pDweller;
-            pDweller = Dweller::findByPrimaryKey(7);
-            bRet = g_tkt->AppendTicket(pDweller, "15.50", QDate::currentDate().addDays(5), "7", "77");
-        }*/
 
     }
     if( bRet )
@@ -77,6 +55,28 @@ void AppendTicket()
 
     }
 }
+
+void AppendTicketFromTicketsDb()
+{
+    ticketList *tickets = ticket::findBy("select * from ticket where status = 1 or status = 3 order by clientid");
+    for( int i = 0; tickets && (i < tickets->count()); i++ )
+    {
+        ticket *pCurrent= tickets->at(i);
+        Dweller *pdw = Dweller::findByid(pCurrent->getclientid());
+        if( pdw )
+        {
+           g_tkt->AppendTicket(pdw,
+                               QString("%1").arg(pCurrent->getValor()).replace(".",","),
+                               pCurrent->getVencto(),
+                               QString("%1").arg(pCurrent->getNossoNumero()).replace(".",","),
+                               QString("%1").arg(pCurrent->getSeuNumero()).replace(".",","));
+        }
+    }
+}
+
+
+
+
 void AddTickets()
 {
     if( g_tkt->AddTickets() )
@@ -102,9 +102,22 @@ void BuildShipping()
 }
 void ExtractReturn()
 {
-    if( g_tkt->ExtractReturn(NULL,"c:\\dvl\\","remessa.ret"))
+    QList<Ticket *> tickets;
+    if( g_tkt->ExtractReturn(&tickets,"c:\\dvl\\","remessa.ret"))
     {
         printf("\nExtractReturn executado com Sucesso!\n");
+        for( int i =0; i < tickets.count();i++)
+        {
+            Ticket *pTkt =  tickets.at(i);
+            printf( "Item.....: %d\n", i+1);
+            printf( "BnkNumber: %s\n", pTkt->getNossoNumero().toLatin1().data());
+            printf( "SysNumber: %s\n", pTkt->getSeuNumero().toLatin1().data());
+            printf( "Value....: %s\n", pTkt->getValue().toLatin1().data());
+            printf( "Vencto...: %s\n", pTkt->getDate().toString(FMT_DATE).toLatin1().data());
+            printf( "Paid.....: %s\n", pTkt->getPaidValue().toLatin1().data());
+            printf( "Dt Paid..: %s\n", pTkt->getDatePagto().toString(FMT_DATE).toLatin1().data());
+            printf( "Event....: %s\n", pTkt->getTpOp()==tpLiquidated?"Baixa":pTkt->getTpOp()==tpRegistered?"Registro":"Outro");
+        }
     }
     else
     {
@@ -275,7 +288,8 @@ void PrintMenu()
 //  printf( "\n8. DB_AppendTkt\n" );
 //  printf( "\n9. DB_AppendCompany\n" );
   printf( "\n10. ExtractReturn(\n" );
-  printf( "\n11. Close Program\n" );
+  printf( "\n11. AppendTicketFromTicketsDb\n");
+  printf( "\n12. Close Program\n" );
 
 /*
 
@@ -341,12 +355,15 @@ int main(int argc, char *argv[])
            case 10:
                   ExtractReturn();
                   break;
+           case 11:
+                  AppendTicketFromTicketsDb();
+                  break;
 
            default:
                    break;
         }
 
-      }while( cOption != 11 );
+      }while( cOption != 12 );
 
     qDebug() << "antes delete g_tkt";
     delete g_tkt;

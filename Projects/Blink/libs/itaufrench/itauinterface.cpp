@@ -37,6 +37,11 @@ ItauInterface::ItauInterface(QString Path)
     m_filenme = Path;
 }
 
+ItauInterface::~ItauInterface()
+{
+
+}
+
 bool ItauInterface::Parse(QList<BankTicket*> *tikets)
 {
     return Parse( tikets, m_filenme);

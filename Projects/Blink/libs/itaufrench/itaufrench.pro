@@ -22,7 +22,8 @@ SOURCES += itauinterface.cpp \
 HEADERS += itauinterface.h \
     pdf2txt.h \
     itauparser.h \
-    itauticket.h
+    itauticket.h \
+    ../../../../libs/QRadCore/bankticketinterface.h
 		   
 win32:LIBS +=  -L../../../../libs/QRadCore\release 
 unix:LIBS +=  -L../../../../libs/QRadCore 

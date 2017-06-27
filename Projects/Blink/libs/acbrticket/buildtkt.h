@@ -7,20 +7,11 @@
 #include  "bankmodel.h"
 #include  "maincompanyV2.h"
 #include  "dweller.h"
+#include "bankticket.h"
 #include  <QFileSystemWatcher>
 #include  <QList>
 
 #define TKT_DEFAULT_PDF_PATH "c:\\TEMP"
-
-typedef enum tp_operation
-{
-    tpRegistered,
-    tpLiquidated,
-    tpOther
-
-
-}BLNK_TKT_TYPEOP, *PBLNK_TKT_TYPEOP;
-
 
 class Ticket
 {
@@ -29,10 +20,7 @@ public:
            QString value,
            QDate date,
            QString NossoNumero,
-           QString SeuNumero,
-           QString paivalue="",
-           QDate dtpgto = QDate::currentDate(),
-           BLNK_TKT_TYPEOP tpOp=tpOther);
+           QString SeuNumero);
 
     virtual ~Ticket(){}
     Dweller *getDweller();
@@ -40,18 +28,12 @@ public:
     QDate   getDate();
     QString getNossoNumero();
     QString getSeuNumero();
-    QString getPaidValue();
-    QDate   getDatePagto();
-    BLNK_TKT_TYPEOP getTpOp();
 private:
     Dweller *m_dweller;
     QString m_value;
     QDate   m_date;
     QString m_NossoNumero;
     QString m_SeuNumero;
-    QString m_paivalue;
-    QDate   m_dtpgto;
-    BLNK_TKT_TYPEOP m_tpOp;
 
 
 };
@@ -71,7 +53,7 @@ public:
                          QString NossoNumero="",
                          QString SeuNumero="");
        bool AddTickets();
-       bool ExtractReturn(QList<Ticket *> *tickets, QString strDir, QString FileName );
+       bool ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QString FileName );
 
 public slots:
        void DirModified(QString dir );

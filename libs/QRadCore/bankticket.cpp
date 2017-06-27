@@ -9,7 +9,8 @@ BankTicket::BankTicket( QString Cart,
             QDate dtPagto,
             QString Agencia,
             QString Valor,
-            QString ValorPago )
+            QString ValorPago,
+            QRAD_BANKTKT_TYPEOP tpOp)
 {
     m_Cart = Cart;
     m_NossoNumero = NossoNumero;
@@ -21,6 +22,7 @@ BankTicket::BankTicket( QString Cart,
     m_Agencia= Agencia;
     m_Valor =Valor;
     m_ValorPago =ValorPago;
+    m_tpOp = tpOp;
 }
 
 QString BankTicket::getCart()
@@ -81,3 +83,7 @@ BankTicket::~BankTicket()
 
 }
 
+QRAD_BANKTKT_TYPEOP BankTicket::getTpOp()
+{
+    return m_tpOp;
+}

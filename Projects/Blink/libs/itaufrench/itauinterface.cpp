@@ -32,8 +32,17 @@
 #define BLINK_REMOVE_EXE
 #endif
 
+ItauInterface::ItauInterface(QString Path)
+{
+    m_filenme = Path;
+}
 
-bool ItauInterface::Load(QList<itauticket*> *tikets,QString Path)
+bool ItauInterface::Parse(QList<BankTicket*> *tikets)
+{
+    return Parse( tikets, m_filenme);
+}
+
+bool ItauInterface::Parse(QList<BankTicket*> *tikets,QString Path)
 {
 
     BLINK_SAVE_EXE

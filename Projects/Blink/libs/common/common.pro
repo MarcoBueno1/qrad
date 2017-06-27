@@ -27,7 +27,8 @@ SOURCES +=  \
            editlogin.cpp \
            managermetreage.cpp \
            editmetreage.cpp \
-    parsepayments.cpp
+           parsepayments.cpp \
+           bankticketparserfactory.cpp
 
 HEADERS +=  \
            editsupplier.h \
@@ -37,7 +38,8 @@ HEADERS +=  \
            editlogin.h \
            managermetreage.h \
            editmetreage.h \
-    parsepayments.h
+           parsepayments.h \
+           bankticketparserfactory.h
 		   
 FORMS +=  \
          editsupplier.ui \

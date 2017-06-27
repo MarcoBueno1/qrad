@@ -2,7 +2,8 @@
 
 #include <QFile>
 #include <QStringList>
-#include "itauticket.h"
+//#include "itauticket.h"
+#include "bankticket.h"
 
 ItauParser::ItauParser()
 {
@@ -15,7 +16,7 @@ ItauParser::~ItauParser()
 }
 
 
-itauticket * ItauParser::ParseLine( QString Line )
+BankTicket * ItauParser::ParseLine( QString Line )
 {
 //109          000012281          007060-02          HOSPITAL SANTA JULIA LTDA                         18/05/2017        4320        COBRANCA          L     18/05/2017     1.550,00   01              -3,36       1.546,64
     int index = Line.indexOf(" ");
@@ -139,12 +140,12 @@ itauticket * ItauParser::ParseLine( QString Line )
     QDate  dtVencto = QDate::fromString(Data,"dd/MM/yyyy");
     QDate  dtPagto = QDate::fromString(DataPago,"dd/MM/yyyy");
 
-    return new itauticket(Cart,NossoNumero,SeuNumero,Pagador,dtVencto,Pago.startsWith("L")?true:false,dtPagto,Agencia,Valor,ValorPago);
+    return new BankTicket(Cart,NossoNumero,SeuNumero,Pagador,dtVencto,Pago.startsWith("L")?true:false,dtPagto,Agencia,Valor,ValorPago,Pago.startsWith("L")?tpLiquidated:tpOther);
 
 }
 
 
-bool ItauParser::Parse(QList<itauticket*> *tikets, QString Path)
+bool ItauParser::Parse(QList<BankTicket*> *tikets, QString Path)
 {
     QFile *file = new QFile(Path);
 
@@ -162,7 +163,7 @@ bool ItauParser::Parse(QList<itauticket*> *tikets, QString Path)
         QString line = lines.at(i);
         if( line.trimmed().at(0).isNumber() ) // ok we found a valid line
         {
-            itauticket *pTicket =  ParseLine(line.trimmed());
+            BankTicket *pTicket =  ParseLine(line.trimmed());
 
             if(pTicket)
             {

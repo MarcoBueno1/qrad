@@ -3,6 +3,7 @@
 #include "buildtkt.h"
 #include "ticket.h"
 #include "qradshared.h"
+#include "bankticket.h"
 
 BuildTkt *g_tkt;
 
@@ -102,20 +103,21 @@ void BuildShipping()
 }
 void ExtractReturn()
 {
-    QList<Ticket *> tickets;
+    QList<BankTicket *> tickets;
     if( g_tkt->ExtractReturn(&tickets,"c:\\dvl\\","remessa.ret"))
     {
         printf("\nExtractReturn executado com Sucesso!\n");
         for( int i =0; i < tickets.count();i++)
         {
-            Ticket *pTkt =  tickets.at(i);
+            BankTicket *pTkt =  tickets.at(i);
+            printf( "-----------------------------------------------------------");
             printf( "Item.....: %d\n", i+1);
             printf( "BnkNumber: %s\n", pTkt->getNossoNumero().toLatin1().data());
             printf( "SysNumber: %s\n", pTkt->getSeuNumero().toLatin1().data());
-            printf( "Value....: %s\n", pTkt->getValue().toLatin1().data());
-            printf( "Vencto...: %s\n", pTkt->getDate().toString(FMT_DATE).toLatin1().data());
-            printf( "Paid.....: %s\n", pTkt->getPaidValue().toLatin1().data());
-            printf( "Dt Paid..: %s\n", pTkt->getDatePagto().toString(FMT_DATE).toLatin1().data());
+            printf( "Value....: %s\n", pTkt->getValor().toLatin1().data());
+            printf( "Vencto...: %s\n", pTkt->getdtVencto().toString(FMT_DATE).toLatin1().data());
+            printf( "Paid.....: %s\n", pTkt->getValorPago().toLatin1().data());
+            printf( "Dt Paid..: %s\n", pTkt->getdtPagto().toString(FMT_DATE).toLatin1().data());
             printf( "Event....: %s\n", pTkt->getTpOp()==tpLiquidated?"Baixa":pTkt->getTpOp()==tpRegistered?"Registro":"Outro");
         }
     }

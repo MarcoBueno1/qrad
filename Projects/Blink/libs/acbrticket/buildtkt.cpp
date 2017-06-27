@@ -10,7 +10,6 @@
 #include "qradround.h"
 #include "qradshared.h"
 
-
 #define TKT_PREFIX "BOLETO."
 
 #define TKT_PURGE "LimparLista"
@@ -468,7 +467,7 @@ MotivoRejeicao1=04-Compensação Eletrônica.
 #define TKT_LIQUIDATED "toRetornoLiquidado"
 #define TKT_REGISTERED "toRetornoRegistroConfirmado"
 
-bool BuildTkt::ExtractReturn(QList<Ticket *> *tickets, QString strDir, QString FileName )
+bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QString FileName )
 {
 
     QString cmd =  QString(TKT_EXTRACT_RETURN).arg(strDir).arg(FileName);
@@ -496,7 +495,7 @@ bool BuildTkt::ExtractReturn(QList<Ticket *> *tickets, QString strDir, QString F
     QString VlrDocumento ;
     QString TipoOperacao ;
     QString dtPagto;
-    BLNK_TKT_TYPEOP tpOp = tpOther;
+    QRAD_BANKTKT_TYPEOP tpOp = tpOther;
 
     for( int i= 0; ; i++)
     {
@@ -537,7 +536,17 @@ bool BuildTkt::ExtractReturn(QList<Ticket *> *tickets, QString strDir, QString F
                   tpOp = tpOther;
 
 
-              Ticket *pNew = new Ticket(NULL,VlrDocumento,QDate::fromString(vencto,FMT_DATE),NossoNumero,SeuNumero,VlrRecebido,QDate::fromString(dtPagto, FMT_DATE), tpOp);
+              BankTicket *pNew = new BankTicket("",
+                                                NossoNumero,
+                                                SeuNumero,
+                                                "",
+                                                QDate::fromString(vencto,FMT_DATE),
+                                                tpOp==tpLiquidated,
+                                                QDate::fromString(dtPagto, FMT_DATE),
+                                                "",
+                                                VlrDocumento,
+                                                VlrRecebido,
+                                                tpOp);
               tickets->append(pNew);
           }
        }
@@ -551,20 +560,13 @@ bool BuildTkt::ExtractReturn(QList<Ticket *> *tickets, QString strDir, QString F
 
 
 
-Ticket::Ticket(Dweller *dweller, QString value, QDate date, QString NossoNumero, QString SeuNumero,
-               QString paivalue,
-               QDate dtpgto,
-               BLNK_TKT_TYPEOP tpOp)
+Ticket::Ticket(Dweller *dweller, QString value, QDate date, QString NossoNumero, QString SeuNumero)
 {
     m_dweller = dweller;
     m_value =  value;
     m_date = date;
     m_NossoNumero = NossoNumero;
     m_SeuNumero = SeuNumero;
-    m_paivalue= paivalue;
-    m_dtpgto= dtpgto;
-    m_tpOp= tpOp;
-
 }
 
 Dweller *Ticket::getDweller()
@@ -587,19 +589,4 @@ QString Ticket::getSeuNumero()
 QDate   Ticket::getDate()
 {
     return m_date;
-}
-
-QString Ticket::getPaidValue()
-{
-    return m_paivalue;
-}
-
-QDate   Ticket::getDatePagto()
-{
-    return m_dtpgto;
-}
-
-BLNK_TKT_TYPEOP Ticket::getTpOp()
-{
-    return m_tpOp;
 }

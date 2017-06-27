@@ -89,7 +89,8 @@ HEADERS +=  qradplugincontainer.h \
     exaroreport.h \
     qradreportinterface.h \
     qradlicensecontrol.h \
-    bankticket.h
+    bankticket.h \
+    bankticketinterface.h
 
 
 

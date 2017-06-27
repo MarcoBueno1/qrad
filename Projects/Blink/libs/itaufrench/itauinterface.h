@@ -3,16 +3,20 @@
 
 #include <QString>
 #include <QList>
-#include "itauticket.h"
+#include "bankticketinterface.h"
+//#include "itauticket.h"
 
 
-class ItauInterface
+class ItauInterface : public IBankTicketParser
 {
 public:
-    ItauInterface();
+    ItauInterface(QString Path="");
     ~ItauInterface();
 
-    static bool Load(QList<itauticket*> *tikets,QString Path);
+    bool Parse(QList<BankTicket*> *tikets,QString Path);
+    bool Parse(QList<BankTicket*> *tikets);
+private:
+    QString m_filenme;
 };
 
 

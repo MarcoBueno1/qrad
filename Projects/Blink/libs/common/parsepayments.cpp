@@ -2,6 +2,7 @@
 #include "itauinterface.h"
 #include "qradshared.h"
 #include "qraddebug.h"
+#include "bankticketparserfactory.h"
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QSqlError>
@@ -41,12 +42,17 @@ QSqlDatabase ParsePayments::ConfigTempDatabase()
 
 bool ParsePayments::BuildFrom(QString Path)
 {
-    QList<itauticket*> list;
-    if( !ItauInterface::Load(&list,Path))
+    QList<BankTicket*> list;
+    IBankTicketParser *Parser = BankTicketParserFactory::GetParser(Path);
+
+    if( !Parser->Parse(&list))
     {
         QMessageBox::warning(NULL,"Oops!", QString("Nenhum pagamento encontrado no arquivo: %1").arg(Path));
+        delete Parser;
         return false;
     }
+    delete Parser;
+
 
 
     QSqlDatabase db = ConfigTempDatabase();
@@ -58,7 +64,7 @@ bool ParsePayments::BuildFrom(QString Path)
 
     for( int i = 0; i < list.count(); i++ )
     {
-        itauticket *tkt = list.at(i);
+        BankTicket *tkt = list.at(i);
 
         //seunumero, datavencto, nomepagador, datapagto, valor, valorpago
 
@@ -79,7 +85,7 @@ bool ParsePayments::BuildFrom(QString Path)
          query = new QSqlQuery; // default database
          for( int i = 0; i < list.count(); i++ )
          {
-             itauticket *tkt = list.at(i);
+             BankTicket *tkt = list.at(i);
              QString Update  =  QString(UPDATE_TICKETS)
                      .arg(tkt->getdtPagto().toString(FMT_DATE_DB))
                      .arg(tkt->getValorPago().replace(",",".").toDouble())

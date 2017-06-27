@@ -4,6 +4,14 @@
 #include <QString>
 #include <QDate>
 
+typedef enum tp_operation
+{
+    tpRegistered,
+    tpLiquidated,
+    tpOther
+
+}QRAD_BANKTKT_TYPEOP, *PQRAD_BANKTKT_TYPEOP;
+
 
 class BankTicket
 {
@@ -17,7 +25,8 @@ public:
                 QDate dtPagto,
                 QString Agencia,
                 QString Valor,
-                QString ValorPago );
+                QString ValorPago,
+                QRAD_BANKTKT_TYPEOP tpOp=tpOther);
 
 
     ~BankTicket();
@@ -32,6 +41,7 @@ public:
     QString getAgencia();
     QString getValor();
     QString getValorPago();
+    QRAD_BANKTKT_TYPEOP getTpOp();
 
 private:
     QString m_Cart;
@@ -44,7 +54,8 @@ private:
     QString m_Agencia;
     QString m_Valor;
     QString m_ValorPago;
+    QRAD_BANKTKT_TYPEOP m_tpOp;
 
 };
 
-#endif // ITAUTICKET_H
+#endif // BANKTICKET_H

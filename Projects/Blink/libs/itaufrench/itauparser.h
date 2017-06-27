@@ -1,7 +1,7 @@
 #ifndef ITAUPARSER_H
 #define ITAUPARSER_H
 
-#include "itauticket.h"
+#include "bankticket.h"
 #include <QList>
 
 class ItauParser
@@ -10,9 +10,9 @@ public:
     ItauParser();
     ~ItauParser();
 
-    static bool Parse(QList<itauticket*> *tikets, QString Path);
+    static bool Parse(QList<BankTicket*> *tikets, QString Path);
 private:
-    static itauticket *ParseLine( QString Line );
+    static BankTicket *ParseLine( QString Line );
 };
 
 #endif // ITAUPARSER_H

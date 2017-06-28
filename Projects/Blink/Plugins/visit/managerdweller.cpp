@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
-#define SQL_ITEMS "select d.id, d.name \"Nome\", t.name \"Torre\", a.numero \"AP\", tp.name \"Tipo\" from dweller d inner join ap a on a.id = d.ap inner join tower t on t.id = d.tower inner join dweller_type tp on tp.id = d.type where removed = false order by id"
+#define SQL_ITEMS "select d.id, d.name \"Nome\", t.name \"Torre\", a.numero \"AP\", tp.name \"Tipo\", case when d.payer=true then 'Sim' else 'Não' end as \"Pagador\" from dweller d inner join ap a on a.id = d.ap inner join tower t on t.id = d.tower inner join dweller_type tp on tp.id = d.type where removed = false order by id"
 
 ManagerDweller::ManagerDweller(QWidget *parent) :
     QDialog(parent),

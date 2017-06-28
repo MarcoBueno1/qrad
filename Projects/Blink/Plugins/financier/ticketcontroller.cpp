@@ -238,6 +238,9 @@ bool TicketController::BuildTicketCond(int id )
     if( pConfig )
     {
         date.setDate(date.year(),date.month(),pConfig->at(0)->getDefaultPayDate().day());
+
+        if( QDate::currentDate() > date )
+            date = date.addMonths(1);
     }
 
     if(!InitAcbr())

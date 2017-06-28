@@ -57,7 +57,7 @@ void Editticket::Save()
     mod->setVencto(ui->DtEdtVencto->date());
     mod->setValor(ui->DblSpnBxValor->value());
     mod->setObs(ui->LnEdtObs->text());
-    if(mod->getStatus() == stBuiltShipp)
+    if(mod->getStatus() == stRegistered)
         mod->setStatus(stModified);
 
     bool bRet = mod->Save();

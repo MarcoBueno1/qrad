@@ -5,9 +5,11 @@
 #include "financierdelegates.h"
 #include <QMessageBox>
 #include <QDebug>
+#include <QMimeData>
 #include "ticketcontroller.h"
 #include "editextratx.h"
 #include "accounttoreceivehistorymodel.h"
+#include "showbankreturn.h"
 
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
@@ -45,6 +47,8 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->pushButtonEdit, SIGNAL(clicked()),this, SLOT(doEdit()));
     connect(ui->pushButtonRemove, SIGNAL(clicked()),this, SLOT(doRemove()));
 
+    connect(ui->tableViewSearch,SIGNAL(OnDrop(QString)),this,SLOT(doDrop(QString)));
+
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
@@ -52,6 +56,8 @@ Managerticket::Managerticket(QWidget *parent) :
     
     ui->comboBoxMonth->setCurrentIndex(QDate::currentDate().month()-1);
     ui->comboBoxYear->setCurrentIndex(QDate::currentDate().year()-2017);
+
+    setAcceptDrops(true);
 
     DoRefresh();
     setWindowTitle("Gerenciamento de Boletos");
@@ -450,4 +456,45 @@ void Managerticket::doRemove()
 
     delete pController;
 
+}
+
+
+
+void Managerticket::doDrop(QString path)
+{
+    QList<BankTicket*> list;
+    ShowBankReturn *ParsePay = new ShowBankReturn ;
+
+#ifdef _WIN32
+    path = path.remove("file://");
+#else
+    path = "C:\\Dvl\\CN12067A.RET";
+#endif
+
+    if(ParsePay->Exec(&list, path))
+    {
+        /// perssit
+    }
+
+}
+
+void Managerticket::dropEvent(QDropEvent *event)
+{
+    QString strPath ;
+
+    strPath = event->mimeData()->text();
+
+
+    doDrop(strPath);
+
+}
+
+void Managerticket::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->acceptProposedAction();
+}
+
+void Managerticket::dragMoveEvent(QDragMoveEvent *event)
+{
+    event->acceptProposedAction();
 }

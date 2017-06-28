@@ -17,7 +17,8 @@ INCLUDEPATH += ../../../../libs/QRadCore \
               ../../../../libs/QRadCommonGui \
                ../../../../libs/QRadOrm \
                ../orm \
-               ../itaufrench
+               ../itaufrench \
+               ../acbrticket
 
 SOURCES +=  \
            editsupplier.cpp \
@@ -27,8 +28,9 @@ SOURCES +=  \
            editlogin.cpp \
            managermetreage.cpp \
            editmetreage.cpp \
-           parsepayments.cpp \
-           bankticketparserfactory.cpp
+#           parsepayments.cpp \
+           bankticketparserfactory.cpp \
+    showbankreturn.cpp
 
 HEADERS +=  \
            editsupplier.h \
@@ -38,8 +40,9 @@ HEADERS +=  \
            editlogin.h \
            managermetreage.h \
            editmetreage.h \
-           parsepayments.h \
-           bankticketparserfactory.h
+#           parsepayments.h \
+           bankticketparserfactory.h \
+    showbankreturn.h
 		   
 FORMS +=  \
          editsupplier.ui \
@@ -48,25 +51,29 @@ FORMS +=  \
          editprofile.ui \
          editlogin.ui \
          managermetreage.ui \
-         editmetreage.ui
+         editmetreage.ui \
+    showbankreturn.ui
  
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadHw\release \
                -L../../../../libs/QRadCommonGui/release \
                -L../../../../libs/QRadOrm\release \
                -L../orm/release \
-               -L../itaufrench/release
+               -L../itaufrench/release \
+               -L../acbrticket/release \
 
 unix:LIBS +=  -L../../../../libs/QRadCore \
               -L../../../../libs/QRadOrm \
               -L../../../../libs/QRadCommonGui \
               -L../../../../libs/QRadHw \
               -L../itaufrench \
+              -L../acbrticket \
               -L../orm
 
 
 LIBS += -lqradcore  \
         -litaufrench \
+        -lacbrticket \
         -lblinkorm \
         -lqradorm \
         -lqradhw \

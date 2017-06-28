@@ -40,10 +40,15 @@ QSqlDatabase ParsePayments::ConfigTempDatabase()
 
 
 
-bool ParsePayments::BuildFrom(QString Path)
+bool ParsePayments::BuildFrom(QList<BankTicket*> *list, QString Path)
 {
-    QList<BankTicket*> list;
     IBankTicketParser *Parser = BankTicketParserFactory::GetParser(Path);
+
+    if(!Parser)
+    {
+        QMessageBox::warning(NULL,"Oops!", QString("O arquivo %1 é incompativel!").arg(Path));
+        return false;
+    }
 
     if( !Parser->Parse(&list))
     {
@@ -52,6 +57,7 @@ bool ParsePayments::BuildFrom(QString Path)
         return false;
     }
     delete Parser;
+
 
 
 

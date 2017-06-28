@@ -13,6 +13,8 @@ public:
 
 private:
     QSqlDatabase ConfigTempDatabase();
+
+
 };
 
 #endif // PARSEPAYMENTS_H

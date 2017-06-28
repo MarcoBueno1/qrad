@@ -10,6 +10,7 @@
 #include "bankticket.h"
 #include  <QFileSystemWatcher>
 #include  <QList>
+#include "bankticketinterface.h"
 
 #define TKT_DEFAULT_PDF_PATH "c:\\TEMP"
 
@@ -40,10 +41,10 @@ private:
 
 
 
-class BuildTkt : QObject
+class BuildTkt : public QObject , public IBankTicketParser
 {
 public:
-      BuildTkt();
+      BuildTkt(QString Path="");
       ~BuildTkt();
       
        bool Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *pBank, bankaccount *pAccount);
@@ -54,6 +55,10 @@ public:
                          QString SeuNumero="");
        bool AddTickets();
        bool ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QString FileName );
+
+       bool Parse(QList<BankTicket*> *tikets,QString Path);
+       bool Parse(QList<BankTicket*> *tikets);
+
 
 public slots:
        void DirModified(QString dir );
@@ -75,6 +80,7 @@ private:
       QString m_ReceivePath;
       QString m_SendFile;
       QString m_ReceiveFile;
+      QString m_parsepath;
       QString MountYourNumvber(QString SeuNumero, QString ap, QString tow );
 };
 

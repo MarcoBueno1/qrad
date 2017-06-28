@@ -7,6 +7,7 @@
 #include "acbr.h"
 #include <QCoreApplication>
 #include <QSettings>
+#include <QDebug>
 #include "qradround.h"
 #include "qradshared.h"
 
@@ -109,7 +110,7 @@ void BuildTkt::DirModified(QString dir )
    m_bDirModified = true;
 }
 
-BuildTkt::BuildTkt()
+BuildTkt::BuildTkt(QString Path)
 {
 
     m_SendPath = SEND_PATH;
@@ -118,6 +119,7 @@ BuildTkt::BuildTkt()
     m_ReceiveFile = RECEIVE_NAME;
 
     m_watcher.addPath(m_ReceivePath);
+    m_parsepath= Path;
     QObject::connect(&m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(DirModified(QString)));
 }
 
@@ -513,7 +515,7 @@ bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QStri
               break;
       else
       {
-#ifdef __DEBUG__
+//#ifdef __DEBUG__
 
           qDebug() << "Titulo......:" << i+1;
           qDebug() << "Nome........:" << Nome;
@@ -524,7 +526,7 @@ bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QStri
           qDebug() << "VlrRecebido.:" <<VlrRecebido;
           qDebug() << "VlrDocumento:" <<VlrDocumento;
           qDebug() << "TipoOperacao:" <<TipoOperacao;
-#endif
+//#endif
 
           if(tickets)
           {
@@ -556,6 +558,28 @@ bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QStri
     }
 
     return true;
+}
+
+bool BuildTkt::Parse(QList<BankTicket*> *tikets,QString Path)
+{
+    QString strDir;
+    QString FileName;
+//#ifdef _WIN32
+    strDir = Path.mid(0,Path.lastIndexOf("\\")+1);
+    FileName = Path.mid(Path.lastIndexOf("\\")+1);
+//#elseif
+//    strDir = Path.mid(0,Path.lastIndexOf("/")+1);
+//    FileName = Path.mid(Path.lastIndexOf("/")+1);
+//#endif
+
+    qDebug() << strDir;
+    qDebug() << FileName;
+    return ExtractReturn(tikets, strDir, FileName );
+}
+
+bool BuildTkt::Parse(QList<BankTicket*> *tikets)
+{
+    return Parse(tikets,m_parsepath);
 }
 
 
@@ -590,3 +614,4 @@ QDate   Ticket::getDate()
 {
     return m_date;
 }
+

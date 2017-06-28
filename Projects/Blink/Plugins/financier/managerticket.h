@@ -35,6 +35,7 @@ public slots:
     void doReprint();
     void doEdit();
     void doRemove();
+    void doDrop(QString path);
 
 private:
     Ui::Managerticket *ui;
@@ -50,6 +51,9 @@ private:
     void keyPressEvent(QKeyEvent *event);
     void MatchNewest(ticket *newest );
 
+    void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
 };
 
 #endif // MANAGERticket_H

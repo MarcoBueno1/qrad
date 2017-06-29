@@ -24,6 +24,7 @@ public:
     bool doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt=0);
     bool Edit(int id);
     bool Remove(int id, QString strMsgText );
+    bool ProcessRetList(QList<BankTicket*> *list);
 private:
     BuildTkt *g_tkt;
 

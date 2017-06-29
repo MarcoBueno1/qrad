@@ -45,6 +45,17 @@
 #define SELECT_EMAILS "select count(*) from dweller where notifbyemail = true and email <> ''"
 
 #define SELECT_DWELER_FOR_EXTRA_TAX "select * from dweller d where removed = false and payer = true order by d.id"
+
+
+////  After process .ret file
+#define UPDATE_TICKETS_TO_PAID "ticket set pagoem = '%1', valorpago = %2, status=%3, obs='%4', vuser = %5 where nossonumero in (%6) and vencto = '%7'"
+#define SET_TICKETS_REGISTERED "ticket set status=%1 where nossonumero in (%2)"
+#define UPDATE_ACCOUNT_TO_RECEIVE  "update fin_accounttoreceive set paiddate = '%1', valuepaid = %2, paid = true where id in ( select accountid from ticket where  nossonumero in (%3) and vencto = '%4') "
+///
+
+
+
+
 TicketController::TicketController()
 {
   g_tkt = new BuildTkt;
@@ -499,4 +510,75 @@ bool TicketController::Remove(int id, QString strMsgText)
 
    delete tkt;
    return bRet;
+}
+
+
+
+bool TicketController::ProcessRetList(QList<BankTicket*> *list)
+{
+    QSqlDatabase::database().transaction();
+
+    QSqlQuery *query = new QSqlQuery; // default database
+    QString Update;
+    bool bRet = true;
+
+    for( int i = 0; i < list->count(); i++ )
+    {
+        BankTicket *tkt = list->at(i);
+
+#define UPDATE_TICKETS_TO_PAID "ticket set pagoem = '%1', valorpago = %2, status=%3, obs='%4', vuser = %5 where nossonumero in (%6) and vencto = '%7'"
+
+        if( tkt->getpago() )
+        {
+            Update  =  QString(UPDATE_TICKETS_TO_PAID)
+                    .arg(tkt->getdtPagto().toString(FMT_DATE_DB))
+                    .arg(tkt->getValorPago().replace(",",".").toDouble())
+                    .arg(stPaid)
+                    .arg(QString("AUTOMATIZADO EM %1").arg(QDateTime::currentDateTime().toString("dd/MM/yyyy-hh:mm:ss")))
+                    .arg(QRadConfig::GetCurrentUserId())
+                    .arg(tkt->getNossoNumero())
+                   // .arg(tkt->getSeuNumero())
+                    .arg(tkt->getdtVencto().toString(FMT_DATE_DB));
+
+            if( !query->exec(Update))
+            {
+                bRet = false;
+                debug_message("Erro na execucao de: %s\n\nErro:%s", Update.toLatin1().data(), query->lastError().text().toLatin1().data());
+            }
+            else
+            {
+#define UPDATE_ACCOUNT_TO_RECEIVE  "update fin_accounttoreceive set paiddate = '%1', valuepaid = %2, paid = true where id in ( select accountid from ticket where  nossonumero in (%3) and vencto = '%4') "
+                Update = QString(UPDATE_ACCOUNT_TO_RECEIVE)
+                        .arg(tkt->getdtPagto().toString(FMT_DATE_DB))
+                        .arg(tkt->getValorPago().replace(",",".").toDouble())
+                        .arg(tkt->getNossoNumero())
+//                        .arg(tkt->getSeuNumero())
+                        .arg(tkt->getdtVencto().toString(FMT_DATE_DB));
+
+                if( !query->exec(Update))
+                {
+                    bRet = false;
+                    debug_message("Erro na execucao de: %s\n\nErro:%s", Update.toLatin1().data(), query->lastError().text().toLatin1().data());
+                }
+            }
+        }
+        else if(tkt->getTpOp()==tpRegistered)
+        {
+//#define SET_TICKETS_REGISTERED "ticket set status=%1 where nossonumero in (%2) and seunumero in (%3) and valor = '%4' and status = %5 and vencto = '%7' and removed <> true"
+            Update  =  QString(SET_TICKETS_REGISTERED)
+                       .arg(stRegistered)
+                       .arg(tkt->getNossoNumero());
+//                    .arg(tkt->getNossoNumero())
+
+            if( !query->exec(Update))
+            {
+                bRet = false;
+                debug_message("Erro na execucao de: %s\n\nErro:%s", Update.toLatin1().data(), query->lastError().text().toLatin1().data());
+            }
+        }
+
+    }
+    QSqlDatabase::database().commit();
+    delete query;
+    return bRet;
 }

@@ -40,6 +40,8 @@ LIBS += -L../../../libs/QRadCore \
         -L../libs/orm/release \
         -L../libs/itaufrench \
         -L../libs/itaufrench/release \
+        -L../libs/acbrticket \
+        -L../libs/acbrticket/release \
         -L../../../libs/3rdpart/exaro \
         -lqradcore \
         -lqradlicup \
@@ -47,6 +49,7 @@ LIBS += -L../../../libs/QRadCore \
         -lblinkorm \
         -lqradorm \
         -litaufrench \
+        -lacbrticket \
         -lReport \
         -lqradcommongui
 

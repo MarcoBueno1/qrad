@@ -42,12 +42,15 @@ LIBS += -L../../../libs/QRadCore \
         -L../libs/orm/release \
         -L../libs/itaufrench/release \
         -L../libs/itaufrench \
+        -L../libs/acbrticket \
+        -L../libs/acbrticket/release \
         -lqradcore \
         -lqradlicup \
         -lqradorm \
         -lblinkcommon \
         -lblinkorm \
         -litaufrench \
+        -lacbrticket \
         -lReport \
         -lqradcommongui
 

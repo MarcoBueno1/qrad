@@ -51,8 +51,8 @@ SUBDIRS = QRad \
           plugins/QRadReport \
           Projects\Blink\libs\orm \
           Projects\Blink\libs\itaufrench \
-          Projects\Blink\libs\common \
           Projects\Blink\libs\acbrticket \
+          Projects\Blink\libs\common \
           Projects\Blink\Main \
           Projects\Blink\MainPlate \
           Projects\Blink\Plugins\visit \

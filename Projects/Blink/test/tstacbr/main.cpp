@@ -103,8 +103,12 @@ void BuildShipping()
 }
 void ExtractReturn()
 {
+    char szFileName[200];
     QList<BankTicket *> tickets;
-    if( g_tkt->ExtractReturn(&tickets,"c:\\dvl\\","remessa.ret"))
+ 
+    printf("\nDigite o nome do arquivo:");
+    scanf("%s", szFileName);
+    if( g_tkt->ExtractReturn(&tickets, "C:\\dvl\\",QString(szFileName)))
     {
         printf("\nExtractReturn executado com Sucesso!\n");
         for( int i =0; i < tickets.count();i++)

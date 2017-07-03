@@ -10,7 +10,8 @@
 #include "qradshared.h"
 
 #define CMD_DBD "c:\\dvl\\test_ocr\\openalpr_32\\alpr.exe -c eu \"c:\\Program Files (x86)\\Tesseract-OCR\\placa.jpg\""
-#define CMD_CASA "C:\\Dvl\\ocr\\openalpr_64\\alpr.exe -c eu \"c:\\Program Files (x86)\\Tesseract-OCR\\placa.jpg\""
+//#define CMD_CASA "C:\\Dvl\\ocr\\openalpr_64\\alpr.exe -c eu \"c:\\Program Files (x86)\\Tesseract-OCR\\placa.jpg\""
+#define CMD_CASA "C:\\Dvl\\ocr\\openalpr_64\\alpr.exe -c eu "
 
 #define SELECT "select d.name as \"Morador\", t.name as \"Torre\", ap.numero as \"Apartamento\", v.board as \"Placa\" from dweller d "\
                " inner join vehicle v on v.owner = d.id"\
@@ -144,7 +145,7 @@ void MainWindow::on_pushButton_clicked()
     ui->LblMorador->setStyleSheet(FG_COLOR_RED);
 
     QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Abrir Arquivo"), "C:\\dvl\\qrad", tr("Image Files (*.png *.jpg *.bmp *.jpeg)"));
+        tr("Abrir Arquivo"), "C:\\dvl\\qrad\\bin", tr("Image Files (*.png *.jpg *.bmp *.jpeg)"));
 
 
 //    QString plate = FindPlate("C:\\Dvl\\qrad\\bin\\image.jpeg"/*"C:\\Dvl\\ocr\\openalpr_64\\WhatsApp.jpeg"*/);
@@ -155,10 +156,13 @@ void MainWindow::on_pushButton_clicked()
     plate = plate.trimmed();
     if( !plate.isEmpty())
     {
+        ui->LblMorador->setText(QString("104-Olympic: Marco Bueno - Placa: %1").arg(plate));
+        ui->LblMorador->setStyleSheet(FG_COLOR_GREEN);
        QSqlQueryModel *model = new QSqlQueryModel;
        model->setQuery(QString(SELECT).arg(plate));
        if(model->rowCount() > 0 )
        {
+
            QString Dweller = model->record(0).field(0).value().toString();
            QString Tower = model->record(0).field(1).value().toString();
            QString Ap = model->record(0).field(2).value().toString();

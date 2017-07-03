@@ -101,35 +101,73 @@ void BuildShipping()
         printf("\nProblema no BuildShipping!\n");
     }
 }
-void ExtractReturn()
+#define TYPE_ONLY_PAID 0
+#define TYPE_ONLY_REGISTERED 1
+#define TYPE_ALL 2
+
+void ExtractReturn(int nType, QString Vencto)
 {
     char szFileName[200];
+    char szPath[200];
+    char szDataVencto[200];
     QList<BankTicket *> tickets;
- 
+
+    printf("\nData de Vencimento( vazio para não filtrar):");
+    scanf("%s", szDataVencto);
+
+    Vencto = QString(szDataVencto);
+    if(Vencto == "0")
+        Vencto = "";
+
+
+
+    printf("\nDigite o caminho do arquivo (com \\ no final):");
+    scanf("%s", szPath);
+
     printf("\nDigite o nome do arquivo:");
     scanf("%s", szFileName);
-    if( g_tkt->ExtractReturn(&tickets, "C:\\dvl\\",QString(szFileName)))
+    if( g_tkt->ExtractReturn(&tickets, QString(szPath),QString(szFileName)))
     {
         printf("\nExtractReturn executado com Sucesso!\n");
         for( int i =0; i < tickets.count();i++)
         {
             BankTicket *pTkt =  tickets.at(i);
-            printf( "-----------------------------------------------------------");
-            printf( "Item.....: %d\n", i+1);
-            printf( "BnkNumber: %s\n", pTkt->getNossoNumero().toLatin1().data());
-            printf( "SysNumber: %s\n", pTkt->getSeuNumero().toLatin1().data());
-            printf( "Value....: %s\n", pTkt->getValor().toLatin1().data());
-            printf( "Vencto...: %s\n", pTkt->getdtVencto().toString(FMT_DATE).toLatin1().data());
-            printf( "Paid.....: %s\n", pTkt->getValorPago().toLatin1().data());
-            printf( "Dt Paid..: %s\n", pTkt->getdtPagto().toString(FMT_DATE).toLatin1().data());
-            printf( "Event....: %s\n", pTkt->getTpOp()==tpLiquidated?"Baixa":pTkt->getTpOp()==tpRegistered?"Registro":"Outro");
+            if(( TYPE_ONLY_PAID == nType ) && ( pTkt->getTpOp()!=tpLiquidated))
+            {
+              continue;
+            }
+            if(( TYPE_ONLY_REGISTERED == nType ) && ( pTkt->getTpOp()!=tpRegistered))
+            {
+              continue;
+            }
+            if( !Vencto.isEmpty() && (pTkt->getdtVencto().toString(FMT_DATE) != Vencto))
+            {
+              continue;
+            }
+            printf("%5d %10s %10s %6s %8s %6s %8s %s\n"
+                   ,i+1,
+                   pTkt->getNossoNumero().toLatin1().data(),
+                   pTkt->getSeuNumero().toLatin1().data(),
+                   pTkt->getValor().toLatin1().data(),
+                   pTkt->getdtVencto().toString(FMT_DATE).toLatin1().data(),
+                   pTkt->getValorPago().toLatin1().data(),
+                   pTkt->getdtPagto().toString(FMT_DATE).toLatin1().data(),
+                   pTkt->getTpOp()==tpLiquidated?"Baixa":pTkt->getTpOp()==tpRegistered?"Registro":"Outro");
+            //printf( "-----------------------------------------------------------");
+            //printf( "Item.....: %d\n", i+1);
+            //printf( "BnkNumber: %s\n", pTkt->getNossoNumero().toLatin1().data());
+            //printf( "SysNumber: %s\n", pTkt->getSeuNumero().toLatin1().data());
+            //printf( "Value....: %s\n", pTkt->getValor().toLatin1().data());
+            //printf( "Vencto...: %s\n", pTkt->getdtVencto().toString(FMT_DATE).toLatin1().data());
+            //printf( "Paid.....: %s\n", pTkt->getValorPago().toLatin1().data());
+            //printf( "Dt Paid..: %s\n", pTkt->getdtPagto().toString(FMT_DATE).toLatin1().data());
+            //printf( "Event....: %s\n", pTkt->getTpOp()==tpLiquidated?"Baixa":pTkt->getTpOp()==tpRegistered?"Registro":"Outro");
         }
     }
     else
     {
         printf("\nProblema no ExtractReturn!\n");
     }
-
 }
 
 
@@ -293,9 +331,11 @@ void PrintMenu()
 //  printf( "\n7. DB_AppendBanco\n" );
 //  printf( "\n8. DB_AppendTkt\n" );
 //  printf( "\n9. DB_AppendCompany\n" );
-  printf( "\n10. ExtractReturn(\n" );
-  printf( "\n11. AppendTicketFromTicketsDb\n");
-  printf( "\n12. Close Program\n" );
+  printf( "\n10. ExtractReturn()\n" );
+  printf( "\n11. ExtractReturn(ONLY_PAID)\n" );
+  printf( "\n12. ExtractReturn(ONLY_REGISTERED)\n" );
+  printf( "\n13. AppendTicketFromTicketsDb\n");
+  printf( "\n14. Close Program\n" );
 
 /*
 
@@ -359,9 +399,15 @@ int main(int argc, char *argv[])
                   AddCompany();
                   break;
            case 10:
-                  ExtractReturn();
+                  ExtractReturn(TYPE_ALL, "");
                   break;
            case 11:
+                  ExtractReturn(TYPE_ONLY_PAID, "");
+                  break;
+           case 12:
+                   ExtractReturn(TYPE_ONLY_REGISTERED, "");
+                   break;
+           case 13:
                   AppendTicketFromTicketsDb();
                   break;
 
@@ -369,7 +415,7 @@ int main(int argc, char *argv[])
                    break;
         }
 
-      }while( cOption != 12 );
+      }while( cOption != 14 );
 
     qDebug() << "antes delete g_tkt";
     delete g_tkt;

@@ -55,7 +55,7 @@ SOURCES += financierplugin.cpp \
     editticket.cpp \
     ticketcontroller.cpp \
     managershipper.cpp \
-    showpayments.cpp \
+   # showpayments.cpp \
     editextratx.cpp
 
 HEADERS += financierplugin.h \
@@ -92,7 +92,7 @@ HEADERS += financierplugin.h \
     editticket.h \
     ticketcontroller.h \
     managershipper.h \
-    showpayments.h \
+   # showpayments.h \
     editextratx.h
  
 
@@ -158,7 +158,7 @@ FORMS += accounttypemanager.ui \
     managerticket.ui \
     editticket.ui \
     managershipper.ui \
-    showpayments.ui \
+   # showpayments.ui \
     editextratx.ui
 
 target.path = $${PREFIX}/bin 

@@ -43,6 +43,7 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonAll,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonNotPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
+    connect(ui->comboBoxMonth,SIGNAL(currentIndexChanged(int)), this, SLOT(doRefresh()));
     connect(ui->pushButtonReprint, SIGNAL(clicked()),this, SLOT(doReprint()));
     connect(ui->pushButtonEdit, SIGNAL(clicked()),this, SLOT(doEdit()));
     connect(ui->pushButtonRemove, SIGNAL(clicked()),this, SLOT(doRemove()));
@@ -55,7 +56,6 @@ Managerticket::Managerticket(QWidget *parent) :
     setWindowState(Qt::WindowMaximized);
     
     ui->comboBoxMonth->setCurrentIndex(QDate::currentDate().month()-1);
-    ui->comboBoxYear->setCurrentIndex(QDate::currentDate().year()-2017);
 
     setAcceptDrops(true);
 
@@ -174,8 +174,20 @@ void Managerticket::LoadTableView()
         bHasWhere = true;
         bNeedOr = true;
     }
-    QDate dtInicio = QDate(2017+ui->comboBoxYear->currentIndex(),  ui->comboBoxMonth->currentIndex()+1, 1);
-    QDate dtFim = QDate(dtInicio.year(), dtInicio.month(),dtInicio.daysInMonth());
+    QDate dtInicio;// = QDate::currentDate();
+    switch (ui->comboBoxMonth->currentIndex())
+    {
+       case 0: // 3 months
+              dtInicio = QDate::currentDate().addMonths(-3);
+       case 1: // 6 months
+              dtInicio = QDate::currentDate().addMonths(-6);
+       case 2: // this year
+              dtInicio = QDate(QDate::currentDate().year(),1,1);
+       case 3: // all
+              dtInicio = QDate(2017,1,1);
+    }
+
+    QDate dtFim = QDate(dtInicio.year()+10, dtInicio.month(),dtInicio.daysInMonth());
     aux += QString(" %1 %2 (t.vencto between '%3' and '%4' )").arg(bHasWhere?"":" Where ").arg(!bHasWhere?"":bNeedOr?" Or ":" and ").arg(dtInicio.toString(FMT_DATE_DB)).arg(dtFim.toString(FMT_DATE_DB));
 
     if( !ui->radioButtonAllType->isChecked())

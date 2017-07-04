@@ -10,7 +10,11 @@ typedef enum enu_status_tkt
   stBuiltShipp,
   stRegistered,
   stPaid,
-  stModified
+  stModified,
+  stDateModified,
+  stValueModified,
+  stDateValueModified
+
 }BBOL_STATUS, *PBBOL_STATUS;
 
 

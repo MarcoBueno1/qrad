@@ -54,11 +54,21 @@ void Editticket::Save()
     if( m_mod == NULL)
         mod = new ticket;
 
+    if(mod->getStatus() != stCreated)
+    {
+    if(( ui->DtEdtVencto->date() != mod->getVencto()) &&( mod->getValor() != ui->DblSpnBxValor->value()))
+        mod->setStatus(stDateValueModified);
+    else if( ui->DtEdtVencto->date() != mod->getVencto())
+        mod->setStatus(stDateModified);
+    else if ( mod->getValor() != ui->DblSpnBxValor->value())
+        mod->setStatus(stValueModified);
+    }
+
     mod->setVencto(ui->DtEdtVencto->date());
     mod->setValor(ui->DblSpnBxValor->value());
     mod->setObs(ui->LnEdtObs->text());
-    if(mod->getStatus() == stRegistered)
-        mod->setStatus(stModified);
+//    if(mod->getStatus() == stRegistered)
+  //      mod->setStatus(stModified);
 
     bool bRet = mod->Save();
     if( m_lastMod )

@@ -5,6 +5,7 @@
 #include "managerticket.h"
 #include "managersupplier.h"
 #include "managershipper.h"
+#include "showbankreturn.h"
 
 FinancierPlugin::FinancierPlugin()
 {
@@ -51,6 +52,7 @@ void FinancierPlugin::onLoad(QRadPluginContainer* container)
     appendAction(ACTION_MANAGE_TICKET);
     appendAction(ACTION_MANAGE_SUPPLIER);
     appendAction(ACTION_MANAGE_SHIPPER);
+    appendAction(ACTION_READ_SHIPP);
 
 }
 
@@ -167,6 +169,24 @@ void FinancierPlugin::Process( const QString& action )
         QRadConfig::centralizarWidget(pShipper);
         pShipper->exec();
         delete pShipper;
+    }
+    else if( ACTION_READ_SHIPP == action)
+    {
+        QString path = QRadConfig::GetAndPersistDir("RetFile", "","Selecionar Arquivo de Retorno","Arquivos Retorno (*.ret *.RET)",m_parent);
+
+        QList<BankTicket*> list;
+        ShowBankReturn *ParsePay = new ShowBankReturn ;
+
+        #ifdef _WIN32
+            path = path.remove("file://");
+        #else
+            path = "C:\\Dvl\\CN12067A.RET";
+        #endif
+
+            if(ParsePay->Exec(&list, path))
+            {
+                /// perssit
+            }
     }
 }
 

@@ -30,6 +30,7 @@
 #define ACTION_MANAGE_TICKET                        "ManageTicket"
 #define ACTION_MANAGE_SUPPLIER                      "ManageSupplier"
 #define ACTION_MANAGE_SHIPPER                       "ManageShipper"
+#define ACTION_READ_SHIPP                           "ReadShipp"
 
 
 class FinancierPlugin : public QRadPluginInterface 

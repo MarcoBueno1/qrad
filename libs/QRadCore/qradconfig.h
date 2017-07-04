@@ -19,6 +19,13 @@ public:
     static int GetCurrentUserId();
     static bool IsSimpleInterest();
     static void GoTo(QLineEdit *item);
+    static QString GetDownloadDir();
+    static QString GetAndPersistDir( QString VarName,
+                                     QString DefaultPath,
+                                     QString WindowTitle,
+                                     QString Types,
+                                     QWidget *parent);
+
 private:
     static bool ShowFullScreen(void);
 

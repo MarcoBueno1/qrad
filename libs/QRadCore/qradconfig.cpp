@@ -1,6 +1,8 @@
 #include "qradconfig.h"
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QSettings>
+#include <QFileDialog>
 
 QRadConfig::QRadConfig()
 {
@@ -80,4 +82,52 @@ void QRadConfig::GoTo(QLineEdit *item)
 {
     item->setFocus();
     item->selectAll();
+}
+
+QString QRadConfig::GetDownloadDir()
+{
+#ifdef _WIN32
+      char szPath[1024];
+
+      if(  S_OK == SHGetFolderPath( NULL,
+                                    FOLDERID_Downloads,
+                                    NULL,
+                                    0,
+                                    szPath))
+      {
+          QString path = QString(szPath);
+          if( !path.endsWith("\\"))
+              path +="\\";
+          return path;
+      }
+      return QString("C:\\");
+#else
+    return QString("/home/Donwloads/");
+#endif
+}
+
+QString QRadConfig::GetAndPersistDir( QString VarName,
+                                      QString DefaultPath,
+                                      QString WindowTitle,
+                                      QString Types,
+                                      QWidget *parent)
+{
+    QSettings settings(QString("mem.ini"),
+                       QSettings::IniFormat);
+
+    QString Path = settings.value(QString("Paths/%1").arg(VarName)).toString();
+    if( Path.isEmpty() )
+        Path  = DefaultPath;
+
+    if( Path.isEmpty())
+        Path = GetDownloadDir();
+
+    Path = QFileDialog::getOpenFileName(parent,
+        WindowTitle, Path, Types);//tr("Arquivos Retorno (*.ret *.RET)"));
+
+    if( !Path.isEmpty() )
+    {
+        settings.setValue(QString("Paths/%1").arg(VarName),Path);
+    }
+     return Path;
 }

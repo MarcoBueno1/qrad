@@ -49,13 +49,16 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->pushButtonRemove, SIGNAL(clicked()),this, SLOT(doRemove()));
 
     connect(ui->tableViewSearch,SIGNAL(OnDrop(QString)),this,SLOT(doDrop(QString)));
+    connect(ui->radioButtonAllType,SIGNAL(clicked()), this, SLOT(doRefresh()));
+    connect(ui->radioButtonTxCond,SIGNAL(clicked()), this, SLOT(doRefresh()));
+    connect(ui->radioButtonTxExtra,SIGNAL(clicked()), this, SLOT(doRefresh()));
 
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
     
-    ui->comboBoxMonth->setCurrentIndex(QDate::currentDate().month()-1);
+    ui->comboBoxMonth->setCurrentIndex(0);
 
     setAcceptDrops(true);
 

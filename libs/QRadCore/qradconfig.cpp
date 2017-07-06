@@ -3,6 +3,7 @@
 #include <QDesktopWidget>
 #include <QSettings>
 #include <QFileDialog>
+#include <QStandardPaths>
 
 QRadConfig::QRadConfig()
 {
@@ -86,24 +87,7 @@ void QRadConfig::GoTo(QLineEdit *item)
 
 QString QRadConfig::GetDownloadDir()
 {
-#ifdef _WIN32
-      char szPath[1024];
-
-      if(  S_OK == SHGetFolderPath( NULL,
-                                    FOLDERID_Downloads,
-                                    NULL,
-                                    0,
-                                    szPath))
-      {
-          QString path = QString(szPath);
-          if( !path.endsWith("\\"))
-              path +="\\";
-          return path;
-      }
-      return QString("C:\\");
-#else
-    return QString("/home/Donwloads/");
-#endif
+    return QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
 }
 
 QString QRadConfig::GetAndPersistDir( QString VarName,

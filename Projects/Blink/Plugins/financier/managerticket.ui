@@ -17,43 +17,95 @@
    <item row="1" column="3">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string> Novo</string>
+      <string> Emitir </string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
        <widget class="QPushButton" name="PshBtnTxCondominial">
         <property name="text">
-         <string>Tx. &amp;Con</string>
+         <string>Tx. Condominio</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QPushButton" name="PshBtnTxExtra">
         <property name="text">
-         <string>T &amp;Extra</string>
+         <string>Tx.  &amp;Extra</string>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="2" column="3">
-    <widget class="QPushButton" name="PshBtnSair">
+   <item row="1" column="0" rowspan="3">
+    <widget class="QGroupBox" name="groupBoxCurrent">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>200</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>200</width>
+       <width>300</width>
        <height>16777215</height>
       </size>
      </property>
-     <property name="text">
-      <string>&amp;Sair</string>
+     <property name="title">
+      <string> Corrente</string>
      </property>
+     <widget class="QPushButton" name="pushButtonReprint">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Re-Imprimir</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButtonEdit">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>50</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Alterar Boleto</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButtonRemove">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>50</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Excluir Boleto</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButtonEdit_2">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>20</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Editar Morador</string>
+      </property>
+     </widget>
     </widget>
    </item>
    <item row="0" column="0" colspan="4">
@@ -157,18 +209,18 @@
               <rect>
                <x>10</x>
                <y>20</y>
-               <width>81</width>
+               <width>171</width>
                <height>22</height>
               </rect>
              </property>
              <item>
               <property name="text">
-               <string>3 Meses</string>
+               <string>Últimos 3 Meses</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>6 Meses</string>
+               <string>Últimos 6 Meses</string>
               </property>
              </item>
              <item>
@@ -198,7 +250,7 @@
           </font>
          </property>
          <property name="title">
-          <string>ATMs</string>
+          <string>Boletos Emitidos</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -245,59 +297,7 @@
      </widget>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QGroupBox" name="groupBoxCurrent">
-     <property name="maximumSize">
-      <size>
-       <width>300</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="title">
-      <string> Corrente</string>
-     </property>
-     <widget class="QPushButton" name="pushButtonReprint">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Re-Imprimir</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButtonEdit">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>20</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Editar</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButtonRemove">
-      <property name="geometry">
-       <rect>
-        <x>200</x>
-        <y>20</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Excluir</string>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="1" column="2" rowspan="2">
+   <item row="1" column="1" rowspan="3" colspan="2">
     <widget class="QGroupBox" name="groupBox_3">
      <property name="minimumSize">
       <size>
@@ -312,7 +312,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
+        <y>17</y>
         <width>183</width>
         <height>67</height>
        </rect>
@@ -367,9 +367,9 @@
       <property name="geometry">
        <rect>
         <x>200</x>
-        <y>20</y>
-        <width>90</width>
-        <height>65</height>
+        <y>12</y>
+        <width>180</width>
+        <height>70</height>
        </rect>
       </property>
       <property name="title">
@@ -378,7 +378,7 @@
       <widget class="QRadioButton" name="radioButtonAllType">
        <property name="geometry">
         <rect>
-         <x>19</x>
+         <x>10</x>
          <y>20</y>
          <width>63</width>
          <height>20</height>
@@ -394,21 +394,21 @@
       <widget class="QRadioButton" name="radioButtonTxCond">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>40</y>
-         <width>64</width>
+         <x>76</x>
+         <y>20</y>
+         <width>101</width>
          <height>20</height>
         </rect>
        </property>
        <property name="text">
-        <string>Tx.Con</string>
+        <string>Tx.Condominio</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="radioButtonTxExtra">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>50</y>
+         <x>76</x>
+         <y>43</y>
          <width>64</width>
          <height>20</height>
         </rect>
@@ -418,6 +418,25 @@
        </property>
       </widget>
      </widget>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QPushButton" name="PshBtnSair">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>&amp;Sair</string>
+     </property>
     </widget>
    </item>
   </layout>

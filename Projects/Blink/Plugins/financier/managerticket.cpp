@@ -17,7 +17,7 @@
                   " t.valor as \"Valor R$\", t.valorpago as \"Pago R$\",u.name as \"Criado Por\", t.status as \"Estado\", t.sendstatus as \"e-mail\", t.type as \"Tipo\", t.id from "\
                   " ticket t inner join dweller d on d.id = t.clientid inner join vuser u on u.id = t.vuser "\
                   " inner join ap a on a.id = d.ap inner join tower tw on tw.id = d.tower "\
-                  " %1 order by id desc; "
+                  " %1 order by t.id desc; "
 
 Managerticket::Managerticket(QWidget *parent) :
     QDialog(parent),
@@ -52,6 +52,7 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonAllType,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonTxCond,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonTxExtra,SIGNAL(clicked()), this, SLOT(doRefresh()));
+    connect(ui->pushButtonExportar,SIGNAL(clicked()), this, SLOT(doExport()));
 
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
@@ -208,7 +209,7 @@ void Managerticket::LoadTableView()
 
     QApplication::processEvents();
     ui->tableViewSearch->setModel( m_Model);
-    ui->tableViewSearch->horizontalHeader()->setStretchLastSection(true);
+//    ui->tableViewSearch->horizontalHeader()->setStretchLastSection(true);
 
     QApplication::processEvents();
 }
@@ -343,7 +344,27 @@ void Managerticket::doTxExtra()
     if( QDialog::Accepted  == edt->exec())
     {
         TicketController *pt = new TicketController;
-        pt->BuildTicketExtra(edt->GetSaved());
+        if(pt->BuildTicketExtra(edt->GetSaved()))
+        {
+            QMessageBox::information( this,
+                                      "Boletos gerdos com sucesso!",
+                                      QString("Por favor envie o arquivo de remessa para o banco para que os boletos tenham validade!\nClique em \"Ok\" para abrir pasta que contem o arquivo"));
+
+            pt->doShipp("","",tpTxExtr);
+                      QMessageBox::information( this,
+                                                "Imprimir Boletos",
+                                                QString("Será aberto o arquivo de boletos. Para imprimir, por favor, verifique se a impressora está conectada e possui papel suficiente."));
+                      QMessageBox::information( this,
+                                                "Imprimir Boletos",
+                                                QString("Será aberto o arquivo de boletos. Para imprimir, por favor, verifique se a impressora está conectada e possui papel suficiente."));
+//            pt->doPrint(tpTxExtr,stBuiltShipp);
+            pt->OpenPDF();
+            pt->OpenRemDir();
+
+
+            pt->SendEmail();
+
+        }
 
         delete pt;
         doRefresh();
@@ -365,14 +386,14 @@ void Managerticket::doTxCondominial()
                                   QString("Por favor envie o arquivo de remessa para o banco para que os boletos tenham validade!\nClique em \"Ok\" para abrir pasta que contem o arquivo"));
 
         pController->doShipp();
+        pController->doPrint(tpTxCond,stBuiltShipp);
+        pController->OpenPDF();
         pController->OpenRemDir();
 
-        QMessageBox::information( this,
-                                  "Imprimir Boletos",
-                                  QString("Será aberto o arquivo de boletos. Para imprimir, por favor, verifique se a impressora está conectada e possui papel suficiente."));
+//        QMessageBox::information( this,
+//                                  "Imprimir Boletos",
+  //                                QString("Será aberto o arquivo de boletos. Para imprimir, por favor, verifique se a impressora está conectada e possui papel suficiente."));
 
-        pController->doPrint(tpTxCond,stCreated);
-        pController->OpenPDF();
         pController->SendEmail();
     }
 
@@ -512,4 +533,17 @@ void Managerticket::dragEnterEvent(QDragEnterEvent *event)
 void Managerticket::dragMoveEvent(QDragMoveEvent *event)
 {
     event->acceptProposedAction();
+}
+
+void Managerticket::doExport()
+{
+    /// Por Enquanto só taxa extra
+    TicketController *pController = new TicketController;
+    if(pController->doShipp("","",tpTxExtr))
+    {
+        pController->doPrint(tpTxExtr,stBuiltShipp);
+        pController->OpenPDF();
+        pController->OpenRemDir();
+    }
+    delete pController;
 }

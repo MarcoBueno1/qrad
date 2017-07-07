@@ -21,10 +21,10 @@
 */
 
 #define FIN_MISSING_TICKETS_THIS_MONTH "select * from dweller d where payer = true and removed <> true and id not in "\
-                             "( select clientid from ticket t where t.removed <> true and t.vencto = '%1' and type = %2 ) and free <> true;"
+                             "( select clientid from ticket t where t.removed <> true and t.vencto = '%1' and type = %2 ) and free <> true order by d.id;"
 
 #define FIN_MISSING_TICKETS_THIS_MONTH_VALUE "select * from dweller d where payer = true and removed <> true and id not in "\
-                             "( select clientid from ticket t where t.removed <> true and t.valor=%1 and t.vencto = '%2' and type = %3 %4 );"
+                             "( select clientid from ticket t where t.removed <> true and t.valor=%1 and t.vencto = '%2' and type = %3 %4 ) order by d.id;"
 
 
 #define FIN_AP_WITH_NO_PAYER " select ap.numero as \"Ap\", tower.name as \"Torre\" from ap, tower  where not exists( select a2,b2 from ( select d.ap a2 , "\
@@ -360,8 +360,9 @@ bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBOL
 {
     if( dir.isEmpty() || filename.isEmpty())
     {
+
         dir = DEFAULT_REM_DIR;
-        filename = "rem001.rem";
+        filename = QString("%1.rem").arg(QDate::currentDate().toString("R_ddMMyy"));
     }
     if( !doPrepare(type, status))
     {
@@ -415,7 +416,9 @@ void TicketController::OpenRemDir()
 }
 void TicketController::OpenPDF()
 {
-    QDesktopServices::openUrl(QUrl::fromLocalFile(DEFAULT_PDF_FILE));//, QUrl::TolerantMode);
+    QString toName = QString("%1Boletos%2.pdf").arg(DEFAULT_REM_DIR).arg(QDate::currentDate().toString("ddMMyyyy"));
+    QFile::rename(DEFAULT_PDF_FILE,toName);
+    //QDesktopServices::openUrl(QUrl::fromLocalFile(toName));//, QUrl::TolerantMode);
 
 }
 void TicketController::SendEmail()

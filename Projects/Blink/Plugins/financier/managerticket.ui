@@ -10,104 +10,16 @@
     <height>586</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string/>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
-   <item row="1" column="3">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string> Emitir </string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <widget class="QPushButton" name="PshBtnTxCondominial">
-        <property name="text">
-         <string>Tx. Condominio</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="PshBtnTxExtra">
-        <property name="text">
-         <string>Tx.  &amp;Extra</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0" rowspan="3">
-    <widget class="QGroupBox" name="groupBoxCurrent">
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>300</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="title">
-      <string> Corrente</string>
-     </property>
-     <widget class="QPushButton" name="pushButtonReprint">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Re-Imprimir</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButtonEdit">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>50</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Alterar Boleto</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButtonRemove">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>50</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Excluir Boleto</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButtonEdit_2">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>20</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Editar Morador</string>
-      </property>
-     </widget>
-    </widget>
-   </item>
    <item row="0" column="0" colspan="4">
     <widget class="QTabWidget" name="tabWidget">
      <property name="font">
@@ -303,6 +215,107 @@
      </widget>
     </widget>
    </item>
+   <item row="1" column="0" rowspan="3">
+    <widget class="QGroupBox" name="groupBoxCurrent">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>300</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="title">
+      <string> Corrente</string>
+     </property>
+     <widget class="QPushButton" name="pushButtonReprint">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Re-Imprimir</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButtonEdit">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>50</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Alterar Boleto</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButtonRemove">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>50</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Excluir Boleto</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButtonEdit_2">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>20</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Editar Morador</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Gerar</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="1">
+       <widget class="QPushButton" name="PshBtnTxExtra">
+        <property name="text">
+         <string>Tx.  &amp;Extra</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="PshBtnTxCondominial">
+        <property name="text">
+         <string>Tx. Condominio</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="pushButtonExportar">
+        <property name="text">
+         <string>Exportar (.pdf/.rem)</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="1" column="1" rowspan="3" colspan="2">
     <widget class="QGroupBox" name="groupBox_3">
      <property name="minimumSize">
@@ -426,11 +439,11 @@
      </widget>
     </widget>
    </item>
-   <item row="2" column="3">
+   <item row="3" column="3">
     <widget class="QPushButton" name="PshBtnSair">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>200</width>
        <height>0</height>
       </size>
      </property>

@@ -37,6 +37,7 @@ public slots:
     void doRemove();
     void doDrop(QString path);
 
+    void doExport();
 private:
     Ui::Managerticket *ui;
 

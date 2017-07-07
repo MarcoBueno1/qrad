@@ -13,6 +13,8 @@
 #include "clicense.h"
 #include <QMessageBox>
 #include "qradlicensecontrol.h"
+#include "qradfile.h"
+
 
 void centerWidget(QWidget *widget)
 {
@@ -22,13 +24,12 @@ void centerWidget(QWidget *widget)
 
 void configureDatabase()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL7");
-///    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    QSqlDatabase db = QSqlDatabase::addDatabase(QRadFile::GetParamValue("banco/database"));
 
-    db.setDatabaseName("qraddb");
-    db.setHostName("localhost");
-    db.setPassword("dsmpassword");
-    db.setUserName("dsm");
+    db.setDatabaseName(QRadFile::GetParamValue("banco/databasename"));
+    db.setHostName(QRadFile::GetParamValue("banco/hostname"));
+    db.setUserName(QRadFile::GetParamValue("banco/username"));
+    db.setPassword(QRadFile::GetParamValue("banco/password"));
 
     if(!db.open())
     {

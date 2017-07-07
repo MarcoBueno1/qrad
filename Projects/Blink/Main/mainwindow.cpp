@@ -9,7 +9,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowTitle("Blink - Controle de Acessos");
+    setWindowTitle("CSM - Gerência de Condomínios");
+    Qt::WindowFlags flags = windowFlags();
+    flags |= Qt::WindowMaximizeButtonHint;
+    setWindowFlags(flags);
+    setWindowState(Qt::WindowMaximized);
 
 }
 
@@ -25,7 +29,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 #else
     QPixmap bkgnd("/home/marco/cpcs/qrad/Projects/Blink/background.jpg");
 #endif
-    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
+    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio/*Qt::KeepAspectRatio*/);
     QPalette palette;
     palette.setBrush(QPalette::Background, bkgnd);
     this->setPalette(palette);
@@ -35,7 +39,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 void MainWindow::on_actionSobre_o_Blink_triggered()
 {
     QMessageBox::about(this, QString::fromUtf8("Sobre o Blink"),
-                       QString::fromUtf8("<h2>Blink %1</h2>"
+                       QString::fromUtf8("<h2>CSM %1</h2>"
                           "<p>Copyright &copy; 2017 Marco Bueno."
                           "<p>Blink é um sistema de controle de acessos para condomínios.\n").arg(BLINK_RELEASE));
 

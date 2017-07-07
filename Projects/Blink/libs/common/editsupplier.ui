@@ -210,7 +210,7 @@
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(50, 0, 133);</string>
+    <string notr="true">image: url(:/png/barra-superior-ok.jpg);</string>
    </property>
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>

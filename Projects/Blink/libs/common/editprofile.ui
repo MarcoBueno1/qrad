@@ -173,7 +173,7 @@
    <property name="geometry">
     <rect>
      <x>1</x>
-     <y>1</y>
+     <y>-6</y>
      <width>801</width>
      <height>42</height>
     </rect>
@@ -191,7 +191,7 @@
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(50, 0, 133);</string>
+    <string notr="true">image: url(:/png/barra-superior-ok.jpg);</string>
    </property>
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
@@ -202,7 +202,7 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>4</x>
+      <x>10</x>
       <y>0</y>
       <width>541</width>
       <height>39</height>

@@ -82,3 +82,5 @@ LIBS += -lqradcore  \
 target.path = $${PREFIX}/bin
 INSTALLS += target
 
+RESOURCES +=
+

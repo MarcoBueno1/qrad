@@ -270,6 +270,9 @@
             <property name="styleSheet">
              <string notr="true">selection-background-color: rgba(102, 176, 239, 75%); selection-color: rgb(255, 255, 255);</string>
             </property>
+            <property name="lineWidth">
+             <number>0</number>
+            </property>
             <property name="verticalScrollBarPolicy">
              <enum>Qt::ScrollBarAlwaysOn</enum>
             </property>
@@ -279,6 +282,9 @@
             <property name="sortingEnabled">
              <bool>true</bool>
             </property>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>50</number>
+            </attribute>
             <attribute name="horizontalHeaderMinimumSectionSize">
              <number>20</number>
             </attribute>

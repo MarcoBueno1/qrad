@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Editextratx</class>
- <widget class="QDialog" name="Editextratx">
+ <class>Editcondtx</class>
+ <widget class="QDialog" name="Editcondtx">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>588</width>
-    <height>449</height>
+    <width>573</width>
+    <height>358</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>10</x>
      <y>50</y>
-     <width>560</width>
-     <height>350</height>
+     <width>551</width>
+     <height>263</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -28,13 +28,13 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="groupBoxOnly">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>120</y>
-      <width>520</width>
-      <height>221</height>
+      <x>6</x>
+      <y>42</y>
+      <width>530</width>
+      <height>211</height>
      </rect>
     </property>
     <property name="title">
@@ -51,16 +51,29 @@
       <rect>
        <x>20</x>
        <y>40</y>
-       <width>390</width>
+       <width>410</width>
        <height>22</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonAdd">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>40</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Adicionar</string>
      </property>
     </widget>
     <widget class="QGroupBox" name="groupBoxSelecionados">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>80</y>
+       <x>20</x>
+       <y>70</y>
        <width>500</width>
        <height>131</height>
       </rect>
@@ -92,206 +105,35 @@
       </property>
      </widget>
     </widget>
-    <widget class="QPushButton" name="pushButtonAdd">
-     <property name="geometry">
-      <rect>
-       <x>430</x>
-       <y>40</y>
-       <width>75</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Adicionar</string>
-     </property>
-    </widget>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QLabel" name="Lblmotivo_3">
     <property name="geometry">
      <rect>
-      <x>24</x>
-      <y>17</y>
-      <width>510</width>
-      <height>22</height>
+      <x>11</x>
+      <y>11</y>
+      <width>75</width>
+      <height>20</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="Lblmotivo_2">
-       <property name="maximumSize">
-        <size>
-         <width>60</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Valor R$</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="doubleSpinBox">
-       <property name="maximum">
-        <double>999999999.990000009536743</double>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="Lblmotivo_3">
-       <property name="maximumSize">
-        <size>
-         <width>75</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>1º Vencimento</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDateEdit" name="dateEdit"/>
-     </item>
-    </layout>
+    <property name="maximumSize">
+     <size>
+      <width>75</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Vencimento</string>
+    </property>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QDateEdit" name="dateEditVencto">
     <property name="geometry">
      <rect>
-      <x>26</x>
-      <y>50</y>
-      <width>181</width>
-      <height>22</height>
+      <x>92</x>
+      <y>11</y>
+      <width>123</width>
+      <height>20</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLabel" name="Lblmotivo_4">
-       <property name="maximumSize">
-        <size>
-         <width>60</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Quantidade</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboBox">
-       <item>
-        <property name="text">
-         <string>1 Vez</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>2 Vezes</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>3 Vezes</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>4 Vezes</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>5 Vezes</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>6 Vezes</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>7 Vezes</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>8 Vezes</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>9 Vezes</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>10 Vezes</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>11 Vezes</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>12 Vezes</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>25</x>
-      <y>81</y>
-      <width>510</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="Lblmotivo">
-       <property name="maximumSize">
-        <size>
-         <width>60</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Motivo</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="SComboBox" name="CmbBxmotivo">
-       <property name="editable">
-        <bool>true</bool>
-       </property>
-       <property name="sizeAdjustPolicy">
-        <enum>QComboBox::AdjustToContents</enum>
-       </property>
-       <item>
-        <property name="text">
-         <string>Geradores de Energia</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Caução Salãode Festas Adulto</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Caução Salão de Festas Infantil</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
    </widget>
   </widget>
   <widget class="QFrame" name="topmenu">
@@ -545,8 +387,8 @@
   <widget class="QPushButton" name="PshBtnCancel">
    <property name="geometry">
     <rect>
-     <x>413</x>
-     <y>410</y>
+     <x>390</x>
+     <y>322</y>
      <width>85</width>
      <height>27</height>
     </rect>
@@ -558,23 +400,18 @@
   <widget class="QPushButton" name="PshBtnSave">
    <property name="geometry">
     <rect>
-     <x>500</x>
-     <y>410</y>
+     <x>477</x>
+     <y>322</y>
      <width>85</width>
      <height>27</height>
     </rect>
    </property>
    <property name="text">
-    <string>&amp;Salvar</string>
+    <string>&amp;Ok</string>
    </property>
   </widget>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>SComboBox</class>
-   <extends>QComboBox</extends>
-   <header location="global">scombobox.h</header>
-  </customwidget>
   <customwidget>
    <class>QRadLineEditCompleter</class>
    <extends>QLineEdit</extends>
@@ -582,15 +419,8 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>doubleSpinBox</tabstop>
-  <tabstop>dateEdit</tabstop>
-  <tabstop>comboBox</tabstop>
-  <tabstop>CmbBxmotivo</tabstop>
-  <tabstop>groupBox</tabstop>
+  <tabstop>groupBoxOnly</tabstop>
   <tabstop>lineEditMorador</tabstop>
-  <tabstop>pushButtonAdd</tabstop>
-  <tabstop>listView</tabstop>
-  <tabstop>pushButtonRemove</tabstop>
   <tabstop>PshBtnCancel</tabstop>
   <tabstop>PshBtnSave</tabstop>
  </tabstops>

@@ -27,6 +27,7 @@ public:
     bool ProcessRetList(QList<BankTicket*> *list);
 private:
     BuildTkt *g_tkt;
+    ticketconfig *m_pTktConfig;
 
     bool InitAcbr();
     bool doPrepare(BBO_TYPE type, BBOL_STATUS status);

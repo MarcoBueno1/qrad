@@ -317,7 +317,13 @@ bool BuildTkt::Print(bool bPrinter, QString strPath)
     QString cmdPrint =  QString("%1%2").arg(TKT_PREFIX).arg(bPrinter?TKT_PRINT:TKT_PRINT_PDF);
 
     m_dwTimeout = 60000;
-    return Send(cmdPrint);
+    bool Ret = Send(cmdPrint);
+    if( Ret )
+    {
+       QFile::rename("C:\\ACBrMonitorPLUS\\boleto.pdf",strPath);
+    }
+
+    return Ret;
 }
 
 
@@ -326,11 +332,12 @@ bool BuildTkt::AppendTicket(Dweller *pDweller,
                             QDate dtVencto,
                             QString NossoNumero,
                             QString SeuNumero,
-                            QString Mensagem)
+                            QString Mensagem,
+                            QString Discount)
 {
     m_TktCount++;
 
-    Ticket *tkt =  new Ticket(pDweller,strValue,dtVencto, NossoNumero,SeuNumero,Mensagem);
+    Ticket *tkt =  new Ticket(pDweller,strValue,dtVencto, NossoNumero,SeuNumero,Mensagem, Discount);
 
     m_tickets.append(tkt);
 
@@ -391,6 +398,7 @@ bool BuildTkt::AddTickets()
        QString strSpecie;
        QString NossoNumero = QString("%1").arg(m_tickets.at(i)->getNossoNumero());
        QString SeuNumero = QString("%1").arg(m_tickets.at(i)->getSeuNumero());
+       QString ValorDiscount = m_tickets.at(i)->getDiscount();
 
        if(dwSpecie)
        {
@@ -416,16 +424,24 @@ bool BuildTkt::AddTickets()
        if( MountedYourNumber.isEmpty())
            MountedYourNumber = aux;
 
-       QString tktMsg = m_tickets.at(i)->getMensagem();
-       if( tktMsg.isEmpty())
-           tktMsg = m_pTktConfig->getMensagem();
-       QString msg = QString("%1%2/%3").arg(tktMsg).arg(dtVencto.longMonthName(dtVencto.month()).toUpper()).arg(dtVencto.year());
+       QString msg = m_tickets.at(i)->getMensagem();
+       if( msg.isEmpty())
+       {
+           msg = m_pTktConfig->getMensagem();
+           msg = QString("%1%2/%3").arg(msg).arg(dtVencto.longMonthName(dtVencto.month()).toUpper()).arg(dtVencto.year());
+       }
        double valor       = strValue.replace(",", ".").toDouble();
+       debug_message("valor=%02.02f\n", valor);
        double percentJuros = m_pTktConfig->getJuros().replace(",",".").toDouble();
+       debug_message("percentJuros=%02.02f\n", percentJuros);
+
        QString JurosDia = QString("%1").arg(QRadRound::PowerRound(QRadRound::PowerRound(valor/dtVencto.daysInMonth()/100)*percentJuros));
+       debug_message("JurosDia Passo1=%02.02f\n", QRadRound::PowerRound(valor/dtVencto.daysInMonth()/100));
+
+       debug_message("JurosDia=%s\n", JurosDia.toLatin1().data());
        JurosDia.replace(".", ",");
-       QString ValorDiscount = QString("%1").arg(QRadRound::PowerRound(QRadRound::PowerRound(valor/100)*(m_pTktConfig->getDiscount())));
-       ValorDiscount.replace(".", ",");
+//       QString ValorDiscount = QString("%1").arg(QRadRound::PowerRound(QRadRound::PowerRound(valor/100)*(m_pTktConfig->getDiscount())));
+//       ValorDiscount.replace(".", ",");
 
        paramCfgTkt += QString(TKT_CONFIG_TICKET)
                           .arg(i+1)
@@ -633,7 +649,8 @@ Ticket::Ticket(Dweller *dweller,
                QDate date,
                QString NossoNumero,
                QString SeuNumero,
-               QString Mensagem)
+               QString Mensagem,
+               QString Discount)
 {
     m_dweller = dweller;
     m_value =  value;
@@ -641,6 +658,7 @@ Ticket::Ticket(Dweller *dweller,
     m_NossoNumero = NossoNumero;
     m_SeuNumero = SeuNumero;
     m_Mensagem = Mensagem;
+    m_Discount = Discount;
 }
 
 Dweller *Ticket::getDweller()
@@ -668,5 +686,9 @@ QString Ticket::getMensagem()
 QDate   Ticket::getDate()
 {
     return m_date;
+}
+QString Ticket::getDiscount()
+{
+    return m_Discount;
 }
 

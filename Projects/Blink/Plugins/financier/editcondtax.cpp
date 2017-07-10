@@ -1,47 +1,37 @@
-#include "editextratx.h"
-#include "ui_editextratx.h"
+#include "editcondtax.h"
+#include "ui_Editcondtax.h"
 #include <QCompleter>
 #include <QMessageBox>
 #include <QModelIndex>
 #include <QAbstractItemModel>
 #include <QVariant>
 #include <QSqlField>
+#include "qraddebug.h"
 
 
-Editextratx::Editextratx(QWidget *parent) :
+Editcondtx::Editcondtx(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::Editextratx)
+    ui(new Ui::Editcondtx)
 {
     ui->setupUi(this);
     
-    m_mod = NULL;
-    m_lastMod = NULL;
-    ui->CmbBxmotivo->setTable("reasonextratx");
-    ui->CmbBxmotivo->setField("Description.Descrição");
-    ui->CmbBxmotivo->setCanAdd(true);
-    ui->CmbBxmotivo->setUserName("dsm");
-    ui->CmbBxmotivo->completer()->setFilterMode(Qt::MatchContains );
+//    m_mod = NULL;
+//    m_lastMod = NULL;
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
     connect(ui->pushButtonAdd, SIGNAL(clicked()),this,SLOT(Add()));
     connect(ui->pushButtonRemove, SIGNAL(clicked()),this,SLOT(Remove()));
 
-
-    ui->dateEdit->setDate(QDate::currentDate().addDays(15));
-
     ui->lineEditMorador->setSelect("select a.numero  || ' | '  || t.name  || ' | ' || d.name, d.id, d.name, a.numero, t.name, d.ramal "\
-                                   "from dweller d "\
-                                   "inner join tower t on t.id= d.tower "\
-                                   "inner join ap a on a.id = d.ap  where d.removed = false and d.payer = true");
-//    ui->lineEditMorador->Add(ui->lineEditAP);
-    //ui->lineEditMorador->Add(ui->lineEditTorre);
-//    ui->lineEditMorador->Add(ui->lineEditRamal);
-    m_selected = new QSqlQueryModel;
+                                     "from dweller d "\
+                                     "inner join tower t on t.id= d.tower "\
+                                     "inner join ap a on a.id = d.ap  where d.removed = false and d.payer = true");
 
+    m_selected = new QSqlQueryModel;
 }
 
-Editextratx::~Editextratx()
+Editcondtx::~Editcondtx()
 {
     QSqlQuery removeTable;
 
@@ -50,29 +40,30 @@ Editextratx::~Editextratx()
     delete m_selected;
     delete ui;
 }
-void Editextratx::showEvent(QShowEvent *event)
+void Editcondtx::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
     
     
 }
-void Editextratx::keyPressEvent(QKeyEvent *e)
+void Editcondtx::keyPressEvent(QKeyEvent *e)
 {
     if(e->key() != Qt::Key_Escape)
             QDialog::keyPressEvent(e);
         else {Cancel();}
 }
 
-void Editextratx::SetModel(extratx* mod)
+void Editcondtx::SetModel(extratx* mod)
 {
-   m_mod = mod;
-   Load();
+//   m_mod = mod;
+//   Load();
 }
 
 
-void Editextratx::Save()
+void Editcondtx::Save()
 {
 
+    /*
     extratx* mod =  m_mod;
     if( m_mod == NULL)
         mod = new extratx;
@@ -99,28 +90,27 @@ void Editextratx::Save()
     }
     else
        QMessageBox::warning(this, "Oops",QString("Não foi possivel salvar\n%1").arg(mod->lastError().text()));
-    
+       */
+
+
+    accept();
+
 }
 
-void Editextratx::Load()
+void Editcondtx::Load()
 {
-    if( m_mod == NULL)
-      return;
-    ui->CmbBxmotivo->setCurrentId(m_mod->getMotivo());
+//    if( m_mod == NULL)
+//      return;
+//    ui->CmbBxmotivo->setCurrentId(m_mod->getMotivo());
 
 }
 
-void Editextratx::Cancel()
+void Editcondtx::Cancel()
 {
     if( QMessageBox::Yes ==  QMessageBox::question(this, "Cancelar?","Deseja cancelar esta edição?",QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
            reject();
 }
-extratx* Editextratx::GetSaved()
-{
-   return m_lastMod;
-
-}
-QList<int> Editextratx::GetSavedIds()
+QList<int> Editcondtx::GetSaved()
 {
    QSqlQuery Selected;
 
@@ -136,7 +126,7 @@ QList<int> Editextratx::GetSavedIds()
 }
 
 
-void Editextratx::RefreshListView()
+void Editcondtx::RefreshListView()
 {
     m_selected->setQuery(QString("select a.numero  || ' | '  || t.name  || ' | ' || d.name, d.id, d.name, a.numero, t.name, d.ramal "\
                                   "from dweller d "\
@@ -150,7 +140,7 @@ void Editextratx::RefreshListView()
     ui->groupBoxSelecionados->setTitle(QString("%1 Moradores Selecionados").arg(m_selected->rowCount()));
 }
 
-void Editextratx::Add()
+void Editcondtx::Add()
 {
    QSqlQuery pQyeryAdd;
 
@@ -159,7 +149,7 @@ void Editextratx::Add()
    debug_message("Adicionado: nId= %d\n", ui->lineEditMorador->getCurrentId());
    RefreshListView();
 }
-void Editextratx::Remove()
+void Editcondtx::Remove()
 {
    int nId = m_selected->index(ui->listView->currentIndex().row(),1).data().toInt();
    debug_message("Remove: nId= %d\n", nId);
@@ -168,17 +158,17 @@ void Editextratx::Remove()
    RefreshListView();
 }
 
-bool Editextratx::ToAll()
+bool Editcondtx::ToAll()
 {
-    return !ui->groupBox->isChecked();
+    return !ui->groupBoxOnly->isChecked();
 }
 
-void Editextratx::setVencto(QDate date)
+void Editcondtx::setVencto(QDate date)
 {
-    ui->dateEdit->setDate(date);
+    ui->dateEditVencto->setDate(date);
 }
 
-QDate Editextratx::getVencto()
+QDate Editcondtx::getVencto()
 {
-    return ui->dateEdit->date();
+    return ui->dateEditVencto->date();
 }

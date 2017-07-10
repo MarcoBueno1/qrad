@@ -10,8 +10,10 @@
 #include <QDesktopServices>
 #include "editticket.h"
 #include "reasonextratax.h"
+#include "editcondtax.h"
 #include <QUrl>
-
+#include <QDir>
+#include "editextratx.h"
 #include <QMessageBox>
 
 /*
@@ -22,7 +24,7 @@
 */
 
 #define FIN_MISSING_TICKETS_THIS_MONTH "select * from dweller d where payer = true and removed <> true and id not in "\
-                             "( select clientid from ticket t where t.removed <> true and t.vencto = '%1' and type = %2 ) and free <> true order by d.id;"
+                             "( select clientid from ticket t where t.removed <> true and t.vencto = '%1' and type = %2 %3 ) and free <> true order by d.id;"
 
 #define FIN_MISSING_TICKETS_THIS_MONTH_VALUE "select * from dweller d where payer = true and removed <> true and id not in "\
                              "( select clientid from ticket t where t.removed <> true and t.valor=%1 and t.vencto = '%2' and type = %3 %4 ) order by d.id;"
@@ -34,9 +36,9 @@
 
 #define FIN_GET_LAST_NUMBER  "select * from ticket order by nossonumero desc limit 1"
 
-#define UPDATE_ALL_TICKETS "update ticket set status = %3 where type = %1 and removed <> true and status = %2"
+#define UPDATE_ALL_TICKETS "update ticket set status = %3 where (type = %1) and removed <> true and status = %2"
 
-#define FIN_PRINT_ALL_TICKETS "select * from  ticket where type = %1 and removed <> true and status = %2"
+#define FIN_PRINT_ALL_TICKETS "select * from  ticket where (type = %1) and removed <> true and status = %2"
 
 
 #define DEFAULT_REM_DIR "C:\\DVL\\"
@@ -60,6 +62,7 @@
 TicketController::TicketController()
 {
   g_tkt = new BuildTkt;
+  m_pTktConfig =  NULL;
 }
 
 TicketController::~TicketController()
@@ -96,7 +99,7 @@ bool TicketController::BuildTicket(DwellerList *dlist,
             ReasonExtraTax *pReason = ReasonExtraTax::findByid(ext->getMotivo(), true);
             if(pReason)
             {
-                Obs = pReason->getDescription();
+                Obs = "Tx. Extra " + pReason->getDescription();
                 delete pReason;
             }
             delete ext;
@@ -192,26 +195,20 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
 {
 //    Dweller *pD;
     DwellerList *dlist ;
+
+    Editextratx *edt = new Editextratx;
+    if( QDialog::Accepted != edt->exec())
+    {
+        QMessageBox::warning(NULL,
+                             QString("Cancelado!"),
+                             QString("Operação cancelada!"));
+        delete edt;
+        return false;
+    }
+    pTx = edt->GetSaved();
+
     QDate date = pTx->getData();
 
-    /*
-    if(pTx->getAll())
-    {
-        dlist = Dweller::findBy(QString(SELECT_DWELER_FOR_EXTRA_TAX));
-        if( !dlist )
-        {
-          QMessageBox::information(NULL, "Oops!", "Nenhum morador pagador encontrado, por favor ajustar o cadastro!");
-          return false;
-        }
-    }
-    else
-    {
-         dlist = new DwellerList;
-
-         pD = Dweller::findByid(pTx->getDweller());
-         dlist->append(pD);
-    }
-    */
 
     QString SQL;
     for( int i = 0; i < pTx->getTimes(); i++ )
@@ -223,7 +220,55 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
         }
         else
         {
-           SQL = QString(FIN_MISSING_TICKETS_THIS_MONTH_VALUE).arg(pTx->getValue()).arg(date.toString(FMT_DATE_DB)).arg(tpTxExtr).arg(QString(" and clientid = %1").arg(pTx->getDweller()));
+            QList<int> list = edt->GetSavedIds();
+            QList<int> OkList = list;
+            for( int i = 0; i < list.count();i++ )
+            {
+               SQL = QString(FIN_MISSING_TICKETS_THIS_MONTH_VALUE).arg(pTx->getValue()).arg(date.toString(FMT_DATE_DB)).arg(tpTxExtr).arg(QString(" and clientid = %1").arg(pTx->getDweller()));
+               dlist = Dweller::findBy(SQL);
+               if( !dlist )
+               {
+                 QString dwdata;
+                 int nId = list.at(i);
+                 Dweller *dName = Dweller::findByid(nId);
+                 if( dName )
+                 {
+                     Ap *ap = Ap::findByid(dName->getap());
+                     Tower *tw = Tower::findByid(dName->gettower());
+                     if( tw )
+                     {
+                         dwdata += tw->getName() + " - ";
+                         delete tw;
+                     }
+                     if( ap )
+                     {
+                         dwdata += ap->getNumber() + " - ";
+                         delete ap;
+                     }
+                     dwdata += dName->getName();
+                     delete dName;
+                 }
+                 if( QMessageBox::No == QMessageBox::question(NULL, "Atenção",
+                                                              QString("Já foi emitido boleto para %1 este morador neste mês, deseja realmente emitir um novo boleto?").arg(dwdata),
+                                                              QMessageBox::Yes|QMessageBox::No,
+                                                              QMessageBox::No ))
+                     OkList.removeOne(nId);
+               }
+           }
+           if( !OkList.count())
+               return false;
+           QString Where;
+           for( int i = 0; i < OkList.count();i++ )
+           {
+               if( !Where.length() )
+                   Where = " where id = ";
+               else
+                   Where += " or id = ";
+
+               Where += QString("%1 ").arg(OkList.at(i));
+           }
+           dlist = Dweller::findBy(QString("select * from dweller %1").arg(Where));
+
 
         }
         dlist = Dweller::findBy(SQL);
@@ -239,17 +284,15 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
         date.addMonths(1);
     }
 
-/*    if(!pTx->getAll())
-    {
-        delete pD;
-        delete dlist;
-    }*/
-
+    delete edt;
     return true;
 }
 
 bool TicketController::BuildTicketCond(int id )
 {
+    if(!InitAcbr())
+        return false;
+
     QDate date = QDate::currentDate();
     configList *pConfig = config::findAll();
 
@@ -258,52 +301,110 @@ bool TicketController::BuildTicketCond(int id )
         date.setDate(date.year(),date.month(),pConfig->at(0)->getDefaultPayDate().day());
 
         if( QDate::currentDate() > date )
-            date = date.addMonths(1);
+            date.setDate(date.year(),date.month(),QDate::currentDate().day());
     }
 
-    if(!InitAcbr())
+    Editcondtx *pCondTx = new Editcondtx ;
+    pCondTx->setVencto(date);
+    if( QDialog::Rejected == pCondTx->exec())
+    {
+        delete pCondTx;
         return false;
+    }
 
+    date = pCondTx->getVencto();
 
-    if( !id ) /// for all
+    DwellerList *dlist;
+
+    if( pCondTx->ToAll() ) /// for all
     {
         ///
         /// antes de tudo testar consistencia para verificar se falta alguem.
         ///
-        DwellerList *dlist = Dweller::findBy(QString(FIN_MISSING_TICKETS_THIS_MONTH).arg(date.toString(FMT_DATE_DB)).arg(tpTxCond));
+        dlist = Dweller::findBy(QString(FIN_MISSING_TICKETS_THIS_MONTH).arg(date.toString(FMT_DATE_DB)).arg(tpTxCond).arg(""));
         if( !dlist )
         {
           QMessageBox::information(NULL, "Oops!", "Todos os boletos de taixa condominial deste mes ja foram emitidos!");
           return false;
         }
-
-        BuildTicket( dlist,
-                     date,
-                     tpTxCond,
-                     "TAXA CONDOMINIAL");
-
-
-/*        if( !g_tkt->AddTickets() )
-        {
-            QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel adicionar boletos!"));
-            return false;
-        }
-*/
-/*
-        if( g_tkt->BuildShipping(DEFAULT_REM_DIR, "rem001.rem"))
-        {
-            QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel criar o arquivo de remessa!"));
-            return false;
-        }
-*/
-        return true;
     }
-    return false;
+    else
+    {
+
+        QList<int> list = pCondTx->GetSaved();
+        QList<int> OkList = list;
+        for( int i = 0; i < list.count();i++ )
+        {
+            int nId = list.at(i);
+            dlist = Dweller::findBy(QString(FIN_MISSING_TICKETS_THIS_MONTH).arg(date.toString(FMT_DATE_DB)).arg(tpTxCond).arg(QString(" and clientid = %1 ").arg(nId)));
+            if( !dlist )
+            {
+              QString dwdata;
+              Dweller *dName = Dweller::findByid(nId);
+              if( dName )
+              {
+                  Ap *ap = Ap::findByid(dName->getap());
+                  Tower *tw = Tower::findByid(dName->gettower());
+                  if( tw )
+                  {
+                      dwdata += tw->getName() + " - ";
+                      delete tw;
+                  }
+                  if( ap )
+                  {
+                      dwdata += ap->getNumber() + " - ";
+                      delete ap;
+                  }
+                  dwdata += dName->getName();
+                  delete dName;
+              }
+              if( QMessageBox::No == QMessageBox::question(NULL, "Atenção",
+                                                           QString("Já foi emitido boleto para %1 este morador neste mês, deseja realmente emitir um novo boleto?").arg(dwdata),
+                                                           QMessageBox::Yes|QMessageBox::No,
+                                                           QMessageBox::No ))
+                  OkList.removeOne(nId);
+            }
+   //     dlist = Dweller::findBy(QString("select * from dweller where id = %1").arg(id));
+        }
+        if( !OkList.count())
+            return false;
+        QString Where;
+        for( int i = 0; i < OkList.count();i++ )
+        {
+            if( !Where.length() )
+                Where = " where id = ";
+            else
+                Where += " or id = ";
+
+            Where += QString("%1 ").arg(OkList.at(i));
+        }
+        dlist = Dweller::findBy(QString("select * from dweller %1").arg(Where));
+    }
+
+    delete pCondTx;
+
+    return BuildTicket( dlist,
+                        date,
+                        tpTxCond,
+                        "TAXA CONDOMINIAL" );
+
+
 }
 
 bool TicketController::doPrepare(BBO_TYPE type, BBOL_STATUS status)
 {
-    ticketList *tktList =  ticket::findBy(QString(FIN_PRINT_ALL_TICKETS).arg(type).arg(status));
+    QString Discount;
+    QString Type;
+
+    if( type == tpAll)
+    {
+        Type = QString("%1 or type = %2 ").arg(tpTxCond).arg(tpTxExtr);
+    }
+    else
+    {
+        Type = QString("%1 ").arg(type);
+    }
+    ticketList *tktList =  ticket::findBy(QString(FIN_PRINT_ALL_TICKETS).arg(Type).arg(status));
     if( !tktList)
     {
         return false;
@@ -313,7 +414,7 @@ bool TicketController::doPrepare(BBO_TYPE type, BBOL_STATUS status)
         return false;
     }
 
-    debug_message("SQL: %s\n",QString(FIN_PRINT_ALL_TICKETS).arg(type).arg(status).toLatin1().data());
+    debug_message("SQL: %s\n",QString(FIN_PRINT_ALL_TICKETS).arg(Type).arg(status).toLatin1().data());
     debug_message("tktList->count()=%d\n", tktList->count());
     for( int i = 0; i < tktList->count();i++)
     {
@@ -321,29 +422,71 @@ bool TicketController::doPrepare(BBO_TYPE type, BBOL_STATUS status)
         Dweller *pDweller = Dweller::findByid(ptkt->getclientid());
 
         QString value = QString("%1").arg(ptkt->getValor());
-        value.replace(".",",");
-        g_tkt->AppendTicket(pDweller,
-                            value,
-                            ptkt->getVencto(),
-                            QString("%1").arg(ptkt->getNossoNumero()),
-                            QString("%1").arg(ptkt->getSeuNumero()),
-                            type==tpTxExtr?ptkt->getObs():"");
+      //  value.replace(".",",");
+
+       /// regra garden
+       /// type== txExtra= not discount
+       if( tpTxExtr == ptkt->getType())
+       {
+           Discount = "0,00";
+       }
+       else
+       {
+           double valor       = value.replace(",", ".").toDouble();
+           Discount = QString("%1").arg(QRadRound::PowerRound(QRadRound::PowerRound(valor/100)*(m_pTktConfig->getDiscount())));
+           Discount.replace(".", ",");
+
+       }
+
+      g_tkt->AppendTicket( pDweller,
+                           value,
+                           ptkt->getVencto(),
+                           QString("%1").arg(ptkt->getNossoNumero()),
+                           QString("%1").arg(ptkt->getSeuNumero()),
+                           ptkt->getType()==tpTxExtr?ptkt->getObs():"",
+                           Discount );
     }
     return g_tkt->AddTickets();
 }
 
 bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
 {
+    QString Path = QString("c:\\dvl\\acbr\\%1").arg(QDate::currentDate().toString("dd_MM_yyyy"));
+    QDir  dir;
+    dir.mkpath(Path);
+    QString FullFileName = QString("%1\\boletos%2.pdf").arg(Path).arg(QDate::currentDate().toString("_dd_MM_yyyy"));
+    QFile exist(FullFileName);
+    if(exist.exists())
+        FullFileName = QString("%1\\boletos%2%3.pdf").arg(Path).arg(QDate::currentDate().toString("_dd_MM_yyyy")).arg(QTime::currentTime().toString("_hh_mm"));
+
     if(!ptkt)
     {
         if( !doPrepare(type, status) )
         {
             return false;
         }
-        if( !g_tkt->Print() )
+        if( !g_tkt->Print(false, FullFileName) )
         {
             return false;
         }
+
+        QSqlQuery query;
+        QString Type;
+
+        if( type == tpAll)
+        {
+            Type = QString("%1 or type = %2 ").arg(tpTxCond).arg(tpTxExtr);
+        }
+        else
+        {
+            Type = QString("%1 ").arg(type);
+        }
+
+        if( !query.exec(QString(UPDATE_ALL_TICKETS).arg(Type).arg(status).arg(stBuiltShipp)))
+        {
+            debug_message("Warning: Nao foi possivel atualizar o status de tickets para stBuiltShipp(%s)!!\n", query.lastError().text().toLatin1().data());
+        }
+
         return true;
     }
     else
@@ -355,7 +498,7 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
         g_tkt->AppendTicket(pDweller, value, ptkt->getVencto(),QString("%1").arg(ptkt->getNossoNumero()),QString("%1").arg(ptkt->getSeuNumero()));
         if(g_tkt->AddTickets())
         {
-            if(g_tkt->Print())
+            if(g_tkt->Print(false,FullFileName))
             {
                 ptkt->updateLoId(ptkt->saveFile(DEFAULT_PDF_FILE));
                 return true;
@@ -370,8 +513,11 @@ bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBOL
 {
     if( dir.isEmpty() || filename.isEmpty())
     {
+        dir = QString("c:\\dvl\\acbr\\%1").arg(QDate::currentDate().toString("dd_MM_yyyy"));
+ //DEFAULT_REM_DIR;
+        QDir  d;
+        d.mkpath(dir );
 
-        dir = DEFAULT_REM_DIR;
         filename = QString("%1.rem").arg(QDate::currentDate().toString("R_ddMMyy"));
     }
     if( !doPrepare(type, status))
@@ -379,15 +525,12 @@ bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBOL
         return false;
     }
 
+    QFile exist(QString("%1\\%2").arg(dir).arg(filename));
+    if(exist.exists())
+        filename = QString("%1%2.rem").arg(QDate::currentDate().toString("R_ddMMyy")).arg(QTime::currentTime().toString("_hh_mm"));
+
     if(g_tkt->BuildShipping(dir,filename))
     {
-        QSqlQuery query;
-
-        if( !query.exec(QString(UPDATE_ALL_TICKETS).arg(type).arg(status).arg(stBuiltShipp)))
-        {
-            debug_message("Warning: Nao foi possivel atualizar o status de tickets para stBuiltShipp(%s)!!\n", query.lastError().text().toLatin1().data());
-        }
-
         /// read and save shipping file to db
         //// abrir pasta
         return true;
@@ -399,19 +542,22 @@ bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBOL
 bool TicketController::InitAcbr()
 {
    MainCompany *pCompany    = MainCompany::findByPrimaryKey(1);
-   ticketconfig *pTktConfig = ticketconfig::findByPrimaryKey(1); // default only one ticket
+
+   if( m_pTktConfig )
+       delete m_pTktConfig;
+   m_pTktConfig = ticketconfig::findByPrimaryKey(1); // default only one ticket
    bankaccount *pAccount    = bankaccount::findByPrimaryKey(1);   // default only one banckaccount
 
-   if(!pCompany || !pTktConfig || !pAccount)
+   if(!pCompany || !m_pTktConfig || !pAccount)
    {
-       debug_message("Company=%x, tktconfig=%x, bAccount=%x\n",pCompany, pTktConfig, pAccount );
+       debug_message("Company=%x, tktconfig=%x, bAccount=%x\n",pCompany, m_pTktConfig, pAccount );
        QMessageBox::warning(NULL, "Oops!", QString("Configurações incompletas, por favor configure Conta, Empresa, Boleto!"));
 
    }
    BankModel *pBank   = BankModel::findByPrimaryKey(pAccount->getBanco()) ;
 
 
-   if(!g_tkt->Init(pCompany,pTktConfig,pBank, pAccount ))
+   if(!g_tkt->Init(pCompany,m_pTktConfig,pBank, pAccount ))
    {
        QMessageBox::warning(NULL, "Oops!", QString("Erro na inicialização da biblioteca de geração de boletos!"));
        return false;
@@ -422,7 +568,7 @@ bool TicketController::InitAcbr()
 
 void TicketController::OpenRemDir()
 {
-    QDesktopServices::openUrl(QUrl::fromLocalFile(DEFAULT_REM_DIR));//, QUrl::TolerantMode);
+    QDesktopServices::openUrl(QUrl::fromLocalFile(QString("c:\\dvl\\acbr\\%1").arg(QDate::currentDate().toString("dd_MM_yyyy"))));//, QUrl::TolerantMode);
 }
 void TicketController::OpenPDF()
 {

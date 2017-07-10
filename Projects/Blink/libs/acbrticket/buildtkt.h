@@ -22,7 +22,8 @@ public:
            QDate date,
            QString NossoNumero,
            QString SeuNumero,
-           QString Mensagem);
+           QString Mensagem,
+           QString Discount);
 
     virtual ~Ticket(){}
     Dweller *getDweller();
@@ -31,6 +32,7 @@ public:
     QString getNossoNumero();
     QString getSeuNumero();
     QString getMensagem();
+    QString getDiscount();
 private:
     Dweller *m_dweller;
     QString m_value;
@@ -38,8 +40,7 @@ private:
     QString m_NossoNumero;
     QString m_SeuNumero;
     QString m_Mensagem;
-
-
+    QString m_Discount;
 };
 
 
@@ -58,7 +59,8 @@ public:
                          QDate dtVencto,
                          QString NossoNumero="",
                          QString SeuNumero="",
-                         QString Mensagem="");
+                         QString Mensagem="",
+                         QString Discount="");
        bool AddTickets();
        bool ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QString FileName );
 

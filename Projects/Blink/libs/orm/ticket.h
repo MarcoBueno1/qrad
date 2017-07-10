@@ -32,6 +32,7 @@ typedef enum enu_type_tkt
   tpTxCond, //0
   tpTxExtr, //1
   tpOutr,   //2
+  tpAll,    //3
 }BBO_TYPE, *PBBOL_TYPE;
 
 DECLARE_ORM(ticket)

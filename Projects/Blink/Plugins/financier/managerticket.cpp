@@ -7,7 +7,6 @@
 #include <QDebug>
 #include <QMimeData>
 #include "ticketcontroller.h"
-#include "editextratx.h"
 #include "accounttoreceivehistorymodel.h"
 #include "showbankreturn.h"
 
@@ -54,11 +53,12 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonTxExtra,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->pushButtonExportar,SIGNAL(clicked()), this, SLOT(doExport()));
 
+    /*
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
-    
+*/
     ui->comboBoxMonth->setCurrentIndex(0);
 
     setAcceptDrops(true);
@@ -325,55 +325,22 @@ void Managerticket::MatchNewest(ticket *newest )
 }
 void Managerticket::doTxExtra()
 {
-    /*
-    Editticket *edt = new Editticket;
+    TicketController *pController = new TicketController;
 
-    QModelIndex currentIndex = ui->tableViewSearch->currentIndex();
-
-    int nId = currentIndex.sibling(currentIndex.row(),ui->tableViewSearch->getColumnOf("id")).data().toInt();
-
-    ticket *sa = ticket::findByPrimaryKey(nId);
-    edt->SetModel(sa);
-    if( edt->exec() == QDialog::Accepted )
+    if(!pController->BuildTicketExtra(0))
     {
-        MatchNewest(edt->GetSaved());
+        QMessageBox::warning( this,
+                                  "Oops!",
+                                  QString("Não foi possível gerar os boletos de taxa extra!!"));
     }
-    delete edt;
-   */
-    Editextratx *edt = new Editextratx;
-    if( QDialog::Accepted  == edt->exec())
+    else
     {
-        TicketController *pt = new TicketController;
-        if(pt->BuildTicketExtra(edt->GetSaved()))
-        {
-            QMessageBox::information( this,
-                                      "Boletos gerdos com sucesso!",
-                                      QString("Por favor envie o arquivo de remessa para o banco para que os boletos tenham validade!\nClique em \"Ok\" para abrir pasta que contem o arquivo"));
+        QMessageBox::information( this,
+                                  "Boletos gerdos com sucesso!",
+                                  QString("Por favor pressione \Exportar\" e envie o arquivo de remessa para o banco para que os boletos tenham validade!"));
 
-            if( !pt->doShipp("","",tpTxExtr))
-            {
-                QMessageBox::warning( this,
-                                          "Problema!",
-                                          QString("Não foi possível gerar o arquivo de remessa!!!"));
-
-            }
-              QMessageBox::information( this,
-                                        "Imprimir Boletos",
-                                        QString("Será aberto o arquivo de boletos. Para imprimir, por favor, verifique se a impressora está conectada e possui papel suficiente."));
-            pt->doPrint(tpTxExtr,stBuiltShipp);
-            pt->OpenPDF();
-            pt->OpenRemDir();
-
-
-            pt->SendEmail();
-
-        }
-
-        delete pt;
-        doRefresh();
     }
-    delete edt;
-
+    delete pController;
 
 }
 
@@ -381,42 +348,24 @@ void Managerticket::doTxCondominial()
 {
     TicketController *pController = new TicketController;
 
-
     if(pController->BuildTicketCond())
     {
         QMessageBox::information( this,
                                   "Boletos gerdos com sucesso!",
-                                  QString("Por favor envie o arquivo de remessa para o banco para que os boletos tenham validade!\nClique em \"Ok\" para abrir pasta que contem o arquivo"));
-
-        pController->doShipp();
-        pController->doPrint(tpTxCond,stBuiltShipp);
-        pController->OpenPDF();
-        pController->OpenRemDir();
-
-//        QMessageBox::information( this,
-//                                  "Imprimir Boletos",
-  //                                QString("Será aberto o arquivo de boletos. Para imprimir, por favor, verifique se a impressora está conectada e possui papel suficiente."));
-
-        pController->SendEmail();
+                                  QString("Por favor pressione \Exportar\" e envie o arquivo de remessa para o banco para que os boletos tenham validade!"));
     }
 
     delete pController;
     doRefresh();
 
-    /*
-    Editticket *edt = new Editticket;
-
-    if( edt->exec() == QDialog::Accepted )
-    {
-        MatchNewest(edt->GetSaved());
-    }
-    delete edt;
-    */
 }
 
 void Managerticket::doSair()
 {
-    if( QMessageBox::Yes ==  QMessageBox::question(this, "Sair?","Deseja sair desta pesquisa?",QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+    if( QMessageBox::Yes ==  QMessageBox::question(this,
+                                                   "Sair?","Deseja sair desta pesquisa?",
+                                                   QMessageBox::Yes | QMessageBox::No,
+                                                   QMessageBox::Yes))
            reject();
 }
 void Managerticket::doRefresh()
@@ -542,11 +491,21 @@ void Managerticket::doExport()
 {
     /// Por Enquanto só taxa extra
     TicketController *pController = new TicketController;
-    if(pController->doShipp("","",tpTxExtr))
+
+    if(!pController->doShipp("","",tpAll))
     {
-        pController->doPrint(tpTxExtr,stBuiltShipp);
-        pController->OpenPDF();
-        pController->OpenRemDir();
+        QMessageBox::warning(this, "Oops!", "Problema ao gerar arquivo de remessa!");
+        return;
     }
-    delete pController;
+    if( !pController->doPrint(tpAll,stCreated))
+    {
+        QMessageBox::warning(this, "Oops!", "Problema ao gerar arquivo de boletos!");
+        return;
+    }
+     QMessageBox::information(this, "Ok!", "Arquivos gerados com sucesso!");
+
+     pController->OpenRemDir();
+     pController->SendEmail();
+
+     delete pController;
 }

@@ -4,6 +4,7 @@
 #include "ticket.h"
 #include "qradshared.h"
 #include "bankticket.h"
+#include "qradfile.h"
 
 BuildTkt *g_tkt;
 
@@ -173,13 +174,13 @@ void ExtractReturn(int nType, QString Vencto)
 
 void configureDatabase()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL7");
+    QSqlDatabase db = QSqlDatabase::addDatabase(QRadFile::GetParamValue("banco/database"));
 ///    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
 
-    db.setDatabaseName("qraddb");
-    db.setHostName("localhost");
-    db.setPassword("dsmpassword");
-    db.setUserName("dsm");
+    db.setDatabaseName(QRadFile::GetParamValue("banco/databasename"));
+    db.setHostName(QRadFile::GetParamValue("banco/hostname"));
+    db.setUserName(QRadFile::GetParamValue("banco/username"));
+    db.setPassword(QRadFile::GetParamValue("banco/password"));
 
     if(!db.open())
     {

@@ -28,7 +28,7 @@
 #endif
 
 #define debug_messagetime(fmt, args...) \
-    if (QCoreApplication::instance()->arguments().contains("--debugtime")) \
+    if (QCoreApplication::instance()->arguments().contains("--debug")) \
     { fprintf(stdout, fmt, ##args); fflush(stdout); }
 
 #define _tracein_ \

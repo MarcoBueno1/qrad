@@ -350,14 +350,17 @@ void Managerticket::doTxExtra()
                                       "Boletos gerdos com sucesso!",
                                       QString("Por favor envie o arquivo de remessa para o banco para que os boletos tenham validade!\nClique em \"Ok\" para abrir pasta que contem o arquivo"));
 
-            pt->doShipp("","",tpTxExtr);
-                      QMessageBox::information( this,
-                                                "Imprimir Boletos",
-                                                QString("Será aberto o arquivo de boletos. Para imprimir, por favor, verifique se a impressora está conectada e possui papel suficiente."));
-                      QMessageBox::information( this,
-                                                "Imprimir Boletos",
-                                                QString("Será aberto o arquivo de boletos. Para imprimir, por favor, verifique se a impressora está conectada e possui papel suficiente."));
-//            pt->doPrint(tpTxExtr,stBuiltShipp);
+            if( !pt->doShipp("","",tpTxExtr))
+            {
+                QMessageBox::warning( this,
+                                          "Problema!",
+                                          QString("Não foi possível gerar o arquivo de remessa!!!"));
+
+            }
+              QMessageBox::information( this,
+                                        "Imprimir Boletos",
+                                        QString("Será aberto o arquivo de boletos. Para imprimir, por favor, verifique se a impressora está conectada e possui papel suficiente."));
+            pt->doPrint(tpTxExtr,stBuiltShipp);
             pt->OpenPDF();
             pt->OpenRemDir();
 

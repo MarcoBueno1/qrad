@@ -21,7 +21,8 @@ public:
            QString value,
            QDate date,
            QString NossoNumero,
-           QString SeuNumero);
+           QString SeuNumero,
+           QString Mensagem);
 
     virtual ~Ticket(){}
     Dweller *getDweller();
@@ -29,12 +30,14 @@ public:
     QDate   getDate();
     QString getNossoNumero();
     QString getSeuNumero();
+    QString getMensagem();
 private:
     Dweller *m_dweller;
     QString m_value;
     QDate   m_date;
     QString m_NossoNumero;
     QString m_SeuNumero;
+    QString m_Mensagem;
 
 
 };
@@ -50,9 +53,12 @@ public:
        bool Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *pBank, bankaccount *pAccount);
        bool Print(bool bPrinter=false, QString strPath=TKT_DEFAULT_PDF_PATH );
        bool BuildShipping(QString strDir, QString FileName );
-       bool AppendTicket(Dweller *pDweller, QString strValue, QDate dtVencto,
+       bool AppendTicket(Dweller *pDweller,
+                         QString strValue,
+                         QDate dtVencto,
                          QString NossoNumero="",
-                         QString SeuNumero="");
+                         QString SeuNumero="",
+                         QString Mensagem="");
        bool AddTickets();
        bool ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QString FileName );
 
@@ -64,6 +70,7 @@ public slots:
        void DirModified(QString dir );
 
 private:
+      void CleanUpList();
       QList<Ticket *> m_tickets;
       int m_ShippNumber;
       int m_TktCount;
@@ -80,7 +87,9 @@ private:
       QString m_ReceivePath;
       QString m_SendFile;
       QString m_ReceiveFile;
+      QString m_ReceiveFullPath;
       QString m_parsepath;
+      int m_dwTimeout;
       QString MountYourNumvber(QString SeuNumero, QString ap, QString tow );
 };
 

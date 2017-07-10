@@ -53,7 +53,8 @@ SOURCES += dweller.cpp \
          configmodel.cpp \
          shipper.cpp \
      acbr.cpp \
-    extratx.cpp
+    extratx.cpp \
+    reasonextratax.cpp
             
 
 HEADERS += dweller.h \
@@ -94,7 +95,8 @@ HEADERS += dweller.h \
     configmodel.h \
     shipper.h \
     acbr.h \
-    extratx.h
+    extratx.h \
+    reasonextratax.h
 
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadOrm\release

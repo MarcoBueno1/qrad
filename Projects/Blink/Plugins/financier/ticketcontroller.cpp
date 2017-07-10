@@ -9,6 +9,7 @@
 #include "accounttoreceivehistorymodel.h"
 #include <QDesktopServices>
 #include "editticket.h"
+#include "reasonextratax.h"
 #include <QUrl>
 
 #include <QMessageBox>
@@ -92,6 +93,12 @@ bool TicketController::BuildTicket(DwellerList *dlist,
         if( ext )
         {
             txValue = ext->getValue();
+            ReasonExtraTax *pReason = ReasonExtraTax::findByid(ext->getMotivo(), true);
+            if(pReason)
+            {
+                Obs = pReason->getDescription();
+                delete pReason;
+            }
             delete ext;
         }
     }
@@ -306,6 +313,8 @@ bool TicketController::doPrepare(BBO_TYPE type, BBOL_STATUS status)
         return false;
     }
 
+    debug_message("SQL: %s\n",QString(FIN_PRINT_ALL_TICKETS).arg(type).arg(status).toLatin1().data());
+    debug_message("tktList->count()=%d\n", tktList->count());
     for( int i = 0; i < tktList->count();i++)
     {
         ticket *ptkt = tktList->at(i);
@@ -313,7 +322,12 @@ bool TicketController::doPrepare(BBO_TYPE type, BBOL_STATUS status)
 
         QString value = QString("%1").arg(ptkt->getValor());
         value.replace(".",",");
-        g_tkt->AppendTicket(pDweller, value, ptkt->getVencto(),QString("%1").arg(ptkt->getNossoNumero()),QString("%1").arg(ptkt->getSeuNumero()));
+        g_tkt->AppendTicket(pDweller,
+                            value,
+                            ptkt->getVencto(),
+                            QString("%1").arg(ptkt->getNossoNumero()),
+                            QString("%1").arg(ptkt->getSeuNumero()),
+                            type==tpTxExtr?ptkt->getObs():"");
     }
     return g_tkt->AddTickets();
 }
@@ -334,10 +348,6 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
     }
     else
     {
-        if(!InitAcbr())
-        {
-            return false;
-        }
         Dweller *pDweller = Dweller::findByid(ptkt->getclientid());
 
         QString value = QString("%1").arg(ptkt->getValor());

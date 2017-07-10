@@ -10,7 +10,8 @@
 #include <QDebug>
 #include "qradround.h"
 #include "qradshared.h"
-
+#include "qraddebug.h"
+#include <QFileInfo>
 #define TKT_PREFIX "BOLETO."
 
 #define TKT_PURGE "LimparLista"
@@ -118,9 +119,9 @@ BuildTkt::BuildTkt(QString Path)
     m_SendFile = SEND_NAME;
     m_ReceiveFile = RECEIVE_NAME;
 
-    m_watcher.addPath(m_ReceivePath);
+//    m_watcher.addPath(m_ReceivePath);
     m_parsepath= Path;
-    QObject::connect(&m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(DirModified(QString)));
+//    QObject::connect(&m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(DirModified(QString)));
 }
 
 BuildTkt::~BuildTkt()
@@ -136,7 +137,10 @@ BuildTkt::~BuildTkt()
 
 bool BuildTkt::Send(QString cmd)
 {
-    int dwTimeout = 0;
+    _tracein_
+
+   debug_message( "Comando: %s\n", cmd.toLatin1().data());
+
     QString filemane  = QString("%1%2").arg(m_SendPath).arg(m_SendFile);
 
     m_bDirModified = false;
@@ -145,6 +149,7 @@ bool BuildTkt::Send(QString cmd)
     if( !file->open(QIODevice::WriteOnly))
     {
         delete file;
+        _traceout_
         return false;
     }
     bool result = file->write(cmd.toLatin1())?true:false;
@@ -155,10 +160,16 @@ bool BuildTkt::Send(QString cmd)
 
     if( result ) // verifica retorno
     {
-        while( !m_bDirModified && (dwTimeout < 20))
+        while( m_dwTimeout > 0)
         {
-             qSleep(100);
-             dwTimeout++;
+             qSleep(1);
+             QFileInfo check_file(QString("%1%2").arg(m_ReceivePath).arg(m_ReceiveFile));
+             // check if file exists and if yes: Is it really a file and no directory?
+             if (check_file.exists() && check_file.isFile() && (check_file.size() > 0))
+             {
+                 break;
+             }
+             m_dwTimeout--;
         }
         /*
         if( dwTimeout == 50 )
@@ -179,6 +190,8 @@ bool BuildTkt::Send(QString cmd)
 //            qDebug() << "Vai deletar receivefile:";
             delete receivefile;
             m_lastError = "Erro na abertura do arquivo de resposta!";
+            debug_message( "Sem Resposta....\n");
+            _traceout_
             return false;
         }
         result = true;
@@ -200,13 +213,27 @@ bool BuildTkt::Send(QString cmd)
         qDebug() << "recebido:" << answer;
 
     }
+    _traceout_
     return result;
 }
+
+void BuildTkt::CleanUpList()
+{
+   _tracein_
+   for( int i =0; i < m_tickets.count(); i++ )
+   {
+       delete m_tickets.at(i);
+   }
+   m_tickets.clear();
+   _traceout_
+}
+
 
 bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *pBank, bankaccount *pAccount)
 {
    QString cmdPurge =  QString("%1%2").arg(TKT_PREFIX).arg(TKT_PURGE);
 
+   CleanUpList();
 
    if(!pCompany || !pTktConfig || !pBank || !pAccount )
    {
@@ -222,12 +249,19 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
        m_SendFile = pAcbr->getSendName();
        m_ReceiveFile = pAcbr->getReceiveName();
        delete pAcbr;
+
+       m_watcher.removePath(m_ReceivePath);
+       QObject::disconnect(&m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(DirModified(QString)));
+       m_watcher.addPath(m_ReceivePath);
+       QObject::connect(&m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(DirModified(QString)));
+
    }
 #endif
 
    m_TktCount = 0;
    m_ShippNumber =0;
 
+   m_dwTimeout = 2000;
    if( !Send(cmdPurge))
    {
         qDebug() << "Saindo da init com false :";
@@ -274,6 +308,7 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
                         .arg(paramConta)
                         .arg(paramBank);
 
+   m_dwTimeout = 2000;
    return Send(cmdConfig);
 }
 
@@ -281,17 +316,21 @@ bool BuildTkt::Print(bool bPrinter, QString strPath)
 {
     QString cmdPrint =  QString("%1%2").arg(TKT_PREFIX).arg(bPrinter?TKT_PRINT:TKT_PRINT_PDF);
 
+    m_dwTimeout = 60000;
     return Send(cmdPrint);
 }
 
 
-bool BuildTkt::AppendTicket(Dweller *pDweller, QString strValue, QDate dtVencto,
-                                                            QString NossoNumero,
-                                                            QString SeuNumero)
+bool BuildTkt::AppendTicket(Dweller *pDweller,
+                            QString strValue,
+                            QDate dtVencto,
+                            QString NossoNumero,
+                            QString SeuNumero,
+                            QString Mensagem)
 {
     m_TktCount++;
 
-    Ticket *tkt =  new Ticket(pDweller,strValue,dtVencto, NossoNumero,SeuNumero);
+    Ticket *tkt =  new Ticket(pDweller,strValue,dtVencto, NossoNumero,SeuNumero,Mensagem);
 
     m_tickets.append(tkt);
 
@@ -377,7 +416,10 @@ bool BuildTkt::AddTickets()
        if( MountedYourNumber.isEmpty())
            MountedYourNumber = aux;
 
-       QString msg = QString("%1%2/%3").arg(m_pTktConfig->getMensagem()).arg(dtVencto.longMonthName(dtVencto.month()).toUpper()).arg(dtVencto.year());
+       QString tktMsg = m_tickets.at(i)->getMensagem();
+       if( tktMsg.isEmpty())
+           tktMsg = m_pTktConfig->getMensagem();
+       QString msg = QString("%1%2/%3").arg(tktMsg).arg(dtVencto.longMonthName(dtVencto.month()).toUpper()).arg(dtVencto.year());
        double valor       = strValue.replace(",", ".").toDouble();
        double percentJuros = m_pTktConfig->getJuros().replace(",",".").toDouble();
        QString JurosDia = QString("%1").arg(QRadRound::PowerRound(QRadRound::PowerRound(valor/dtVencto.daysInMonth()/100)*percentJuros));
@@ -419,6 +461,7 @@ bool BuildTkt::AddTickets()
 
     QString cmdPrint =  QString("%1%2(\"%3\")").arg(TKT_PREFIX).arg(TKT_ADD_TICKET).arg(paramCfgTkt);
 
+    m_dwTimeout = 2000;
     return Send(cmdPrint);
 
 }
@@ -434,6 +477,7 @@ bool BuildTkt::BuildShipping(QString strDir, QString FileName )
 
     QString cmdSnd = QString("%1(%2)").arg(cmdShipping).arg(params);
 
+    m_dwTimeout = 40000;
     return Send(cmdSnd);
 }
 
@@ -473,7 +517,7 @@ bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QStri
 {
 
     QString cmd =  QString(TKT_EXTRACT_RETURN).arg(strDir).arg(FileName);
-
+    m_dwTimeout = 1000;
     if( !Send(cmd))
     {
         return false;
@@ -584,13 +628,19 @@ bool BuildTkt::Parse(QList<BankTicket*> *tikets)
 
 
 
-Ticket::Ticket(Dweller *dweller, QString value, QDate date, QString NossoNumero, QString SeuNumero)
+Ticket::Ticket(Dweller *dweller,
+               QString value,
+               QDate date,
+               QString NossoNumero,
+               QString SeuNumero,
+               QString Mensagem)
 {
     m_dweller = dweller;
     m_value =  value;
     m_date = date;
     m_NossoNumero = NossoNumero;
     m_SeuNumero = SeuNumero;
+    m_Mensagem = Mensagem;
 }
 
 Dweller *Ticket::getDweller()
@@ -608,6 +658,11 @@ QString Ticket::getNossoNumero()
 QString Ticket::getSeuNumero()
 {
     return m_SeuNumero;
+}
+
+QString Ticket::getMensagem()
+{
+    return m_Mensagem;
 }
 
 QDate   Ticket::getDate()

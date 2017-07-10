@@ -64,6 +64,7 @@ private slots:
 
 private:
     QRadPluginContainer *m_container;
+    int m_dwellerid;
 };
 
 #endif // visit_H

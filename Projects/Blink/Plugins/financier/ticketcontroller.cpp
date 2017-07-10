@@ -500,7 +500,7 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
         {
             if(g_tkt->Print(false,FullFileName))
             {
-                ptkt->updateLoId(ptkt->saveFile(DEFAULT_PDF_FILE));
+                ptkt->updateLoId(ptkt->saveFile(FullFileName));
                 return true;
             }
         }

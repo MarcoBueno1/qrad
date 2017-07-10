@@ -17,6 +17,7 @@ visitPlugin::visitPlugin()
     m_managerUser =0;
     m_emailConfig = 0;
     m_maincompany = 0; 
+    m_dwellerid = 0;
 
 }
 
@@ -110,8 +111,11 @@ void visitPlugin::Process( const QString& action )
 
         m_editDweller = new EditDweller(m_parent);
 
+        Dweller *current = Dweller::findByid(m_dwellerid);
+        m_editDweller->SetModel(current);
     //    QRadConfig::centralizarWidget(m_edit);
         m_editDweller->exec();
+        m_dwellerid = 0;
         debug_message("<--EditMorador\n");
     }
     else if (action.toLower() == QString("ManagerMorador").toLower())
@@ -223,6 +227,9 @@ void visitPlugin::setParam(QString str, QVariant v)
 {
     Q_UNUSED(str);
     Q_UNUSED(v);
+
+    if(str == "dwellerid")
+        m_dwellerid = v.toInt();
 }
 
 QVariant visitPlugin::getParam(QString str)

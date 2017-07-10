@@ -271,7 +271,7 @@
        <string>Excluir Boleto</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButtonEdit_2">
+     <widget class="QPushButton" name="pushButtonEditDweller">
       <property name="geometry">
        <rect>
         <x>110</x>

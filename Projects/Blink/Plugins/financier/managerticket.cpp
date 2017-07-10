@@ -9,11 +9,12 @@
 #include "ticketcontroller.h"
 #include "accounttoreceivehistorymodel.h"
 #include "showbankreturn.h"
+#include "qradplugincontainer.h"
 
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
 #define SQL_ITEMS "select t.nossonumero as \"Nº.Banco\", t.seunumero as \"Nº.Sis\", a.numero as \"Ap\", tw.name as \"Torre\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
-                  " t.valor as \"Valor R$\", t.valorpago as \"Pago R$\",u.name as \"Criado Por\", t.status as \"Estado\", t.sendstatus as \"e-mail\", t.type as \"Tipo\", t.id from "\
+                  " t.valor as \"Valor R$\", t.valorpago as \"Pago R$\",u.name as \"Criado Por\", t.status as \"Estado\", t.sendstatus as \"e-mail\", t.type as \"Tipo\", t.id, d.id as dwellerid from "\
                   " ticket t inner join dweller d on d.id = t.clientid inner join vuser u on u.id = t.vuser "\
                   " inner join ap a on a.id = d.ap inner join tower tw on tw.id = d.tower "\
                   " %1 order by t.id desc; "
@@ -52,6 +53,7 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonTxCond,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonTxExtra,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->pushButtonExportar,SIGNAL(clicked()), this, SLOT(doExport()));
+    connect(ui->pushButtonEditDweller,SIGNAL(clicked()), this, SLOT(doEditDweller()));
 
     /*
     Qt::WindowFlags flags = windowFlags();
@@ -508,4 +510,25 @@ void Managerticket::doExport()
      pController->SendEmail();
 
      delete pController;
+}
+
+void Managerticket::doEditDweller()
+{
+    int id = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
+                                                         ui->tableViewSearch->getColumnOf("dwellerid")).data().toInt();
+
+    QRadPluginContainer *pContainer = QRadPluginContainer::getInstance();
+
+    QRadPluginInterface *iface = pContainer->plugin("visitplugin");
+    if( !iface )
+    {
+        QMessageBox::warning(NULL,
+                             QString("Oops!"),
+                             QString("Não foi possível acessar o cadastro de moradores!"));
+        return;
+    }
+
+    iface->setParam("dwellerid", id);
+    iface->Process("EditMorador");
+    refreshTable();
 }

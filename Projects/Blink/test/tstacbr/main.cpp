@@ -5,6 +5,8 @@
 #include "qradshared.h"
 #include "bankticket.h"
 #include "qradfile.h"
+#include "accounttoreceivemodel.h"
+#include "accounttoreceivehistorymodel.h"
 
 BuildTkt *g_tkt;
 
@@ -76,6 +78,58 @@ void AppendTicketFromTicketsDb()
     }
 }
 
+
+void AdjustMissingAccounts()
+{
+    ticketList *pTickets = ticket::findBy("select * from ticket where accountid = 0");
+
+    if( pTickets )
+    {
+        for( int i = 0; i < pTickets->count();i++)
+        {
+            ticket *tkt = pTickets->at(i);
+            Dweller *pDweller = Dweller::findByid(tkt->getclientid());
+            Ap   *ap = Ap::findByid(pDweller->getap());
+            Tower *pTower = Tower::findByid(pDweller->gettower());
+
+            AccountToReceiveModel *account  = new  AccountToReceiveModel;
+
+            account->setClientId(pDweller->getid());
+            account->setDescription(QString("%1 AP: %2-%3 (%4)").arg(tkt->getObs()).arg(ap->getNumber()).arg(pTower->getName()).arg(pDweller->getName()));
+            account->setIssueDate(tkt->getVencto().addDays(-5));
+            account->setVencDate(tkt->getVencto());
+            account->setValue( tkt->getValor());
+            account->setAccountTypeId(2); // tipo condominio
+            if( account->Save())
+            {
+//                debug_message("account->getId()=%d\n", account->getId());
+                tkt->updateAccountId(account->getId());
+//                    debug_message("nao consegui fazer updateAccountId=%d\n", account->getId());
+            }
+
+            ///
+            /// History
+            AccountToReceiveHistoryModel *accountToReceiveHistoryModel = new AccountToReceiveHistoryModel;
+
+            accountToReceiveHistoryModel->setAccountToReceiveId(account->getId());
+            accountToReceiveHistoryModel->setTypeOperation(AccountOpCreate);
+            accountToReceiveHistoryModel->setUserId(tkt->getUser());
+            accountToReceiveHistoryModel->setDate(QDate::currentDate());
+            accountToReceiveHistoryModel->setTime(QTime::currentTime());
+
+            accountToReceiveHistoryModel->Save();
+
+            delete accountToReceiveHistoryModel;
+
+            ///
+
+            delete account;
+            delete ap;
+            delete pTower;
+            delete pDweller;
+        }
+    }
+}
 
 
 
@@ -336,7 +390,8 @@ void PrintMenu()
   printf( "\n11. ExtractReturn(ONLY_PAID)\n" );
   printf( "\n12. ExtractReturn(ONLY_REGISTERED)\n" );
   printf( "\n13. AppendTicketFromTicketsDb\n");
-  printf( "\n14. Close Program\n" );
+  printf( "\n14. AdjustMissingAccounts()\n");
+  printf( "\n15. Close Program\n" );
 
 /*
 
@@ -411,12 +466,15 @@ int main(int argc, char *argv[])
            case 13:
                   AppendTicketFromTicketsDb();
                   break;
+           case 14:
+                  AdjustMissingAccounts();
+                  break;
 
            default:
                    break;
         }
 
-      }while( cOption != 14 );
+      }while( cOption != 15 );
 
     qDebug() << "antes delete g_tkt";
     delete g_tkt;

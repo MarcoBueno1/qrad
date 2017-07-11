@@ -6,6 +6,7 @@
 #include "managersupplier.h"
 #include "managershipper.h"
 #include "showbankreturn.h"
+#include "qradprogresswindow.h"
 
 FinancierPlugin::FinancierPlugin()
 {
@@ -185,7 +186,26 @@ void FinancierPlugin::Process( const QString& action )
 
             if(ParsePay->Exec(&list, path))
             {
-                /// perssit
+                ////
+                //// Por enquanto persistindo apenas estado de registrado...
+                //// ( aguardando para verificar como ficará o erro operacional do pessoal )
+                QRAD_SHOW_PRPGRESS("Atualizando estado para registrados..");
+                for( int i = 0; i< list.count(); i++ )
+                {
+                    QCoreApplication::processEvents();
+                     BankTicket *pCurrent = list.at(i);
+                     if( pCurrent->getTpOp() == tpRegistered)
+                     {
+                         ticket *ptkt = ticket::findByNossoNumero(pCurrent->getNossoNumero().toInt(),true);
+                         if( ptkt )
+                         {
+                             ptkt->updateStatus(stRegistered);
+                             delete ptkt;
+                         }
+                     }
+                }
+                QRAD_HIDE_PRPGRESS();
+                QMessageBox::information(NULL,QString("Ok!"), QString("Operação concluída!!"));
             }
     }
 }

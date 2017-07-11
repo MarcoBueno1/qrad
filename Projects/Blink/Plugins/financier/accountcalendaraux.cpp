@@ -3,6 +3,7 @@
 #include "financierdelegates.h"
 #include "dsmsgmessages.h"
 #include "qradconfig.h"
+#include "qradmoney.h"
 
 
 #define SQL_SELECT_ACCOUNTTOPAY     "select fac.id, fac.description, fac.issuedate, fac.vencdate, fac.value  from fin_accounttopay fac where fac.removed = false and fac.vencdate = '%1' and fac.paid = false order by fac.description"
@@ -51,13 +52,37 @@ void AccountCalendarAux::SendDate(QDate date)
 
 void AccountCalendarAux::InitialConfig()
 {
+    int i;
+    double dToPay     =0;
+    double dToReceive =0;
+    m_ui->LblTotalToPay->setText("Total R$ 0,00");
+    m_ui->LblTotalToReceive->setText("Total R$ 0,00");
+    m_ui->LblResumoDia->setText("Total R$ 0,00");
+    m_ui->LblResumoDia->setStyleSheet(m_ui->LblTotalToReceive->styleSheet());
+
+
     m_accountToPayModel->setQuery(QString(SQL_SELECT_ACCOUNTTOPAY).arg(m_date.toString(FMT_DATE_DB)));
     m_ui->tableViewAccountToPay->setModel(m_accountToPayModel);
+    for( i = 0; i < m_accountToPayModel->rowCount(); i++ )
+    {
+        //4
+       dToPay +=  m_accountToPayModel->index(i,4).data().toDouble();
+    }
 
 
     m_accountToReceiveModel->setQuery(QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(m_date.toString(FMT_DATE_DB)));
     m_ui->tableViewAccountToReceive->setModel(m_accountToReceiveModel);
+    for( i = 0; i < m_accountToReceiveModel->rowCount(); i++ )
+    {
+        //4
+       dToReceive +=  m_accountToReceiveModel->index(i,4).data().toDouble();
+    }
 
+    m_ui->LblTotalToPay->setText(QString("Total R$ %1").arg(QRadMoney::MoneyHumanForm3(dToPay)));
+    m_ui->LblTotalToReceive->setText(QString("Total R$ %1").arg(QRadMoney::MoneyHumanForm3(dToReceive)));
+    m_ui->LblResumoDia->setText(QString("Total R$ %1").arg(QRadMoney::MoneyHumanForm3(dToReceive-dToPay)));
+    if( dToReceive-dToPay < 0 )
+        m_ui->LblResumoDia->setStyleSheet(m_ui->LblTotalToPay->styleSheet());
 }
 
 void AccountCalendarAux::ConfigHeaderTable(void)

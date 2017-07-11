@@ -55,12 +55,12 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->pushButtonExportar,SIGNAL(clicked()), this, SLOT(doExport()));
     connect(ui->pushButtonEditDweller,SIGNAL(clicked()), this, SLOT(doEditDweller()));
 
-
+/*
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
-
+*/
     ui->comboBoxMonth->setCurrentIndex(0);
 
     setAcceptDrops(true);

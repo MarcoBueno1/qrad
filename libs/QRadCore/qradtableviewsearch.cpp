@@ -369,7 +369,6 @@ int QRadTableViewSearch::getColumnOf(QString Title)
         }
     }
     return ColId;
-
 }
 
 QString QRadTableViewSearch::BuildClmnTableName()

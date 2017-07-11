@@ -15,6 +15,7 @@
 #include <QDir>
 #include "editextratx.h"
 #include <QMessageBox>
+#include "qradprogresswindow.h"
 
 /*
 #define FIN_AP_WITH_NO_PAYER "select * from dweller d2 "\
@@ -78,6 +79,9 @@ bool TicketController::BuildTicket(DwellerList *dlist,
                                   int ExtraTxId)
 {
 
+    QRadProgressWindow *pW = QRadProgressWindow::getInstance();
+    pW->setDetail(QString("Construindo boletos ..."));
+
     double txValue = 0;
     int nLastNumber = 0;
     ticketList *ptList = ticket::findBy(FIN_GET_LAST_NUMBER);
@@ -109,6 +113,7 @@ bool TicketController::BuildTicket(DwellerList *dlist,
 
     for( int i = 0; i < dlist->count(); i++)
     {
+         QCoreApplication::processEvents();
          nLastNumber++;
          Dweller *pDweller = dlist->at(i);
          Ap *ap = pDweller->getAp();
@@ -116,7 +121,9 @@ bool TicketController::BuildTicket(DwellerList *dlist,
          metreage *pMetr = metreage::findByid(ap->getMetreageId(), true);
          if( !pMetr )
          {
+             pW->hide();
              QMessageBox::warning(NULL, "Oops!", QString("O apartamento %1 não possui metragem configurada, não poderá ser gerado boleto para este apartamento!").arg(ap->getNumber()));
+             pW->setDetail(QString("Construindo boletos ..."));
              continue;
          }
 
@@ -141,6 +148,7 @@ bool TicketController::BuildTicket(DwellerList *dlist,
 
          if( !tkt->Save() )
          {
+             pW->hide();
              QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel gerar o boleto de %1 - %2 %3!").arg(pDweller->getName()).arg(pTower->getName()));
              delete pMetr;
              delete pTower;
@@ -168,6 +176,7 @@ bool TicketController::BuildTicket(DwellerList *dlist,
          }
          else
          {
+             pW->hide();
              QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel salvar conta: Boleto %1 - %2!").arg(tkt->getid()).arg(account->lastError().text()));
 
          }
@@ -193,16 +202,20 @@ bool TicketController::BuildTicket(DwellerList *dlist,
          delete pTower;
          delete tkt;
     }
+    pW->hide();
 }
 
 bool TicketController::BuildTicketExtra( extratx *pTx )
 {
-//    Dweller *pD;
+    QRadProgressWindow *pW = QRadProgressWindow::getInstance();
+    pW->setDetail(QString("Criando Taxa Extra..."));
+
     DwellerList *dlist ;
 
     Editextratx *edt = new Editextratx;
     if( QDialog::Accepted != edt->exec())
     {
+        pW->hide();
         QMessageBox::warning(NULL,
                              QString("Cancelado!"),
                              QString("Operação cancelada!"));
@@ -252,6 +265,7 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
                      dwdata += dName->getName();
                      delete dName;
                  }
+                 pW->hide();
                  if( QMessageBox::No == QMessageBox::question(NULL, "Atenção",
                                                               QString("Já foi emitido boleto para %1 este morador neste mês, deseja realmente emitir um novo boleto?").arg(dwdata),
                                                               QMessageBox::Yes|QMessageBox::No,
@@ -260,7 +274,10 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
                }
            }
            if( !OkList.count())
+           {
+               pW->hide();
                return false;
+           }
            QString Where;
            for( int i = 0; i < OkList.count();i++ )
            {
@@ -289,6 +306,7 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
     }
 
     delete edt;
+    pW->hide();
     return true;
 }
 
@@ -296,6 +314,10 @@ bool TicketController::BuildTicketCond(int id )
 {
     if(!InitAcbr())
         return false;
+
+    QRadProgressWindow *pW = QRadProgressWindow::getInstance();
+    pW->setDetail(QString("Criando Taxa Condominial..."));
+
 
     QDate date = QDate::currentDate();
     configList *pConfig = config::findAll();
@@ -328,6 +350,7 @@ bool TicketController::BuildTicketCond(int id )
         dlist = Dweller::findBy(QString(FIN_MISSING_TICKETS_THIS_MONTH).arg(date.toString(FMT_DATE_DB)).arg(tpTxCond).arg(""));
         if( !dlist )
         {
+          pW->hide();
           QMessageBox::information(NULL, "Oops!", "Todos os boletos de taixa condominial deste mes ja foram emitidos!");
           return false;
         }
@@ -362,6 +385,7 @@ bool TicketController::BuildTicketCond(int id )
                   dwdata += dName->getName();
                   delete dName;
               }
+              pW->hide();
               if( QMessageBox::No == QMessageBox::question(NULL, "Atenção",
                                                            QString("Já foi emitido boleto para %1 este morador neste mês, deseja realmente emitir um novo boleto?").arg(dwdata),
                                                            QMessageBox::Yes|QMessageBox::No,
@@ -371,7 +395,10 @@ bool TicketController::BuildTicketCond(int id )
    //     dlist = Dweller::findBy(QString("select * from dweller where id = %1").arg(id));
         }
         if( !OkList.count())
+        {
+            pW->hide();
             return false;
+        }
         QString Where;
         for( int i = 0; i < OkList.count();i++ )
         {
@@ -400,6 +427,10 @@ bool TicketController::doPrepare(BBO_TYPE type, BBOL_STATUS status)
     QString Discount;
     QString Type;
 
+    QRadProgressWindow *pW = QRadProgressWindow::getInstance();
+    pW->setDetail(QString("Preparando itens..."));
+
+
     if( type == tpAll)
     {
         Type = QString("%1 or type = %2 ").arg(tpTxCond).arg(tpTxExtr);
@@ -411,10 +442,12 @@ bool TicketController::doPrepare(BBO_TYPE type, BBOL_STATUS status)
     ticketList *tktList =  ticket::findBy(QString(FIN_PRINT_ALL_TICKETS).arg(Type).arg(status));
     if( !tktList)
     {
+        pW->hide();
         return false;
     }
     if(!InitAcbr())
     {
+        pW->hide();
         return false;
     }
 
@@ -422,6 +455,7 @@ bool TicketController::doPrepare(BBO_TYPE type, BBOL_STATUS status)
     debug_message("tktList->count()=%d\n", tktList->count());
     for( int i = 0; i < tktList->count();i++)
     {
+        QCoreApplication::processEvents();
         ticket *ptkt = tktList->at(i);
         Dweller *pDweller = Dweller::findByid(ptkt->getclientid());
 
@@ -450,11 +484,15 @@ bool TicketController::doPrepare(BBO_TYPE type, BBOL_STATUS status)
                            ptkt->getType()==tpTxExtr?ptkt->getObs():"",
                            Discount );
     }
+    pW->hide();
     return g_tkt->AddTickets();
 }
 
 bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
 {
+    QRadProgressWindow *pW = QRadProgressWindow::getInstance();
+    pW->setDetail(QString("Preparando impressão..."));
+
     QString Path = QString("c:\\dvl\\acbr\\%1").arg(QDate::currentDate().toString("dd_MM_yyyy"));
     QDir  dir;
     dir.mkpath(Path);
@@ -467,10 +505,12 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
     {
         if( !doPrepare(type, status) )
         {
+            pW->hide();
             return false;
         }
         if( !g_tkt->Print(false, FullFileName) )
         {
+            pW->hide();
             return false;
         }
 
@@ -491,6 +531,7 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
             debug_message("Warning: Nao foi possivel atualizar o status de tickets para stBuiltShipp(%s)!!\n", query.lastError().text().toLatin1().data());
         }
 
+        pW->hide();
         return true;
     }
     else
@@ -505,16 +546,21 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
             if(g_tkt->Print(false,FullFileName))
             {
                 ptkt->updateLoId(ptkt->saveFile(FullFileName));
+                pW->hide();
                 return true;
             }
         }
     }
 
+    pW->hide();
     return false;
 }
 
 bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBOL_STATUS status)
 {
+    QRadProgressWindow *pW = QRadProgressWindow::getInstance();
+    pW->setDetail(QString("Preparando remessa..."));
+
     if( dir.isEmpty() || filename.isEmpty())
     {
         dir = QString("c:\\dvl\\acbr\\%1").arg(QDate::currentDate().toString("dd_MM_yyyy"));
@@ -526,6 +572,7 @@ bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBOL
     }
     if( !doPrepare(type, status))
     {
+        pW->hide();
         return false;
     }
 
@@ -537,8 +584,10 @@ bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBOL
     {
         /// read and save shipping file to db
         //// abrir pasta
+        pW->hide();
         return true;
     }
+    pW->hide();
     return false;
 }
 
@@ -679,6 +728,9 @@ bool TicketController::Remove(int id, QString strMsgText)
 
 bool TicketController::ProcessRetList(QList<BankTicket*> *list)
 {
+    QRadProgressWindow *pW = QRadProgressWindow::getInstance();
+    pW->setDetail(QString("Processando lista de retorno..."));
+
     QSqlDatabase::database().transaction();
 
     QSqlQuery *query = new QSqlQuery; // default database
@@ -687,6 +739,7 @@ bool TicketController::ProcessRetList(QList<BankTicket*> *list)
 
     for( int i = 0; i < list->count(); i++ )
     {
+        QCoreApplication::processEvents();
         BankTicket *tkt = list->at(i);
 
 #define UPDATE_TICKETS_TO_PAID "ticket set pagoem = '%1', valorpago = %2, status=%3, obs='%4', vuser = %5 where nossonumero in (%6) and vencto = '%7'"
@@ -743,5 +796,6 @@ bool TicketController::ProcessRetList(QList<BankTicket*> *list)
     }
     QSqlDatabase::database().commit();
     delete query;
+    pW->hide();
     return bRet;
 }

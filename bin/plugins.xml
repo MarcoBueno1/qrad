@@ -22,7 +22,8 @@
         <menu path="Financeiro" title="Contas a Receber" action="ShowAccountToReceive" hotkey="CTRL+M" permission="usedweller" />
         <menu path="Financeiro" title="Histórico" action="ShowAccountHistoryReport" hotkey="CTRL+V" permission="usepreaut" />
         <menu path="Financeiro" title="Calendario de Contas" action="ShowAccountCalendar" hotkey="CTRL+V" permission="useuser" />
-        <menu path="Financeiro" title="Boletos" action="ManageTicket" hotkey="CTRL+V" permission="useuser" />
+        <menu path="Financeiro/Boletos" title="Gerenciar" action="ManageTicket" hotkey="CTRL+V" permission="useuser" />
+		<menu path="Financeiro/Boletos" title="Ler arquivo de retorno" action="ReadShipp" hotkey="CTRL+V" permission="useuser" />
         <menu path="Cadastro/Usuários" title="Fornecedores" action="ManageSupplier" hotkey="CTRL+V" permission="useuser" />
         <menu path="Cadastro/Cadastro Auxiliar/Metragem" title="Metragens" action="ManageMetreage" hotkey="CTRL+V" permission="useprofile" />
         <menu path="Financeiro/Freferencias" title="Tipos de Contas" action="ShowAccountType" hotkey="CTRL+F" permission="usevisit" />

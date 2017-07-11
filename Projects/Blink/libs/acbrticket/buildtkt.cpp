@@ -12,6 +12,8 @@
 #include "qradshared.h"
 #include "qraddebug.h"
 #include <QFileInfo>
+#include "qradprogresswindow.h"
+
 #define TKT_PREFIX "BOLETO."
 
 #define TKT_PURGE "LimparLista"
@@ -89,6 +91,8 @@
 #endif
 void BuildTkt::qSleep(int ms)
 {
+    QCoreApplication::processEvents();
+
 #if 0
     QTime dieTime= QTime::currentTime().addSecs(ms);
     while (QTime::currentTime() < dieTime)
@@ -122,6 +126,10 @@ BuildTkt::BuildTkt(QString Path)
 //    m_watcher.addPath(m_ReceivePath);
     m_parsepath= Path;
 //    QObject::connect(&m_watcher, SIGNAL(directoryChanged(QString)), this, SLOT(DirModified(QString)));
+    m_pCompany = 0;
+    m_pTktConfig = 0;
+    m_pBank = 0;
+    m_pAccount = 0;
 }
 
 BuildTkt::~BuildTkt()
@@ -169,6 +177,7 @@ bool BuildTkt::Send(QString cmd)
              {
                  break;
              }
+             QCoreApplication::processEvents();
              m_dwTimeout--;
         }
         /*
@@ -262,10 +271,13 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
    m_ShippNumber =0;
 
    m_dwTimeout = 2000;
+
+   QRAD_SHOW_PRPGRESS("Inicializando infraestutura...");
+
    if( !Send(cmdPurge))
    {
         qDebug() << "Saindo da init com false :";
-      
+       QRAD_HIDE_PRPGRESS();
        return false;
    }
 
@@ -308,12 +320,19 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
                         .arg(paramConta)
                         .arg(paramBank);
 
+   QRAD_SHOW_PRPGRESS_STEP("Configurando boletos...");
+
    m_dwTimeout = 2000;
-   return Send(cmdConfig);
+   bool bRet = Send(cmdConfig);
+
+   QRAD_HIDE_PRPGRESS();
+   return bRet;
 }
 
 bool BuildTkt::Print(bool bPrinter, QString strPath)
 {
+    QRAD_SHOW_PRPGRESS("Gerando arquivo .pdf...");
+
     QString cmdPrint =  QString("%1%2").arg(TKT_PREFIX).arg(bPrinter?TKT_PRINT:TKT_PRINT_PDF);
 
     m_dwTimeout = 60000;
@@ -323,6 +342,7 @@ bool BuildTkt::Print(bool bPrinter, QString strPath)
        QFile::rename("C:\\ACBrMonitorPLUS\\boleto.pdf",strPath);
     }
 
+    QRAD_HIDE_PRPGRESS();
     return Ret;
 }
 
@@ -337,10 +357,14 @@ bool BuildTkt::AppendTicket(Dweller *pDweller,
 {
     m_TktCount++;
 
+    QRAD_SHOW_PRPGRESS(QString("Adicionando boleto (%1)...").arg(pDweller->getName()));
+
+
     Ticket *tkt =  new Ticket(pDweller,strValue,dtVencto, NossoNumero,SeuNumero,Mensagem, Discount);
 
     m_tickets.append(tkt);
 
+    QRAD_HIDE_PRPGRESS();
     return true;
 
 
@@ -388,6 +412,9 @@ QString BuildTkt::MountYourNumvber(QString SeuNumero, QString ap, QString tow )
 bool BuildTkt::AddTickets()
 {
     QString paramCfgTkt;
+
+    QRAD_SHOW_PRPGRESS(QString("Incluindo Itens ..."));
+
 
     for( int i = 0; i < m_tickets.count(); i++ )
     {
@@ -478,7 +505,11 @@ bool BuildTkt::AddTickets()
     QString cmdPrint =  QString("%1%2(\"%3\")").arg(TKT_PREFIX).arg(TKT_ADD_TICKET).arg(paramCfgTkt);
 
     m_dwTimeout = 2000;
-    return Send(cmdPrint);
+
+    bool bRet = Send(cmdPrint);
+
+    QRAD_HIDE_PRPGRESS();
+    return bRet;
 
 }
 
@@ -487,6 +518,9 @@ bool BuildTkt::BuildShipping(QString strDir, QString FileName )
 {
     m_ShippNumber++;
 
+    QRAD_SHOW_PRPGRESS(QString("Construindo arquivo de remessa ..."));
+
+
     QString cmdShipping =  QString("%1%2").arg(TKT_PREFIX).arg(TKT_BUILD_SHIPPING);
 
     QString params = QString("\"%1\",%2,%3").arg(strDir).arg(m_ShippNumber).arg(FileName);
@@ -494,7 +528,11 @@ bool BuildTkt::BuildShipping(QString strDir, QString FileName )
     QString cmdSnd = QString("%1(%2)").arg(cmdShipping).arg(params);
 
     m_dwTimeout = 40000;
-    return Send(cmdSnd);
+
+    bool bRet = Send(cmdSnd);
+    QRAD_HIDE_PRPGRESS();
+
+    return bRet;
 }
 
 
@@ -531,11 +569,14 @@ MotivoRejeicao1=04-Compensação Eletrônica.
 
 bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QString FileName )
 {
+    QRAD_SHOW_PRPGRESS(QString("Lendo arquivo de retorno ..."));
+
 
     QString cmd =  QString(TKT_EXTRACT_RETURN).arg(strDir).arg(FileName);
     m_dwTimeout = 1000;
     if( !Send(cmd))
     {
+        QRAD_HIDE_PRPGRESS();
         return false;
     }
 
@@ -561,6 +602,7 @@ bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QStri
 
     for( int i= 0; ; i++)
     {
+      QCoreApplication::processEvents();
       Nome         = settings.value(QString("Titulo%1/Sacado.Nome").arg(i+1)).toString();
       cpf          = settings.value(QString("Titulo%1/Sacado.CNPJCPF").arg(i+1)).toString();
       vencto       = settings.value(QString("Titulo%1/Vencimento").arg(i+1)).toString();
@@ -617,6 +659,8 @@ bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QStri
 
     }
 
+    QRAD_HIDE_PRPGRESS();
+
     return true;
 }
 
@@ -624,6 +668,26 @@ bool BuildTkt::Parse(QList<BankTicket*> *tikets,QString Path)
 {
     QString strDir;
     QString FileName;
+
+    if(!m_pCompany && !m_pTktConfig && !m_pBank && !m_pAccount )
+    {
+        MainCompany *pCompany    = MainCompany::findByPrimaryKey(1);
+
+        ticketconfig *pTktConfig = ticketconfig::findByPrimaryKey(1); // default only one ticket
+        bankaccount *pAccount    = bankaccount::findByPrimaryKey(1);   // default only one banckaccount
+
+        if(!pCompany || !pTktConfig || !pAccount)
+        {
+            //debug_message("Company=%x, tktconfig=%x, bAccount=%x\n",pCompany, m_pTktConfig, pAccount );
+//            QMessageBox::warning(NULL, "Oops!", QString("Configurações incompletas, por favor configure Conta, Empresa, Boleto!"));
+
+        }
+        BankModel *pBank   = BankModel::findByPrimaryKey(pAccount->getBanco()) ;
+        Init(pCompany, pTktConfig, pBank, pAccount);
+    }
+
+
+    Path.replace("/","\\");
 //#ifdef _WIN32
     strDir = Path.mid(0,Path.lastIndexOf("\\")+1);
     FileName = Path.mid(Path.lastIndexOf("\\")+1);
@@ -632,8 +696,10 @@ bool BuildTkt::Parse(QList<BankTicket*> *tikets,QString Path)
 //    FileName = Path.mid(Path.lastIndexOf("/")+1);
 //#endif
 
-    qDebug() << strDir;
-    qDebug() << FileName;
+    debug_message("strDir:%s\n", strDir.toLatin1().data());
+    debug_message("FileName:%s\n", FileName.toLatin1().data());
+//    qDebug() << strDir;
+//    qDebug() << FileName;
     return ExtractReturn(tikets, strDir, FileName );
 }
 

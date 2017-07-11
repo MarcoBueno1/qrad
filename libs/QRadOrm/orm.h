@@ -25,6 +25,7 @@
 #include <QString>
 #include <QDebug>
 #include <QPixmap>
+#include "qraddebug.h"
 
 typedef enum ORMAttrType_en
 {
@@ -113,6 +114,7 @@ ORM_ATTRIBUTE_CLASS(bool);
                         .arg(m_##attr.toString().replace("\'", "\'\'"))\
                         .arg(m_primaryKey->fieldName()) \
                         .arg(m_primaryKey->value().toString());\
+        debug_message("SQL Update: %s\n", str.toLatin1().data());\
         QSqlQuery *query;\
         query = new QSqlQuery(getDatabase());\
         int bError = true;\

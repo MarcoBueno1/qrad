@@ -158,9 +158,13 @@ bool TicketController::BuildTicket(DwellerList *dlist,
          account->setIssueDate(QDate::currentDate());
          account->setVencDate(date);
          account->setValue( tkt->getValor());
+         account->setAccountTypeId(2); // tipo condominio
          if( account->Save())
          {
-             tkt->updateAccountId(account->getId());
+             debug_message("account->getId()=%d\n", account->getId());
+             if( !tkt->updateAccountId(account->getId()))
+                 debug_message("nao consegui fazer updateAccountId=%d\n", account->getId());
+
          }
          else
          {

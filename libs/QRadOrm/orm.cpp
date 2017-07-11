@@ -19,6 +19,7 @@
 #include <QSqlField>
 #include "fieldfactory.h"
 #include "pgsqlasync.h"
+#include "qraddebug.h"
 
 #include <QApplication>
 
@@ -345,6 +346,10 @@ bool ORM::do_insert()
             else
             {
                 insert->next();
+                debug_message("%s last insered %s = %d\n",
+                              m_tableName.toLatin1().data(),
+                              m_primaryKey->fieldName().toLatin1().data(),
+                              insert->record().value( m_primaryKey->fieldName() ).toInt());
                 m_primaryKey->setValue( insert->record().value( m_primaryKey->fieldName() ).toInt());
             }
             delete insert;
@@ -479,9 +484,12 @@ bool ORM::Save()
 {
     bool bRet= m_primaryKey->value().toInt()?Update() || Create():Create();
 
+    int pKey = m_primaryKey->value().toInt();
+
     if( bRet )
         Audit();
 
+    m_primaryKey->setValue(pKey);
     return bRet;
 }
 
@@ -502,6 +510,7 @@ bool ORM::Delete()
 }
 void  ORM::Audit()
 {
+
    QString CurrentTable = m_tableName;
    m_tableName += QString("_%1").arg("a");
 

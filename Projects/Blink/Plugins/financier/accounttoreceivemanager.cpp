@@ -511,6 +511,10 @@ void AccountToReceiveManager::ShowReport(void)
                          .arg(m_strAux)
                          .arg(m_dateStr));
 
+        debug_message("SQL: %s\n", QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
+                      .arg(m_strAux)
+                      .arg(m_dateStr).toLatin1().data());
+
 
         for (int index = 0; index < select->rowCount(); index++)
         {

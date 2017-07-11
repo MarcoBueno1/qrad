@@ -55,12 +55,12 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->pushButtonExportar,SIGNAL(clicked()), this, SLOT(doExport()));
     connect(ui->pushButtonEditDweller,SIGNAL(clicked()), this, SLOT(doEditDweller()));
 
-    /*
+
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
-*/
+
     ui->comboBoxMonth->setCurrentIndex(0);
 
     setAcceptDrops(true);
@@ -270,6 +270,7 @@ void Managerticket::ConfigureTable()
    // ui->tableViewSearch->setColumnWidth(0, 0.06 * ui->tableViewSearch->width());
 
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
+    ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("dwellerid"));
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("Criado Por"));
     ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
     ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnCenter);

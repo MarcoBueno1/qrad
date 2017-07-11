@@ -21,6 +21,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    void setRemainingDays(int value);
 };
 
 #endif // MAINWINDOW_H

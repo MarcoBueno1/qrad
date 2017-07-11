@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
+#include "clicense.h"
+#include <QLabel>
 
 #define BLINK_RELEASE "1.0"
 
@@ -19,7 +21,35 @@ MainWindow::MainWindow(QWidget *parent) :
 */
 
 //    setWindowIcon(QIcon(":/png/mainicon.png"));
+    Clicense *pLic = new Clicense ;
+
+    setRemainingDays(pLic->RemainingDays());
+    delete pLic;
 }
+
+
+
+void MainWindow::setRemainingDays(int value)
+{
+   QLabel *label;
+    if ( value == 0 )
+    {
+        label = new QLabel(QString("A sua licença expirou! Entre em contato com a M2 para renovação."));
+        label->setStyleSheet("color: rgb(255, 0, 0);font: bold;");
+    }
+    else if ( value <= 7  )
+    {
+        label = new QLabel(QString("Faltam apenas %1 dia(s) para a sua licença vencer. Entre em contato com a M2 para renovação.").arg(value));
+        label->setStyleSheet("color: rgb(255, 85, 0);font: bold;");
+    }
+    else
+    {
+        label = new QLabel(QString("A sua licença é válida por %1 dias.").arg(value));
+        label->setStyleSheet("font: white bold;");
+    }
+    statusBar()->insertPermanentWidget(0,label,1);
+}
+
 
 MainWindow::~MainWindow()
 {

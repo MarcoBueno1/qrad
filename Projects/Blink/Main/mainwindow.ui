@@ -23,6 +23,9 @@
    <iconset resource="../icons/resources.qrc">
     <normaloff>:/png/mainicon.png</normaloff>:/png/mainicon.png</iconset>
   </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
   <widget class="QWidget" name="centralWidget"/>
   <widget class="QRadMenu" name="menuBar">
    <property name="geometry">

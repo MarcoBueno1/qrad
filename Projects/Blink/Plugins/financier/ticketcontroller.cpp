@@ -136,7 +136,10 @@ bool TicketController::BuildTicket(DwellerList *dlist,
          tkt->setSeuNumero(QString("%1%2").arg(pDweller->gettower()).arg(pDweller->getAp()->getNumber()).toInt());
          tkt->setType(type);
          if( type == tpTxCond)
+         {
              tkt->setValor(pMetr->getMontlyValue());
+             tkt->setDiscount(m_pTktConfig->getDiscount());
+         }
          else
              tkt->setValor(txValue);
 
@@ -424,7 +427,7 @@ bool TicketController::BuildTicketCond(int id )
 
 bool TicketController::doPrepare(BBO_TYPE type, BBOL_STATUS status)
 {
-    QString Discount;
+    QString Discount = "0,00";
     QString Type;
 
     QRadProgressWindow *pW = QRadProgressWindow::getInstance();
@@ -464,24 +467,33 @@ bool TicketController::doPrepare(BBO_TYPE type, BBOL_STATUS status)
 
        /// regra garden
        /// type== txExtra= not discount
-       if( tpTxExtr == ptkt->getType())
+/*       if( tpTxExtr == ptkt->getType())
        {
            Discount = "0,00";
        }
        else
        {
+#warning "Ajsutar para permitir editar também desconto na ediçao de boleto."
+#if(0)
            double valor       = value.replace(",", ".").toDouble();
            Discount = QString("%1").arg(QRadRound::PowerRound(QRadRound::PowerRound(valor/100)*(m_pTktConfig->getDiscount())));
            Discount.replace(".", ",");
+#endif
 
        }
+*/
+     double valor       = value.replace(",", ".").toDouble();
+     Discount = QString("%1").arg(QRadRound::PowerRound(QRadRound::PowerRound(valor/100)*(ptkt->getDiscount())));
+     Discount.replace(".", ",");
+
 
       g_tkt->AppendTicket( pDweller,
                            value,
                            ptkt->getVencto(),
                            QString("%1").arg(ptkt->getNossoNumero()),
                            QString("%1").arg(ptkt->getSeuNumero()),
-                           ptkt->getType()==tpTxExtr?ptkt->getObs():"",
+                           //ptkt->getType()==tpTxExtr?ptkt->getObs():"",
+                           ptkt->getObs(),
                            Discount );
     }
     pW->hide();
@@ -575,6 +587,8 @@ bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBOL
         pW->hide();
         return false;
     }
+
+#warning "Compor loop de identificacao de nome de arquivo de remessa"
 
     QFile exist(QString("%1\\%2").arg(dir).arg(filename));
     if(exist.exists())

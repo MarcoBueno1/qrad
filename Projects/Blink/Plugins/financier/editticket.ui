@@ -40,7 +40,7 @@
     <property name="title">
      <string> Detalhes</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>12</x>
@@ -62,7 +62,7 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -136,7 +136,7 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -179,7 +179,7 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -189,6 +189,23 @@
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Desconto %</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="doubleSpinBox">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QLabel" name="LblValor_2">
        <property name="text">
@@ -201,7 +218,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -502,7 +519,7 @@
      <number>1</number>
     </property>
     <property name="text">
-     <string>Edição de Boleto</string>
+     <string>Edição de ATM</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -545,6 +562,22 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>DblSpnBxValor</tabstop>
+  <tabstop>DtEdtVencto</tabstop>
+  <tabstop>comboBox</tabstop>
+  <tabstop>doubleSpinBox</tabstop>
+  <tabstop>LnEdtObs</tabstop>
+  <tabstop>LnEdtNome</tabstop>
+  <tabstop>LnEdtAp</tabstop>
+  <tabstop>LnEdtTower</tabstop>
+  <tabstop>LnEdtemail</tabstop>
+  <tabstop>LnEdtPhone</tabstop>
+  <tabstop>LnEdtNossoNumero</tabstop>
+  <tabstop>LnEdtSeuNumero</tabstop>
+  <tabstop>PshBtnCancel</tabstop>
+  <tabstop>PshBtnSave</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -67,8 +67,7 @@ void Editticket::Save()
     mod->setVencto(ui->DtEdtVencto->date());
     mod->setValor(ui->DblSpnBxValor->value());
     mod->setObs(ui->LnEdtObs->text());
-//    if(mod->getStatus() == stRegistered)
-  //      mod->setStatus(stModified);
+    mod->setDiscount(ui->doubleSpinBox->value());
 
     bool bRet = mod->Save();
     if( m_lastMod )
@@ -112,6 +111,7 @@ void Editticket::Load()
     ui->DblSpnBxValor->setValue(m_mod->getValor());
     ui->comboBox->setCurrentIndex(m_mod->getType());
     ui->LnEdtObs->setText(m_mod->getObs());
+    ui->doubleSpinBox->setValue(m_mod->getDiscount());
     QString Sql = QString("select d.id, d.name, a.numero, t.name, d.email "\
              "from dweller d "\
              "inner join tower t on t.id= d.tower "\

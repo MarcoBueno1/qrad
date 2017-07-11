@@ -90,11 +90,11 @@ QString QRadConfig::GetDownloadDir()
     return QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
 }
 
-QString QRadConfig::GetAndPersistDir( QString VarName,
-                                      QString DefaultPath,
-                                      QString WindowTitle,
-                                      QString Types,
-                                      QWidget *parent)
+QStringList QRadConfig::GetAndPersistDir( QString VarName,
+                                          QString DefaultPath,
+                                          QString WindowTitle,
+                                          QString Types,
+                                          QWidget *parent)
 {
     QSettings settings(QString("mem.ini"),
                        QSettings::IniFormat);
@@ -106,12 +106,12 @@ QString QRadConfig::GetAndPersistDir( QString VarName,
     if( Path.isEmpty())
         Path = GetDownloadDir();
 
-    Path = QFileDialog::getOpenFileName(parent,
+    QStringList Paths = QFileDialog::getOpenFileNames(parent,
         WindowTitle, Path, Types);//tr("Arquivos Retorno (*.ret *.RET)"));
 
-    if( !Path.isEmpty() )
+    if( Paths.count() && !Paths.at(0).isEmpty() )
     {
-        settings.setValue(QString("Paths/%1").arg(VarName),Path);
+        settings.setValue(QString("Paths/%1").arg(VarName),Paths.at(0));
     }
-     return Path;
+     return Paths;
 }

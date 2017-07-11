@@ -22,6 +22,7 @@ Editlogin::Editlogin(QWidget *parent) :
     
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
+    setWindowTitle("Acesso ao Sistema");
 }
 
 Editlogin::~Editlogin()

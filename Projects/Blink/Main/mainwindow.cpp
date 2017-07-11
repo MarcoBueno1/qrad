@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
 */
+
+//    setWindowIcon(QIcon(":/png/mainicon.png"));
 }
 
 MainWindow::~MainWindow()

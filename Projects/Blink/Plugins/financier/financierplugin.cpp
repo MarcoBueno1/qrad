@@ -6,7 +6,7 @@
 #include "managersupplier.h"
 #include "managershipper.h"
 #include "showbankreturn.h"
-#include "qradprogresswindow.h"
+#include "ticketcontroller.h"
 
 FinancierPlugin::FinancierPlugin()
 {
@@ -173,40 +173,22 @@ void FinancierPlugin::Process( const QString& action )
     }
     else if( ACTION_READ_SHIPP == action)
     {
-        QString path = QRadConfig::GetAndPersistDir("RetFile", "","Selecionar Arquivo de Retorno","Arquivos Retorno (*.ret *.RET)",m_parent);
+        QStringList paths = QRadConfig::GetAndPersistDir("RetFile", "","Selecionar Arquivo de Retorno","Arquivos Retorno (*.ret *.RET)",m_parent);
 
         QList<BankTicket*> list;
         ShowBankReturn *ParsePay = new ShowBankReturn ;
 
         #ifdef _WIN32
-            path = path.remove("file://");
+//            path = path.remove("file://");
         #else
-            path = "C:\\Dvl\\CN12067A.RET";
+//            path = "C:\\Dvl\\CN12067A.RET";
         #endif
 
-            if(ParsePay->Exec(&list, path))
+            if(ParsePay->Exec(&list, paths))
             {
-                ////
-                //// Por enquanto persistindo apenas estado de registrado...
-                //// ( aguardando para verificar como ficará o erro operacional do pessoal )
-                QRAD_SHOW_PRPGRESS("Atualizando estado para registrados..");
-                for( int i = 0; i< list.count(); i++ )
-                {
-                    QCoreApplication::processEvents();
-                     BankTicket *pCurrent = list.at(i);
-                     if( pCurrent->getTpOp() == tpRegistered)
-                     {
-                         ticket *ptkt = ticket::findByNossoNumero(pCurrent->getNossoNumero().toInt(),true);
-                         if( ptkt )
-                         {
-                             ptkt->updateStatus(stRegistered);
-                             delete ptkt;
-                         }
-                     }
-                }
-                QRAD_HIDE_PRPGRESS();
-                QMessageBox::information(NULL,QString("Ok!"), QString("Operação concluída!!"));
+                TicketController::UpdateTickets(&list);
             }
+            delete ParsePay;
     }
 }
 

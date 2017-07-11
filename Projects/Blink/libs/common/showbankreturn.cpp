@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include "qradshared.h"
 #include "qraddebug.h"
+#include "qradprogresswindow.h"
 
 
 #define MEM_TABLE "create table mem_table( seunumero character varying, datavencto character varying, nomepagador character varying, datapagto character varying, valor character varying, valorpago character varying)"
@@ -21,6 +22,7 @@ ShowBankReturn::ShowBankReturn(QWidget *parent) :
 
     connect(ui->pushButtonOk, SIGNAL(clicked()),this,SLOT(accept()));
     connect(ui->pushButtonCancel, SIGNAL(clicked()),this,SLOT(reject()));
+    setWindowTitle("Conteúdo do(s) arquivo(s) de retorno (.RET)");
 }
 
 ShowBankReturn::~ShowBankReturn()
@@ -71,28 +73,45 @@ void ShowBankReturn::BuildTable(QList<BankTicket*> *list)
 
 bool ShowBankReturn::Exec(QList<BankTicket*> *list, QString Path)
 {
-    IBankTicketParser *Parser = BankTicketParserFactory::GetParser(Path);
+    QStringList PathList(Path);
 
-    if(!Parser)
-    {
-        QMessageBox::warning(NULL,"Oops!", QString("O arquivo %1 é incompativel!").arg(Path));
-        return false;
-    }
+    return Exec(list, PathList);
+}
 
-    if( !Parser->Parse(list) || (list->count() == 0 ))
+bool ShowBankReturn::Exec(QList<BankTicket*> *list, QStringList Paths)
+{
+    QRAD_SHOW_PRPGRESS("Lendo informações...");
+    for( int i = 0; i < Paths.count(); i++ )
     {
-        QMessageBox::warning(NULL,"Oops!", QString("Nenhum pagamento encontrado no arquivo: %1").arg(Path));
+        QString Path = Paths.at(i);
+        QRAD_SHOW_PRPGRESS_STEP(QString("Processando: %1").arg(Path));
+        QCoreApplication::processEvents();
+
+        IBankTicketParser *Parser = BankTicketParserFactory::GetParser(Path);
+
+        if(!Parser)
+        {
+            QRAD_HIDE_PRPGRESS();
+            QMessageBox::warning(NULL,"Oops!", QString("O arquivo %1 é incompativel!").arg(Path));
+        }
+
+        if( !Parser->Parse(list) || (list->count() == 0 ))
+        {
+            QRAD_HIDE_PRPGRESS();
+            QMessageBox::warning(NULL,"Oops!", QString("Nenhum pagamento encontrado no arquivo: %1").arg(Path));
+        }
         delete Parser;
-        return false;
     }
-    delete Parser;
 
+    QRAD_SHOW_PRPGRESS_STEP("Construindo tabela...");
+    QCoreApplication::processEvents();
     BuildTable(list);
 
     m_model = new QSqlQueryModel;
 
     m_model->setQuery(SELECT_MEM_TABLE,db);
     ui->tableView->setModel(m_model);
+    QRAD_HIDE_PRPGRESS();
     if( exec() == QDialog::Accepted)
     {
         delete m_model;

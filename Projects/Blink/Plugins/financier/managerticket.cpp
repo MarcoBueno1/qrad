@@ -156,6 +156,11 @@ void Managerticket::ShowCurrentInformations( void )
          dwName+="...";
          ui->groupBoxCurrent->setTitle(dwName);
     }
+    else
+    {
+        ui->groupBoxItens->setTitle(QString(" Itens ( 0 de 0 ) "));
+
+    }
 }
 void Managerticket::LoadTableView()
 {
@@ -176,9 +181,8 @@ void Managerticket::LoadTableView()
     else
     {
         aux = QString(" where (t.status <> 3 and t.vencto < '%1') ").arg(QDate::currentDate().addDays(-3).toString(FMT_DATE_DB));
-//        strSQL = QString(SQL_ITEMS).arg(aux);
         bHasWhere = true;
-        bNeedOr = true;
+//        bNeedOr = true;
     }
     QDate dtInicio;// = QDate::currentDate();
     switch (ui->comboBoxMonth->currentIndex())
@@ -202,8 +206,6 @@ void Managerticket::LoadTableView()
     }
 
     strSQL = QString(SQL_ITEMS).arg(aux);
-
-
 
     debug_message("\nsqlquery: %s\n",strSQL.toLatin1().data());
 

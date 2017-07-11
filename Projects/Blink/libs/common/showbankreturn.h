@@ -19,6 +19,7 @@ public:
     explicit ShowBankReturn(QWidget *parent = 0);
     ~ShowBankReturn();
 
+    bool Exec(QList<BankTicket*> *list, QStringList Paths);
     bool Exec(QList<BankTicket*> *list, QString Path);
 
 private:

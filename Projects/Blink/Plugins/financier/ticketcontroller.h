@@ -25,6 +25,7 @@ public:
     bool Edit(int id);
     bool Remove(int id, QString strMsgText );
     bool ProcessRetList(QList<BankTicket*> *list);
+    static bool UpdateTickets(QList<BankTicket*> *list);
 private:
     BuildTkt *g_tkt;
     ticketconfig *m_pTktConfig;

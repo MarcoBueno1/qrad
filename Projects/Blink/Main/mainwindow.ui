@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../icons/resources.qrc">
+    <normaloff>:/png/mainicon.png</normaloff>:/png/mainicon.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget"/>
   <widget class="QRadMenu" name="menuBar">
    <property name="geometry">
@@ -90,6 +94,9 @@
    <header location="global">qradmenu.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../icons/resources.qrc"/>
+  <include location="../icons/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

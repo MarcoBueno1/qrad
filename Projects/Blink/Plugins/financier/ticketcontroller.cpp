@@ -799,3 +799,33 @@ bool TicketController::ProcessRetList(QList<BankTicket*> *list)
     pW->hide();
     return bRet;
 }
+
+bool TicketController::UpdateTickets(QList<BankTicket*> *list)
+{
+    bool bRet = true;
+    BankTicket *pCurrent;
+    ////
+    //// Por enquanto persistindo apenas estado de registrado...
+    //// ( aguardando para verificar como ficará o erro operacional do pessoal )
+    QRAD_SHOW_PRPGRESS("Atualizando estado dos boletos..");
+    for( int i = 0; (i< list->count()) && bRet ; i++ )
+    {
+        QCoreApplication::processEvents();
+         pCurrent = list->at(i);
+         if( pCurrent->getTpOp() == tpRegistered)
+         {
+             ticket *ptkt = ticket::findByNossoNumero(pCurrent->getNossoNumero().toInt(),true);
+             if( ptkt && (ptkt->getStatus() != stRegistered))
+             {
+                 bRet = ptkt->updateStatus(stRegistered);
+                 delete ptkt;
+             }
+         }
+    }
+    QRAD_HIDE_PRPGRESS();
+    if( !bRet)
+        QMessageBox::information(NULL,QString("Oops!"), QString("Erro na operacao, nao foi possivel atualizar o item cujo NossoNúmero é %1!!").arg(pCurrent->getNossoNumero()));
+    else
+        QMessageBox::information(NULL,QString("Ok!"), QString("Operação concluída!!"));
+    return bRet;
+}

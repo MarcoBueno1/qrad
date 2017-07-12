@@ -45,7 +45,7 @@ void MainWindow::setRemainingDays(int value)
     else
     {
         label = new QLabel(QString("A sua licença é válida por %1 dias.").arg(value));
-        label->setStyleSheet("font: white bold;");
+        label->setStyleSheet("color: rgb(255, 255, 255);font: bold;");
     }
     statusBar()->insertPermanentWidget(0,label,1);
 }

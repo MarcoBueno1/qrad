@@ -22,6 +22,10 @@ public:
     bool ToAll();
     void setVencto(QDate date);
     QDate getVencto();
+    double getValue();
+    double getDisocunt();
+    QString getObs();
+    void setObs(QString obs );
 
 
 public slots:
@@ -31,6 +35,7 @@ public slots:
     void Remove();
 
 private:
+    double m_discount;
     QSqlQueryModel *m_selected;
     Ui::Editcondtx *ui;
     QList<int> m_selectedIds;
@@ -39,6 +44,7 @@ private:
     void showEvent(QShowEvent *event);
     void keyPressEvent(QKeyEvent *e);
     void RefreshListView();
+    void ShowHideValue();
 };
 
 #endif // Editcondtx_H

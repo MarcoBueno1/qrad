@@ -72,11 +72,13 @@ TicketController::~TicketController()
     delete g_tkt ;
 }
 
-bool TicketController::BuildTicket(DwellerList *dlist,
-                                  QDate date,
-                                  int type,
-                                  QString Obs,
-                                  int ExtraTxId)
+bool TicketController::BuildTicket( DwellerList *dlist,
+                                   QDate date,
+                                   int type,
+                                   QString Obs,
+                                   int ExtraTxId,
+                                   double dValue,
+                                   double dDiscount)
 {
 
     QRadProgressWindow *pW = QRadProgressWindow::getInstance();
@@ -103,7 +105,7 @@ bool TicketController::BuildTicket(DwellerList *dlist,
             ReasonExtraTax *pReason = ReasonExtraTax::findByid(ext->getMotivo(), true);
             if(pReason)
             {
-                Obs = "Tx. Extra " + pReason->getDescription();
+                Obs = "Tx. Extra " + pReason->getDescription() + "("+date.toString(FMT_DATE)+")";
                 delete pReason;
             }
             delete ext;
@@ -132,13 +134,27 @@ bool TicketController::BuildTicket(DwellerList *dlist,
          tkt->setNossoNumero(nLastNumber);
          tkt->setclientid(pDweller->getid());
          tkt->setidticket(1); // as default
-         tkt->setObs(QString("%1 %2").arg(Obs).arg(date.toString(FMT_DATE)));
+         tkt->setObs(Obs);//.arg(date.toString(FMT_DATE)));
          tkt->setSeuNumero(QString("%1%2").arg(pDweller->gettower()).arg(pDweller->getAp()->getNumber()).toInt());
          tkt->setType(type);
-         if( type == tpTxCond)
+
+         if( type == tpTxCond )
          {
-             tkt->setValor(pMetr->getMontlyValue());
-             tkt->setDiscount(m_pTktConfig->getDiscount());
+             if( (dValue>0) && (dlist->count() ==1) ) /// aplciavel apenas se for uma unidade ..
+             {
+                tkt->setValor(dValue);
+             }
+             else
+             {
+                 tkt->setValor(pMetr->getMontlyValue());
+             }
+             if(( dDiscount > 0 ) && (dlist->count() ==1) ) /// aplciavel apenas se for uma unidade ..
+             {
+                  tkt->setDiscount(dDiscount);
+             }
+             else
+                 tkt->setDiscount(m_pTktConfig->getDiscount());
+
          }
          else
              tkt->setValor(txValue);
@@ -206,6 +222,7 @@ bool TicketController::BuildTicket(DwellerList *dlist,
          delete tkt;
     }
     pW->hide();
+    return true;
 }
 
 bool TicketController::BuildTicketExtra( extratx *pTx )
@@ -215,16 +232,17 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
 
     DwellerList *dlist ;
 
+    pW->hide();
     Editextratx *edt = new Editextratx;
     if( QDialog::Accepted != edt->exec())
     {
-        pW->hide();
         QMessageBox::warning(NULL,
                              QString("Cancelado!"),
                              QString("Operação cancelada!"));
         delete edt;
         return false;
     }
+    pW->setDetail(QString("Criando Taxa Extra..."));
     pTx = edt->GetSaved();
 
     QDate date = pTx->getData();
@@ -233,10 +251,20 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
     QString SQL;
     for( int i = 0; i < pTx->getTimes(); i++ )
     {
+        debug_message("getTimes()=%d\n",pTx->getTimes());
 
         if( pTx->getAll() )
         {
            SQL = QString(FIN_MISSING_TICKETS_THIS_MONTH_VALUE).arg(pTx->getValue()).arg(date.toString(FMT_DATE_DB)).arg(tpTxExtr).arg("");
+           debug_message("pTx->getAll()=true\n");
+           dlist = Dweller::findBy(SQL);
+           if( !dlist )
+           {
+               pW->hide();
+               QMessageBox::information(NULL, "Oops!", QString("Todos os boletos de taixa condominial com vencimento %1 já foram emitidos!").arg(date.toString(FMT_DATE)));
+               return false;
+           }
+
         }
         else
         {
@@ -282,6 +310,7 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
                return false;
            }
            QString Where;
+           //debug_message("OkList()=%s\n",OkList.join().data());
            for( int i = 0; i < OkList.count();i++ )
            {
                if( !Where.length() )
@@ -291,13 +320,15 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
 
                Where += QString("%1 ").arg(OkList.at(i));
            }
+           //debug_message("where=%s\n",Where.toLatin1().data());
            dlist = Dweller::findBy(QString("select * from dweller %1").arg(Where));
+           //debug_message("dlist->count()=%s\n",Where.toLatin1().data());
 
 
         }
-        dlist = Dweller::findBy(SQL);
-        if( !dlist )
-            continue;
+
+        debug_message("Tamanho da lista:%d\n", dlist->count());
+
 
         BuildTicket( dlist,
                      date,
@@ -335,13 +366,19 @@ bool TicketController::BuildTicketCond(int id )
 
     Editcondtx *pCondTx = new Editcondtx ;
     pCondTx->setVencto(date);
+    pCondTx->setObs(QString("TAXA CONDOMINIAL (%1)").arg(date.toString(FMT_DATE)));
+    pW->hide();
     if( QDialog::Rejected == pCondTx->exec())
     {
         delete pCondTx;
         return false;
     }
+    pW->setDetail(QString("Criando Taxa Condominial..."));
+
 
     date = pCondTx->getVencto();
+    double dValue = pCondTx->getValue();
+    double dDiscount = pCondTx->getDisocunt();
 
     DwellerList *dlist;
 
@@ -415,12 +452,18 @@ bool TicketController::BuildTicketCond(int id )
         dlist = Dweller::findBy(QString("select * from dweller %1").arg(Where));
     }
 
-    delete pCondTx;
 
-    return BuildTicket( dlist,
-                        date,
-                        tpTxCond,
-                        "TAXA CONDOMINIAL" );
+    bool bRet = BuildTicket( dlist,
+                             date,
+                             tpTxCond,
+                             pCondTx->getObs(),
+                             0,
+                             dValue,
+                             dDiscount);;
+
+    pW->hide();
+    delete pCondTx;
+    return bRet;
 
 
 }
@@ -505,14 +548,6 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
     QRadProgressWindow *pW = QRadProgressWindow::getInstance();
     pW->setDetail(QString("Preparando impressão..."));
 
-    QString Path = QString("c:\\dvl\\acbr\\%1").arg(QDate::currentDate().toString("dd_MM_yyyy"));
-    QDir  dir;
-    dir.mkpath(Path);
-    QString FullFileName = QString("%1\\boletos%2.pdf").arg(Path).arg(QDate::currentDate().toString("_dd_MM_yyyy"));
-    QFile exist(FullFileName);
-    if(exist.exists())
-        FullFileName = QString("%1\\boletos%2%3.pdf").arg(Path).arg(QDate::currentDate().toString("_dd_MM_yyyy")).arg(QTime::currentTime().toString("_hh_mm"));
-
     if(!ptkt)
     {
         if( !doPrepare(type, status) )
@@ -520,7 +555,7 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
             pW->hide();
             return false;
         }
-        if( !g_tkt->Print(false, FullFileName) )
+        if( !g_tkt->Print(false) ) // use default name ( same as remessa acbrlib ... )
         {
             pW->hide();
             return false;
@@ -550,18 +585,33 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
     {
         Dweller *pDweller = Dweller::findByid(ptkt->getclientid());
 
+        QString Path = QString("c:\\dvl\\acbr\\%1").arg(QDate::currentDate().toString("dd_MM_yyyy"));
+        QDir  dir;
+        dir.mkpath(Path);
+
         QString value = QString("%1").arg(ptkt->getValor());
         value.replace(".",",");
         g_tkt->AppendTicket(pDweller, value, ptkt->getVencto(),QString("%1").arg(ptkt->getNossoNumero()),QString("%1").arg(ptkt->getSeuNumero()));
         if(g_tkt->AddTickets())
         {
+            Ap * ap = Ap::findByid(pDweller->getap());
+            Tower *tw = Tower::findByid(pDweller->gettower());
+
+
+            QString FullFileName = QString("%1\\boleto_%2-%3-%4.pdf").arg(Path).arg(ap->getNumber()).arg(tw->getName()).arg(pDweller->getName());
+
+            delete ap;
+            delete tw;
+
             if(g_tkt->Print(false,FullFileName))
             {
                 ptkt->updateLoId(ptkt->saveFile(FullFileName));
                 pW->hide();
+                delete pDweller;
                 return true;
             }
         }
+        delete pDweller;
     }
 
     pW->hide();
@@ -580,19 +630,13 @@ bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBOL
         QDir  d;
         d.mkpath(dir );
 
-        filename = QString("%1.rem").arg(QDate::currentDate().toString("R_ddMMyy"));
+        filename = QString("%1").arg(QDate::currentDate().toString("ddMMyy"));
     }
     if( !doPrepare(type, status))
     {
         pW->hide();
         return false;
     }
-
-#warning "Compor loop de identificacao de nome de arquivo de remessa"
-
-    QFile exist(QString("%1\\%2").arg(dir).arg(filename));
-    if(exist.exists())
-        filename = QString("%1%2.rem").arg(QDate::currentDate().toString("R_ddMMyy")).arg(QTime::currentTime().toString("_hh_mm"));
 
     if(g_tkt->BuildShipping(dir,filename))
     {

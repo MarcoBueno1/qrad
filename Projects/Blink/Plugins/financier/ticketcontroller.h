@@ -38,7 +38,9 @@ private:
                       QDate date,
                       int type,
                       QString Obs,
-                      int ExtraTxId=0 );
+                      int ExtraTxId=0,
+                      double dValue=0,
+                      double dDiscount =0);
 };
 
 #endif // TICKETCONTROLLER_H

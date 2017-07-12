@@ -329,6 +329,13 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
    return bRet;
 }
 
+bool BuildTkt::Print(bool bPrinter)
+{
+    QString FileName = QString("%1\\Boletos_%2.pdf").arg(m_lastRemDir).arg( m_lastRemName );
+
+    return Print(bPrinter,FileName);
+}
+
 bool BuildTkt::Print(bool bPrinter, QString strPath)
 {
     QRAD_SHOW_PRPGRESS("Gerando arquivo .pdf...");
@@ -513,6 +520,52 @@ bool BuildTkt::AddTickets()
 
 }
 
+QString BuildTkt::ComposeFileName(QString strDir, QString FileName, QString Extension, int MaxLen)
+{
+    QString Prefix;
+    QString LastPart = FileName;
+    QString NewFileName;
+
+    Prefix = "A0";
+
+//    NewFileName = Prefix + LastPart;
+    if( LastPart.length() > MaxLen )
+    {
+        LastPart.truncate(MaxLen);
+//        LastPart += Extension;
+    }
+
+    NewFileName = Prefix + LastPart + Extension;
+    do
+    {
+        QFile FileHandle(QString("%1\\%2").arg(strDir).arg(NewFileName));
+
+        if(FileHandle.exists())
+        {
+            if( Prefix.at(0).toLatin1()+1 > 'Z')
+                Prefix = Prefix.sprintf("%c%c", Prefix.at(0).toLatin1(),Prefix.at(1).toLatin1()+1);
+            else
+                Prefix = Prefix.sprintf("%c%c", Prefix.at(0).toLatin1()+1,Prefix.at(1).toLatin1());
+
+            NewFileName = QString("%1%2%3").arg(Prefix).arg(LastPart).arg(Extension);
+        }
+        else
+            break;
+    }while( Prefix.at(1).toLatin1()+1 <= 'Z' ); // no maximo 'ZZ' ...
+
+
+    m_lastRemDir  = strDir;
+    m_lastRemName = QString("%1%2").arg(Prefix).arg(LastPart);
+
+
+    return NewFileName;
+}
+
+bool BuildTkt::BuildShipping(QString strDir)
+{
+    QString FileName = QDate::currentDate().toString("ddMMyy");
+    return BuildShipping(strDir, FileName);
+}
 
 bool BuildTkt::BuildShipping(QString strDir, QString FileName )
 {
@@ -523,13 +576,16 @@ bool BuildTkt::BuildShipping(QString strDir, QString FileName )
 
     QString cmdShipping =  QString("%1%2").arg(TKT_PREFIX).arg(TKT_BUILD_SHIPPING);
 
-    QString params = QString("\"%1\",%2,%3").arg(strDir).arg(m_ShippNumber).arg(FileName);
+    QString RemFileName = ComposeFileName(strDir, FileName, ".rem", 6 );
+
+    QString params = QString("\"%1\",%2,%3").arg(strDir).arg(m_ShippNumber).arg(RemFileName);
 
     QString cmdSnd = QString("%1(%2)").arg(cmdShipping).arg(params);
 
     m_dwTimeout = 40000;
 
     bool bRet = Send(cmdSnd);
+
     QRAD_HIDE_PRPGRESS();
 
     return bRet;

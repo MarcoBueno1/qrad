@@ -34,6 +34,9 @@ int main(int argc, char *argv[])
 		w.setActionName(argv[2]);
 	}
 
+    QCoreApplication *app = QCoreApplication::instance();
+    app->setProperty("CurrentUserId", 1);    /// admin user = 1
+
     w.show();
     return a.exec();
 }

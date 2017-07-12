@@ -7,6 +7,8 @@
 #include <QVariant>
 #include <QSqlField>
 #include "qraddebug.h"
+#include "metreage.h"
+#include "ticketconfig.h"
 
 
 Editcondtx::Editcondtx(QWidget *parent) :
@@ -29,6 +31,15 @@ Editcondtx::Editcondtx(QWidget *parent) :
                                      "inner join ap a on a.id = d.ap  where d.removed = false and d.payer = true");
 
     m_selected = new QSqlQueryModel;
+
+    ticketconfig *config = ticketconfig::findByid(1,true);
+    if( config )
+    {
+        ui->doubleSpinBoxDiscount->setValue(config->getDiscount());
+        m_discount = config->getDiscount();
+        delete config;
+    }
+
 }
 
 Editcondtx::~Editcondtx()
@@ -102,7 +113,6 @@ void Editcondtx::Load()
 //    if( m_mod == NULL)
 //      return;
 //    ui->CmbBxmotivo->setCurrentId(m_mod->getMotivo());
-
 }
 
 void Editcondtx::Cancel()
@@ -128,7 +138,7 @@ QList<int> Editcondtx::GetSaved()
 
 void Editcondtx::RefreshListView()
 {
-    m_selected->setQuery(QString("select a.numero  || ' | '  || t.name  || ' | ' || d.name, d.id, d.name, a.numero, t.name, d.ramal "\
+    m_selected->setQuery(QString("select a.numero  || ' | '  || t.name  || ' | ' || d.name, d.id, d.name, a.numero, t.name, d.ramal, a.metreageid "\
                                   "from dweller d "\
                                   "inner join selectedtickets tt on tt.clientid= d.id "\
                                   "inner join tower t on t.id= d.tower "\
@@ -140,6 +150,34 @@ void Editcondtx::RefreshListView()
     ui->groupBoxSelecionados->setTitle(QString("%1 Moradores Selecionados").arg(m_selected->rowCount()));
 }
 
+void Editcondtx::ShowHideValue()
+{
+    if( m_selected->rowCount() < 2)
+    {
+        ui->LblValue->setVisible(true);
+        ui->doubleSpinBoxValue->setVisible(true);
+        if( ui->doubleSpinBoxValue->value() <= 0 )
+        {
+            int nId = m_selected->index(0,6).data().toInt();
+            metreage *met = metreage::findByid(nId, true);
+            if( met )
+            {
+                ui->doubleSpinBoxValue->setValue(met->getMontlyValue());
+                delete met;
+            }
+        }
+        ui->doubleSpinBoxDiscount->setEnabled(true);
+    }
+    else
+    {
+        ui->LblValue->setVisible(false);
+        ui->doubleSpinBoxValue->setVisible(false);
+        ui->doubleSpinBoxDiscount->setEnabled(false);
+        ui->doubleSpinBoxDiscount->setValue(m_discount);
+    }
+
+}
+
 void Editcondtx::Add()
 {
    QSqlQuery pQyeryAdd;
@@ -148,6 +186,8 @@ void Editcondtx::Add()
    pQyeryAdd.exec(QString("insert into selectedtickets(clientid) values(%1);").arg(ui->lineEditMorador->getCurrentId()));
    debug_message("Adicionado: nId= %d\n", ui->lineEditMorador->getCurrentId());
    RefreshListView();
+
+   ShowHideValue();
 }
 void Editcondtx::Remove()
 {
@@ -156,6 +196,9 @@ void Editcondtx::Remove()
    QSqlQuery pQyeryRemove;
    pQyeryRemove.exec(QString("delete from selectedtickets where clientid= %1").arg(nId));
    RefreshListView();
+
+   ShowHideValue();
+
 }
 
 bool Editcondtx::ToAll()
@@ -167,8 +210,28 @@ void Editcondtx::setVencto(QDate date)
 {
     ui->dateEditVencto->setDate(date);
 }
+void Editcondtx::setObs(QString obs )
+{
+    ui->lineEditObs->setText(obs);
+}
 
 QDate Editcondtx::getVencto()
 {
     return ui->dateEditVencto->date();
 }
+double Editcondtx::getValue()
+{
+    if( !ui->doubleSpinBoxValue->isVisible() )
+        return 0;
+    return ui->doubleSpinBoxValue->value();
+}
+
+double Editcondtx::getDisocunt()
+{
+    return ui->doubleSpinBoxDiscount->value();
+}
+QString Editcondtx::getObs()
+{
+    return ui->lineEditObs->text();
+}
+

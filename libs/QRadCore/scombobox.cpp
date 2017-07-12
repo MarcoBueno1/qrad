@@ -229,7 +229,7 @@ QString SComboBox::CreateEditUi()
         if( !LineEdit->text().trimmed().isEmpty())
         {
             QSqlQueryModel *AlreadyExist = new QSqlQueryModel;
-            AlreadyExist->setQuery(QString("select %1 from %2 where %1 = '%3' order by tp, %1")
+            AlreadyExist->setQuery(QString("select %1 from %2 where %1 = '%3' and removed <> true order by tp, %1")
                                    .arg(FieldName().toLower())
                                    .arg(TableName().toLower())
                                    .arg(LineEdit->text().trimmed()),
@@ -271,7 +271,7 @@ void SComboBox::doEdit(void)
 }
 void SComboBox::doUpdate(QString New)
 {
-            m_pModelLocal->setQuery(QString("select id, %2 from %1 order by tp, %2")
+            m_pModelLocal->setQuery(QString("select id, %2 from %1 where removed <> false order by tp, %2")
                                .arg(TableName().toLower()).arg(FieldName().toLower()), m_currentdb);
 
             setModel(m_pModelLocal);
@@ -319,7 +319,7 @@ bool SComboBox::PersistObjects()
   //  {
         QSqlQueryModel *pList = new QSqlQueryModel;
 
-        pList->setQuery(QString("select %1 from %2 ").arg(FieldName().toLower()).arg(TableName().toLower()),m_currentdb);
+        pList->setQuery(QString("select %1 from %2 where removed <> true").arg(FieldName().toLower()).arg(TableName().toLower()),m_currentdb);
         if(pList && pList->rowCount())
         {
             for( int j = 0; j < pList->rowCount(); j++)
@@ -387,14 +387,14 @@ bool SComboBox::PersistObjects()
 
     if( CanAdd())
     {
-        m_pModelLocal->setQuery(QString("select id, %1 from %2 where %1 <> '' order by tp, %1")
+        m_pModelLocal->setQuery(QString("select id, %1 from %2 where %1 <> '' and removed <> true order by tp, %1")
                                 .arg(FieldName().toLower())
                                 .arg(TableName().toLower())
                                ,m_currentdb);
     }
     else
     {
-        m_pModelLocal->setQuery(QString("select id, %1 from %2 where %1 <> '%3' and %1 <> '' order by tp, %1")
+        m_pModelLocal->setQuery(QString("select id, %1 from %2 where %1 <> '%3' and %1 <> ''  and removed <> true order by tp, %1")
                                 .arg(FieldName().toLower())
                                 .arg(TableName().toLower())
                                 .arg(strTokenNew)

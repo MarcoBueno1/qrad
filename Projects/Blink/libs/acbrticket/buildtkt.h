@@ -52,7 +52,7 @@ public:
       ~BuildTkt();
       
        bool Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *pBank, bankaccount *pAccount);
-       bool Print(bool bPrinter=false, QString strPath=TKT_DEFAULT_PDF_PATH );
+       bool Print(bool bPrinter, QString strPath);
        bool BuildShipping(QString strDir, QString FileName );
        bool AppendTicket(Dweller *pDweller,
                          QString strValue,
@@ -66,7 +66,8 @@ public:
 
        bool Parse(QList<BankTicket*> *tikets,QString Path);
        bool Parse(QList<BankTicket*> *tikets);
-
+       bool Print(bool bPrinter);
+       bool BuildShipping(QString strDir);
 
 public slots:
        void DirModified(QString dir );
@@ -92,7 +93,10 @@ private:
       QString m_ReceiveFullPath;
       QString m_parsepath;
       int m_dwTimeout;
+      QString m_lastRemDir;
+      QString m_lastRemName;
       QString MountYourNumvber(QString SeuNumero, QString ap, QString tow );
+      QString ComposeFileName(QString strDir, QString FileName, QString Extension, int MaxLen);
 };
 
 

@@ -56,13 +56,19 @@ void Editticket::Save()
 
     if(mod->getStatus() != stCreated)
     {
+        /*
     if(( ui->DtEdtVencto->date() != mod->getVencto()) &&( mod->getValor() != ui->DblSpnBxValor->value()))
         mod->setStatus(stDateValueModified);
     else if( ui->DtEdtVencto->date() != mod->getVencto())
         mod->setStatus(stDateModified);
     else if ( mod->getValor() != ui->DblSpnBxValor->value())
         mod->setStatus(stValueModified);
+
+        verificar depois isto ....
+        */
     }
+    if(mod->getStatus() == stBuiltShipp)
+        mod->setStatus(stCreated);
 
     mod->setVencto(ui->DtEdtVencto->date());
     mod->setValor(ui->DblSpnBxValor->value());

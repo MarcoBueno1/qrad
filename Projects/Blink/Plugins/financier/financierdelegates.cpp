@@ -239,16 +239,38 @@ void ColumnTktStatus::paint(QPainter *painter,
 
     switch (text.toInt())
     {
-    case 0:
+    /*
+     *   stCreated,
+  stBuiltShipp,
+  stRegistered,
+  stPaid,
+  stModified,
+  stDateModified,
+  stValueModified,
+  stDateValueModified
+     */
+    case stCreated:
          status = QString::fromUtf8("Criado");
          break;
-    case 1:
+    case stBuiltShipp:
          status = QString::fromUtf8("Em Remessa");
          break;
-    case 2:
+    case stRegistered:
+        status = QString::fromUtf8("Registrado");
+        break;
+    case stPaid:
          status = QString::fromUtf8("Pago");
          painter->fillRect(option.rect, BG_FIN_COLOR_GREEN);
          break;
+    case stModified:
+        status = QString::fromUtf8("Modificado");
+        break;
+    case stValueModified:
+        status = QString::fromUtf8("Valor Alterado");
+        break;
+    case stDateValueModified:
+        status = QString::fromUtf8("Valor e Data Alterados");
+        break;
     }
 
     /* Como sera o alinhamento */

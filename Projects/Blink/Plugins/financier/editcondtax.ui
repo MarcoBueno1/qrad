@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>573</width>
-    <height>358</height>
+    <height>404</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>50</y>
      <width>551</width>
-     <height>263</height>
+     <height>311</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -32,9 +32,9 @@
     <property name="geometry">
      <rect>
       <x>6</x>
-      <y>42</y>
+      <y>70</y>
       <width>530</width>
-      <height>211</height>
+      <height>230</height>
      </rect>
     </property>
     <property name="title">
@@ -50,7 +50,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>40</y>
+       <y>26</y>
        <width>410</width>
        <height>22</height>
       </rect>
@@ -73,9 +73,9 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>70</y>
+       <y>56</y>
        <width>500</width>
-       <height>131</height>
+       <height>163</height>
       </rect>
      </property>
      <property name="title">
@@ -104,6 +104,38 @@
        <string>Remover</string>
       </property>
      </widget>
+     <widget class="QLabel" name="LblValue">
+      <property name="geometry">
+       <rect>
+        <x>19</x>
+        <y>131</y>
+        <width>41</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>75</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>ValorR$</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="doubleSpinBoxValue">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>130</y>
+        <width>121</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <double>999999.989999999990687</double>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QLabel" name="Lblmotivo_3">
@@ -128,9 +160,73 @@
    <widget class="QDateEdit" name="dateEditVencto">
     <property name="geometry">
      <rect>
-      <x>92</x>
+      <x>80</x>
       <y>11</y>
       <width>123</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="LblValue_2">
+    <property name="geometry">
+     <rect>
+      <x>273</x>
+      <y>11</y>
+      <width>130</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Desconto até o vencimento</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="doubleSpinBoxDiscount">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>10</y>
+      <width>121</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="prefix">
+     <string/>
+    </property>
+    <property name="suffix">
+     <string>%</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lblmotivo_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>75</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Obs</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditObs">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>40</y>
+      <width>435</width>
       <height>20</height>
      </rect>
     </property>
@@ -388,7 +484,7 @@
    <property name="geometry">
     <rect>
      <x>390</x>
-     <y>322</y>
+     <y>370</y>
      <width>85</width>
      <height>27</height>
     </rect>
@@ -401,7 +497,7 @@
    <property name="geometry">
     <rect>
      <x>477</x>
-     <y>322</y>
+     <y>370</y>
      <width>85</width>
      <height>27</height>
     </rect>
@@ -419,8 +515,15 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>dateEditVencto</tabstop>
+  <tabstop>doubleSpinBoxDiscount</tabstop>
+  <tabstop>lineEditObs</tabstop>
   <tabstop>groupBoxOnly</tabstop>
   <tabstop>lineEditMorador</tabstop>
+  <tabstop>pushButtonAdd</tabstop>
+  <tabstop>pushButtonRemove</tabstop>
+  <tabstop>listView</tabstop>
+  <tabstop>doubleSpinBoxValue</tabstop>
   <tabstop>PshBtnCancel</tabstop>
   <tabstop>PshBtnSave</tabstop>
  </tabstops>

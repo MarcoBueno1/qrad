@@ -288,8 +288,6 @@ void Managerticket::ConfigureTable()
     ui->tableViewSearch->setItemDelegateForColumn(10, new ColumnTktStatus);
     ui->tableViewSearch->setItemDelegateForColumn(11, new ColumnEmail);
     ui->tableViewSearch->setItemDelegateForColumn(12, new ColumnTktType);
-
-
 }
 
 void Managerticket::keyPressEvent(QKeyEvent *event)
@@ -346,7 +344,7 @@ void Managerticket::doTxExtra()
 
     }
     delete pController;
-
+    doRefresh();
 }
 
 void Managerticket::doTxCondominial()
@@ -362,7 +360,6 @@ void Managerticket::doTxCondominial()
 
     delete pController;
     doRefresh();
-
 }
 
 void Managerticket::doSair()

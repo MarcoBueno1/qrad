@@ -156,7 +156,7 @@ void EditDweller::Save()
       // verifica se ja foi cadastrado previamente
 
       Dweller *d = Dweller::findByCPF( cpf );
-      if( d )
+      if( d && (d->getid() != m_mod->getid() ))
       {
         QMessageBox::warning(this,
                              "Oops!",

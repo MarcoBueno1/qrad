@@ -181,7 +181,7 @@ bool TicketController::BuildTicket( DwellerList *dlist,
          AccountToReceiveModel *account  = new  AccountToReceiveModel;
 
          account->setClientId(pDweller->getid());
-         account->setDescription(QString("%1 AP: %2-%3 (%4)").arg(Obs).arg(ap->getNumber()).arg(pTower->getName()).arg(pDweller->getName()));
+         account->setDescription(QString("%1 AP: %2-%3").arg(Obs).arg(ap->getNumber()).arg(pTower->getName()));
          account->setIssueDate(QDate::currentDate());
          account->setVencDate(date);
          account->setValue( tkt->getValor());

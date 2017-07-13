@@ -448,19 +448,19 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <property name="leftMargin">
-       <number>0</number>
+       <number>9</number>
       </property>
       <property name="topMargin">
-       <number>3</number>
+       <number>9</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>9</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>9</number>
       </property>
       <property name="spacing">
-       <number>0</number>
+       <number>6</number>
       </property>
       <item row="0" column="0">
        <widget class="QTableView" name="tableViewAccountToReceive">
@@ -474,15 +474,7 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
          <enum>Qt::WheelFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true"> QHeaderView::section {
-     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                       stop:0 #3C9FE1, stop: 0.5 #308AC7,
-                                       stop: 0.6 #1C79B7, stop:1 #267BB3);
-     color: white;
-     padding-left: 4px;
-     border: 1.1px solid #ABDEFF;
-	  min-height: 35px
- };
+         <string notr="true">QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 15px; min-width: 20px;};
 
 selection-background-color: rgb(102, 176, 239);
 selection-color: rgb(255, 255, 255);</string>
@@ -496,11 +488,20 @@ selection-color: rgb(255, 255, 255);</string>
         <property name="selectionBehavior">
          <enum>QAbstractItemView::SelectRows</enum>
         </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>50</number>
+        </attribute>
+        <attribute name="horizontalHeaderMinimumSectionSize">
+         <number>20</number>
+        </attribute>
         <attribute name="verticalHeaderVisible">
          <bool>false</bool>
         </attribute>
         <attribute name="verticalHeaderDefaultSectionSize">
-         <number>25</number>
+         <number>20</number>
+        </attribute>
+        <attribute name="verticalHeaderMinimumSectionSize">
+         <number>18</number>
         </attribute>
        </widget>
       </item>

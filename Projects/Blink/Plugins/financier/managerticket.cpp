@@ -10,7 +10,8 @@
 #include "accounttoreceivehistorymodel.h"
 #include "showbankreturn.h"
 #include "qradplugincontainer.h"
-
+#include <QToolBar>
+#include <QMenuBar>
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
 #define SQL_ITEMS "select t.nossonumero as \"Nº.Banco\", t.seunumero as \"Nº.Sis\", a.numero as \"Ap\", tw.name as \"Torre\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
@@ -28,7 +29,8 @@ Managerticket::Managerticket(QWidget *parent) :
     m_keyinterval = NULL;
     m_Model = new QSqlQueryModel;
 
-    ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
+//    ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
+    ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 15px; min-width: 20px;}; \nselection-background-color: rgb(102, 176, 239); \nselection-color: rgb(255, 255, 255)");
 
     connect(ui->lineEditSearch, SIGNAL(textEdited(QString)), this, SLOT(StartTimer(QString)));
     connect(ui->tableViewSearch, SIGNAL(found(QModelIndex)), this, SLOT(Found(QModelIndex)));
@@ -44,29 +46,81 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonNotPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->comboBoxMonth,SIGNAL(currentIndexChanged(int)), this, SLOT(doRefresh()));
-    connect(ui->pushButtonReprint, SIGNAL(clicked()),this, SLOT(doReprint()));
-    connect(ui->pushButtonEdit, SIGNAL(clicked()),this, SLOT(doEdit()));
-    connect(ui->pushButtonRemove, SIGNAL(clicked()),this, SLOT(doRemove()));
+//    connect(ui->pushButtonReprint, SIGNAL(clicked()),this, SLOT(doReprint()));
+ //   connect(ui->pushButtonEdit, SIGNAL(clicked()),this, SLOT(doEdit()));
+  //  connect(ui->pushButtonRemove, SIGNAL(clicked()),this, SLOT(doRemove()));
 
     connect(ui->tableViewSearch,SIGNAL(OnDrop(QString)),this,SLOT(doDrop(QString)));
     connect(ui->radioButtonAllType,SIGNAL(clicked()), this, SLOT(doRefresh()));
+    connect(ui->radioButtonNew,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonTxCond,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonTxExtra,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->pushButtonExportar,SIGNAL(clicked()), this, SLOT(doExport()));
-    connect(ui->pushButtonEditDweller,SIGNAL(clicked()), this, SLOT(doEditDweller()));
+ //   connect(ui->pushButtonEditDweller,SIGNAL(clicked()), this, SLOT(doEditDweller()));
 
-/*
+
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
-*/
+
     ui->comboBoxMonth->setCurrentIndex(0);
 
     setAcceptDrops(true);
 
+    createMenu();
+    ui->gridLayout_4->setMenuBar(menuBar);
+
+    ui->tableViewSearch->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->tableViewSearch, SIGNAL(customContextMenuRequested(QPoint)),
+            SLOT(customMenuRequested(QPoint)));
+
+//    QVBoxLayout *mainLayout = new QVBoxLayout;
+//    mainLayout->setMenuBar(menuBar);
+//    setLayout(mainLayout);
+
     DoRefresh();
     setWindowTitle("Gerenciamento de Boletos");
+
+
+
+}
+
+void Managerticket::createMenu()
+{
+    menuBar = new QMenuBar;
+
+    fileMenu = new QMenu(tr("&Arquivo"), this);
+    ExportAction = fileMenu->addAction(tr("Expotar (.REM/.PDF)"));
+    ExportAction->setIcon(QIcon(":/png/icon_download.png"));
+    ImportAction = fileMenu->addAction(tr("Importar( *.RET)"));
+    ImportAction->setIcon(QIcon(":/png/icon_upload.png"));
+//    ExportAction->setIcon(QIcon(":/png/edit-icon.png"));
+    menuBar->addMenu(fileMenu);
+
+    EditMenu= new QMenu(tr("&Boleto"), this);
+    EditCurrent = EditMenu->addAction(tr("Editar"));
+    EditCurrent->setIcon(QIcon(":/png/edit-icon.png"));
+    ReporitCurrent= EditMenu->addAction(tr("Gerar PDF"));
+    ReporitCurrent->setIcon(QIcon(":/png/print-icon.png"));
+    EditMenu->addSeparator();
+    RemoveCurrent=EditMenu->addAction(tr("Excluir"));
+    RemoveCurrent->setIcon(QIcon(":/png/remove-icon.png"));
+    EditMenu->addSeparator();
+    EditCurrentDweller = EditMenu->addAction(tr("Editar Morador"));
+    EditCurrentDweller->setIcon(QIcon(":/png/icon_id.png"));
+    menuBar->addMenu(EditMenu);
+
+    connect(ExportAction , SIGNAL(triggered()), this, SLOT(doExport()));
+    connect(EditCurrentDweller , SIGNAL(triggered()), this, SLOT(doEditDweller()));
+    connect(RemoveCurrent , SIGNAL(triggered()), this, SLOT(doRemove()));
+    connect(ReporitCurrent , SIGNAL(triggered()), this, SLOT(doReprint()));
+
+    connect(EditCurrent , SIGNAL(triggered()), this, SLOT(doEdit()));
+
+
+
+   // connect(ImportAction, SIGNAL(triggered()), this, SLOT(accept()));
 }
 
 Managerticket::~Managerticket()
@@ -151,10 +205,11 @@ void Managerticket::ShowCurrentInformations( void )
 
          QString dwName = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),3).data().toString();
          dwName += " - " + ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),2).data().toString();
-         dwName += " - " +ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),4).data().toString();
-         dwName.truncate(150);
-         dwName+="...";
-         ui->groupBoxCurrent->setTitle(dwName);
+//         dwName += " - " +ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),4).data().toString();
+  //       dwName.truncate(150);
+  //       dwName+="...";
+         EditMenu->setTitle(QString("&Edit (%1)").arg(dwName));
+         //ui->groupBoxCurrent->setTitle(dwName);
     }
     else
     {
@@ -175,7 +230,12 @@ void Managerticket::LoadTableView()
         strSQL = QString(SQL_ITEMS).arg("");
     else if( ui->radioButtonPayed->isChecked())
     {
-        aux = " where t.status = 3 ";
+        aux = QString(" where t.status = %1 ").arg(stPaid);
+        bHasWhere = true;
+    }
+    else if(ui->radioButtonNew->isChecked())
+    {
+        aux = QString(" where t.status = %1 ").arg(stCreated);
         bHasWhere = true;
     }
     else
@@ -243,7 +303,9 @@ void Managerticket::refreshTable()
 {
     if(ui->lineEditSearch->text() == "")
     {
-        ui->tableViewSearch->sortByColumn(BN_DEFAULT_COLUMN_SEARCH, Qt::AscendingOrder);
+//        ui->tableViewSearch->sortByColumn(BN_DEFAULT_COLUMN_SEARCH, Qt::AscendingOrder);
+
+        ui->tableViewSearch->sortByColumn(0, Qt::DescendingOrder);
         ui->tableViewSearch->Search("");
         ui->lineEditSearch->setStyleSheet(AUTO_CONFIG_FOCUS);
     }
@@ -389,6 +451,8 @@ void Managerticket::doReprint()
         return;
     }
 
+    debug_message("antes TicketController\n");
+
     TicketController *pController = new TicketController;
     if(pController->doPrint((BBO_TYPE)tkt->getType(),(BBOL_STATUS)tkt->getStatus(), tkt))
     {
@@ -531,4 +595,35 @@ void Managerticket::doEditDweller()
     iface->setParam("dwellerid", id);
     iface->Process("EditMorador");
     refreshTable();
+}
+
+void Managerticket::customMenuRequested(QPoint pt)
+{
+
+   // QModelIndex index = ui->tableViewSearch->indexAt(&pos);
+
+    QMenu *menu=new QMenu(this);
+    menu->addAction(EditCurrent);
+    menu->addAction(ReporitCurrent);
+    menu->addSeparator();
+    menu->addAction(RemoveCurrent);
+    menu->addSeparator();
+    menu->addAction(EditCurrentDweller);
+    menu->popup(ui->tableViewSearch->viewport()->mapToGlobal(pt));
+
+/*
+ *     EditMenu= new QMenu(tr("&Boleto"), this);
+    EditCurrent = EditMenu->addAction(tr("Editar"));
+    EditCurrent->setIcon(QIcon(":/png/edit-icon.png"));
+    ReporitCurrent= EditMenu->addAction(tr("Gerar PDF"));
+    ReporitCurrent->setIcon(QIcon(":/png/print-icon.png"));
+    EditMenu->addSeparator();
+    RemoveCurrent=EditMenu->addAction(tr("Excluir"));
+    RemoveCurrent->setIcon(QIcon(":/png/remove-icon.png"));
+    EditMenu->addSeparator();
+    EditCurrentDweller = EditMenu->addAction(tr("Editar Morador"));
+    EditCurrentDweller->setIcon(QIcon(":/png/edit-icon.png"));
+
+ */
+
 }

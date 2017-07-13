@@ -8,6 +8,18 @@
 #include "editticket.h"
 #include <QResizeEvent>
 
+
+class QAction;
+class QDialogButtonBox;
+class QGroupBox;
+class QLabel;
+class QLineEdit;
+class QMenu;
+class QMenuBar;
+class QPushButton;
+class QTextEdit;
+
+
 namespace Ui {
 class Managerticket;
 }
@@ -39,6 +51,7 @@ public slots:
 
     void doExport();
     void doEditDweller();
+    void customMenuRequested(QPoint pt);
 private:
     Ui::Managerticket *ui;
 
@@ -56,6 +69,17 @@ private:
     void dropEvent(QDropEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
+
+    void createMenu();
+    QMenuBar *menuBar;
+    QMenu *fileMenu;
+    QMenu *EditMenu;
+    QAction *ExportAction;
+    QAction *ImportAction;
+    QAction *EditCurrent;
+    QAction *EditCurrentDweller;
+    QAction *ReporitCurrent;
+    QAction *RemoveCurrent;
 };
 
 #endif // MANAGERticket_H

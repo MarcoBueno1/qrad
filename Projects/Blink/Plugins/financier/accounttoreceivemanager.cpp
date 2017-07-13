@@ -219,7 +219,7 @@ void AccountToReceiveManager::GetAccountTypeValues(void)
 
 void AccountToReceiveManager::GetClientValues(void)
 {
-    m_modelClient->setQuery(SQL_SELECT_CLIENT_COMBO);
+    m_modelClient->setQuery(SQL_SELECT_CLIENT_COMBO_PAYER);
 //    m_ui->comboBoxClient->setModel(m_modelClient);
 //    m_ui->comboBoxClient->setModelColumn(1);
 
@@ -254,9 +254,9 @@ void AccountToReceiveManager::ConfigHeaderTable(void)
 
     m_selectAccountToReceive->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Descrição"));
     m_selectAccountToReceive->setHeaderData(2, Qt::Horizontal, QString::fromUtf8("Devedor"));
-    m_selectAccountToReceive->setHeaderData(3, Qt::Horizontal, QString::fromUtf8("Data de\nLançamento"));
-    m_selectAccountToReceive->setHeaderData(4, Qt::Horizontal, QString::fromUtf8("Data de\nVencimento"));
-    m_selectAccountToReceive->setHeaderData(5, Qt::Horizontal, QString::fromUtf8("Data de\nQuitação"));
+    m_selectAccountToReceive->setHeaderData(3, Qt::Horizontal, QString::fromUtf8("Data de Lançamento"));
+    m_selectAccountToReceive->setHeaderData(4, Qt::Horizontal, QString::fromUtf8("Data de Vencimento"));
+    m_selectAccountToReceive->setHeaderData(5, Qt::Horizontal, QString::fromUtf8("Data de Quitação"));
     m_selectAccountToReceive->setHeaderData(6, Qt::Horizontal, QString::fromUtf8("Valor"));
     m_selectAccountToReceive->setHeaderData(7, Qt::Horizontal, QString::fromUtf8("Valor Pago"));
     m_selectAccountToReceive->setHeaderData(8, Qt::Horizontal, QString::fromUtf8("Status"));

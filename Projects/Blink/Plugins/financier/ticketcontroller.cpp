@@ -591,14 +591,27 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
 
         QString value = QString("%1").arg(ptkt->getValor());
         value.replace(".",",");
+        debug_message("Antes do Add Ticket\n");
+
+        if(!InitAcbr())
+        {
+            pW->hide();
+            return false;
+        }
+
         g_tkt->AppendTicket(pDweller, value, ptkt->getVencto(),QString("%1").arg(ptkt->getNossoNumero()),QString("%1").arg(ptkt->getSeuNumero()));
+        debug_message("Antes AddTickets\n");
         if(g_tkt->AddTickets())
         {
             Ap * ap = Ap::findByid(pDweller->getap());
             Tower *tw = Tower::findByid(pDweller->gettower());
 
 
-            QString FullFileName = QString("%1\\boleto_%2-%3-%4.pdf").arg(Path).arg(ap->getNumber()).arg(tw->getName()).arg(pDweller->getName());
+            QString FullFileName = QString("%1\\boleto_%2-%3-%4-%5.pdf").arg(Path)
+                    .arg(ap->getNumber())
+                    .arg(tw->getName())
+                    .arg(pDweller->getName())
+                    .arg(ptkt->getNossoNumero());
 
             delete ap;
             delete tw;

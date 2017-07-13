@@ -185,5 +185,10 @@
         <file>barra-superior-ok.jpg</file>
         <file>export.png</file>
         <file>mainicon.png</file>
+        <file>icon_download.png</file>
+        <file>icon_upload.png</file>
+        <file>icon_wallet.png</file>
+        <file>icon_wallet_alt.png</file>
+        <file>icon_id.png</file>
     </qresource>
 </RCC>

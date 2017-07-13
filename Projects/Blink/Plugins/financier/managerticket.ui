@@ -19,8 +19,8 @@
   <property name="windowTitle">
    <string/>
   </property>
-  <layout class="QGridLayout" name="gridLayout_5">
-   <item row="0" column="0" colspan="4">
+  <layout class="QGridLayout" name="gridLayout_4">
+   <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="font">
       <font>
@@ -39,6 +39,234 @@
        <string/>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBoxItens">
+         <property name="font">
+          <font>
+           <family>Verdana</family>
+           <pointsize>9</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="title">
+          <string>Boletos Emitidos</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="1" column="0">
+           <widget class="QGroupBox" name="groupBox_3">
+            <property name="minimumSize">
+             <size>
+              <width>300</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="title">
+             <string/>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_7">
+             <item row="0" column="1">
+              <widget class="QGroupBox" name="groupBox_6">
+               <property name="title">
+                <string>Tipo</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_6">
+                <item row="0" column="0">
+                 <widget class="QRadioButton" name="radioButtonAllType">
+                  <property name="text">
+                   <string>Todos</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QRadioButton" name="radioButtonTxCond">
+                  <property name="text">
+                   <string>Condomínio</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QRadioButton" name="radioButtonTxExtra">
+                  <property name="text">
+                   <string>Extra</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QGroupBox" name="groupBox_5">
+               <property name="title">
+                <string>Situação</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_5">
+                <item row="0" column="0">
+                 <widget class="QRadioButton" name="radioButtonAll">
+                  <property name="text">
+                   <string>Todos</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QRadioButton" name="radioButtonNotPayed">
+                  <property name="text">
+                   <string>Em Atraso</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QRadioButton" name="radioButtonPayed">
+                  <property name="text">
+                   <string>Pagos</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QRadioButton" name="radioButtonNew">
+                  <property name="text">
+                   <string>Novos</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QGroupBox" name="groupBox">
+               <property name="title">
+                <string>Ações</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_3">
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="PshBtnTxCondominial">
+                  <property name="minimumSize">
+                   <size>
+                    <width>112</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string> Condomínio</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../../icons/resources.qrc">
+                    <normaloff>:/png/icon_wallet.png</normaloff>:/png/icon_wallet.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QPushButton" name="PshBtnTxExtra">
+                  <property name="minimumSize">
+                   <size>
+                    <width>112</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string> &amp;Extra</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../../icons/resources.qrc">
+                    <normaloff>:/png/icon_wallet_alt.png</normaloff>:/png/icon_wallet_alt.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QPushButton" name="pushButtonExportar">
+                  <property name="minimumSize">
+                   <size>
+                    <width>154</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Exportar (.PDF/.REM)</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../../icons/resources.qrc">
+                    <normaloff>:/png/icon_download.png</normaloff>:/png/icon_download.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QPushButton" name="pushButton">
+                  <property name="minimumSize">
+                   <size>
+                    <width>154</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Importar (.RET)</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../../icons/resources.qrc">
+                    <normaloff>:/png/icon_upload.png</normaloff>:/png/icon_upload.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QRadTableViewSearch" name="tableViewSearch">
+            <property name="font">
+             <font>
+              <family>Verdana</family>
+              <pointsize>8</pointsize>
+             </font>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="lineWidth">
+             <number>0</number>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>50</number>
+            </attribute>
+            <attribute name="horizontalHeaderMinimumSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderDefaultSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="verticalHeaderMinimumSectionSize">
+             <number>18</number>
+            </attribute>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_2">
          <property name="minimumSize">
@@ -151,334 +379,22 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QGroupBox" name="groupBoxItens">
-         <property name="font">
-          <font>
-           <family>Verdana</family>
-           <pointsize>9</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="title">
-          <string>Boletos Emitidos</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QRadTableViewSearch" name="tableViewSearch">
-            <property name="font">
-             <font>
-              <family>Verdana</family>
-              <pointsize>8</pointsize>
-             </font>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">selection-background-color: rgba(102, 176, 239, 75%); selection-color: rgb(255, 255, 255);</string>
-            </property>
-            <property name="lineWidth">
-             <number>0</number>
-            </property>
-            <property name="verticalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOn</enum>
-            </property>
-            <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectRows</enum>
-            </property>
-            <property name="sortingEnabled">
-             <bool>true</bool>
-            </property>
-            <attribute name="horizontalHeaderDefaultSectionSize">
-             <number>50</number>
-            </attribute>
-            <attribute name="horizontalHeaderMinimumSectionSize">
-             <number>20</number>
-            </attribute>
-            <attribute name="verticalHeaderVisible">
-             <bool>false</bool>
-            </attribute>
-            <attribute name="verticalHeaderMinimumSectionSize">
-             <number>18</number>
-            </attribute>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
       </layout>
      </widget>
     </widget>
    </item>
-   <item row="1" column="0" rowspan="3">
-    <widget class="QGroupBox" name="groupBoxCurrent">
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>300</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="title">
-      <string> Corrente</string>
-     </property>
-     <widget class="QPushButton" name="pushButtonReprint">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Re-Imprimir</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../icons/resources.qrc">
-        <normaloff>:/png/print-icon.png</normaloff>:/png/print-icon.png</iconset>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButtonEdit">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>50</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Alterar Boleto</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../icons/resources.qrc">
-        <normaloff>:/png/edit-icon.png</normaloff>:/png/edit-icon.png</iconset>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButtonRemove">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>50</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Excluir Boleto</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../icons/resources.qrc">
-        <normaloff>:/png/remove-icon.png</normaloff>:/png/remove-icon.png</iconset>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButtonEditDweller">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>20</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Editar Morador</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../icons/resources.qrc">
-        <normaloff>:/png/edit-icon.png</normaloff>:/png/edit-icon.png</iconset>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="1" column="3">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Gerar</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="1">
-       <widget class="QPushButton" name="PshBtnTxExtra">
-        <property name="text">
-         <string>Tx.  &amp;Extra</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../../icons/resources.qrc">
-          <normaloff>:/png/add-icon.png</normaloff>:/png/add-icon.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="PshBtnTxCondominial">
-        <property name="text">
-         <string>Tx. Condominio</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../../icons/resources.qrc">
-          <normaloff>:/png/add-icon.png</normaloff>:/png/add-icon.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="pushButtonExportar">
-        <property name="text">
-         <string>Exportar (.pdf/.rem)</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../../icons/resources.qrc">
-          <normaloff>:/png/export.png</normaloff>:/png/export.png</iconset>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="1" rowspan="3" colspan="2">
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="minimumSize">
-      <size>
-       <width>300</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Visualizar</string>
-     </property>
-     <widget class="QGroupBox" name="groupBox_5">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>17</y>
-        <width>183</width>
-        <height>67</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Situação</string>
-      </property>
-      <widget class="QRadioButton" name="radioButtonPayed">
-       <property name="geometry">
-        <rect>
-         <x>21</x>
-         <y>42</y>
-         <width>64</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Pagos</string>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="radioButtonAll">
-       <property name="geometry">
-        <rect>
-         <x>21</x>
-         <y>20</y>
-         <width>63</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Todos</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="radioButtonNotPayed">
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>20</y>
-         <width>87</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Em Atraso</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="groupBox_6">
-      <property name="geometry">
-       <rect>
-        <x>200</x>
-        <y>12</y>
-        <width>180</width>
-        <height>70</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Tipo</string>
-      </property>
-      <widget class="QRadioButton" name="radioButtonAllType">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>63</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Todos</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="radioButtonTxCond">
-       <property name="geometry">
-        <rect>
-         <x>76</x>
-         <y>20</y>
-         <width>101</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Tx.Condominio</string>
-       </property>
-      </widget>
-      <widget class="QRadioButton" name="radioButtonTxExtra">
-       <property name="geometry">
-        <rect>
-         <x>76</x>
-         <y>43</y>
-         <width>64</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Tx.Extra</string>
-       </property>
-      </widget>
-     </widget>
-    </widget>
-   </item>
-   <item row="3" column="3">
+   <item row="2" column="0" alignment="Qt::AlignRight">
     <widget class="QPushButton" name="PshBtnSair">
      <property name="minimumSize">
       <size>
-       <width>200</width>
-       <height>0</height>
+       <width>112</width>
+       <height>32</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>100</width>
-       <height>16777215</height>
+       <width>112</width>
+       <height>32</height>
       </size>
      </property>
      <property name="text">

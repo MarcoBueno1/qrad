@@ -10,13 +10,15 @@
                                             QRadPluginMenu
 **************************************************************************************************/
 
-QRadPluginMenu::QRadPluginMenu(QString path, QString title, QString action, QString hotKey, QString perm)
+QRadPluginMenu::QRadPluginMenu(QString path, QString title, QString action, QString hotKey, QString perm, QString icon)
 {
     setPath(path);
     setTitle(title);
     setAction(action);
     setHotKey(hotKey);
     setPermission(perm);
+    setIcon(icon);
+
 }
 
 /*************************************************************************************************
@@ -219,6 +221,14 @@ bool QRadPluginLoader::loadMenu(QRadPluginInterface *plugin, QRadPluginMenu *men
     }
 
     QRadPluginAction* action = new QRadPluginAction( menu->title() );
+    if( !menu->icon().isEmpty())
+    {
+        debug_message("Icone: %s para %s\n", menu->icon().toLatin1().data(), menu->title().toLatin1().data());
+        action->setIcon(QIcon(menu->icon()));
+    }
+    if( !menu->hotKey().isEmpty())
+        action->setShortcut(QKeySequence(menu->hotKey()));
+
 
 
 
@@ -359,11 +369,12 @@ bool QRadPluginLoader::parsePluginNode(const QDomNode &node)
               menuNode.attributes().contains("permission")))
             continue;
 
-        desc->appendMenu(new QRadPluginMenu(QString::fromUtf8(menuNode.attributes().namedItem("path").nodeValue().toUtf8().data()),
-                                           QString::fromUtf8(menuNode.attributes().namedItem("title").nodeValue().toUtf8().data()),
-                                           QString::fromUtf8(menuNode.attributes().namedItem("action").nodeValue().toUtf8().data()),
-                                           QString::fromUtf8(menuNode.attributes().namedItem("hotkey").nodeValue().toUtf8().data()),
-                                           QString::fromUtf8(menuNode.attributes().namedItem("permission").nodeValue().toUtf8().data())));
+        desc->appendMenu(new QRadPluginMenu( QString::fromUtf8(menuNode.attributes().namedItem("path").nodeValue().toUtf8().data()),
+                                             QString::fromUtf8(menuNode.attributes().namedItem("title").nodeValue().toUtf8().data()),
+                                             QString::fromUtf8(menuNode.attributes().namedItem("action").nodeValue().toUtf8().data()),
+                                             QString::fromUtf8(menuNode.attributes().namedItem("hotkey").nodeValue().toUtf8().data()),
+                                             QString::fromUtf8(menuNode.attributes().namedItem("permission").nodeValue().toUtf8().data()),
+                                             menuNode.attributes().contains("icon")?QString::fromUtf8(menuNode.attributes().namedItem("icon").nodeValue().toUtf8().data()):""));
     } // for
 
     m_pluginList->append(desc);

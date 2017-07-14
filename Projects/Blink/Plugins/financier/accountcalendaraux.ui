@@ -46,6 +46,10 @@
   <property name="windowTitle">
    <string>Histórico de Contas Detalhado</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../icons/resources.qrc">
+    <normaloff>:/png/marca-m.png</normaloff>:/png/marca-m.png</iconset>
+  </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
@@ -589,6 +593,9 @@ selection-color: rgb(255, 255, 255);</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

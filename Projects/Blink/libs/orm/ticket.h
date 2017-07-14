@@ -61,6 +61,7 @@ DECLARE_CLASS(ticket)
 public:
     int saveFile(QString path);
     void getFile(QString path, int Loid);
+    bool UpdateToPaid();
 
 ORM_END_MAP()
 #endif 

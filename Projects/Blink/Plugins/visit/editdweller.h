@@ -50,6 +50,7 @@ private:
     void RefreshPhoneTable();
     void RefreshAddressTable();
     void RefreshVeicTable();
+    void CheckIfCanChangeAPTower();
 };
 
 #endif // EDITDweller_H

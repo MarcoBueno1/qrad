@@ -190,5 +190,10 @@
         <file>icon_wallet.png</file>
         <file>icon_wallet_alt.png</file>
         <file>icon_id.png</file>
+        <file>marca-m.png</file>
+        <file>icon_search.png</file>
+        <file>icon_calendar.png</file>
+        <file>icon_documents.png</file>
+        <file>background-green-1.jpg</file>
     </qresource>
 </RCC>

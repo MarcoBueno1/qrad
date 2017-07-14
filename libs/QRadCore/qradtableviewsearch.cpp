@@ -8,6 +8,7 @@
 #include "qradshared.h"
 #include <QSqlDriver>
 #include <QSqlField>
+#include <QClipboard>
 #include "qraddebug.h"
 
 
@@ -22,6 +23,23 @@ QRadTableViewSearch::QRadTableViewSearch(QWidget *parent) :
     m_keyinterval = NULL;
 
     connect(horizontalHeader(), SIGNAL(sectionResized(int,int,int)),this, SLOT(TblColumnResized(int,int,int)));
+
+
+
+    m_menu =new QMenu(this);
+//    m_copyCel  = m_menu->addAction(tr("Copiar"));
+    m_copyLine = m_menu->addAction(tr("Copiar Linha"));
+    m_menu->addSeparator();
+//    m_copyCol  = m_menu->addAction(tr("Copiar Coluna"));
+
+    connect(m_copyLine , SIGNAL(triggered()), this, SLOT(doCopyLine()));
+
+
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, SIGNAL(customContextMenuRequested(QPoint)),
+            SLOT(customMenuRequested(QPoint)));
+
 }
 
 QRadTableViewSearch::~QRadTableViewSearch()
@@ -31,7 +49,8 @@ QRadTableViewSearch::~QRadTableViewSearch()
         m_keyinterval->stop();
         delete m_keyinterval;
     }
-    delete m_proxyModel;    
+    delete m_proxyModel;
+    delete m_menu;
     //delete m_time;
 }
 
@@ -912,4 +931,45 @@ void QRadTableViewSearch::TblColumnResized(int logicalIndex, int oldSize, int ne
     }
 
     delete qAsk;
+}
+void QRadTableViewSearch::customMenuRequested(QPoint pt)
+{
+//    QMenu *menu=new QMenu(this);
+//    menu->addAction(EditCurrent);
+//    menu->addAction(ReporitCurrent);
+//    menu->addSeparator();
+//    menu->addAction(RemoveCurrent);
+//    menu->addSeparator();
+//    menu->addAction(EditCurrentDweller);
+    m_menu->popup(this->viewport()->mapToGlobal(pt));
+}
+
+void QRadTableViewSearch::addContextAction(QAction *action )
+{
+    m_menu->addAction(action);
+}
+void QRadTableViewSearch::addContextSeparator()
+{
+    m_menu->addSeparator();
+}
+
+void QRadTableViewSearch::doCopyLine()
+{
+    QString line;
+    QModelIndexList indexs =  this->selectionModel()->selectedRows();
+
+    for( int i=0; i < indexs.count(); i++ )
+    {
+        int row = indexs.at(i).row();
+        for( int j = 0; j < this->model()->columnCount(); j++ )
+        {
+            if(!this->isColumnHidden(j))
+               line += indexs.at(i).sibling(row,j).data().toString() + "\t";
+        }
+    }
+    QClipboard *clipboard = QApplication::clipboard();
+
+    clipboard->setText(line);
+
+
 }

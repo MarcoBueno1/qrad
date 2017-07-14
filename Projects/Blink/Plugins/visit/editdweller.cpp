@@ -11,6 +11,7 @@
 #include "camera.h"
 #include "editaddress.h"
 #include "editvehicle.h"
+#include "ticket.h"
 
 #define PORTEIRO_FUL_PATH "dweller.jpg"
 
@@ -109,6 +110,22 @@ void EditDweller::SetModel(Dweller* mod)
 
    m_mod = mod;
    Load();
+   CheckIfCanChangeAPTower();
+}
+
+void EditDweller::CheckIfCanChangeAPTower()
+{
+   ticketList *tkt = ticket::findBy(QString("select * from ticket where clientid=%1 and removed = false and status <> %1")
+                                .arg(m_mod->getid())
+                                .arg(stPaid));
+   if( tkt )
+   {
+       ui->LblAp->setEnabled(false);
+       ui->LblTower->setEnabled(false);
+       ui->comboBoxAp->setEnabled(false);
+       ui->comboBoxApTorre->setEnabled(false);
+       ui->checkBoxPayer->setEnabled(false);
+   }
 }
 
 
@@ -167,6 +184,24 @@ void EditDweller::Save()
         return;
       }
     }
+    if( ui->checkBoxPayer->isChecked())
+    {
+        DwellerList *dl = Dweller::findBy(QString("select * from dweller where ap=%1 and tower=%2 and removed = false and id <> %3 and payer = true")
+                .arg(ui->comboBoxAp->model()->data(ui->comboBoxAp->model()->index(ui->comboBoxAp->currentIndex(), 0)).toInt())
+                .arg(ui->comboBoxApTorre->model()->data(ui->comboBoxApTorre->model()->index(ui->comboBoxApTorre->currentIndex(), 0)).toInt())
+                .arg(m_mod->getid()));
+        if( dl )
+        {
+            QMessageBox::warning(this,
+                                 "Oops!",
+                                  QString("Já existe um morador pagador cadastrado para esta unidade: (%1 ) ").arg(dl->at(0)->getName()));
+            ui->checkBoxPayer->setChecked(false);
+        //    delete d;
+            return;
+
+        }
+
+    }
    
     m_mod->setName(ui->lineEditDweller->text());
     m_mod->setCPF(ui->lineEditCPF->text());
@@ -181,6 +216,7 @@ void EditDweller::Save()
     m_mod->setSince(ui->dateEditSince->date());
     m_mod->setMoveOut(ui->dateEditUntil->date());
     m_mod->setObs(ui->textEditObs->toPlainText());
+    m_mod->setPayer(ui->checkBoxPayer->isChecked());
     m_mod->setRemoved(false);
 
 
@@ -213,6 +249,7 @@ void EditDweller::Load()
     ui->comboBoxApTorre->setCurrentId(m_mod->gettower());
     ui->comboBoxTipo->setCurrentId(m_mod->getType());
     ui->comboBoxProfissao->setCurrentId(m_mod->getJobTitle());
+    ui->checkBoxPayer->setChecked(m_mod->getPayer());
 
     RefreshAddressTable();
     RefreshPhoneTable();

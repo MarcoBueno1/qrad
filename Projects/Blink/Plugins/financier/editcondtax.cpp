@@ -39,6 +39,7 @@ Editcondtx::Editcondtx(QWidget *parent) :
         m_discount = config->getDiscount();
         delete config;
     }
+    setWindowTitle("Nova Taxa Condominial");
 
 }
 
@@ -155,6 +156,7 @@ void Editcondtx::ShowHideValue()
     if( m_selected->rowCount() < 2)
     {
         ui->LblValue->setVisible(true);
+        ui->doubleSpinBoxValue->setEnabled(true);
         ui->doubleSpinBoxValue->setVisible(true);
         if( ui->doubleSpinBoxValue->value() <= 0 )
         {
@@ -171,6 +173,7 @@ void Editcondtx::ShowHideValue()
     else
     {
         ui->LblValue->setVisible(false);
+        ui->doubleSpinBoxValue->setEnabled(false);
         ui->doubleSpinBoxValue->setVisible(false);
         ui->doubleSpinBoxDiscount->setEnabled(false);
         ui->doubleSpinBoxDiscount->setValue(m_discount);
@@ -221,7 +224,7 @@ QDate Editcondtx::getVencto()
 }
 double Editcondtx::getValue()
 {
-    if( !ui->doubleSpinBoxValue->isVisible() )
+    if( !ui->doubleSpinBoxValue->isEnabled() )
         return 0;
     return ui->doubleSpinBoxValue->value();
 }

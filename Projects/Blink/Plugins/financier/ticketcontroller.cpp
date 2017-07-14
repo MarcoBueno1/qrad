@@ -140,20 +140,27 @@ bool TicketController::BuildTicket( DwellerList *dlist,
 
          if( type == tpTxCond )
          {
+             debug_message("dValue=%02.02f dDiscount=%02.02f dlist->count()=%d\n", dValue,dDiscount,dlist->count() );
              if( (dValue>0) && (dlist->count() ==1) ) /// aplciavel apenas se for uma unidade ..
              {
+                debug_message("Setando valor...\n");
                 tkt->setValor(dValue);
              }
              else
              {
+                 debug_message("Setando valor...getMontlyValue \n");
                  tkt->setValor(pMetr->getMontlyValue());
              }
-             if(( dDiscount > 0 ) && (dlist->count() ==1) ) /// aplciavel apenas se for uma unidade ..
+             if(( dDiscount >= 0 ) && (dlist->count() ==1) ) /// aplciavel apenas se for uma unidade ..
              {
+                   debug_message("Setando desconto \n");
                   tkt->setDiscount(dDiscount);
              }
              else
+             {
+                 debug_message("Setando desconto m_pTktConfig->getDiscount\n");
                  tkt->setDiscount(m_pTktConfig->getDiscount());
+             }
 
          }
          else
@@ -380,6 +387,9 @@ bool TicketController::BuildTicketCond(int id )
     double dValue = pCondTx->getValue();
     double dDiscount = pCondTx->getDisocunt();
 
+    debug_message("dValue=%02.02f dDiscount=%02.02f logo apos os gets\n", dValue,dDiscount );
+
+
     DwellerList *dlist;
 
     if( pCondTx->ToAll() ) /// for all
@@ -453,13 +463,15 @@ bool TicketController::BuildTicketCond(int id )
     }
 
 
+    debug_message("dValue=%02.02f dDiscount=%02.02f antes do BuildTicket\n", dValue,dDiscount );
+
     bool bRet = BuildTicket( dlist,
                              date,
                              tpTxCond,
                              pCondTx->getObs(),
                              0,
                              dValue,
-                             dDiscount);;
+                             dDiscount);
 
     pW->hide();
     delete pCondTx;
@@ -889,6 +901,15 @@ bool TicketController::UpdateTickets(QList<BankTicket*> *list)
              if( ptkt && (ptkt->getStatus() != stRegistered))
              {
                  bRet = ptkt->updateStatus(stRegistered);
+                 delete ptkt;
+             }
+         }
+         else if( pCurrent->getTpOp() == tpLiquidated) // pagos apenas com vencimento acima de 05/07/2017
+         {
+             ticket *ptkt = ticket::findByNossoNumero(pCurrent->getNossoNumero().toInt(),true);
+             if(( ptkt && (ptkt->getStatus() != tpLiquidated)) && ptkt->getVencto() > QDate::fromString("05072017","ddMMyyyy"))
+             {
+                 bRet = ptkt->UpdateToPaid();
                  delete ptkt;
              }
          }

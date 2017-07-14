@@ -466,7 +466,8 @@ void SComboBox::CreateTableIfNoExist()
     QString strCreate = QString( "CREATE TABLE %1 ("\
                                  "id %3, "\
                                  "%2 character varying ,"\
-                                 "tp integer default 1 );")
+                                 "tp integer default 1 ,"\
+                                 "removed boolean default false );")
                                 .arg(TableName().toLower()).arg(FieldName().toLower()).arg(strPrimType);
 
     CrateTable->setQuery( strCreate, m_currentdb );

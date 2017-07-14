@@ -56,14 +56,15 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonTxCond,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonTxExtra,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->pushButtonExportar,SIGNAL(clicked()), this, SLOT(doExport()));
+    connect(ui->pushButtonImport,SIGNAL(clicked()), this, SLOT(doImport()));
  //   connect(ui->pushButtonEditDweller,SIGNAL(clicked()), this, SLOT(doEditDweller()));
 
-
+/*
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
-
+*/
     ui->comboBoxMonth->setCurrentIndex(0);
 
     setAcceptDrops(true);
@@ -71,13 +72,10 @@ Managerticket::Managerticket(QWidget *parent) :
     createMenu();
     ui->gridLayout_4->setMenuBar(menuBar);
 
-    ui->tableViewSearch->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->tableViewSearch, SIGNAL(customContextMenuRequested(QPoint)),
-            SLOT(customMenuRequested(QPoint)));
+//    ui->tableViewSearch->setContextMenuPolicy(Qt::CustomContextMenu);
+//    connect(ui->tableViewSearch, SIGNAL(customContextMenuRequested(QPoint)),
+//            SLOT(customMenuRequested(QPoint)));
 
-//    QVBoxLayout *mainLayout = new QVBoxLayout;
-//    mainLayout->setMenuBar(menuBar);
-//    setLayout(mainLayout);
 
     DoRefresh();
     setWindowTitle("Gerenciamento de Boletos");
@@ -118,9 +116,17 @@ void Managerticket::createMenu()
 
     connect(EditCurrent , SIGNAL(triggered()), this, SLOT(doEdit()));
 
+    ui->tableViewSearch->addContextSeparator();
+    ui->tableViewSearch->addContextAction(EditCurrent);
+    ui->tableViewSearch->addContextAction(ReporitCurrent);
+    ui->tableViewSearch->addContextSeparator();
+    ui->tableViewSearch->addContextAction(RemoveCurrent);
+    ui->tableViewSearch->addContextSeparator();
+    ui->tableViewSearch->addContextAction(EditCurrentDweller);
 
 
-   // connect(ImportAction, SIGNAL(triggered()), this, SLOT(accept()));
+
+    connect(ImportAction, SIGNAL(triggered()), this, SLOT(doImport()));
 }
 
 Managerticket::~Managerticket()
@@ -450,6 +456,12 @@ void Managerticket::doReprint()
         QMessageBox::warning(this, "Oops!","Selecione um boleto para poder reimprimir!");
         return;
     }
+    if( tkt->getStatus() == stCreated )
+    {
+        QMessageBox::warning(this, "Oops!","Este boleto está em estado de \"Criado\", por favor Exporte os arquivos (.REM/.PDF)!");
+        delete tkt;
+        return;
+    }
 
     debug_message("antes TicketController\n");
 
@@ -597,33 +609,21 @@ void Managerticket::doEditDweller()
     refreshTable();
 }
 
-void Managerticket::customMenuRequested(QPoint pt)
+void Managerticket::doImport()
 {
+    QStringList paths = QRadConfig::GetAndPersistDir("RetFile", "","Selecionar Arquivo de Retorno","Arquivos Retorno (*.ret *.RET)",this);
 
-   // QModelIndex index = ui->tableViewSearch->indexAt(&pos);
+    QList<BankTicket*> list;
+    ShowBankReturn *ParsePay = new ShowBankReturn ;
 
-    QMenu *menu=new QMenu(this);
-    menu->addAction(EditCurrent);
-    menu->addAction(ReporitCurrent);
-    menu->addSeparator();
-    menu->addAction(RemoveCurrent);
-    menu->addSeparator();
-    menu->addAction(EditCurrentDweller);
-    menu->popup(ui->tableViewSearch->viewport()->mapToGlobal(pt));
 
-/*
- *     EditMenu= new QMenu(tr("&Boleto"), this);
-    EditCurrent = EditMenu->addAction(tr("Editar"));
-    EditCurrent->setIcon(QIcon(":/png/edit-icon.png"));
-    ReporitCurrent= EditMenu->addAction(tr("Gerar PDF"));
-    ReporitCurrent->setIcon(QIcon(":/png/print-icon.png"));
-    EditMenu->addSeparator();
-    RemoveCurrent=EditMenu->addAction(tr("Excluir"));
-    RemoveCurrent->setIcon(QIcon(":/png/remove-icon.png"));
-    EditMenu->addSeparator();
-    EditCurrentDweller = EditMenu->addAction(tr("Editar Morador"));
-    EditCurrentDweller->setIcon(QIcon(":/png/edit-icon.png"));
-
- */
-
+    if(ParsePay->Exec(&list, paths))
+    {
+        TicketController::UpdateTickets(&list);
+    }
+    else
+    {
+        QMessageBox::information(NULL,"Oops!", QString("Operação cancelada!"));
+    }
+    delete ParsePay;
 }

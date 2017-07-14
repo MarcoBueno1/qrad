@@ -1,4 +1,6 @@
 #include "ticket.h"
+#include "accounttoreceivehistorymodel.h"
+#include "accounttoreceivemodel.h"
 
 
 ORM_BEGIN_MAP(ticket)
@@ -34,4 +36,31 @@ int ticket::saveFile(QString path)
 void ticket::getFile(QString path, int Loid)
 {
     ORM::getFile(path, Loid);
+}
+
+bool ticket::UpdateToPaid()
+{
+    QCoreApplication *app = QCoreApplication::instance();
+    int Userid = app->property("CurrentUserId").toInt();
+
+   AccountToReceiveModel *account = AccountToReceiveModel::findById(getAccountId(),true);
+   if( account )
+   {
+       if(account->updatePaid(true))
+       {
+           AccountToReceiveHistoryModel *his = new AccountToReceiveHistoryModel;
+           his->setDate(QDate::currentDate());
+           his->setTime(QTime::currentTime());
+           his->setTypeOperation(AccountOpPaid);
+           his->setUserId(Userid);
+           his->Save();
+           delete his;
+           setStatus(stPaid);
+           updateStatus(stPaid);
+           delete account;
+           return true;
+       }
+   }
+
+   return false;
 }

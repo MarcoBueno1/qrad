@@ -19,6 +19,7 @@
 #include <QTimer>
 #include <QShowEvent>
 #include <QLineEdit>
+#include <QMenu>
 #include "model.h"
 
 typedef enum e_mode
@@ -56,6 +57,9 @@ public:
     void dropEvent(QDropEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
+    void addContextSeparator();
+    void addContextAction(QAction *action );
+
 protected:
     void getAlignment();
     int rowsPerViewport();
@@ -74,6 +78,8 @@ public slots:
     void OnCurrentChanged(QModelIndex currentIndex);
     void KeyPressTimeout();
     void TblColumnResized(int logicalIndex, int oldSize, int newSize);
+    void customMenuRequested(QPoint pt);
+    void doCopyLine();
 signals:
     void found(QModelIndex index);
     void notFound();
@@ -87,6 +93,7 @@ signals:
     void OnLoadTableView(void);
 
 private:
+    QMenu *m_menu;
     QSortFilterProxyModel *m_proxyModel;
     bool m_useTableFilter;
     QRad_SEARCH_MODE  m_SearchMode;
@@ -102,6 +109,10 @@ private:
     void DoDefaultSearch(QString string);
     bool MixFilteredSearch(QString text);
     int m_nDefaultColumnSearch;
+    QAction *m_copyLine;
+    QAction *m_copyCel;
+    QAction *m_copyRow;
+
 
     QString BuildClmnTableName();
 };

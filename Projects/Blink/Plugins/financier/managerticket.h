@@ -51,7 +51,8 @@ public slots:
 
     void doExport();
     void doEditDweller();
-    void customMenuRequested(QPoint pt);
+    //    void customMenuRequested(QPoint pt);
+    void doImport();
 private:
     Ui::Managerticket *ui;
 

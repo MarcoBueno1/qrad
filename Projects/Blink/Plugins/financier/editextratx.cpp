@@ -38,7 +38,7 @@ Editextratx::Editextratx(QWidget *parent) :
     //ui->lineEditMorador->Add(ui->lineEditTorre);
 //    ui->lineEditMorador->Add(ui->lineEditRamal);
     m_selected = new QSqlQueryModel;
-
+    setWindowTitle("Nova Taxa Extra");
 }
 
 Editextratx::~Editextratx()

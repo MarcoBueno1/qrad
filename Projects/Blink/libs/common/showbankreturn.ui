@@ -22,6 +22,9 @@
      <height>441</height>
     </rect>
    </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
   </widget>
   <widget class="QPushButton" name="pushButtonOk">
    <property name="geometry">

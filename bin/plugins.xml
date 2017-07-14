@@ -7,7 +7,7 @@
         <menu path="Portaria/Visitas" title="Gerenciar Visitas" action="Manage" hotkey="CTRL+V" permission="usevisit" />
         <menu path="Portaria/Visitas" title="Nova Visita " action="Edit" hotkey="CTRL+E" permission="usevisit" />
         <menu path="Cadastro/Moradores" title="Gerenciar Moradores" action="ManagerMorador" hotkey="CTRL+M" permission="usedweller" />
-        <menu path="Cadastro/Moradores" title="Novo Morador" action="EditMorador" hotkey="CTRL+M" permission="usedweller" />
+        <menu path="Cadastro/Moradores" title="Novo Morador" action="EditMorador" hotkey="CTRL+M" permission="usedweller" icon=":/png/icon_id.png"/>
         <menu path="Cadastro/Pré-Autorizações" title="Gerenciar Pré-Autorizações" action="ManagerPreAut" hotkey="CTRL+V" permission="usepreaut" />
         <menu path="Cadastro/Usuários" title="Gerenciar Usuários" action="ManagerUser" hotkey="CTRL+V" permission="useuser" />
         <menu path="Cadastro/Usuários" title="Gerenciar Perfil" action="ManagerProfile" hotkey="CTRL+V" permission="useprofile" />
@@ -18,18 +18,18 @@
         <menu path="Configurações" title="Dados da Empresa" action="MainCompany" hotkey="CTRL+V" permission="configureemail" />
     </plugin>
     <plugin name="financier" library="./financier" enabled="true">
-        <menu path="Financeiro" title="Contas a Pagar" action="ShowAccountToPay" hotkey="CTRL+M" permission="usedweller" />
-        <menu path="Financeiro" title="Contas a Receber" action="ShowAccountToReceive" hotkey="CTRL+M" permission="usedweller" />
-        <menu path="Financeiro" title="Histórico" action="ShowAccountHistoryReport" hotkey="CTRL+V" permission="usepreaut" />
-        <menu path="Financeiro" title="Calendario de Contas" action="ShowAccountCalendar" hotkey="CTRL+V" permission="useuser" />
-        <menu path="Financeiro/Boletos" title="Gerenciar" action="ManageTicket" hotkey="CTRL+V" permission="useuser" />
-		<menu path="Financeiro/Boletos" title="Ler arquivo de retorno" action="ReadShipp" hotkey="CTRL+V" permission="useuser" />
+        <menu path="Financeiro" title="Contas a Pagar" action="ShowAccountToPay" hotkey="CTRL+M" permission="usedweller" icon=":/png/icon_wallet.png" />
+        <menu path="Financeiro" title="Contas a Receber" action="ShowAccountToReceive" hotkey="CTRL+M" permission="usedweller" icon=":/png/icon_wallet_alt.png"/>
+        <menu path="Financeiro" title="Histórico" action="ShowAccountHistoryReport" hotkey="CTRL+V" permission="usepreaut" icon=":/png/icon_search.png" />
+        <menu path="Financeiro" title="Calendario de Contas" action="ShowAccountCalendar" hotkey="CTRL+V" permission="useuser" icon=":/png/icon_calendar.png"/>
+        <menu path="Financeiro/Boletos" title="Gerenciar" action="ManageTicket" hotkey="CTRL+B" permission="useuser" icon=":/png/icon_documents.png" />
+		<menu path="Financeiro/Boletos" title="Importar (.RET)" action="ReadShipp" hotkey="CTRL+V" permission="useuser" />
         <menu path="Cadastro/Usuários" title="Fornecedores" action="ManageSupplier" hotkey="CTRL+V" permission="useuser" />
         <menu path="Cadastro/Cadastro Auxiliar/Metragem" title="Metragens" action="ManageMetreage" hotkey="CTRL+V" permission="useprofile" />
         <menu path="Financeiro/Freferencias" title="Tipos de Contas" action="ShowAccountType" hotkey="CTRL+F" permission="usevisit" />
         <menu path="Financeiro/Freferencias" title="Cadastrar Bancos" action="ShowBank" hotkey="CTRL+E" permission="usevisit" />
         <menu path="Financeiro/Freferencias" title="Cadastrar Contas Bancárias" action="ManageBankAccount" hotkey="CTRL+E" permission="usevisit" />
         <menu path="Financeiro/Freferencias" title="Arquiovos de Remessa" action="ManageShipper" hotkey="CTRL+E" permission="usevisit" />
-        <menu path="Configurações" title="Boletos" action="ManageTicketConfig" hotkey="CTRL+E" permission="usevisit" />
+        <menu path="Configurações" title="Boletos" action="ManageTicketConfig" hotkey="CTRL+Y" permission="usevisit" />
     </plugin>
 </pluginlist>

@@ -19,6 +19,8 @@ public:
 private slots:
     void on_actionSobre_o_Blink_triggered();
 
+    void on_actionBloquear_triggered();
+
 private:
     Ui::MainWindow *ui;
     void setRemainingDays(int value);

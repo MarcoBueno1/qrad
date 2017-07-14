@@ -22,6 +22,7 @@ Editticket::Editticket(QWidget *parent) :
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
+    setWindowTitle("Edição de Boleto");
 }
 
 Editticket::~Editticket()
@@ -45,6 +46,8 @@ void Editticket::SetModel(ticket* mod)
 {
    m_mod = mod;
    Load();
+   setWindowTitle(QString("Edição do Boleto %1").arg(m_mod->getNossoNumero()));
+
 }
 
 
@@ -56,19 +59,20 @@ void Editticket::Save()
 
     if(mod->getStatus() != stCreated)
     {
-        /*
-    if(( ui->DtEdtVencto->date() != mod->getVencto()) &&( mod->getValor() != ui->DblSpnBxValor->value()))
-        mod->setStatus(stDateValueModified);
-    else if( ui->DtEdtVencto->date() != mod->getVencto())
-        mod->setStatus(stDateModified);
-    else if ( mod->getValor() != ui->DblSpnBxValor->value())
-        mod->setStatus(stValueModified);
+        if(( ui->DtEdtVencto->date() != mod->getVencto()) &&( mod->getValor() != ui->DblSpnBxValor->value()))
+           // mod->setStatus(stDateValueModified);
+            mod->setStatus(stCreated);
+        else if( ui->DtEdtVencto->date() != mod->getVencto())
+           // mod->setStatus(stDateModified);
+            mod->setStatus(stCreated);
+        else if ( mod->getValor() != ui->DblSpnBxValor->value())
+           // mod->setStatus(stValueModified);
+            mod->setStatus(stCreated);
 
-        verificar depois isto ....
-        */
     }
-    if(mod->getStatus() == stBuiltShipp)
-        mod->setStatus(stCreated);
+
+    //if(mod->getStatus() == stBuiltShipp)
+    //    mod->setStatus(stCreated);
 
     mod->setVencto(ui->DtEdtVencto->date());
     mod->setValor(ui->DblSpnBxValor->value());

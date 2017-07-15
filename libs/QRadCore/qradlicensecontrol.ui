@@ -34,8 +34,21 @@
   <property name="windowTitle">
    <string>Controle de Licenças</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../Projects/Blink/icons/resources.qrc">
+    <normaloff>:/png/marca-m.png</normaloff>:/png/marca-m.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <property name="spacing">
@@ -396,7 +409,7 @@
         <string>&amp;Detalhes</string>
        </property>
        <property name="icon">
-        <iconset resource="../../icons/resources.qrc">
+        <iconset resource="../../Projects/Blink/icons/resources.qrc">
          <normaloff>:/png/security-icon.png</normaloff>:/png/security-icon.png</iconset>
        </property>
        <property name="iconSize">
@@ -433,7 +446,7 @@
         <string>&amp;Ok</string>
        </property>
        <property name="icon">
-        <iconset resource="../../icons/resources.qrc">
+        <iconset resource="../../Projects/Blink/icons/resources.qrc">
          <normaloff>:/png/ok-icon.png</normaloff>:/png/ok-icon.png</iconset>
        </property>
        <property name="iconSize">
@@ -491,6 +504,7 @@
   </layout>
  </widget>
  <resources>
+  <include location="../../Projects/Blink/icons/resources.qrc"/>
   <include location="../../Projects/Blink/icons/resources.qrc"/>
  </resources>
  <connections/>

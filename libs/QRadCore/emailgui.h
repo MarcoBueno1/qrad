@@ -21,6 +21,8 @@ public:
 
     QString getText();
 
+public slots:
+    void doLink(const QString &link);
 private:
     Ui::EmailGui *ui;
 };

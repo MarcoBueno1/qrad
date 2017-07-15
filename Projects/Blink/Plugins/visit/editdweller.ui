@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Edit</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../icons/resources.qrc">
+    <normaloff>:/png/marca-m.png</normaloff>:/png/marca-m.png</iconset>
+  </property>
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
@@ -856,11 +860,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SComboBox</class>
-   <extends>QComboBox</extends>
-   <header location="global">scombobox.h</header>
-  </customwidget>
-  <customwidget>
    <class>QRadLineEditCompleter</class>
    <extends>QLineEdit</extends>
    <header location="global">qradlineeditcompleter.h</header>
@@ -869,6 +868,11 @@
    <class>QRadLineEditEnter</class>
    <extends>QLineEdit</extends>
    <header location="global">qradlineeditenter.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SComboBox</class>
+   <extends>QComboBox</extends>
+   <header location="global">scombobox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -898,6 +902,9 @@
   <tabstop>PshBtnSave</tabstop>
   <tabstop>pushButtonBaterFoto</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -1,5 +1,7 @@
 #include "emailgui.h"
 #include "ui_emailgui.h"
+#include <QDesktopServices>
+#include "qraddebug.h"
 
 EmailGui::EmailGui(QWidget *parent) :
     QDialog(parent),
@@ -7,8 +9,17 @@ EmailGui::EmailGui(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("Enviar e-mail...");
-}
+    connect(ui->pushButtonCancel,SIGNAL(clicked()),this,SLOT(reject()));
+    connect(ui->pushButtonEnviar,SIGNAL(clicked()),this,SLOT(accept()));
+    connect(ui->LblFile,SIGNAL(linkActivated(QString)),this,SLOT(doLink(QString)));
 
+    ui->LblFile->setTextInteractionFlags(Qt::TextBrowserInteraction);
+}
+void EmailGui::doLink(const QString & link)
+{
+    debug_message("openUrl: %s\n", QString("file://%1").arg(ui->LblFile->text()).toLatin1().data());
+    QDesktopServices::openUrl(QUrl(QString("file://%1").arg(ui->LblFile->text())));
+}
 EmailGui::~EmailGui()
 {
     delete ui;

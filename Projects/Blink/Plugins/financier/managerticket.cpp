@@ -642,6 +642,7 @@ void Managerticket::doEmail()
     if(pController->SendEmail(id))
     {
         QMessageBox::information(NULL,"Ok!", QString("E-mail enviado com sucesso!"));
+        refreshTable();
     }
 
     delete pController;

@@ -9,6 +9,7 @@
 #include <QSqlQuery>
 #include "qradfile.h"
 #include "qraddebug.h"
+#include "maincompany.h"
 
 void QRadLicUp::conectlocal()
 {
@@ -65,6 +66,7 @@ void QRadLicUp::conectremote()
 
 //        debug_message("\nErro: %s\n (m_db.setHostName=%s, m_db.password()=%s)\n", m_db.lastError().text().toUtf8().data(),
  //                     m_db.hostName().toUtf8().data(), m_db.password().toUtf8().data());
+        debug_message("\nCONSEGUI CONECTAR NO SERVIDOR REMOTO ........\n");
     }
 
 }
@@ -95,7 +97,9 @@ bool QRadLicUp::SyncLicence()
     QString strSQL;
 	
 
-    m_model->setQuery("select * from license order by id limit 1");
+    maincompany *company = maincompany::findByid(1);
+
+//    m_model->setQuery("select * from maincompany order by id limit 1");
 //    if( m_model->rowCount( ))
 //    {
      //    bSync = m_model->record(0).field("sync").value().toBool();
@@ -112,8 +116,8 @@ bool QRadLicUp::SyncLicence()
         }
 
 
-        m_Remotemodel->setQuery( "select cnpj, lastlicense, appversionm2smart from license");
-        if( m_Remotemodel->rowCount())
+//        m_Remotemodel->setQuery( QString("select cnpj, lastlicense, appversionm2smart from license where cnpj = '%1'").arg(company->getcnpj()));
+        if( company)
         {
             QString strIdentification =  objLicense.GetClientIdentification();
             QString strcnpj;
@@ -124,9 +128,9 @@ bool QRadLicUp::SyncLicence()
             QString dsmRelease;
             QString dsmNewRelease;
 
-            strcnpj = m_Remotemodel->record(0).field(0).value().toString();
-            strLastlicense = m_Remotemodel->record(0).field(1).value().toString();
-            strDSMRelease = QRadFile::GetParamValue("version/oldrelease");
+            strcnpj = company->getcnpj();
+            strLastlicense = company->getlastLicense();
+            strDSMRelease = "1.0";//QRadFile::GetParamValue("version/oldrelease");
             /// update license...
 
 
@@ -139,6 +143,8 @@ bool QRadLicUp::SyncLicence()
             qDebug() << "Registros remotos: " << m_Remotemodel->rowCount();
             if( m_Remotemodel->rowCount() )
             {
+                debug_message("\nENCONTROU REGISTRO REMOTO........\n");
+
                 qDebug() << "Local: Credential:" <<strIdentification;
                 qDebug() << "Remote: Credential:" <<m_Remotemodel->record(0).field(0).value().toString();
                 qDebug() << "Local: license:" << strLastlicense;
@@ -196,30 +202,32 @@ bool QRadLicUp::SyncLicence()
             }
             else // insert new store into remote db.
             {
+                debug_message("\nTENTANDO INSERIR REGISTRO REMOTO........\n");
+
 
                 QSqlQuery *insert  = new QSqlQuery(m_db);
 
                 strSQL = "INSERT INTO lnx_client (name, nickname, address, number, neighborhood, city, state, cep, credential, lastlicense, license, enabled, blocked, phone, email, contato, cnpj, ie, mobile, installdate, dsmrelease ) VALUES ( '%1', '%2', '%3', %4, '%5', '%6', %7, '%8', '%9', '%10', '%11', %12, %13, '%14', '%15', '%16', '%17', '%18', '%19', '%20', '%21' )";
 
-                if( !insert->exec(strSQL.arg(m_model->record(0).field("companyname").value().toString())
-                    .arg(m_model->record(0).field("fantasyname").value().toString())
-                    .arg(m_model->record(0).field("address").value().toString())
-                    .arg(m_model->record(0).field("nro").value().toInt())
-                    .arg(m_model->record(0).field("neighborhood").value().toString())
-                    .arg(m_model->record(0).field("city").value().toString())
-                    .arg(m_model->record(0).field("uf").value().toInt())
-                    .arg(m_model->record(0).field("cep").value().toString())
+                if( !insert->exec(strSQL.arg(company->getname())
+                    .arg(company->getfantasyname())
+                    .arg("")
+                    .arg("")
+                    .arg("")
+                    .arg("Manaus")
+                    .arg(13)
+                    .arg("69055050")
                     .arg(strIdentification)
-                    .arg(m_model->record(0).field("lastlicense").value().toString())
-                    .arg(m_model->record(0).field("lastlicense").value().toString())
+                    .arg(company->getlicense())
+                    .arg(company->getlastLicense())
                     .arg(true)
                     .arg(false)
-                    .arg(m_model->record(0).field("phone").value().toString())
-                    .arg(m_model->record(0).field("email").value().toString())
                     .arg("")
-                    .arg(m_model->record(0).field("cnpj").value().toString())
-                    .arg(m_model->record(0).field("ie").value().toString())
-                    .arg(m_model->record(0).field("fax").value().toString())
+                    .arg("")
+                    .arg("")
+                    .arg(company->getcnpj())
+                    .arg("")
+                    .arg("")
                     .arg( QDate::currentDate().toString("yyyy-MM-dd"))
                     .arg( strDSMRelease ) ))
                 {

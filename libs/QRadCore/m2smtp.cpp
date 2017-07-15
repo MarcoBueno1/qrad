@@ -34,6 +34,7 @@ M2Smtp::M2Smtp(const QString &server,
             const QList<QString> file, const bool html )
 {
 
+    QCoreApplication::processEvents();
     m_bSent =  false;
     EmailAddress *sender = stringToEmail(from);
 
@@ -59,9 +60,11 @@ M2Smtp::M2Smtp(const QString &server,
 
     for (int i = 0; i < file.count(); ++i)
     {
+        QCoreApplication::processEvents();
         message.addPart(new MimeAttachment(new QFile(file.at(i))));
     }
 
+    QCoreApplication::processEvents();
     if (!smtp.connectToHost() && popupMessage)
     {
         okMessage.setText(QString::fromUtf8("email: Sem Conexão"));
@@ -69,6 +72,7 @@ M2Smtp::M2Smtp(const QString &server,
         return;
     }
 
+    QCoreApplication::processEvents();
     if (!smtp.login(login, pass)&& popupMessage)
     {
         okMessage.setText(QString::fromUtf8("email: Erro de Autenticação"));
@@ -76,6 +80,7 @@ M2Smtp::M2Smtp(const QString &server,
         return;
     }
 
+    QCoreApplication::processEvents();
     if (!smtp.sendMail(message) && popupMessage)
     {
         okMessage.setText(QString::fromUtf8("email: Erro de Envio"));
@@ -89,6 +94,7 @@ M2Smtp::M2Smtp(const QString &server,
         m_bSent =  true;
 
     }
+    QCoreApplication::processEvents();
 
     smtp.quit();
 

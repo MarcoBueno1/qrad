@@ -1012,6 +1012,10 @@ bool TicketController::SendEmail(int id )
   QStringList files;
   files.append(FullFileName);
   bool bRet = mail->Send(pdw->getName(),pdw->getemail(),tkt->getObs(),gui->getText(),files);
+  if(bRet)
+  {
+      bRet = tkt->updateSendStatus(stSent);
+  }
   delete tkt;
   delete pdw;
   delete gui;

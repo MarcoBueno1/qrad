@@ -33,7 +33,8 @@ SOURCES +=  \
            cmdpostgres.cpp \
            cmdsqlite.cpp \
            pgsqlasync.cpp \
-           qradmodellog.cpp
+           qradmodellog.cpp \
+           maincompany.cpp
 
 HEADERS +=  \
            orm.h \
@@ -51,7 +52,8 @@ HEADERS +=  \
            cmdpostgres.h \
            cmdsqlite.h \
            pgsqlasync.h \
-           qradmodellog.h
+           qradmodellog.h \
+           maincompany.h
 
 #win32:LIBS +=  -L../QRadCore\release
 #unix:LIBS +=  -L../QRadCore

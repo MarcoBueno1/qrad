@@ -195,5 +195,6 @@
         <file>icon_calendar.png</file>
         <file>icon_documents.png</file>
         <file>background-green-1.jpg</file>
+        <file>icon_mail.png</file>
     </qresource>
 </RCC>

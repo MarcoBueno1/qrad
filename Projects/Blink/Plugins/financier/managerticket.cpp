@@ -59,12 +59,12 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->pushButtonImport,SIGNAL(clicked()), this, SLOT(doImport()));
  //   connect(ui->pushButtonEditDweller,SIGNAL(clicked()), this, SLOT(doEditDweller()));
 
-/*
+
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
-*/
+
     ui->comboBoxMonth->setCurrentIndex(0);
 
     setAcceptDrops(true);
@@ -107,6 +107,9 @@ void Managerticket::createMenu()
     EditMenu->addSeparator();
     EditCurrentDweller = EditMenu->addAction(tr("Editar Morador"));
     EditCurrentDweller->setIcon(QIcon(":/png/icon_id.png"));
+    EditMenu->addSeparator();
+    EmailCurrent = EditMenu->addAction(tr("Enviar e-mail"));
+    EmailCurrent->setIcon(QIcon(":/png/icon_mail.png"));
     menuBar->addMenu(EditMenu);
 
     connect(ExportAction , SIGNAL(triggered()), this, SLOT(doExport()));
@@ -115,6 +118,7 @@ void Managerticket::createMenu()
     connect(ReporitCurrent , SIGNAL(triggered()), this, SLOT(doReprint()));
 
     connect(EditCurrent , SIGNAL(triggered()), this, SLOT(doEdit()));
+    connect(EmailCurrent, SIGNAL(triggered()), this, SLOT(doEmail()));
 
     ui->tableViewSearch->addContextSeparator();
     ui->tableViewSearch->addContextAction(EditCurrent);
@@ -123,7 +127,8 @@ void Managerticket::createMenu()
     ui->tableViewSearch->addContextAction(RemoveCurrent);
     ui->tableViewSearch->addContextSeparator();
     ui->tableViewSearch->addContextAction(EditCurrentDweller);
-
+    ui->tableViewSearch->addContextSeparator();
+    ui->tableViewSearch->addContextAction(EmailCurrent);
 
 
     connect(ImportAction, SIGNAL(triggered()), this, SLOT(doImport()));
@@ -626,4 +631,19 @@ void Managerticket::doImport()
         QMessageBox::information(NULL,"Oops!", QString("Operação cancelada!"));
     }
     delete ParsePay;
+}
+void Managerticket::doEmail()
+{
+    int id = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
+                                                         ui->tableViewSearch->getColumnOf("id")).data().toInt();
+
+    TicketController *pController = new TicketController;
+
+    if(pController->SendEmail(id))
+    {
+        QMessageBox::information(NULL,"Ok!", QString("E-mail enviado com sucesso!"));
+    }
+
+    delete pController;
+
 }

@@ -47,7 +47,6 @@ void Editticket::SetModel(ticket* mod)
    m_mod = mod;
    Load();
    setWindowTitle(QString("Edição do Boleto %1").arg(m_mod->getNossoNumero()));
-
 }
 
 

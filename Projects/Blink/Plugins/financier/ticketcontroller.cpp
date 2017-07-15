@@ -16,6 +16,8 @@
 #include "editextratx.h"
 #include <QMessageBox>
 #include "qradprogresswindow.h"
+#include "emailgui.h"
+#include "qrademail.h"
 
 /*
 #define FIN_AP_WITH_NO_PAYER "select * from dweller d2 "\
@@ -920,4 +922,102 @@ bool TicketController::UpdateTickets(QList<BankTicket*> *list)
     else
         QMessageBox::information(NULL,QString("Ok!"), QString("Operação concluída!!"));
     return bRet;
+}
+
+bool TicketController::SendEmail(int id )
+{
+  QRAD_SHOW_PRPGRESS("Perparando infraestrutura ...")
+  ticket *tkt = ticket::findByid(id,true);
+  if(!tkt)
+  {
+      QRAD_HIDE_PRPGRESS();
+      QMessageBox::warning(NULL,QString("Oops!"), QString("Não foi possivel encontrar o boleto!"));
+      return false;
+  }
+  Dweller *pdw = Dweller::findByid(tkt->getclientid());
+  if(!pdw)
+  {
+      QRAD_HIDE_PRPGRESS();
+      QMessageBox::warning(NULL,QString("Oops!"), QString("Não foi possivel encontrar o Morador!"));
+      delete tkt;
+      delete pdw;
+      return false;
+  }
+  if(pdw->getemail().isEmpty())
+  {
+      QRAD_HIDE_PRPGRESS();
+      QMessageBox::warning(NULL,QString("Oops!"), QString("Este morador não possui e-mail cadastrado!"));
+      delete tkt;
+      delete pdw;
+      return false;
+  }
+
+  Ap *ap = Ap::findByid(pdw->getap());
+  Tower *tw = Tower::findByid(pdw->gettower());
+
+
+  QString Path = QString("c:\\dvl\\acbr\\%1").arg(QDate::currentDate().toString("dd_MM_yyyy"));
+  QString FullFileName = QString("%1\\boleto_%2-%3-%4-%5.pdf").arg(Path)
+          .arg(ap->getNumber())
+          .arg(tw->getName())
+          .arg(pdw->getName())
+          .arg(tkt->getNossoNumero());
+
+  QRAD_HIDE_PRPGRESS();
+  if( !doPrint((BBO_TYPE)tkt->getType(),(BBOL_STATUS)tkt->getStatus(),tkt))
+  {
+      QMessageBox::warning(NULL,QString("Oops!"), QString("Erro ao gerar arquivo %1!").arg(FullFileName));
+      delete tkt;
+      delete pdw;
+      delete ap;
+      delete tw;
+      return false;
+  }
+
+
+  EmailGui *gui = new EmailGui;
+
+  gui->setFile(FullFileName);
+  gui->setTo(pdw->getemail());
+  gui->setSubject(tkt->getObs());
+  gui->setText(QString("Prezado Morador,<br/><br/>        Segue em anexo boleto para pagamento.<br/><br/><br/><br/>Atenciosamente\n"));
+
+  if( QDialog::Accepted != gui->exec())
+  {
+      QMessageBox::warning(NULL,QString("Cancelado!"), QString("Operação Cancelada!"));
+      delete tkt;
+      delete pdw;
+      delete gui;
+      delete ap;
+      delete tw;
+      return false;
+  }
+
+
+
+  QRAD_SHOW_PRPGRESS_STEP("Enviando...");
+  QRadEmail *mail = QRadEmail::getInstance();
+  if(!mail)
+  {
+      QRAD_HIDE_PRPGRESS();
+      QMessageBox::warning(NULL,QString("Oops!"), QString("Não foi possível inicializar infraestrutura de e-mail!"));
+      delete tkt;
+      delete pdw;
+      delete gui;
+      delete ap;
+      delete tw;
+      return false;
+  }
+
+  QStringList files;
+  files.append(FullFileName);
+  bool bRet = mail->Send(pdw->getName(),pdw->getemail(),tkt->getObs(),gui->getText(),files);
+  delete tkt;
+  delete pdw;
+  delete gui;
+  delete ap;
+  delete tw;
+  QRAD_HIDE_PRPGRESS();
+
+  return bRet;
 }

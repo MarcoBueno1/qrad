@@ -53,6 +53,7 @@ public slots:
     void doEditDweller();
     //    void customMenuRequested(QPoint pt);
     void doImport();
+    void doEmail();
 private:
     Ui::Managerticket *ui;
 
@@ -81,6 +82,7 @@ private:
     QAction *EditCurrentDweller;
     QAction *ReporitCurrent;
     QAction *RemoveCurrent;
+    QAction *EmailCurrent;
 };
 
 #endif // MANAGERticket_H

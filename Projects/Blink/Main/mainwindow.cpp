@@ -79,7 +79,7 @@ void MainWindow::on_actionSobre_o_Blink_triggered()
     QMessageBox::about(this, QString::fromUtf8("Sobre o DSM"),
                        QString::fromUtf8("<h2>DSM %1</h2>"
                           "<p>Copyright &copy; 2017 Marco Bueno."
-                          "<p>DSM é um sistema de controle de acessos para condomínios.\n").arg(BLINK_RELEASE));
+                          "<p>DSM é um sistema de gestão para condomínios.\n").arg(BLINK_RELEASE));
 
 }
 
@@ -93,16 +93,18 @@ void MainWindow::on_actionBloquear_triggered()
 
     this->setEnabled(false);
     pLogin->setWindowModality(Qt::ApplicationModal);
+    int result;
     do
     {
-        pLogin->exec();
+        result = pLogin->exec();
+        QRadConfig::centralizarWidget(pLogin);
         if( nUserId != QRadConfig::GetCurrentUserId())
         {
             QMessageBox::warning(this,
                                  "Atenção!",
                                  QString("O sistema está bloqueado, em uso para %1.\nPor favor solicite deste usuário o desbloqueio").arg(login));
         }
-    }while( nUserId != QRadConfig::GetCurrentUserId() );
+    }while(( nUserId != QRadConfig::GetCurrentUserId()) || (result == QDialog::Rejected));
 
     this->setEnabled(true);
 }

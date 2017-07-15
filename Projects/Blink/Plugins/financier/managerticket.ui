@@ -81,7 +81,7 @@
                 <item row="0" column="0">
                  <widget class="QRadioButton" name="radioButtonAllType">
                   <property name="text">
-                   <string>Todos</string>
+                   <string>To&amp;dos</string>
                   </property>
                   <property name="checked">
                    <bool>true</bool>
@@ -91,14 +91,14 @@
                 <item row="0" column="1">
                  <widget class="QRadioButton" name="radioButtonTxCond">
                   <property name="text">
-                   <string>Condomínio</string>
+                   <string>Condomí&amp;nio</string>
                   </property>
                  </widget>
                 </item>
                 <item row="1" column="1">
                  <widget class="QRadioButton" name="radioButtonTxExtra">
                   <property name="text">
-                   <string>Extra</string>
+                   <string>Ext&amp;ra</string>
                   </property>
                  </widget>
                 </item>
@@ -114,7 +114,7 @@
                 <item row="0" column="0">
                  <widget class="QRadioButton" name="radioButtonAll">
                   <property name="text">
-                   <string>Todos</string>
+                   <string>&amp;Todos</string>
                   </property>
                   <property name="checked">
                    <bool>true</bool>
@@ -124,21 +124,21 @@
                 <item row="0" column="1">
                  <widget class="QRadioButton" name="radioButtonNotPayed">
                   <property name="text">
-                   <string>Em Atraso</string>
+                   <string>Em &amp;Atraso</string>
                   </property>
                  </widget>
                 </item>
                 <item row="1" column="0">
                  <widget class="QRadioButton" name="radioButtonPayed">
                   <property name="text">
-                   <string>Pagos</string>
+                   <string>Pa&amp;gos</string>
                   </property>
                  </widget>
                 </item>
                 <item row="1" column="1">
                  <widget class="QRadioButton" name="radioButtonNew">
                   <property name="text">
-                   <string>Novos</string>
+                   <string>&amp;Novos</string>
                   </property>
                  </widget>
                 </item>
@@ -160,7 +160,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string> Condomínio</string>
+                   <string>&amp;Condomínio</string>
                   </property>
                   <property name="icon">
                    <iconset resource="../../icons/resources.qrc">
@@ -177,7 +177,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string> &amp;Extra</string>
+                   <string> E&amp;xtra</string>
                   </property>
                   <property name="icon">
                    <iconset resource="../../icons/resources.qrc">
@@ -194,7 +194,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Exportar (.PDF/.REM)</string>
+                   <string>Ex&amp;portar (.PDF/.REM)</string>
                   </property>
                   <property name="icon">
                    <iconset resource="../../icons/resources.qrc">
@@ -211,7 +211,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Importar (.RET)</string>
+                   <string>&amp;Importar (.RET)</string>
                   </property>
                   <property name="icon">
                    <iconset resource="../../icons/resources.qrc">

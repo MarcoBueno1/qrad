@@ -62,6 +62,7 @@ void Editprofile::Save()
     mod->setuseprofile(ui->ChkBxuseprofile->isChecked());
     mod->setConfigureEmail(ui->ChkConfigureemail->isChecked());
     mod->setGerarRelatorios(ui->ChkGerarRelatorios->isChecked());
+    mod->setGeenciarBoletos(ui->ChkGerenciarBoletos->isChecked());
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -90,6 +91,7 @@ void Editprofile::Load()
     ui->ChkBxuseprofile->setChecked(m_mod->getuseprofile());
     ui->ChkConfigureemail->setChecked(m_mod->getConfigureEmail());
     ui->ChkGerarRelatorios->setChecked(m_mod->getGerarRelatorios());
+    ui->ChkGerenciarBoletos->setChecked(m_mod->getGeenciarBoletos());
 
 }
 

@@ -167,6 +167,19 @@
       <string>Gerar Relatórios</string>
      </property>
     </widget>
+    <widget class="QCheckBox" name="ChkGerenciarBoletos">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>90</y>
+       <width>130</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Gerenciar Boletos</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QFrame" name="topmenu">

@@ -26,6 +26,8 @@ Editextratx::Editextratx(QWidget *parent) :
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
     connect(ui->pushButtonAdd, SIGNAL(clicked()),this,SLOT(Add()));
     connect(ui->pushButtonRemove, SIGNAL(clicked()),this,SLOT(Remove()));
+    connect(ui->checkBoxMovedOut, SIGNAL(clicked()),this,SLOT(MovedOut()));
+
 
 
     ui->dateEdit->setDate(QDate::currentDate().addDays(15));
@@ -181,4 +183,23 @@ void Editextratx::setVencto(QDate date)
 QDate Editextratx::getVencto()
 {
     return ui->dateEdit->date();
+}
+void Editextratx::MovedOut()
+{
+    if( ui->checkBoxMovedOut->isChecked())
+    {
+        ui->lineEditMorador->setSelect("select a.numero  || ' | '  || t.name  || ' | ' || d.name, d.id, d.name, a.numero, t.name, d.ramal "\
+                                         "from dweller d "\
+                                         "inner join tower t on t.id= d.tower "\
+                                         "inner join ap a on a.id = d.ap  where d.removed = false and d.payer = true");
+
+    }
+    else
+    {
+        ui->lineEditMorador->setSelect("select a.numero  || ' | '  || t.name  || ' | ' || d.name, d.id, d.name, a.numero, t.name, d.ramal "\
+                                         "from dweller d "\
+                                         "inner join tower t on t.id= d.tower "\
+                                         "inner join ap a on a.id = d.ap  where d.removed = false and d.payer = true and d.movedout <> true");
+
+    }
 }

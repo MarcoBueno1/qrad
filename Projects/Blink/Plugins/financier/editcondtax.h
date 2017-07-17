@@ -34,6 +34,7 @@ public slots:
     void Add();
     void Remove();
 
+    void MovedOut();
 private:
     double m_discount;
     QSqlQueryModel *m_selected;

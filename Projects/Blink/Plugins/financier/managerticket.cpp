@@ -12,6 +12,11 @@
 #include "qradplugincontainer.h"
 #include <QToolBar>
 #include <QMenuBar>
+#include <QSqlField>
+#include <QDesktopServices>
+#include "pdfwrapper.h"
+#include "qradprogresswindow.h"
+#include "qradmoney.h"
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
 #define SQL_ITEMS "select t.nossonumero as \"Nº.Banco\", t.seunumero as \"Nº.Sis\", a.numero as \"Ap\", tw.name as \"Torre\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
@@ -60,10 +65,12 @@ Managerticket::Managerticket(QWidget *parent) :
  //   connect(ui->pushButtonEditDweller,SIGNAL(clicked()), this, SLOT(doEditDweller()));
 
 
+    /*
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
+*/
 
     ui->comboBoxMonth->setCurrentIndex(0);
 
@@ -112,6 +119,10 @@ void Managerticket::createMenu()
     EmailCurrent->setIcon(QIcon(":/png/icon_mail.png"));
     menuBar->addMenu(EditMenu);
 
+    PrintMenu = new QMenu(tr("&Imprimir"), this);
+    PrintCurrentView = PrintMenu->addAction(tr("Listagem de tela"));
+    menuBar->addMenu(PrintMenu);
+
     connect(ExportAction , SIGNAL(triggered()), this, SLOT(doExport()));
     connect(EditCurrentDweller , SIGNAL(triggered()), this, SLOT(doEditDweller()));
     connect(RemoveCurrent , SIGNAL(triggered()), this, SLOT(doRemove()));
@@ -119,6 +130,7 @@ void Managerticket::createMenu()
 
     connect(EditCurrent , SIGNAL(triggered()), this, SLOT(doEdit()));
     connect(EmailCurrent, SIGNAL(triggered()), this, SLOT(doEmail()));
+    connect(PrintCurrentView, SIGNAL(triggered()), this, SLOT(doPrintView()));
 
     ui->tableViewSearch->addContextSeparator();
     ui->tableViewSearch->addContextAction(EditCurrent);
@@ -647,4 +659,127 @@ void Managerticket::doEmail()
 
     delete pController;
 
+}
+
+void Managerticket::doPrintView()
+{
+    QList< FieldFormat *> headers;
+    QList<QStringList *> lines;
+    QStringList LeftHead;
+    double dTotal = 0;
+
+    LeftHead.append(QString("Condomínio Garden Club"));
+    LeftHead.append(QString("Av Grande Otelo 270"));
+    LeftHead.append(QString("Parque 10. Manaus-AM"));
+
+    QRAD_SHOW_PRPGRESS("Inicializando Infraestrutura...");
+
+     int i;
+     QSqlQueryModel *model = m_Model;
+
+     debug_message("antes AutoSizeColumn\n");
+     AutoSizeColumn(model);
+
+     QStringList *line;
+     int nColumns = 8; //model->columnCount();
+     QRAD_SHOW_PRPGRESS_STEP("Gerando cabeçalho...");
+
+     for( int nCount=0, i = 0; i < nColumns; i++ )
+     {
+         debug_message("i=%d nColumns=%d\n", i, nColumns);
+        if(( i==1)||( i==6))
+            continue;
+
+        QCoreApplication::processEvents();
+
+        QString strAux = model->headerData(i, Qt::Horizontal).toString();
+        if( i == 0)
+            strAux="N. Banco";
+        FieldFormat *f = (FieldFormat *)malloc(sizeof(FieldFormat));
+        if( !f )
+        {
+            debug_message("não foi possivel alocar f...\n");
+        }
+        debug_message("strAux=%s.\n",strAux.toLatin1().data());
+        strcpy(f->Name,strAux.toLatin1().data());
+        debug_message("m_percents.at(i).toDouble()=%02.02f\n",m_percents.at(nCount).toDouble());
+        f->Percent = m_percents.at(nCount++).toDouble();
+
+        debug_message("antes do alignment\n");
+        if( i == 4) // morador
+            f->Align   = ALIGN_LEFT;
+        else
+            f->Align   = ALIGN_CENTER;
+
+        debug_message("antes de adicionar\n");
+        headers.append(f);
+        debug_message("adicionou\n");
+     }
+
+
+     QRAD_SHOW_PRPGRESS_STEP("Inserindo Linhas...");
+     for(  i = 0; i < model->rowCount(); i++ )
+     {
+       QSqlRecord rec = model->record(i);
+
+       line = new QStringList;
+       for( int j = 0; j < nColumns; j++ )
+       {
+        QCoreApplication::processEvents();
+
+        if(( j==1)||( j==6))
+            continue;
+
+        if(rec.field(j).type()==QVariant::Date)
+        {
+             QDate field = rec.field(j).value().toDate();
+             line->append(field.toString(FMT_DATE) );
+        }
+        else if(rec.field(j).type()==QVariant::Double)
+        {
+            dTotal = QRadRound::PowerRound(rec.field(j).value().toDouble()) + QRadRound::PowerRound(dTotal);
+            line->append(QRadMoney::MoneyHumanForm(rec.field(j).value().toDouble() ));
+        }
+         else
+            line->append(rec.field(j).value().toString() );
+       }
+       lines.append(line);
+
+     }
+
+     QString reportTitle = ui->radioButtonPayed->isChecked()?"BOLETOS PAGOS":ui->radioButtonNotPayed->isChecked()?"INADIMPLENTES":"LISTA DE BOLETOS";
+
+     QRAD_SHOW_PRPGRESS_STEP("Construindo Arquivo...");
+     debug_message("Construindo Arquivo...\n" );
+     QString strAux =  QString("%1%2").arg(reportTitle).arg(".pdf");
+     strAux.replace(" ", "_");
+     if( 0 == pdfwrapper::Build( strAux , LeftHead, reportTitle , headers, lines, 14, dTotal ))
+     {
+          QRAD_HIDE_PRPGRESS();
+          debug_message("OpenURL...\n" );
+          QDesktopServices::openUrl(QUrl(strAux, QUrl::TolerantMode));
+     }
+     QRAD_HIDE_PRPGRESS();
+}
+
+
+void Managerticket::AutoSizeColumn(QSqlQueryModel * model)
+{
+    int j =0;
+
+    for( j; j < 8; j++)
+    {
+        debug_message("no loop\n");
+
+        if(( j!=1 )&&( j!=6 ))
+        {
+            QString strAux = model->headerData(j, Qt::Horizontal).toString();
+            double percent = (double)100/ui->tableViewSearch->width()*ui->tableViewSearch->columnWidth(j);
+            debug_message("%s percent=%02.02f\n",strAux.toLatin1().data(),percent);
+
+            m_percents.append(QString("%1").arg(percent));
+        }
+
+
+    }
 }

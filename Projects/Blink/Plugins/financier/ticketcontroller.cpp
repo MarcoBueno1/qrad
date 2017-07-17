@@ -27,10 +27,10 @@
 */
 
 #define FIN_MISSING_TICKETS_THIS_MONTH "select * from dweller d where payer = true and removed <> true and id not in "\
-                             "( select clientid from ticket t where t.removed <> true and t.vencto = '%1' and type = %2 %3 ) and free <> true order by d.id;"
+                             "( select clientid from ticket t where t.removed <> true and t.vencto = '%1' and type = %2 %3 ) and free <> true and movedout <> true order by d.id;"
 
 #define FIN_MISSING_TICKETS_THIS_MONTH_VALUE "select * from dweller d where payer = true and removed <> true and id not in "\
-                             "( select clientid from ticket t where t.removed <> true and t.valor=%1 and t.vencto = '%2' and type = %3 %4 ) order by d.id;"
+                             "( select clientid from ticket t where t.removed <> true and t.valor=%1 and t.vencto = '%2' and type = %3 %4 )  and movedout <> true  order by d.id;"
 
 
 #define FIN_AP_WITH_NO_PAYER " select ap.numero as \"Ap\", tower.name as \"Torre\" from ap, tower  where not exists( select a2,b2 from ( select d.ap a2 , "\

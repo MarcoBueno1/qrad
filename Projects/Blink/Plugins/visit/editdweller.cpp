@@ -217,6 +217,8 @@ void EditDweller::Save()
     m_mod->setMoveOut(ui->dateEditUntil->date());
     m_mod->setObs(ui->textEditObs->toPlainText());
     m_mod->setPayer(ui->checkBoxPayer->isChecked());
+    if( ui->dateEditUntil->date() == QDate::currentDate())
+        m_mod->setMovedOut(true);
     m_mod->setRemoved(false);
 
 

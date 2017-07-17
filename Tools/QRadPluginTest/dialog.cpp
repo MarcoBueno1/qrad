@@ -74,7 +74,8 @@ void Dialog::setFileName(QString fileName)
     ui->pushButton_2->setEnabled(true);
 
     ui->tableView->selectRow(0);
-    ui->pushButton_2->setFocus();
+    ui->tableView->selectRow(0);
+//    ui->pushButton_2->setFocus();
 
 }
 
@@ -115,6 +116,7 @@ void Dialog::onLoad()
 	}
 
 	setFileName(fileName);
+    ui->tableView->setFocus();
 
 }
 

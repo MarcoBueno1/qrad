@@ -31,6 +31,7 @@ class Dweller : public Model
      MODEL_DECLARE_ATTRIBUTE(bool, Removed )
      MODEL_DECLARE_ATTRIBUTE(bool, Payer )
      MODEL_DECLARE_ATTRIBUTE(bool, Free )
+     MODEL_DECLARE_ATTRIBUTE(bool, MovedOut )
 
      MODEL_MATCH_TABLE(Dweller, "dweller")
 

@@ -29,6 +29,7 @@ public slots:
     
     void Add();
     void Remove();
+    void MovedOut();
 private:
     QSqlQueryModel *m_selected;
     QList<int> m_selectedIds;

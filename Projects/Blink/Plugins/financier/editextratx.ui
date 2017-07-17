@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>579</width>
-    <height>401</height>
+    <height>417</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>9</y>
      <width>560</width>
-     <height>350</height>
+     <height>370</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -34,7 +34,7 @@
       <x>20</x>
       <y>120</y>
       <width>520</width>
-      <height>221</height>
+      <height>237</height>
      </rect>
     </property>
     <property name="title">
@@ -103,6 +103,19 @@
      </property>
      <property name="text">
       <string>Adicionar</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBoxMovedOut">
+     <property name="geometry">
+      <rect>
+       <x>13</x>
+       <y>216</y>
+       <width>151</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Mostrar antigos moradores</string>
      </property>
     </widget>
    </widget>
@@ -298,7 +311,7 @@
    <property name="geometry">
     <rect>
      <x>396</x>
-     <y>367</y>
+     <y>383</y>
      <width>85</width>
      <height>27</height>
     </rect>
@@ -311,7 +324,7 @@
    <property name="geometry">
     <rect>
      <x>483</x>
-     <y>367</y>
+     <y>383</y>
      <width>85</width>
      <height>27</height>
     </rect>
@@ -323,14 +336,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SComboBox</class>
-   <extends>QComboBox</extends>
-   <header location="global">scombobox.h</header>
-  </customwidget>
-  <customwidget>
    <class>QRadLineEditCompleter</class>
    <extends>QLineEdit</extends>
    <header location="global">qradlineeditcompleter.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SComboBox</class>
+   <extends>QComboBox</extends>
+   <header location="global">scombobox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

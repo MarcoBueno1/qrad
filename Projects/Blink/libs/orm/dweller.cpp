@@ -24,6 +24,7 @@ MODEL_BEGIN_MAP(Dweller)
      MODEL_MAP_FIELD(Removed, "removed");
      MODEL_MAP_FIELD(Payer, "payer");
      MODEL_MAP_FIELD(Free, "free");
+     MODEL_MAP_FIELD(MovedOut, "movedout");
 
 MODEL_END_MAP()
 

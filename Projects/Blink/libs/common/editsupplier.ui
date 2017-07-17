@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Edit</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../icons/resources.qrc">
+    <normaloff>:/png/marca-m.png</normaloff>:/png/marca-m.png</iconset>
+  </property>
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
@@ -473,6 +477,9 @@
   <tabstop>PshBtnCancel</tabstop>
   <tabstop>PshBtnSave</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

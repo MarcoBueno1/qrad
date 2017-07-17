@@ -22,6 +22,10 @@
   <property name="windowTitle">
    <string>Gerenciar Contas a Receber</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../icons/resources.qrc">
+    <normaloff>:/png/marca-m.png</normaloff>:/png/marca-m.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">QPushButton{border: 1px solid darkgrey; border-radius:4px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1#dadbde); min-width:110px; min-height: 30px; selection-background-color: rgb(125, 184, 255); } 
 
@@ -1064,14 +1068,14 @@ selection-color: rgb(255, 255, 255);</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DSMComboBoxEnter</class>
-   <extends>QComboBox</extends>
-   <header location="global">dsmcomboboxenter.h</header>
-  </customwidget>
-  <customwidget>
    <class>DSMDateEditEnter</class>
    <extends>QDateEdit</extends>
    <header location="global">dsmdateeditenter.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DSMComboBoxEnter</class>
+   <extends>QComboBox</extends>
+   <header location="global">dsmcomboboxenter.h</header>
   </customwidget>
   <customwidget>
    <class>DSMGroupBoxEnter</class>

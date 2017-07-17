@@ -18,6 +18,8 @@ Editreason::Editreason(QWidget *parent) :
     
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
+
+    setWindowTitle("Cadastro de Motivos de Visita");
 }
 
 Editreason::~Editreason()

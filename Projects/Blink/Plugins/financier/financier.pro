@@ -17,7 +17,8 @@ INCLUDEPATH = ../../../../libs/QRadCore \
               ../../libs/common \
               ../../../../libs/QRadLic \
               ../../libs/acbrticket/ \
-              ../../../../libs/3rdpart/exaro
+              ../../../../libs/3rdpart/exaro \
+              ../../../../libs/pdfwrapper
 
               . 
 DESTDIR = .
@@ -105,7 +106,8 @@ win32:LIBS += -L../../../../libs/QRadCore/release \
         -L../../libs/common/release \
         -L../../../../libs/QRadLic/release \
         -L../../../../libs/QRadLicUp/release \
-        -L../../libs/acbrticket/release
+        -L../../libs/acbrticket/release \
+        -L../../libs/pdfwrapper/release
 
 LIBS += -L../../../../libs/QRadCore \
         -L../../../../libs/QRadOrm \
@@ -115,13 +117,15 @@ LIBS += -L../../../../libs/QRadCore \
         -L../../../../libs/QRadLic \
         -L../../../../libs/QRadLicUp \
         -L../../libs/acbrticket/ \
+        -L../../libs/pdfwrapper/ \
         -lqradcore \
         -lqradorm \
         -lqradlicup \
         -lblinkcommon \
         -lblinkorm \
         -lacbrticket\
-        -lqradcommongui
+        -lqradcommongui \
+        -lpdfwrapper
 
 
 

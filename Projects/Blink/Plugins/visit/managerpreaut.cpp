@@ -30,6 +30,8 @@ Managerpreaut::Managerpreaut(QWidget *parent) :
     connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
 
+    setWindowTitle("Gerência de Pré-Autorizações");
+
     DoRefresh();
 }
 

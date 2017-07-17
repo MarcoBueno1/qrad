@@ -70,6 +70,8 @@ Managervisit::Managervisit(QWidget *parent) :
     flags |= Qt::WindowContextHelpButtonHint;
     setWindowFlags( flags );
     setWindowState(Qt::WindowMaximized);
+
+    setWindowTitle("Gerenciador de Visitas");
 }
 
 Managervisit::~Managervisit()

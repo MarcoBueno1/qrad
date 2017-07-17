@@ -5,6 +5,7 @@
 #include "pdfwrapper.h"
 #include "hpdf.h"
 #include "format.h"
+#include "qradmoney.h"
 
 void error_handler (HPDF_STATUS   error_no,
                HPDF_STATUS   detail_no,
@@ -44,7 +45,8 @@ int pdfwrapper::Build( QString strFile,
                        QString strTitle, 
 					   QList<FieldFormat *> ColHeader, 
                        QList<QStringList *> lines,
-                       int dwTitleSize)
+                       int dwTitleSize,
+                       double dTotal)
 {
     HPDF_Doc  pdf;
     HPDF_Page page;
@@ -122,7 +124,7 @@ int pdfwrapper::Build( QString strFile,
 
             HPDF_Page_BeginText(page);
 			HPDF_Page_SetFontAndSize (page, def_font_head, 8);
-            strcpy( szText, "Blink Sistemas - WatsApp: 92 98415-1066");
+            strcpy( szText, "M2Smart Solutions - WatsApp: 92 98415-1066");
             HPDF_Page_MoveTextPos(page, 50 , 40);
             HPDF_Page_ShowText(page, szText);
             HPDF_Page_EndText(page);
@@ -208,7 +210,15 @@ int pdfwrapper::Build( QString strFile,
 
         }while( i <= lines.count());
 
-		
+        if( dTotal> -1)
+        {
+            HPDF_Page_BeginText(page);
+            HPDF_Page_SetFontAndSize (page, def_font_head, 8);
+            sprintf( szText, "TOTAL R$ %s", QRadMoney::MoneyHumanForm(dTotal).toLatin1().data());
+            HPDF_Page_MoveTextPos(page, width -50 , 40);
+            HPDF_Page_ShowText(page, szText);
+            HPDF_Page_EndText(page);
+        }
         HPDF_SaveToFile( pdf, strFile.toLatin1().data() );
     } 
     catch (...) 

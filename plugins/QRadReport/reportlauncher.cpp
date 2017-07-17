@@ -191,7 +191,13 @@ void ReportLauncher::Buildreport()
        line = new QStringList;
        for( int j = 0; j < nColumns; j++ )
        {
-         line->append(rec.field(j).value().toString() )    ;
+           if(rec.field(j).type()==QVariant::Date)
+           {
+               QDate field = rec.field(j).value().toDate();
+               line->append(field.toString(FMT_DATE) );
+           }
+           else
+             line->append(rec.field(j).value().toString() );
        }
        lines.append(line);
 

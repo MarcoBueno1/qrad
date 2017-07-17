@@ -13,9 +13,9 @@ ReportPlugin::ReportPlugin()
    m_Title = "Relatorio";
    
 
-   m_LeftHead.append("Blink. @2016");
-   m_LeftHead.append("Manaus - AMl");
-   m_LeftHead.append("Watsapp +55 92 98415-1066");
+   m_LeftHead.append(QString("DSM @2017"));
+   m_LeftHead.append(QString("Manaus - AM"));
+   m_LeftHead.append(QString("Watsapp +55 92 98415-1066"));
 }
 
 ReportPlugin::~ReportPlugin()

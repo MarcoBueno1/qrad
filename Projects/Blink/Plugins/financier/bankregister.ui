@@ -22,8 +22,21 @@
   <property name="windowTitle">
    <string>Cadastrar Banco</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../icons/resources.qrc">
+    <normaloff>:/png/marca-m.png</normaloff>:/png/marca-m.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <property name="spacing">
@@ -305,7 +318,7 @@
         <string>&amp;Salvar</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../icons/resources.qrc">
+        <iconset resource="../../icons/resources.qrc">
          <normaloff>:/png/add-icon.png</normaloff>:/png/add-icon.png</iconset>
        </property>
        <property name="iconSize">
@@ -339,7 +352,7 @@
         <string>S&amp;air</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../icons/resources.qrc">
+        <iconset resource="../../icons/resources.qrc">
          <normaloff>:/png/shutdown-icon.png</normaloff>:/png/shutdown-icon.png</iconset>
        </property>
        <property name="iconSize">
@@ -455,24 +468,8 @@
   <tabstop>btnExit</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
-  <include location="../../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

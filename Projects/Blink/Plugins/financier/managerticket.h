@@ -54,6 +54,7 @@ public slots:
     //    void customMenuRequested(QPoint pt);
     void doImport();
     void doEmail();
+    void doPrintView();
 private:
     Ui::Managerticket *ui;
 
@@ -76,6 +77,7 @@ private:
     QMenuBar *menuBar;
     QMenu *fileMenu;
     QMenu *EditMenu;
+    QMenu *PrintMenu;
     QAction *ExportAction;
     QAction *ImportAction;
     QAction *EditCurrent;
@@ -83,6 +85,11 @@ private:
     QAction *ReporitCurrent;
     QAction *RemoveCurrent;
     QAction *EmailCurrent;
+    QAction *PrintCurrentView;
+    void AutoSizeColumn(QSqlQueryModel *model);
+    QStringList m_percents;
+    QStringList m_aligns;
+
 };
 
 #endif // MANAGERticket_H

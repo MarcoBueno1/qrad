@@ -31,6 +31,8 @@ Editvehicle::Editvehicle(QWidget *parent) :
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
+
+    setWindowTitle("Cadastro de Veículos");
 }
 
 void Editvehicle::setOwner(int owner)

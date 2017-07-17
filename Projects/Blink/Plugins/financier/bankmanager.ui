@@ -22,6 +22,10 @@
   <property name="windowTitle">
    <string>Gerenciar Bancos</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../icons/resources.qrc">
+    <normaloff>:/png/marca-m.png</normaloff>:/png/marca-m.png</iconset>
+  </property>
   <widget class="QFrame" name="topmenu">
    <property name="geometry">
     <rect>
@@ -581,7 +585,7 @@ selection-color: rgb(255, 255, 255);</string>
        <string>&amp;Novo</string>
       </property>
       <property name="icon">
-       <iconset resource="../../icon/resources.qrc">
+       <iconset resource="../../icons/resources.qrc">
         <normaloff>:/png/add-icon.png</normaloff>:/png/add-icon.png</iconset>
       </property>
       <property name="iconSize">
@@ -701,6 +705,7 @@ selection-color: rgb(255, 255, 255);</string>
   </widget>
  </widget>
  <resources>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
  </resources>
  <connections/>

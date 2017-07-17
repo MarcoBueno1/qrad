@@ -29,6 +29,8 @@ Managersupplier::Managersupplier(QWidget *parent) :
     connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
 
+    setWindowTitle("Gerência de Fornecedores");
+
     DoRefresh();
 }
 

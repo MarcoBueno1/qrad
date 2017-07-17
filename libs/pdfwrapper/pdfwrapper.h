@@ -30,7 +30,8 @@ class pdfwrapper
 	                  QString strTitle, 
 					  QList<FieldFormat *> ColHeader, 
                       QList<QStringList *> lines,
-                      int dwTitleSize = 20);
+                      int dwTitleSize = 14,
+                      double dTotal=-1 );
 
 	
 };

@@ -46,6 +46,10 @@
   <property name="windowTitle">
    <string>Histórico de Contas Detalhado</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../icons/resources.qrc">
+    <normaloff>:/png/marca-m.png</normaloff>:/png/marca-m.png</iconset>
+  </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
@@ -53,10 +57,19 @@
    <bool>false</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
-   <property name="horizontalSpacing">
+   <property name="leftMargin">
     <number>0</number>
    </property>
-   <property name="margin">
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="horizontalSpacing">
     <number>0</number>
    </property>
    <item row="0" column="0" colspan="2">
@@ -466,6 +479,9 @@ selection-color: rgb(255, 255, 255);</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -30,7 +30,7 @@ unix:LIBS += -L../QRadCore \
     -L../QRadLic
 	
 LIBS += -lqradcore \
-    -lqradlic
+    -lqradlic \
     -lqradorm
 
 win32:QMAKE_LFLAGS += --enable-auto-import

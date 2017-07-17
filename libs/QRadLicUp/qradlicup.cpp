@@ -34,8 +34,14 @@ void QRadLicUp::conectremote()
     QString strRemoteServer;
     if( !m_db.isOpen() || !m_db.isValid() )
     {
-        debug_message("\nENTREI NO IF PARA SETAR DADOS DO SERVIDOR REMOTO ........\n");
+        debug_message("\nENTREI NO IF PARA SETAR DADOS DO SERVIDOR REMOTO (%s)........\n",
+                      QRadFile::GetParamValue("licensedb/database").toLatin1().data());
 
+        for( int i=0; i < QSqlDatabase::drivers().count(); i++)
+          debug_message("\nDrivers disponivel: %s\n",QSqlDatabase::drivers().value(i).toLatin1().data());
+
+
+        debug_message("\ndatdabase=%s\n",QRadFile::GetParamValue("licensedb/database").toLatin1().data());
 
         m_db =QSqlDatabase::addDatabase( QRadFile::GetParamValue("licensedb/database"), "mysqlserverdream");
         m_db.setDatabaseName(/*dsmFile::GetParamValue("licensedb/databasename")*/ "lnxclients");
@@ -57,6 +63,7 @@ void QRadLicUp::conectremote()
         ps.replace("y","+");
         m_db.setPassword(ps /*dsmFile::GetParamValue("licensedb/password")*/);
         m_db.setConnectOptions("MYSQL_OPT_CONNECT_TIMEOUT=20");
+
     }
 
     if (!m_db.open())
@@ -66,7 +73,9 @@ void QRadLicUp::conectremote()
 
 //        debug_message("\nErro: %s\n (m_db.setHostName=%s, m_db.password()=%s)\n", m_db.lastError().text().toUtf8().data(),
  //                     m_db.hostName().toUtf8().data(), m_db.password().toUtf8().data());
-        debug_message("\nCONSEGUI CONECTAR NO SERVIDOR REMOTO ........\n");
+//        debug_message("\nNAO CONSEGUI CONECTAR NO SERVIDOR REMOTO ........\n");
+        debug_message("\n%s........\n" ,m_db.lastError().text().toLatin1().data());
+
     }
 
 }
@@ -112,6 +121,7 @@ bool QRadLicUp::SyncLicence()
         conectremote();
         if( !m_db.isOpen() )
         {
+            debug_message("\nNão consegiu conectar no servidor remoto, abortando........\n");
             return false;
         }
 
@@ -179,7 +189,7 @@ bool QRadLicUp::SyncLicence()
 
                         m_Remotemodel->setQuery( strSQL, m_db );
 
-//                        strSQL = "update dsm_uselicnese set lastlicense = '" + strLastlicense + "'" ;
+//                        strSQL = "update maincompany set lastlicense = '" + strLastlicense + "'" ;
 
 //                        m_Remotemodel->setQuery( strSQL );
                     }
@@ -189,12 +199,12 @@ bool QRadLicUp::SyncLicence()
 
                 m_Remotemodel->setQuery( strSQL, m_db );
 
-                m_model->setQuery("update license set sync=true");
-                m_model->setQuery("update dsm_configuration set bp=true");
+                m_model->setQuery("update maincompany set sync=true");
+                //m_model->setQuery("update dsm_configuration set bp=true");
 
                 if( blocked  || !enabled )
                 {
-                       strSQL = "update license set lastlicense = '' " ;
+                       strSQL = "update maincompany set lastlicense = '' " ;
                        m_Remotemodel->setQuery( strSQL );
                        qDebug() << "IMPORTANTE: SUA LICENÇA FOI BLOQUEADA, POR FAVOR ENTRE EM CONTATO COM A M2SMART ( contato@m2smart.com.br )";
                 }
@@ -211,9 +221,9 @@ bool QRadLicUp::SyncLicence()
 
                 if( !insert->exec(strSQL.arg(company->getname())
                     .arg(company->getfantasyname())
-                    .arg("")
-                    .arg("")
-                    .arg("")
+                    .arg("Av. Grande Otelo")
+                    .arg("270")
+                    .arg("Parque 10")
                     .arg("Manaus")
                     .arg(13)
                     .arg("69055050")
@@ -222,16 +232,18 @@ bool QRadLicUp::SyncLicence()
                     .arg(company->getlastLicense())
                     .arg(true)
                     .arg(false)
-                    .arg("")
-                    .arg("")
-                    .arg("")
+                    .arg("1")
+                    .arg("1")
+                    .arg("1")
                     .arg(company->getcnpj())
-                    .arg("")
-                    .arg("")
+                    .arg("1")
+                    .arg("1")
                     .arg( QDate::currentDate().toString("yyyy-MM-dd"))
                     .arg( strDSMRelease ) ))
                 {
-                    qDebug() << insert->lastQuery();
+                    debug_message("Lasterror=%s\n", insert->lastError().databaseText().toLatin1().data());
+                    debug_message("%s\n",strSQL.toLatin1().data());
+
                     QMessageBox::warning(NULL, QString::fromUtf8("Atenção"), QString::fromUtf8("Não foi possivel atualizar base remota"));
                 }
                 else

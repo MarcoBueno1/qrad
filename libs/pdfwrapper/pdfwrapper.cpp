@@ -5,7 +5,6 @@
 #include "pdfwrapper.h"
 #include "hpdf.h"
 #include "format.h"
-#include "qradmoney.h"
 
 void error_handler (HPDF_STATUS   error_no,
                HPDF_STATUS   detail_no,
@@ -46,7 +45,7 @@ int pdfwrapper::Build( QString strFile,
 					   QList<FieldFormat *> ColHeader, 
                        QList<QStringList *> lines,
                        int dwTitleSize,
-                       double dTotal)
+                       QString strTotal)
 {
     HPDF_Doc  pdf;
     HPDF_Page page;
@@ -210,11 +209,11 @@ int pdfwrapper::Build( QString strFile,
 
         }while( i <= lines.count());
 
-        if( dTotal> -1)
+        if( !strTotal.isEmpty())
         {
             HPDF_Page_BeginText(page);
             HPDF_Page_SetFontAndSize (page, def_font_head, 8);
-            sprintf( szText, "TOTAL R$ %s", QRadMoney::MoneyHumanForm(dTotal).toLatin1().data());
+            sprintf( szText, "TOTAL R$ %s", strTotal.toLatin1().data());
             HPDF_Page_MoveTextPos(page, width -50 , 40);
             HPDF_Page_ShowText(page, szText);
             HPDF_Page_EndText(page);

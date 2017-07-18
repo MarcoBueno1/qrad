@@ -13,7 +13,6 @@ TARGET = pdfwrapper
 TEMPLATE = lib
 
 INCLUDEPATH       += ../3rdpart/libharu/src/include
-INCLUDEPATH       += ../QRadCore
 win32:INCLUDEPATH += ../3rdpart/libharu/bin/include/win
 unix:INCLUDEPATH  +=  ../3rdpart/libharu/bin/include/lnx
 
@@ -76,8 +75,7 @@ SOURCES += pdfwrapper.cpp  \
     ../3rdpart/libharu/src/src/hpdf_string.c \
     ../3rdpart/libharu/src/src/hpdf_u3d.c \
     ../3rdpart/libharu/src/src/hpdf_utils.c \
-    ../3rdpart/libharu/src/src/hpdf_xref.c \
-    ../QRadCore/qradmoney.cpp
+    ../3rdpart/libharu/src/src/hpdf_xref.c
 
 HEADERS += pdfwrapper.h  \
            format.h \ 
@@ -114,8 +112,7 @@ HEADERS += pdfwrapper.h  \
     ../3rdpart/libharu/src/include/hpdf_types.h \
     ../3rdpart/libharu/src/include/hpdf_u3d.h \
     ../3rdpart/libharu/src/include/hpdf_utils.h \
-    ../3rdpart/libharu/src/include/hpdf_version.h \
-    ../QRadCore/qradmoney.h
+    ../3rdpart/libharu/src/include/hpdf_version.h
 
 
 

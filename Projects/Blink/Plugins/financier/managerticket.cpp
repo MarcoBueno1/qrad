@@ -753,7 +753,7 @@ void Managerticket::doPrintView()
      debug_message("Construindo Arquivo...\n" );
      QString strAux =  QString("%1%2").arg(reportTitle).arg(".pdf");
      strAux.replace(" ", "_");
-     if( 0 == pdfwrapper::Build( strAux , LeftHead, reportTitle , headers, lines, 14, dTotal ))
+     if( 0 == pdfwrapper::Build( strAux , LeftHead, reportTitle , headers, lines, 14, QRadMoney::MoneyHumanForm(dTotal)))
      {
           QRAD_HIDE_PRPGRESS();
           debug_message("OpenURL...\n" );

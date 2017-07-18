@@ -1060,7 +1060,7 @@
                         <Script>
                             <properties>
                                 <objectName type="QString" >script_1</objectName>
-                                <geometry type="QRectF" >1344.85,23.29,211,50</geometry>
+                                <geometry type="QRectF" >1261.06,23.29,306,50</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>
@@ -1096,7 +1096,7 @@
                         <Script>
                             <properties>
                                 <objectName type="QString" >script_2</objectName>
-                                <geometry type="QRectF" >1573.5,23.29,211,50</geometry>
+                                <geometry type="QRectF" >1576.5,23.29,211,50</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>

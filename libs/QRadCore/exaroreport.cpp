@@ -180,16 +180,16 @@ void ExaroReport::setTitles( QString Title1, QString Title2, QString Title3, QSt
 void ExaroReport::setFields( QString Field1, QString Field2, QString Field3, QString Field4, QString Field5, QString Field6,
                              QString Field7, QString Field8, QString Field9, QString Field10 )
 {
-    replace( "{FIELD1}", Field1 );
-    replace( "{FIELD2}", Field2 );
-    replace( "{FIELD3}", Field3 );
-    replace( "{FIELD4}", Field4 );
-    replace( "{FIELD5}", Field5 );
-    replace( "{FIELD6}", Field6 );
-    replace( "{FIELD7}", Field7 );
-    replace( "{FIELD8}", Field8 );
-    replace( "{FIELD9}", Field9 );
-    replace( "{FIELD10}", Field10 );
+    replace( "{field1}", Field1 );
+    replace( "{field2}", Field2 );
+    replace( "{field3}", Field3 );
+    replace( "{field4}", Field4 );
+    replace( "{field5}", Field5 );
+    replace( "{field6}", Field6 );
+    replace( "{field7}", Field7 );
+    replace( "{field8}", Field8 );
+    replace( "{field9}", Field9 );
+    replace( "{field10}", Field10 );
 }
 
 void ExaroReport::setQueryName( QString QueryName )

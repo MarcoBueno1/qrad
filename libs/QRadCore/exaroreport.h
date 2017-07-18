@@ -31,10 +31,10 @@ public:
     void setFriendlyName( QString name);
 
     void setTitles( QString Title1, QString Title2, QString Title3, QString Title4, QString Title5, QString Title6,
-                                 QString Title7, QString Title8, QString Title9, QString Title10 );
+                                 QString Title7="", QString Title8="", QString Title9="", QString Title10="" );
 
     void setFields( QString Field1, QString Field2, QString Field3, QString Field4, QString Field5, QString Field6,
-                                 QString Field7, QString Field8, QString Field9, QString Field10 );
+                                 QString Field7="", QString Field8="", QString Field9="", QString Field10="" );
 
     void setQueryName( QString QueryName );
     void setReportTitle( QString ReportTitle );

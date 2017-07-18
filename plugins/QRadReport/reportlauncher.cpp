@@ -9,6 +9,8 @@
 #include "qradshared.h"
 #include "pdfwrapper.h"
 #include "qraddebug.h"
+#include "qradreportmanager.h"
+#include "qradprogresswindow.h"
 
 ReportLauncher::ReportLauncher(QWidget *parent) :
     QDialog(parent),
@@ -152,13 +154,142 @@ QString ReportLauncher::BuildSQL()
 
 void ReportLauncher::Buildreport()
 {
+    QString sql = BuildSQL();
+
+    QRAD_SHOW_PRPGRESS("Preparando Relatório...");
+    QRadReportManager *report = new QRadReportManager();
+
+
+    switch( m_report->getId() )
+    {
+     case 2: // Moradores
+            {
+                if ( !report->load( "report" ) )
+                {
+                   QRAD_HIDE_PRPGRESS();
+                   QMessageBox::critical( NULL, "Erro", "Falha ao carregar arquivo modelo." );
+                   delete report;
+                   return ;
+                }
+                QRAD_SHOW_PRPGRESS_STEP("Carregando Informações...");
+                ExaroReport *pReport = dynamic_cast<ExaroReport*>(report->getReport());
+                pReport->setReportTitle(m_report->getName());
+                QRAD_SHOW_PRPGRESS_STEP("Gerando Relatório...");
+
+                pReport->setFields("Ap","Torre", "Tipo", "Nome", "email",  "vazio");
+                pReport->setTitles("Ap","Torre", "Tipo", "Nome", "email",  " ");
+
+                pReport->setQueryName("moradores");
+                report->setQuery("moradores", sql);
+
+                report->replace("TOTAL1", "");
+                report->replace("TOTAL2", "");
+                report->replace("TOTAL", "");
+                break;
+            }
+     case 3:
+             {
+               /*
+                  v.nome as "Visitante", v.rg as "RG", v.cpf as "CPF", m.name as "Autorizador", ap.numero || '' - '' || t.name as "AP",  to_char(p.autsince, ''DD/MM/YYYY'') as "Desde"
+                */
+
+                if ( !report->load( "report" ) )
+                {
+                   QRAD_HIDE_PRPGRESS();
+                   QMessageBox::critical( NULL, "Erro", "Falha ao carregar arquivo modelo." );
+                   delete report;
+                   return ;
+                }
+                QRAD_SHOW_PRPGRESS_STEP("Carregando Informações...");
+                ExaroReport *pReport = dynamic_cast<ExaroReport*>(report->getReport());
+                pReport->setReportTitle(m_report->getName());
+                QRAD_SHOW_PRPGRESS_STEP("Gerando Relatório...");
+
+                pReport->setFields("Visitante","RG", "CPF", "Autorizador", "AP",  "Desde");
+                pReport->setTitles("Autorizado","RG", "CPF", "Autorizador", "AP",  "Desde");
+
+                pReport->setQueryName("Autorizados");
+                report->setQuery("Autorizados", sql);
+
+                report->replace("TOTAL1", "");
+                report->replace("TOTAL2", "");
+                report->replace("TOTAL", "");
+                break;
+             }
+    case 4:
+    case 6:
+              {
+                /*
+                   select to_char(v.data_entrada, 'DD/MM/YYYY') || ' ' || hora_entrada as "Entrada",  vi.nome as "Visitante", r.description as "Motivo", d.name || '(' || t.name || ', ' || ap.numero || ')' as "Autorizador"
+                 */
+                if ( !report->load( "report_4_columns" ) )
+                {
+                   QRAD_HIDE_PRPGRESS();
+                   QMessageBox::critical( NULL, "Erro", "Falha ao carregar arquivo modelo." );
+                   delete report;
+                   return ;
+                }
+                QRAD_SHOW_PRPGRESS_STEP("Carregando Informações...");
+                ExaroReport *pReport = dynamic_cast<ExaroReport*>(report->getReport());
+                pReport->setReportTitle(m_report->getName());
+                QRAD_SHOW_PRPGRESS_STEP("Gerando Relatório...");
+
+                 pReport->setFields("Entrada","Visitante", "Motivo", "Autorizador", "vazio",  "vazio");
+                 pReport->setTitles("Entrada","Visitante", "Motivo", "Autorizador", " ",  " ");
+
+                 pReport->setQueryName("visitas");
+                 report->setQuery("visitas", sql);
+
+                 report->replace("TOTAL1", "");
+                 report->replace("TOTAL2", "");
+                 report->replace("TOTAL", "");
+                 break;
+              }
+    case 7:
+              {
+                if ( !report->load( "report_4_columns" ) )
+                {
+                   QRAD_HIDE_PRPGRESS();
+                   QMessageBox::critical( NULL, "Erro", "Falha ao carregar arquivo modelo." );
+                   delete report;
+                   return ;
+                }
+                QRAD_SHOW_PRPGRESS_STEP("Carregando Informações...");
+                ExaroReport *pReport = dynamic_cast<ExaroReport*>(report->getReport());
+                pReport->setReportTitle(m_report->getName());
+                QRAD_SHOW_PRPGRESS_STEP("Gerando Relatório...");
+
+               //select a.numero as "AP", t.name as "Torre", d.name as "Morador"
+                pReport->setFields("AP","Torre", "vazio", "Morador", "vazio",  "vazio");
+                pReport->setTitles("AP","Torre", " ", "Morador", " ",  " ");
+
+                pReport->setQueryName("cdireito");
+                report->setQuery("cdireito", sql);
+
+                report->replace("TOTAL1", "");
+                report->replace("TOTAL2", "");
+                report->replace("TOTAL", "");
+                break;
+              }
+    }
+
+    QRAD_HIDE_PRPGRESS();
+    if ( !report->show() )
+    {
+        QMessageBox::critical( NULL, "Oops!", QString::fromUtf8( "Problema ao exibir o relatório." ) );
+    }
+
+    delete report;
+    return;
+
+
     QList< FieldFormat *> headers;
     QList<QStringList *> lines;
 
      int i;
      QSqlQueryModel *model  = new QSqlQueryModel;
 
-     QString sql = BuildSQL();
+
 
      model->setQuery(sql);
 

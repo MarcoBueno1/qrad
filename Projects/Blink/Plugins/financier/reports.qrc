@@ -4,5 +4,7 @@
         <file alias="sell_commissions.bdrt">sell_commissions.bdrt</file>
         <file alias="accounttoreceive.bdrt">accounttoreceive.bdrt</file>
         <file alias="accounttype.bdrt">accounttype.bdrt</file>
+        <file>report.bdrt</file>
+        <file>report_4_columns.bdrt</file>
     </qresource>
 </RCC>

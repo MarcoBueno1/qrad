@@ -1026,7 +1026,58 @@ bool TicketController::SendEmail(int id )
 
   return bRet;
 }
-bool TicketController::ReportExaro( QSqlQueryModel model )
+bool TicketController::ReportExaro( QSqlQueryModel *model, QString reportTitle)
 {
+    if( model->rowCount() <= 0 )
+    {
+        QMessageBox::information(NULL,"Oops!", "Não existem dados para serem exibidos!");
+        return false;
+    }
+    QRAD_SHOW_PRPGRESS("Preparando dados...");
 
+    QRadReportManager   *report = new QRadReportManager();
+    int total = 0;
+
+    if ( !report->load( "report" ) )
+    {
+       QRAD_HIDE_PRPGRESS();
+       QMessageBox::critical( NULL, "Erro", "Falha ao carregar arquivo modelo." );
+       delete report;
+       return false;
+    }
+    QRAD_SHOW_PRPGRESS_STEP("Carregando Informações...");
+    ExaroReport *pReport = dynamic_cast<ExaroReport*>(report->getReport());
+    pReport->setReportTitle(/*reportTitle*/"ATM");
+/*
+//select t.nossonumero as \"Nº.Banco\", t.seunumero as \"Nº.Sis\", a.numero as \"Ap\", tw.name as \"Torre\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
+//    " t.valor as \"Valor R$\", t.valorpago as \"Pago R$\"
+*/
+    QRAD_SHOW_PRPGRESS_STEP("Gerando Relatório...");
+    pReport->setFields("Nº.Banco","Ap", "Torre", "Morador", "Vencto",  "Valor R$"," "," "," "," ");
+    pReport->setTitles("Nº.Banco","Ap", "Torre", "Morador", "Vencto",  "Valor R$"," "," "," "," ");
+
+    for (int index = 0; index < model->rowCount(); index++)
+    {
+        total       += QRadMoney::StrToInt(model->record(index).value("Valor R$").toString());
+    }
+
+    pReport->setQueryName("tickets");
+    QString strAux = model->query().lastQuery().replace("t.valor", "to_char(t.valor, 'FM9G999G990D00')").replace(", t.vencto ",", to_char(t.vencto, 'dd-mm-yyyy') ");
+    debug_message("QRY.....................................:%s\n", strAux.toLatin1().data());
+    report->setQuery("tickets", model->query().lastQuery().replace("  t.valor", "to_char(t.valor, 'FM9G999G990D00')")
+                     .replace(", t.vencto ",", to_char(t.vencto, 'dd-mm-yyyy') "));
+
+
+    report->replace("TOTAL1", "");
+    report->setAttributeMoneyValue("TOTAL2", total);
+
+    QRAD_HIDE_PRPGRESS();
+    if ( !report->show() )
+    {
+        QMessageBox::critical( NULL, "Oops!", QString::fromUtf8( "Problema ao exibir o relatório." ) );
+    }
+
+    delete report;
+
+    return true;
 }

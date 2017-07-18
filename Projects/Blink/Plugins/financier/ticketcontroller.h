@@ -27,6 +27,7 @@ public:
     bool ProcessRetList(QList<BankTicket*> *list);
     static bool UpdateTickets(QList<BankTicket*> *list);
     bool SendEmail(int id );
+    bool ReportExaro( QSqlQueryModel *model, QString reportTitle);
 private:
     BuildTkt *g_tkt;
     ticketconfig *m_pTktConfig;

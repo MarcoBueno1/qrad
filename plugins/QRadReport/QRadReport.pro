@@ -6,13 +6,14 @@ CONFIG += plugin
 
 INCLUDEPATH = ../../libs/QRadCore \
               ../../libs/QRadOrm \
-              ../../libs/pdfwrapper
+              ../../libs/pdfwrapper \
+              ../../libs/3rdpart/exaro
 
 DESTDIR = .
 SOURCES = \ 
              qradreport.cpp  \
              ormreport.cpp \
-    reportlauncher.cpp
+             reportlauncher.cpp
 
 HEADERS = \ 
              qradreport.h \

@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../Projects/Blink/icons/resources.qrc">
+    <normaloff>:/png/marca-m.png</normaloff>:/png/marca-m.png</iconset>
+  </property>
   <widget class="QPushButton" name="pushButtonOk">
    <property name="geometry">
     <rect>
@@ -140,6 +144,9 @@
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../Projects/Blink/icons/resources.qrc"/>
+  <include location="../../Projects/Blink/icons/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

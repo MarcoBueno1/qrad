@@ -37,16 +37,16 @@
                     <texture type="QPixmap" ></texture>
                 </foregroundBrush>
                 <itemIndexMethod type="" />
-                <sceneRect type="QRectF" >0,0,2971.27,2098.15</sceneRect>
+                <sceneRect type="QRectF" >0,0,2098.15,2971.27</sceneRect>
                 <bspTreeDepth type="int" >6</bspTreeDepth>
                 <palette type="QPalette" />
                 <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
                 <sortCacheEnabled type="bool" >false</sortCacheEnabled>
                 <stickyFocus type="bool" >false</stickyFocus>
                 <pageSize type="int" >0</pageSize>
-                <orientation type="int" >1</orientation>
-                <geometry type="QRectF" >150,100,2671,1898</geometry>
-                <paperRect type="QRectF" >0,0,2971.27,2098.15</paperRect>
+                <orientation type="int" >0</orientation>
+                <geometry type="QRectF" >150,100,1798,2771</geometry>
+                <paperRect type="QRectF" >0,0,2098.15,2971.27</paperRect>
                 <magnetArea type="int" >1</magnetArea>
                 <showGrid type="bool" >false</showGrid>
             </properties>
@@ -54,7 +54,7 @@
                 <PageHeader>
                     <properties>
                         <objectName type="QString" >pageheader</objectName>
-                        <geometry type="QRectF" >150,100,2671,176</geometry>
+                        <geometry type="QRectF" >150,100,1798,176</geometry>
                         <pen type="QPen" >
                             <brush type="QBrush" >
                                 <color type="QColor" >0,0,0,255</color>
@@ -241,7 +241,7 @@
                 <DetailContainer>
                     <properties>
                         <objectName type="QString" >detailcontainer</objectName>
-                        <geometry type="QRectF" >150,276,2671,198</geometry>
+                        <geometry type="QRectF" >150,276,1798,198</geometry>
                         <pen type="QPen" >
                             <brush type="QBrush" >
                                 <color type="QColor" >0,0,0,255</color>
@@ -279,7 +279,7 @@
                         <DetailHeader>
                             <properties>
                                 <objectName type="QString" >detailheader</objectName>
-                                <geometry type="QRectF" >0,0,2671,72</geometry>
+                                <geometry type="QRectF" >0,0,1798,72</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>
@@ -538,7 +538,7 @@
                         <Detail>
                             <properties>
                                 <objectName type="QString" >detail</objectName>
-                                <geometry type="QRectF" >0,72,2671,40</geometry>
+                                <geometry type="QRectF" >0,72,1798,40</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>
@@ -799,7 +799,7 @@
                         <DetailFooter>
                             <properties>
                                 <objectName type="QString" >detailfooter</objectName>
-                                <geometry type="QRectF" >0,112,2671,48</geometry>
+                                <geometry type="QRectF" >0,112,1798,48</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>
@@ -913,7 +913,7 @@
                 <PageFooter>
                     <properties>
                         <objectName type="QString" >pagefooter</objectName>
-                        <geometry type="QRectF" >150,1830.12,2671,167.875</geometry>
+                        <geometry type="QRectF" >150,2703.12,1798,167.875</geometry>
                         <pen type="QPen" >
                             <brush type="QBrush" >
                                 <color type="QColor" >0,0,0,255</color>
@@ -1059,8 +1059,8 @@
                         </Text>
                         <Script>
                             <properties>
-                                <objectName type="QString" >script_2</objectName>
-                                <geometry type="QRectF" >2208.85,23.29,211,50</geometry>
+                                <objectName type="QString" >script_1</objectName>
+                                <geometry type="QRectF" >1344.85,23.29,211,50</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>
@@ -1095,8 +1095,8 @@
                         </Script>
                         <Script>
                             <properties>
-                                <objectName type="QString" >script_1</objectName>
-                                <geometry type="QRectF" >2451.5,23.29,211,50</geometry>
+                                <objectName type="QString" >script_2</objectName>
+                                <geometry type="QRectF" >1573.5,23.29,211,50</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>

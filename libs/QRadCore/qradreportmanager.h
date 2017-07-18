@@ -35,6 +35,7 @@ public:
     bool CanExecute();
     void ShowSetHeaderClientReport(QRadReportManager *report);
     void setFriendlyName( QString name );
+    QRadReportInterface *getReport(){return m_report;}
 
     QString lastError();
 

@@ -18,6 +18,7 @@
 #include "qradprogresswindow.h"
 #include "emailgui.h"
 #include "qrademail.h"
+#include "qradreportmanager.h"
 
 /*
 #define FIN_AP_WITH_NO_PAYER "select * from dweller d2 "\
@@ -1024,4 +1025,8 @@ bool TicketController::SendEmail(int id )
   QRAD_HIDE_PRPGRESS();
 
   return bRet;
+}
+bool TicketController::ReportExaro( QSqlQueryModel model )
+{
+
 }

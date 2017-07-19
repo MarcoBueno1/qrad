@@ -182,8 +182,8 @@ void ReportLauncher::Buildreport()
                 pReport->setQueryName("moradores");
                 report->setQuery("moradores", sql);
 
-                report->replace("TOTAL1", "");
-                report->replace("TOTAL2", "");
+                report->replace("{TOTAL1}", "");
+                report->replace("{TOTAL2}", "");
                 report->replace("TOTAL", "");
                 break;
             }
@@ -211,8 +211,8 @@ void ReportLauncher::Buildreport()
                 pReport->setQueryName("Autorizados");
                 report->setQuery("Autorizados", sql);
 
-                report->replace("TOTAL1", "");
-                report->replace("TOTAL2", "");
+                report->replace("{TOTAL1}", "");
+                report->replace("{TOTAL2}", "");
                 report->replace("TOTAL", "");
                 break;
              }
@@ -240,8 +240,8 @@ void ReportLauncher::Buildreport()
                  pReport->setQueryName("visitas");
                  report->setQuery("visitas", sql);
 
-                 report->replace("TOTAL1", "");
-                 report->replace("TOTAL2", "");
+                 report->replace("{TOTAL1}", "");
+                 report->replace("{TOTAL2}", "");
                  report->replace("TOTAL", "");
                  break;
               }
@@ -266,8 +266,8 @@ void ReportLauncher::Buildreport()
                 pReport->setQueryName("cdireito");
                 report->setQuery("cdireito", sql);
 
-                report->replace("TOTAL1", "");
-                report->replace("TOTAL2", "");
+                report->replace("{TOTAL1}", "");
+                report->replace("{TOTAL2}", "");
                 report->replace("TOTAL", "");
                 break;
               }

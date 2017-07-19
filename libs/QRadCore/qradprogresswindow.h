@@ -28,6 +28,7 @@
     {\
         QRadProgressWindow *pW = QRadProgressWindow::getInstance();\
         pW->hide();\
+        QCoreApplication::processEvents();\
     }
 #else
   #define QRAD_SHOW_PRPGRESS(text)

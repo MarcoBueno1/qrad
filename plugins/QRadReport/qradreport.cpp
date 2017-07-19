@@ -30,6 +30,9 @@ void QRadReportPlugin::onLoad(QRadPluginContainer* container)
     {
        report *r = rep->at(i);
 
+       if( !r->getVisible()  )
+           continue;
+
        QRadPluginMenu *menu = new QRadPluginMenu(r->getPath(),r->getMenu(),r->getMenu(),"",r->getPermission());
 
        pLoader->loadMenu(this,menu);

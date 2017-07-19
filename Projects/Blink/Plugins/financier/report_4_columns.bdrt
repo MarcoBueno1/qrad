@@ -91,7 +91,7 @@
                         <Text>
                             <properties>
                                 <objectName type="QString" >text_19</objectName>
-                                <geometry type="QRectF" >33,11,2129,100</geometry>
+                                <geometry type="QRectF" >33,11,1760,100</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>
@@ -320,7 +320,7 @@
                                 <Text>
                                     <properties>
                                         <objectName type="QString" >text_1</objectName>
-                                        <geometry type="QRectF" >8,2,248,61</geometry>
+                                        <geometry type="QRectF" >8,2,384,67</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >253,253,253,255</color>
@@ -428,7 +428,7 @@
                                 <Text>
                                     <properties>
                                         <objectName type="QString" >text_13</objectName>
-                                        <geometry type="QRectF" >264.856,2,210,70</geometry>
+                                        <geometry type="QRectF" >399.398,2,496,67</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >253,253,253,255</color>
@@ -464,7 +464,7 @@
                                 <Text>
                                     <properties>
                                         <objectName type="QString" >text_15</objectName>
-                                        <geometry type="QRectF" >489.46,2,160,70</geometry>
+                                        <geometry type="QRectF" >905.46,2,214,67</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >253,253,253,255</color>
@@ -500,7 +500,7 @@
                                 <Text>
                                     <properties>
                                         <objectName type="QString" >text_18</objectName>
-                                        <geometry type="QRectF" >667.417,2,1194,70</geometry>
+                                        <geometry type="QRectF" >1127.65,0,661.771,67</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >253,253,253,255</color>
@@ -575,7 +575,7 @@
                                 <Field>
                                     <properties>
                                         <objectName type="QString" >field</objectName>
-                                        <geometry type="QRectF" >6,5,250,43</geometry>
+                                        <geometry type="QRectF" >6,5,386,43</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >0,0,0,255</color>
@@ -649,7 +649,7 @@
                                 <Field>
                                     <properties>
                                         <objectName type="QString" >field_9</objectName>
-                                        <geometry type="QRectF" >267.793,5,206,41</geometry>
+                                        <geometry type="QRectF" >401.689,5,496,43</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >0,0,0,255</color>
@@ -677,7 +677,7 @@
                                         <backgroundMode type="int" >0</backgroundMode>
                                         <opacity type="int" >100</opacity>
                                         <font type="QFont" >Verdana,2.5,-1,5,50,0,0,0,0,0</font>
-                                        <textFlags type="int" >132</textFlags>
+                                        <textFlags type="int" >1</textFlags>
                                         <sizePolicy type="int" >0</sizePolicy>
                                         <queryName type="QString" >{QNAME}</queryName>
                                         <fieldName type="QString" >{field2}</fieldName>
@@ -723,7 +723,7 @@
                                 <Field>
                                     <properties>
                                         <objectName type="QString" >field_1</objectName>
-                                        <geometry type="QRectF" >493.689,5,161,41</geometry>
+                                        <geometry type="QRectF" >903.689,5,213,43</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >0,0,0,255</color>
@@ -751,7 +751,7 @@
                                         <backgroundMode type="int" >0</backgroundMode>
                                         <opacity type="int" >100</opacity>
                                         <font type="QFont" >Verdana,2.5,-1,5,50,0,0,0,0,0</font>
-                                        <textFlags type="int" >132</textFlags>
+                                        <textFlags type="int" >1</textFlags>
                                         <sizePolicy type="int" >0</sizePolicy>
                                         <queryName type="QString" >{QNAME}</queryName>
                                         <fieldName type="QString" >{field3}</fieldName>
@@ -760,7 +760,7 @@
                                 <Field>
                                     <properties>
                                         <objectName type="QString" >field_3</objectName>
-                                        <geometry type="QRectF" >667.417,5,1191,41</geometry>
+                                        <geometry type="QRectF" >1122.06,5,934.354,43</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >0,0,0,255</color>
@@ -1088,7 +1088,7 @@
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
                                 <font type="QFont" >MS Shell Dlg 2,3,-1,5,50,0,0,0,0,0</font>
-                                <textFlags type="int" >0</textFlags>
+                                <textFlags type="int" >2</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <script type="QString" >_currentDate_</script>
                             </properties>

@@ -5,17 +5,7 @@
 #include <QDialog>
 #include <QKeyEvent>
 #include <QSqlQueryModel>
-
-typedef enum
-{
-    tpNone,
-    tpAccountToReceive,
-    tpAccountToPay,
-    tpdweller,
-    tpsupplier,
-    tpuser,
-    tpVisit
-}QRAD_ASSOCIATION_TYPE, *PQRAD_ASSOCIATION_TYPE;
+//#include "editassociation.h"
 
 namespace Ui {
 class Managerassociation;
@@ -28,8 +18,6 @@ class Managerassociation : public QDialog
 public:
     explicit Managerassociation(QWidget *parent = 0);
     ~Managerassociation();
-    void setSQL(QString SQL, QRAD_ASSOCIATION_TYPE type);
-    int getSelectedId();
 
 public slots:
     void notFound();
@@ -43,9 +31,6 @@ public slots:
     void doNovo();
 
 private:
-    QString SQL_ITEMS;
-    QRAD_ASSOCIATION_TYPE m_association;
-    int m_associatedid;
     Ui::Managerassociation *ui;
 
     QTimer *m_keyinterval;
@@ -57,6 +42,8 @@ private:
     void refreshTable();
     void ConfigureTable();
     void keyPressEvent(QKeyEvent *event);
+//    void MatchNewest(association *newest );
+
 };
 
 #endif // MANAGERassociation_H

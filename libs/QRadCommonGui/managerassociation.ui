@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string/>
+   <string></string>
   </property>
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
@@ -36,7 +36,7 @@
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
-     <string/>
+     <string></string>
     </attribute>
     <layout class="QGridLayout" name="gridLayout_2">
      <property name="leftMargin">
@@ -180,43 +180,56 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QPushButton" name="PshBtnEditar">
-   <property name="geometry">
-    <rect>
-     <x>620</x>
-     <y>560</y>
-     <width>85</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&amp;Novo</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="PshBtnSair">
-   <property name="geometry">
-    <rect>
-     <x>707</x>
-     <y>560</y>
-     <width>85</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&amp;Selecionar</string>
-   </property>
-  </widget>
- </widget>
+    <widget class="QPushButton" name="PshBtnEditar">
+     <property name="geometry">
+      <rect>
+       <x>620</x>
+       <y>560</y>
+       <width>85</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&amp;Editar</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="PshBtnNovo">
+     <property name="geometry">
+      <rect>
+       <x>533</x>
+       <y>560</y>
+       <width>85</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&amp;Novo</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="PshBtnSair">
+     <property name="geometry">
+      <rect>
+       <x>707</x>
+       <y>560</y>
+       <width>85</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&amp;Sair</string>
+     </property>
+    </widget>
+   </widget>
  <customwidgets>
-  <customwidget>
-   <class>QRadTableViewSearch</class>
-   <extends>QTableView</extends>
-   <header location="global">qradtableviewsearch.h</header>
-  </customwidget>
   <customwidget>
    <class>QRadLineEditFakeEnter</class>
    <extends>QLineEdit</extends>
    <header location="global">qradlineeditfakeenter.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QRadTableViewSearch</class>
+   <extends>QTableView</extends>
+   <header>qradtableviewsearch.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

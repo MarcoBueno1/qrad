@@ -1,17 +1,12 @@
 #include "managerassociation.h"
 #include "ui_managerassociation.h"
+//#include "editassociation.h"
 #include "column2delegate.h"
 #include <QMessageBox>
 #include <QDebug>
-#include "qradcoreplugin.h"
-
-#define PLUGIN_NAME "financier"
-#define PLUGIN_NAME_ACTION_1 "NewAccountToPay"
-#define PLUGIN_NAME_ACTION_2 "NewAccountToReceive"
-#define PLUGIN_NAME_PARAM    "lastinsertedid"
 
 #define BN_DEFAULT_COLUMN_SEARCH 0
-//#define SQL_ITEMS "select id,id from association order by id"
+#define SQL_ITEMS "select id, description,id from association order by id" 
 
 Managerassociation::Managerassociation(QWidget *parent) :
     QDialog(parent),
@@ -21,9 +16,8 @@ Managerassociation::Managerassociation(QWidget *parent) :
 
     m_keyinterval = NULL;
     m_Model = new QSqlQueryModel;
-    m_associatedid = 0;
 
-//    ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
+    ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
 
     connect(ui->lineEditSearch, SIGNAL(textEdited(QString)), this, SLOT(StartTimer(QString)));
     connect(ui->tableViewSearch, SIGNAL(found(QModelIndex)), this, SLOT(Found(QModelIndex)));
@@ -32,9 +26,10 @@ Managerassociation::Managerassociation(QWidget *parent) :
     connect(ui->tableViewSearch,SIGNAL(CurrentChanged(QModelIndex)),this,SLOT(CurrentChanged(QModelIndex)));
 
     connect(ui->PshBtnEditar, SIGNAL(clicked()), this, SLOT(doEditar()));
+ //   connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
 
-   // DoRefresh();
+    DoRefresh();
 }
 
 Managerassociation::~Managerassociation()
@@ -46,19 +41,7 @@ Managerassociation::~Managerassociation()
      }
     delete m_Model;
 
-     delete ui;
-}
-
-void Managerassociation::setSQL(QString SQL, QRAD_ASSOCIATION_TYPE type)
-{
-    SQL_ITEMS = SQL;
-    m_association = type;
-    DoRefresh();
-}
-
-int Managerassociation::getSelectedId()
-{
-    return m_associatedid;
+    delete ui;
 }
 
 void Managerassociation::KeyPressTimeout()
@@ -177,6 +160,8 @@ void Managerassociation::ConfigureTable()
 {
       ui->tableViewSearch->addSearchColumnFilter(0);
     ui->tableViewSearch->addSearchColumn(0);
+    ui->tableViewSearch->addSearchColumn(1);
+    ui->tableViewSearch->addSearchColumnFilter(1);
 
 
    // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Conuna1"));
@@ -188,6 +173,7 @@ void Managerassociation::ConfigureTable()
    // ui->tableViewSearch->setColumnWidth(0, 0.06 * ui->tableViewSearch->width());
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
      ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
+     ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnCenter);
 
 
 }
@@ -216,7 +202,6 @@ void Managerassociation::keyPressEvent(QKeyEvent *event)
 
 
 }
-
 /*
 void Managerassociation::MatchNewest(association *newest )
 {
@@ -233,33 +218,7 @@ void Managerassociation::MatchNewest(association *newest )
 */
 void Managerassociation::doEditar()
 {
-//
-//#define PLUGIN_NAME "financier"
-//#define PLUGIN_NAME_ACTION_1 "NewAccountToPay"
-//#define PLUGIN_NAME_ACTION_1 "NewAccountToReceive"
-//#define PLUGIN_NAME_ACTION_1 "NewAccountToReceive"
-//
-    QRadPluginInterface *iface = QRadPluginContainer::getInstance()->plugin(PLUGIN_NAME);
-    if(iface)
-    {
-        m_associatedid =0;
-        switch(m_association)
-        {
-           case tpAccountToPay:
-                                   iface->Process(PLUGIN_NAME_ACTION_1);
-                                   m_associatedid = iface->getParam(PLUGIN_NAME_PARAM).toInt();
-                                   if(m_associatedid)
-                                       accept();
-                                   else
-                                       QMessageBox::information(this, "Oops!", "Nenhum item selecionado");
-                               break;
-           case tpAccountToReceive:
-                               break;
-        }
-   }
-
-/*
-    Editassociation *edt = new Editassociation;
+/*    Editassociation *edt = new Editassociation;
 
     QModelIndex currentIndex = ui->tableViewSearch->currentIndex();
 
@@ -290,9 +249,6 @@ void Managerassociation::doNovo()
 
 void Managerassociation::doSair()
 {
-    QModelIndex currentIndex = ui->tableViewSearch->currentIndex();
-
-    m_associatedid = currentIndex.sibling(currentIndex.row(),ui->tableViewSearch->getColumnOf("id")).data().toInt();
-
-    accept();
+    if( QMessageBox::Yes ==  QMessageBox::question(this, "Sair?","Deseja sair desta pesquisa?",QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+           reject();
 }

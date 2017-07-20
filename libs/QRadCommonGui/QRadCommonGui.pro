@@ -6,8 +6,6 @@
 
 QT += core sql network script widgets multimedia multimediawidgets xml
 
-#QT       -= gui
-
 TARGET = qradcommongui
 
 TEMPLATE = lib
@@ -33,7 +31,7 @@ HEADERS +=  \
            editemailconf.h \
            editfiles.h \
            managerfiles.h \
-           managerassociation.cpp
+           managerassociation.h
 #    persistfiletodatabase.h
 		   
 FORMS +=  \
@@ -43,7 +41,7 @@ FORMS +=  \
          editemailconf.ui \
          editfiles.ui \
          managerfiles.ui \
-         managerassociation.ui
+        managerassociation.ui
 #    persistfiletodatabase.ui
  
 win32:LIBS +=  -L../QRadCore\release \
@@ -59,6 +57,8 @@ LIBS += -L../bin \
         -lqradcore  \
         -lqradorm \
         -lqradhw
+
+win32:QMAKE_LFLAGS += --enable-auto-import
 
 target.path = $${PREFIX}/bin
 INSTALLS += target

@@ -9,7 +9,7 @@
 #include <QUrl>
 #include <QDesktopServices>
 #include "qradprogresswindow.h"
-#include "managerassociation.h"
+//#include "managerassociation.h"
 
 
 Editfiles::Editfiles(QWidget *parent) :
@@ -33,6 +33,9 @@ Editfiles::Editfiles(QWidget *parent) :
     ui->comboBoxAssociar->setCanAdd(false);
     ui->comboBoxAssociar->setUserName("dsm");
     ui->comboBoxAssociar->completer()->setFilterMode(Qt::MatchContains );
+
+    ui->comboBoxAssociar->setVisible(false);
+    ui->labelAssociar->setVisible(false);
 
     connect(ui->comboBoxAssociar, SIGNAL(activated(int)), this, SLOT(doAssociate(int)));
     connect(ui->pushButtonSelecionar, SIGNAL(clicked()),this,SLOT(doSelect()));
@@ -193,7 +196,7 @@ void Editfiles::setFile(QString path)
 
 void Editfiles::doAssociate(int current)
 {
-    QString sql;
+/*    QString sql;
     Managerassociation *ma = new Managerassociation;
     switch( (QRAD_ASSOCIATION_TYPE)current )
     {
@@ -219,4 +222,5 @@ void Editfiles::doAssociate(int current)
     }
 
   delete ma;
+  */
 }

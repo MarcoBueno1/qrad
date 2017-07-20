@@ -23,6 +23,7 @@ public:
     void    SendAccountToPayId(int accountToPayId);
     QString GetAccountToPayDescription(void);
 
+    int GetLastInsertedId();
 protected:
     int                 m_accountToPayId;
     QString             m_accountToPayDescription;

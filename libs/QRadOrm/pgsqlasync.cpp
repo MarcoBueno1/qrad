@@ -59,7 +59,7 @@ unsigned int PGSQLAsync::Send( QString strFilePath,
 
      strcpy(szfilename,strFilePath.toUtf8().data());
 
-     printf("importing file %s\n", szfilename);
+     debug_message("importing file %s\n", szfilename);
 
      lobjOid = lo_import(conn, szfilename);
 

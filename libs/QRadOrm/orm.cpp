@@ -22,6 +22,8 @@
 #include "qraddebug.h"
 
 #include <QApplication>
+#include <QFile>
+#include <QDir>
 
 
 
@@ -31,6 +33,33 @@
 #define FIELD_EXISTS(field) getDatabase().record(m_tableName).contains(field)
 
 QMap<QString, QString> ORM::m_fieldMap;
+
+
+QString diacriticLetters_;
+QStringList noDiacriticLetters_;
+
+QString removeAccents(QString s) {
+    if (diacriticLetters_.isEmpty()) {
+        diacriticLetters_ = QString::fromUtf8("ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ");
+        noDiacriticLetters_ << "S"<<"OE"<<"Z"<<"s"<<"oe"<<"z"<<"Y"<<"Y"<<"u"<<"A"<<"A"<<"A"<<"A"<<"A"<<"A"<<"AE"<<"C"<<"E"<<"E"<<"E"<<"E"<<"I"<<"I"<<"I"<<"I"<<"D"<<"N"<<"O"<<"O"<<"O"<<"O"<<"O"<<"O"<<"U"<<"U"<<"U"<<"U"<<"Y"<<"s"<<"a"<<"a"<<"a"<<"a"<<"a"<<"a"<<"ae"<<"c"<<"e"<<"e"<<"e"<<"e"<<"i"<<"i"<<"i"<<"i"<<"o"<<"n"<<"o"<<"o"<<"o"<<"o"<<"o"<<"o"<<"u"<<"u"<<"u"<<"u"<<"y"<<"y";
+    }
+
+    QString output = "";
+    for (int i = 0; i < s.length(); i++) {
+        QChar c = s[i];
+        int dIndex = diacriticLetters_.indexOf(c);
+        if (dIndex < 0) {
+            output.append(c);
+        } else {
+            QString replacement = noDiacriticLetters_[dIndex];
+            output.append(replacement);
+        }
+    }
+
+    return output;
+}
+
+
 
 
 ORM::ORM()
@@ -520,16 +549,44 @@ void  ORM::Audit()
 
    m_tableName = CurrentTable;
 }
+
+QString ORM::PrepareFileName(QString Path)
+{
+    QString PrepaedFile = removeAccents(Path.replace(" ", "_"));
+
+    debug_message("Path: %s\n",PrepaedFile.toLatin1().data());
+    PrepaedFile = "tmp_"+ PrepaedFile;
+
+    debug_message("Path: %s\n",PrepaedFile.toLatin1().data());
+    PrepaedFile = PrepaedFile.mid(PrepaedFile.lastIndexOf("/")+1);
+    debug_message("Path: %s\n",PrepaedFile.toLatin1().data());
+    PrepaedFile = QDir::tempPath() + "/"+PrepaedFile;
+    debug_message("Path: %s\n",PrepaedFile.toLatin1().data());
+
+    return PrepaedFile;
+}
+
 int ORM::saveImage( QString path )
 {
+  debug_message("Path: %s\n",path.toLatin1().data());
   QSqlDatabase db = QSqlDatabase::database();
 
-  int nLoId = PGSQLAsync::Send( path,
+  QString FullPath = PrepareFileName(path);
+
+  debug_message("Copiando de %s para %s\n",path.toLatin1().data(), FullPath.toLatin1().data());
+
+  QFile::copy(path,FullPath);
+
+  int nLoId = PGSQLAsync::Send( FullPath,
               db.hostName(),
               db.databaseName(),
               db.userName(),
               db.password() );
 
+  debug_message("Removendo %s para \n",FullPath.toLatin1().data());
+  QFile::remove(FullPath);
+
+  debug_message("<--\n");
   return nLoId;
 }
 
@@ -563,14 +620,16 @@ void ORM::getFile(QString filename, int nLoId )
 {
   QSqlDatabase db = QSqlDatabase::database();
 
+  QString FullPath = PrepareFileName(filename);
 
   PGSQLAsync::Receive( (unsigned int)nLoId,
-                       filename,
+                       FullPath,
                        db.hostName(),
                        db.databaseName(),
                        db.userName(),
                        db.password() );
 
+  QFile::rename(FullPath,filename);
 }
 int ORM::saveFile( QString path )
 {

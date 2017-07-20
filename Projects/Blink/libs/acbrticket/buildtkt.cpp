@@ -270,7 +270,7 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
    m_TktCount = 0;
    m_ShippNumber =0;
 
-   m_dwTimeout = 2000;
+   m_dwTimeout = 6000;
 
    QRAD_SHOW_PRPGRESS("Inicializando infraestutura...");
 

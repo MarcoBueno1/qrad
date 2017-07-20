@@ -19,17 +19,20 @@ public:
     void SetModel(Files* mod);
     Files* GetSaved();
 
+    void setFile(QString path);
 public slots:
     void Save();
     void Cancel();
     
     void doSelect();
+    void doAssociate(int current);
 private slots:
     void doView();
 private:
     Ui::Editfiles *ui;
     Files* m_mod;
     Files* m_lastMod;
+    int m_associatedId;
     void Load();
     void showEvent(QShowEvent *event);
     void keyPressEvent(QKeyEvent *e);

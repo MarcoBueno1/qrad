@@ -108,42 +108,7 @@ void MainWindow::on_actionBloquear_triggered()
 
     this->setEnabled(true);
 
-    AdjustMenuPermissions();
+
+    QRadConfig::AdjustMenuToPermissions(menuBar());
 }
 
-
-
-void MainWindow::enumerateMenu(QMenu *menu)
-{
-    foreach (QAction *action, menu->actions())
-    {
-        if( !action )
-            continue;
-        if (action->isSeparator())
-        {
-        }
-        else if (action->menu())
-        {
-            enumerateMenu(action->menu());
-        }
-        else
-        {
-            QRadPluginAction*ac = dynamic_cast<QRadPluginAction*>(action);
-            if( ac )
-                ac->setEnabledEx();
-
-        }
-    }
-}
-
-void MainWindow::AdjustMenuPermissions()
-{
-    QWidget* parent = menuBar();
-
-    for ( int i=0; i < parent->children().count(); i++ )
-    {
-        QMenu* menu = qobject_cast<QMenu*>( parent->children().at( i ) );
-        if( menu )
-            enumerateMenu(menu);
-    }
-}

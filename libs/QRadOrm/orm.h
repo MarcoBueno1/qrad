@@ -438,6 +438,7 @@ protected:
 private:
     bool m_IsAudit;
 
+    QString PrepareFileName(QString Path);
 };
 
 #endif // ORM_H

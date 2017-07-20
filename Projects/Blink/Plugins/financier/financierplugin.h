@@ -31,6 +31,8 @@
 #define ACTION_MANAGE_SUPPLIER                      "ManageSupplier"
 #define ACTION_MANAGE_SHIPPER                       "ManageShipper"
 #define ACTION_READ_SHIPP                           "ReadShipp"
+#define ACTION_MANAGE_FILES                         "ManageFiles"
+#define ACTION_NEW_ACCOUNTTOPAY                     "NewAccountToPay"
 
 
 class FinancierPlugin : public QRadPluginInterface 
@@ -55,6 +57,7 @@ class FinancierPlugin : public QRadPluginInterface
         AccountCalendar         *m_accountCalendar;
 
         int     m_entranceId;
+        int     m_LastId;
 
     private slots:
         void Process( const QString& action );

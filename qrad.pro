@@ -58,7 +58,9 @@ SUBDIRS = QRad \
           Projects\Blink\Plugins\visit \
           Projects\Blink\Plugins\financier \
           Projects\Blink\notifier \
-          Projects\Blink\Plugins\report
+          Projects\Blink\Plugins\report \
+          Tools\QRadEdit \
+          Tools\QRadPluginTest \
 
 
 message(Done! Now run \"make\" to build QRad)

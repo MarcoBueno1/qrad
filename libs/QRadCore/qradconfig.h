@@ -4,6 +4,8 @@
 #include <QString>
 #include <QWidget>
 #include <QLineEdit>
+#include <QMenuBar>
+#include <QMenu>
 
 
 class QRadConfig
@@ -26,9 +28,11 @@ public:
                                           QString Types,
                                           QWidget *parent );
 
+    static void AdjustMenuToPermissions(QMenuBar *menuBar);
 private:
     static bool ShowFullScreen(void);
 
+    static void enumerateMenu(QMenu *menu);
 };
 
 #endif // QRADCONFIG_H

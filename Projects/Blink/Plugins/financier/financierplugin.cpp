@@ -7,6 +7,8 @@
 #include "managershipper.h"
 #include "showbankreturn.h"
 #include "ticketcontroller.h"
+#include "managerfiles.h"
+#include "accounttopayregister.h"
 
 FinancierPlugin::FinancierPlugin()
 {
@@ -17,6 +19,7 @@ FinancierPlugin::FinancierPlugin()
     m_accountTypeManager = 0;
     m_bankManager = 0;
     m_accountToPayManager = 0;
+    m_LastId =0;
 }
 
 FinancierPlugin::~FinancierPlugin()
@@ -54,6 +57,9 @@ void FinancierPlugin::onLoad(QRadPluginContainer* container)
     appendAction(ACTION_MANAGE_SUPPLIER);
     appendAction(ACTION_MANAGE_SHIPPER);
     appendAction(ACTION_READ_SHIPP);
+    appendAction(ACTION_MANAGE_FILES);
+    appendAction(ACTION_NEW_ACCOUNTTOPAY);
+
 
 }
 
@@ -65,6 +71,7 @@ void FinancierPlugin::Process( const QString& action )
 #endif
 #pragma warning "Add lic interface to test if can execut"
 
+    m_LastId = 0;
 
     if ( ACTION_SHOW_FINANCIER_ACCOUNTTYPE == action )
     {
@@ -190,6 +197,23 @@ void FinancierPlugin::Process( const QString& action )
             }
             delete ParsePay;
     }
+    else if( ACTION_MANAGE_FILES == action)
+    {
+        Managerfiles *pFiles = new Managerfiles;
+        QRadConfig::centralizarWidget(pFiles);
+        pFiles->exec();
+        delete pFiles;
+    }
+    else if( ACTION_NEW_ACCOUNTTOPAY == action )
+    {
+        AccountToPayRegister *RegAccount = new AccountToPayRegister;
+        if( QDialog::Accepted == RegAccount->exec())
+        {
+            m_LastId = RegAccount->GetLastInsertedId();
+        }
+        delete RegAccount;
+
+    }
 }
 
 void FinancierPlugin::setParam(QString paramName, QVariant paramValue)
@@ -200,8 +224,10 @@ void FinancierPlugin::setParam(QString paramName, QVariant paramValue)
     }
 }
 
-QVariant FinancierPlugin::getParam(QString)
+QVariant FinancierPlugin::getParam(QString paramname)
 {
+    if( paramname == "lastinsertedid")
+        return m_LastId;
     return NULL;
 }
 

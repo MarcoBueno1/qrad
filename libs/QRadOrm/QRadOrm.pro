@@ -36,7 +36,8 @@ SOURCES +=  \
            qradmodellog.cpp \
            maincompany.cpp \
     files.cpp \
-    filedescription.cpp
+    filedescription.cpp \
+    fileassociationtype.cpp
 
 HEADERS +=  \
            orm.h \
@@ -57,7 +58,8 @@ HEADERS +=  \
            qradmodellog.h \
            maincompany.h \
     files.h \
-    filedescription.h
+    filedescription.h \
+    fileassociationtype.h
 
 #win32:LIBS +=  -L../QRadCore\release
 #unix:LIBS +=  -L../QRadCore

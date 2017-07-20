@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Managerfiles</class>
- <widget class="QDialog" name="Managerfiles">
+ <class>Managerassociation</class>
+ <widget class="QDialog" name="Managerassociation">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,7 +19,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>551</height>
+     <height>516</height>
     </rect>
    </property>
    <property name="font">
@@ -65,7 +65,7 @@
         </font>
        </property>
        <property name="title">
-        <string>Arquivos</string>
+        <string>s</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -180,52 +180,31 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QPushButton" name="PshBtnEditar">
    <property name="geometry">
     <rect>
-     <x>367</x>
+     <x>620</x>
      <y>560</y>
-     <width>401</width>
-     <height>25</height>
+     <width>85</width>
+     <height>27</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
-    <item>
-     <widget class="QPushButton" name="pushButtonView">
-      <property name="text">
-       <string>Visualizar..</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="PshBtnRemover">
-      <property name="text">
-       <string>Remover</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="PshBtnNovo">
-      <property name="text">
-       <string>&amp;Novo</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="PshBtnEditar">
-      <property name="text">
-       <string>&amp;Editar</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="PshBtnSair">
-      <property name="text">
-       <string>&amp;Sair</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
+   <property name="text">
+    <string>&amp;Novo</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PshBtnSair">
+   <property name="geometry">
+    <rect>
+     <x>707</x>
+     <y>560</y>
+     <width>85</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&amp;Selecionar</string>
+   </property>
   </widget>
  </widget>
  <customwidgets>

@@ -215,6 +215,10 @@ void AccountToPayRegister::SaveAccountToPay(void)
             flag = false;
             break;
         }
+        else
+        {
+            m_accountToPayId = accountToPayModel->getId();
+        }
         m_ui->comboBoxAccountType->setModelColumn(1);
         delete accountToPayModel;
     }
@@ -239,4 +243,8 @@ QString AccountToPayRegister::GetAccountToPayDescription(void)
 void AccountToPayRegister::changeFocus()
 {
     m_ui->btnSave->setFocus();
+}
+int AccountToPayRegister::GetLastInsertedId()
+{
+    return m_accountToPayId;
 }

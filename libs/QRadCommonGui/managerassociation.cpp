@@ -1,29 +1,29 @@
-#include "managerfiles.h"
-#include "ui_managerfiles.h"
-#include "editfiles.h"
+#include "managerassociation.h"
+#include "ui_managerassociation.h"
 #include "column2delegate.h"
 #include <QMessageBox>
 #include <QDebug>
-#include <QDesktopServices>
-#include <QUrl>
+#include "qradcoreplugin.h"
 
+#define PLUGIN_NAME "financier"
+#define PLUGIN_NAME_ACTION_1 "NewAccountToPay"
+#define PLUGIN_NAME_ACTION_2 "NewAccountToReceive"
+#define PLUGIN_NAME_PARAM    "lastinsertedid"
 
-#define BN_DEFAULT_COLUMN_SEARCH 2
+#define BN_DEFAULT_COLUMN_SEARCH 0
+//#define SQL_ITEMS "select id,id from association order by id"
 
-#define SQL_ITEMS "select f.id, f.created as \"Inserido em\", f.name, f.description, f.lastaccess as \"Último Acesso\", t.description from Files f "\
-            " inner join filedescription t on t.id = f.typeid where f.removed <> true and t.tp <> 2 order by id desc "
-
-
-Managerfiles::Managerfiles(QWidget *parent) :
+Managerassociation::Managerassociation(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::Managerfiles)
+    ui(new Ui::Managerassociation)
 {
     ui->setupUi(this);
 
     m_keyinterval = NULL;
     m_Model = new QSqlQueryModel;
+    m_associatedid = 0;
 
-  //  ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
+//    ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
 
     connect(ui->lineEditSearch, SIGNAL(textEdited(QString)), this, SLOT(StartTimer(QString)));
     connect(ui->tableViewSearch, SIGNAL(found(QModelIndex)), this, SLOT(Found(QModelIndex)));
@@ -32,16 +32,12 @@ Managerfiles::Managerfiles(QWidget *parent) :
     connect(ui->tableViewSearch,SIGNAL(CurrentChanged(QModelIndex)),this,SLOT(CurrentChanged(QModelIndex)));
 
     connect(ui->PshBtnEditar, SIGNAL(clicked()), this, SLOT(doEditar()));
-    connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));
-    connect(ui->PshBtnRemover, SIGNAL(clicked()), this, SLOT(doRemove()));
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
-    connect(ui->pushButtonView, SIGNAL(clicked()), this, SLOT(doView()));
-    connect(ui->tableViewSearch, SIGNAL(OnDrop(QString)), this, SLOT(doDrop(QString)));
 
-    DoRefresh();
+   // DoRefresh();
 }
 
-Managerfiles::~Managerfiles()
+Managerassociation::~Managerassociation()
 {
      if( m_keyinterval )
      {
@@ -50,10 +46,22 @@ Managerfiles::~Managerfiles()
      }
     delete m_Model;
 
-    delete ui;
+     delete ui;
 }
 
-void Managerfiles::KeyPressTimeout()
+void Managerassociation::setSQL(QString SQL, QRAD_ASSOCIATION_TYPE type)
+{
+    SQL_ITEMS = SQL;
+    m_association = type;
+    DoRefresh();
+}
+
+int Managerassociation::getSelectedId()
+{
+    return m_associatedid;
+}
+
+void Managerassociation::KeyPressTimeout()
 {
 //    if( ui->lineEditSearch->text().trimmed().isEmpty() )
 //        ui->tableViewSearch->selectRow(0);
@@ -61,7 +69,7 @@ void Managerfiles::KeyPressTimeout()
         ui->tableViewSearch->Search(ui->lineEditSearch->text());
 }
 
-void Managerfiles::StartTimer( QString )
+void Managerassociation::StartTimer( QString )
 {
     if( ui->lineEditSearch->text().trimmed().length() == 1 )
         ui->tableViewSearch->selectRow(0);
@@ -77,7 +85,7 @@ void Managerfiles::StartTimer( QString )
     m_keyinterval->setInterval(200);
     m_keyinterval->start();
 }
-void Managerfiles::Found(QModelIndex)
+void Managerassociation::Found(QModelIndex)
 {
     ui->tableViewSearch->SetNoEmptySearch( true );
 
@@ -86,12 +94,12 @@ void Managerfiles::Found(QModelIndex)
 
     ui->tableViewSearch->SetNoEmptySearch( false);
 }
-void Managerfiles::notFound()
+void Managerassociation::notFound()
 {
    ui->lineEditSearch->setStyleSheet(FG_COLOR_NOT_FOUND + BG_COLOR_NOT_FOUND);
   // ui->tableViewSearch->selectRow(0);
 }
-void Managerfiles::TableClicked(QModelIndex currentIndex)
+void Managerassociation::TableClicked(QModelIndex currentIndex)
 {
     qDebug() << "TableClicked";
     ui->lineEditSearch->setStyleSheet(AUTO_CONFIG_FOCUS);
@@ -100,7 +108,7 @@ void Managerfiles::TableClicked(QModelIndex currentIndex)
 
     ShowCurrentInformations();
 }
-void Managerfiles::CurrentChanged(QModelIndex currentIndex)
+void Managerassociation::CurrentChanged(QModelIndex currentIndex)
 {
     ui->lineEditSearch->setStyleSheet(AUTO_CONFIG_FOCUS);
     ui->lineEditSearch->setText(currentIndex.sibling(currentIndex.row(),BN_DEFAULT_COLUMN_SEARCH).data().toString());
@@ -109,7 +117,7 @@ void Managerfiles::CurrentChanged(QModelIndex currentIndex)
     ShowCurrentInformations( );
 }
 
-void Managerfiles::ShowCurrentInformations( void )
+void Managerassociation::ShowCurrentInformations( void )
 {
     QString strTemp;
 
@@ -121,7 +129,7 @@ void Managerfiles::ShowCurrentInformations( void )
          ui->groupBoxItens->setTitle(strTemp);
     }
 }
-void Managerfiles::LoadTableView()
+void Managerassociation::LoadTableView()
 {
     QApplication::processEvents();
 
@@ -134,7 +142,7 @@ void Managerfiles::LoadTableView()
     QApplication::processEvents();
 }
 
-void Managerfiles::DoRefresh()
+void Managerassociation::DoRefresh()
 {
     ui->tableViewSearch->SetNoEmptySearch( true );
 
@@ -155,7 +163,7 @@ void Managerfiles::DoRefresh()
     refreshTable();
 }
 
-void Managerfiles::refreshTable()
+void Managerassociation::refreshTable()
 {
     if(ui->lineEditSearch->text() == "")
     {
@@ -165,22 +173,26 @@ void Managerfiles::refreshTable()
     }
 }
 
-void Managerfiles::ConfigureTable()
+void Managerassociation::ConfigureTable()
 {
-    ui->tableViewSearch->addSearchColumnFilter(0);
+      ui->tableViewSearch->addSearchColumnFilter(0);
     ui->tableViewSearch->addSearchColumn(0);
-    ui->tableViewSearch->addSearchColumn(1);
-    ui->tableViewSearch->addSearchColumnFilter(1);
+
+
+   // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Conuna1"));
+    //m_Model->setHeaderData(2, Qt::Horizontal, QString::fromUtf8("Conuna2"));
+   // m_Model->setHeaderData(3, Qt::Horizontal, QString::fromUtf8("Conuna3"));
+   // m_Model->setHeaderData(4, Qt::Horizontal, QString::fromUtf8("Conuna3"));
+  //  m_Model->setHeaderData(5, Qt::Horizontal, QString::fromUtf8("Conuna4"));
 
    // ui->tableViewSearch->setColumnWidth(0, 0.06 * ui->tableViewSearch->width());
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
-    ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnDate);
-    ui->tableViewSearch->setItemDelegateForColumn(2, new ColumnCenter);
-    ui->tableViewSearch->setItemDelegateForColumn(3, new ColumnCenter);
-    ui->tableViewSearch->setItemDelegateForColumn(4, new ColumnDate);
+     ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
+
+
 }
 
-void Managerfiles::keyPressEvent(QKeyEvent *event)
+void Managerassociation::keyPressEvent(QKeyEvent *event)
 {
     qDebug() << "KeyPressEvent";
   //  if(event->key() != Qt::Key_Escape)
@@ -195,15 +207,18 @@ void Managerfiles::keyPressEvent(QKeyEvent *event)
                            ui->tableViewSearch->keyPressEvent(event);
                            break;
       case Qt::Key_Escape:
+  //                         ui->tableViewSearch->keyPressEvent(event);
                            doSair();
                            break;
       default:
-                           break;
+        break;
     }
 
 
 }
-void Managerfiles::MatchNewest(Files *newest )
+
+/*
+void Managerassociation::MatchNewest(association *newest )
 {
     DoRefresh();
     for( int j = 0; j < newest->attributes().count(); j++ )
@@ -215,78 +230,69 @@ void Managerfiles::MatchNewest(Files *newest )
         }
     }
 }
-void Managerfiles::doEditar()
+*/
+void Managerassociation::doEditar()
 {
-    Editfiles *edt = new Editfiles;
+//
+//#define PLUGIN_NAME "financier"
+//#define PLUGIN_NAME_ACTION_1 "NewAccountToPay"
+//#define PLUGIN_NAME_ACTION_1 "NewAccountToReceive"
+//#define PLUGIN_NAME_ACTION_1 "NewAccountToReceive"
+//
+    QRadPluginInterface *iface = QRadPluginContainer::getInstance()->plugin(PLUGIN_NAME);
+    if(iface)
+    {
+        m_associatedid =0;
+        switch(m_association)
+        {
+           case tpAccountToPay:
+                                   iface->Process(PLUGIN_NAME_ACTION_1);
+                                   m_associatedid = iface->getParam(PLUGIN_NAME_PARAM).toInt();
+                                   if(m_associatedid)
+                                       accept();
+                                   else
+                                       QMessageBox::information(this, "Oops!", "Nenhum item selecionado");
+                               break;
+           case tpAccountToReceive:
+                               break;
+        }
+   }
+
+/*
+    Editassociation *edt = new Editassociation;
 
     QModelIndex currentIndex = ui->tableViewSearch->currentIndex();
 
     int nId = currentIndex.sibling(currentIndex.row(),ui->tableViewSearch->getColumnOf("id")).data().toInt();
 
-    Files *sa = Files::findByPrimaryKey(nId);
+    association *sa = association::findByPrimaryKey(nId);
     edt->SetModel(sa);
     if( edt->exec() == QDialog::Accepted )
     {
         MatchNewest(edt->GetSaved());
     }
     delete edt;
-
+*/
 }
 
-void Managerfiles::doNovo()
+void Managerassociation::doNovo()
 {
-    Editfiles *edt = new Editfiles;
+/*
+    Editassociation *edt = new Editassociation;
 
     if( edt->exec() == QDialog::Accepted )
     {
         MatchNewest(edt->GetSaved());
     }
     delete edt;
+*/
 }
 
-void Managerfiles::doSair()
-{
-    if( QMessageBox::Yes ==  QMessageBox::question(this, "Sair?","Deseja sair desta pesquisa?",QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
-           reject();
-}
-void Managerfiles::doRemove()
+void Managerassociation::doSair()
 {
     QModelIndex currentIndex = ui->tableViewSearch->currentIndex();
-    int nId = currentIndex.sibling(currentIndex.row(),ui->tableViewSearch->getColumnOf("id")).data().toInt();
-    if( QMessageBox::Yes ==  QMessageBox::question(this, "Atenção!","Tem certeza de que deseja remover este item?",QMessageBox::Yes | QMessageBox::No, QMessageBox::No))
-    {
-        Files *pFile = Files::findByid(nId,true);
-        if( pFile )
-        {
-            pFile->updateRemoved(true);
-            delete pFile;
-            DoRefresh();
-        }
-    }
 
-}
-void Managerfiles::doView()
-{
-    QModelIndex currentIndex = ui->tableViewSearch->currentIndex();
-    int nId = currentIndex.sibling(currentIndex.row(),ui->tableViewSearch->getColumnOf("id")).data().toInt();
-    Files *pFile = Files::findByid(nId,true);
-    if( pFile )
-    {
-        QString filename = QString("C:\\dvl\\qrad\\bin\\%1").arg(pFile->getName());
-        pFile->getFile(filename,pFile->getLoId());
-        QDesktopServices::openUrl(QUrl::fromLocalFile(QString("%1").arg(filename)));//, QUrl::TolerantMode);
-        delete pFile;
-    }
+    m_associatedid = currentIndex.sibling(currentIndex.row(),ui->tableViewSearch->getColumnOf("id")).data().toInt();
 
-}
-void ManagerfilesdoDrop(QString path)
-{
-    Editfiles *pNew = new Editfiles;
-
-    pNew->setFile(path);
-    pNew->exec();
-    delete pNew;
-
-
-
+    accept();
 }

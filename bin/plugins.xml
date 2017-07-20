@@ -24,12 +24,13 @@
         <menu path="Financeiro" title="Calendario de Contas" action="ShowAccountCalendar" hotkey="CTRL+V" permission="gerenciarboletos" icon=":/png/icon_calendar.png"/>
         <menu path="Financeiro/Boletos" title="Gerenciar" action="ManageTicket" hotkey="CTRL+B" permission="gerenciarboletos" icon=":/png/icon_documents.png" />
         <menu path="Financeiro/Boletos" title="Importar (.RET)" action="ReadShipp" hotkey="CTRL+V" permission="gerenciarboletos" />
-        <menu path="Cadastro/Usuários" title="Fornecedores" action="ManageSupplier" hotkey="CTRL+V" permission="gerenciarboletos" />
+        <menu path="Cadastro/Fornecedores" title="Fornecedores" action="ManageSupplier" hotkey="CTRL+V" permission="gerenciarboletos" />
         <menu path="Cadastro/Cadastro Auxiliar/Metragem" title="Metragens" action="ManageMetreage" hotkey="CTRL+V" permission="gerenciarboletos" />
         <menu path="Financeiro/Freferencias" title="Tipos de Contas" action="ShowAccountType" hotkey="CTRL+F" permission="gerenciarboletos" />
         <menu path="Financeiro/Freferencias" title="Cadastrar Bancos" action="ShowBank" hotkey="CTRL+E" permission="gerenciarboletos" />
         <menu path="Financeiro/Freferencias" title="Cadastrar Contas Bancárias" action="ManageBankAccount" hotkey="CTRL+E" permission="gerenciarboletos" />
         <menu path="Financeiro/Freferencias" title="Arquiovos de Remessa" action="ManageShipper" hotkey="CTRL+E" permission="gerenciarboletos" />
         <menu path="Configurações" title="Boletos" action="ManageTicketConfig" hotkey="CTRL+Y" permission="gerenciarboletos" />
+        <menu path="Cadastro/Arquivos" title="Arquivos" action="ManageFiles" hotkey="CTRL+A" permission="gerenciarboletos" />
     </plugin>
 </pluginlist>

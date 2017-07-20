@@ -1,23 +1,35 @@
-#ifndef MANAGERfiles_H
-#define MANAGERfiles_H
+#ifndef MANAGERassociation_H
+#define MANAGERassociation_H
 
 #include <QTimer>
 #include <QDialog>
 #include <QKeyEvent>
 #include <QSqlQueryModel>
-#include "editfiles.h"
+
+typedef enum
+{
+    tpNone,
+    tpAccountToReceive,
+    tpAccountToPay,
+    tpdweller,
+    tpsupplier,
+    tpuser,
+    tpVisit
+}QRAD_ASSOCIATION_TYPE, *PQRAD_ASSOCIATION_TYPE;
 
 namespace Ui {
-class Managerfiles;
+class Managerassociation;
 }
 
-class Managerfiles : public QDialog
+class Managerassociation : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Managerfiles(QWidget *parent = 0);
-    ~Managerfiles();
+    explicit Managerassociation(QWidget *parent = 0);
+    ~Managerassociation();
+    void setSQL(QString SQL, QRAD_ASSOCIATION_TYPE type);
+    int getSelectedId();
 
 public slots:
     void notFound();
@@ -30,11 +42,11 @@ public slots:
     void doSair();
     void doNovo();
 
-private slots:
-    void doRemove();
-    void doView();
 private:
-    Ui::Managerfiles *ui;
+    QString SQL_ITEMS;
+    QRAD_ASSOCIATION_TYPE m_association;
+    int m_associatedid;
+    Ui::Managerassociation *ui;
 
     QTimer *m_keyinterval;
     QSqlQueryModel  *m_Model;
@@ -45,8 +57,6 @@ private:
     void refreshTable();
     void ConfigureTable();
     void keyPressEvent(QKeyEvent *event);
-    void MatchNewest(Files *newest );
-
 };
 
-#endif // MANAGERfiles_H
+#endif // MANAGERassociation_H

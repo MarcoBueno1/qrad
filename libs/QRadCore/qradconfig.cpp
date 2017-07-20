@@ -4,6 +4,8 @@
 #include <QSettings>
 #include <QFileDialog>
 #include <QStandardPaths>
+#include <QAction>
+#include "qradpluginaction.h"
 
 QRadConfig::QRadConfig()
 {
@@ -114,4 +116,40 @@ QStringList QRadConfig::GetAndPersistDir( QString VarName,
         settings.setValue(QString("Paths/%1").arg(VarName),Paths.at(0));
     }
      return Paths;
+}
+
+
+void QRadConfig::enumerateMenu(QMenu *menu)
+{
+    foreach (QAction *action, menu->actions())
+    {
+        if( !action )
+            continue;
+        if (action->isSeparator())
+        {
+        }
+        else if (action->menu())
+        {
+            enumerateMenu(action->menu());
+        }
+        else
+        {
+            QRadPluginAction*ac = dynamic_cast<QRadPluginAction*>(action);
+            if( ac )
+                ac->setEnabledEx();
+
+        }
+    }
+}
+
+void QRadConfig::AdjustMenuToPermissions(QMenuBar *menuBar)
+{
+    QWidget* parent = menuBar;
+
+    for ( int i=0; i < parent->children().count(); i++ )
+    {
+        QMenu* menu = qobject_cast<QMenu*>( parent->children().at( i ) );
+        if( menu )
+            enumerateMenu(menu);
+    }
 }

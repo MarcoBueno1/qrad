@@ -30,3 +30,6 @@ win32:QMAKE_LFLAGS += --enable-auto-import
 
 unix:LIBS += -lssl -ldl
 RESOURCES += QRadresource.qrc
+
+target.path = $${PREFIX}/bin
+INSTALLS += target

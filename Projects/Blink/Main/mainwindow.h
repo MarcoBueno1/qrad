@@ -24,6 +24,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
     void setRemainingDays(int value);
+    void AdjustMenuPermissions();
+    void enumerateMenu(QMenu *menu);
 };
 
 #endif // MAINWINDOW_H

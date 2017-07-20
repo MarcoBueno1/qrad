@@ -23,6 +23,7 @@ public slots:
     void Save();
     void Cancel();
     
+    void ResetSenha();
 private:
     Ui::Edituser *ui;
     user* m_mod;

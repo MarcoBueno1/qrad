@@ -13,24 +13,11 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QTableView" name="tableView">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>621</width>
-     <height>441</height>
-    </rect>
-   </property>
-   <attribute name="verticalHeaderVisible">
-    <bool>false</bool>
-   </attribute>
-  </widget>
   <widget class="QPushButton" name="pushButtonOk">
    <property name="geometry">
     <rect>
      <x>550</x>
-     <y>470</y>
+     <y>474</y>
      <width>81</width>
      <height>22</height>
     </rect>
@@ -46,7 +33,7 @@
    <property name="geometry">
     <rect>
      <x>460</x>
-     <y>470</y>
+     <y>474</y>
      <width>81</width>
      <height>22</height>
     </rect>
@@ -54,6 +41,32 @@
    <property name="text">
     <string>&amp;Cancelar</string>
    </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>2</x>
+     <y>4</y>
+     <width>631</width>
+     <height>468</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Total Itens: </string>
+   </property>
+   <widget class="QTableView" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>4</x>
+      <y>18</y>
+      <width>621</width>
+      <height>441</height>
+     </rect>
+    </property>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+   </widget>
   </widget>
  </widget>
  <resources/>

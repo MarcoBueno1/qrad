@@ -468,6 +468,19 @@
     <string>&amp;Salvar</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButtonResetarSenha">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>210</y>
+     <width>111</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Resetar Senha</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>

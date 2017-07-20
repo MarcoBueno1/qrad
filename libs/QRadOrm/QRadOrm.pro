@@ -34,7 +34,9 @@ SOURCES +=  \
            cmdsqlite.cpp \
            pgsqlasync.cpp \
            qradmodellog.cpp \
-           maincompany.cpp
+           maincompany.cpp \
+    files.cpp \
+    filedescription.cpp
 
 HEADERS +=  \
            orm.h \
@@ -53,7 +55,9 @@ HEADERS +=  \
            cmdsqlite.h \
            pgsqlasync.h \
            qradmodellog.h \
-           maincompany.h
+           maincompany.h \
+    files.h \
+    filedescription.h
 
 #win32:LIBS +=  -L../QRadCore\release
 #unix:LIBS +=  -L../QRadCore

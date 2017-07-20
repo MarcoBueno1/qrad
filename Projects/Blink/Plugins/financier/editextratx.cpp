@@ -6,6 +6,7 @@
 #include <QAbstractItemModel>
 #include <QVariant>
 #include <QSqlField>
+#include "qradshared.h"
 
 
 Editextratx::Editextratx(QWidget *parent) :
@@ -27,10 +28,11 @@ Editextratx::Editextratx(QWidget *parent) :
     connect(ui->pushButtonAdd, SIGNAL(clicked()),this,SLOT(Add()));
     connect(ui->pushButtonRemove, SIGNAL(clicked()),this,SLOT(Remove()));
     connect(ui->checkBoxMovedOut, SIGNAL(clicked()),this,SLOT(MovedOut()));
+    connect(ui->CmbBxmotivo,SIGNAL(activated(QString)), this, SLOT(ComboChanged(QString)));
+    connect(ui->lineEditObs,SIGNAL(textEdited(QString)), this, SLOT(TextEdited(QString)));
 
 
-
-    ui->dateEdit->setDate(QDate::currentDate().addDays(15));
+    ui->dateEdit->setDate(QDate::currentDate());
 
     ui->lineEditMorador->setSelect("select a.numero  || ' | '  || t.name  || ' | ' || d.name, d.id, d.name, a.numero, t.name, d.ramal "\
                                    "from dweller d "\
@@ -41,6 +43,7 @@ Editextratx::Editextratx(QWidget *parent) :
 //    ui->lineEditMorador->Add(ui->lineEditRamal);
     m_selected = new QSqlQueryModel;
     setWindowTitle("Nova Taxa Extra");
+    m_bEdited = false;
 }
 
 Editextratx::~Editextratx()
@@ -84,6 +87,7 @@ void Editextratx::Save()
     mod->setValue(ui->doubleSpinBox->value());
     mod->setTimes(ui->comboBox->currentIndex()+1);
     mod->setAll( !ui->groupBox->isChecked());
+    mod->setObs(ui->lineEditObs->text());
     if(ui->groupBox->isChecked())
         mod->setDweller(ui->lineEditMorador->getCurrentId());
 
@@ -202,4 +206,18 @@ void Editextratx::MovedOut()
                                          "inner join ap a on a.id = d.ap  where d.removed = false and d.payer = true and d.movedout <> true");
 
     }
+}
+
+void Editextratx::ComboChanged(QString text)
+{
+    if(!m_bEdited)
+    {
+        ui->lineEditObs->setText(QString("%1 (%2)").arg(text).arg(ui->dateEdit->date().toString(FMT_DATE)));
+        ui->lineEditMorador->selectAll();
+//        ui->lineEditMorador->setFocus();
+    }
+}
+void Editextratx::TextEdited(QString text)
+{
+    m_bEdited = true;
 }

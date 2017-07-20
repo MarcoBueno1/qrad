@@ -30,7 +30,11 @@ public slots:
     void Add();
     void Remove();
     void MovedOut();
+private slots:
+    void ComboChanged(QString text);
+    void TextEdited(QString text);
 private:
+    bool m_bEdited;
     QSqlQueryModel *m_selected;
     QList<int> m_selectedIds;
 

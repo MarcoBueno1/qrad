@@ -21,19 +21,27 @@ SOURCES +=  \
            edituser.cpp \
            editphone.cpp \
            editaddress.cpp \
-           editemailconf.cpp
+           editemailconf.cpp \
+           editfiles.cpp \
+           managerfiles.cpp
 
 HEADERS +=  \
            edituser.h \
            editphone.h \
            editaddress.h \
-           editemailconf.h
+           editemailconf.h \
+           editfiles.h \
+           managerfiles.h
+#    persistfiletodatabase.h
 		   
 FORMS +=  \
          edituser.ui \
          editphone.ui \
          editaddress.ui \
-         editemailconf.ui
+         editemailconf.ui \
+         editfiles.ui \
+         managerfiles.ui
+#    persistfiletodatabase.ui
  
 win32:LIBS +=  -L../QRadCore\release \
                -L../QRadHw\release \

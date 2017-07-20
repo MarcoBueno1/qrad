@@ -5,7 +5,7 @@
 #include <QLabel>
 #include "editlogin.h"
 #include "qradconfig.h"
-
+#include "qradpluginaction.h"
 
 #define BLINK_RELEASE "1.0"
 
@@ -62,8 +62,8 @@ MainWindow::~MainWindow()
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
 #ifdef _WIN32
-//    QPixmap bkgnd("C:\\Dvl\\qrad\\Projects\\Blink\\background.jpg");
     QPixmap bkgnd(":/png/background-green-1.jpg");
+//    QPixmap bkgnd;//(":/png/background-green-1.jpg");
 #else
     QPixmap bkgnd("/home/marco/cpcs/qrad/Projects/Blink/background.jpg");
 #endif
@@ -98,13 +98,52 @@ void MainWindow::on_actionBloquear_triggered()
     {
         result = pLogin->exec();
         QRadConfig::centralizarWidget(pLogin);
-        if( nUserId != QRadConfig::GetCurrentUserId())
-        {
-            QMessageBox::warning(this,
-                                 "Atenção!",
-                                 QString("O sistema está bloqueado, em uso para %1.\nPor favor solicite deste usuário o desbloqueio").arg(login));
-        }
-    }while(( nUserId != QRadConfig::GetCurrentUserId()) || (result == QDialog::Rejected));
+//        if( nUserId != QRadConfig::GetCurrentUserId())
+//        {
+//            QMessageBox::warning(this,
+//                                 "Atenção!",
+//                                 QString("O sistema está bloqueado, em uso para %1.\nPor favor solicite deste usuário o desbloqueio").arg(login));
+//        }
+    }while(/*( nUserId != QRadConfig::GetCurrentUserId()) ||*/ (result == QDialog::Rejected));
 
     this->setEnabled(true);
+
+    AdjustMenuPermissions();
+}
+
+
+
+void MainWindow::enumerateMenu(QMenu *menu)
+{
+    foreach (QAction *action, menu->actions())
+    {
+        if( !action )
+            continue;
+        if (action->isSeparator())
+        {
+        }
+        else if (action->menu())
+        {
+            enumerateMenu(action->menu());
+        }
+        else
+        {
+            QRadPluginAction*ac = dynamic_cast<QRadPluginAction*>(action);
+            if( ac )
+                ac->setEnabledEx();
+
+        }
+    }
+}
+
+void MainWindow::AdjustMenuPermissions()
+{
+    QWidget* parent = menuBar();
+
+    for ( int i=0; i < parent->children().count(); i++ )
+    {
+        QMenu* menu = qobject_cast<QMenu*>( parent->children().at( i ) );
+        if( menu )
+            enumerateMenu(menu);
+    }
 }

@@ -625,7 +625,7 @@ MotivoRejeicao1=04-Compensação Eletrônica.
 
 bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QString FileName )
 {
-    QRAD_SHOW_PRPGRESS(QString("Lendo arquivo de retorno ..."));
+    QRAD_SHOW_PRPGRESS(QString("Lendo arquivo de retorno %1...").arg(FileName));
 
 
     QString cmd =  QString(TKT_EXTRACT_RETURN).arg(strDir).arg(FileName);

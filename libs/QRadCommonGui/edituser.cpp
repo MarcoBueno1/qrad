@@ -25,6 +25,9 @@ Edituser::Edituser(QWidget *parent) :
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
+    connect(ui->pushButtonResetarSenha, SIGNAL(clicked()),this,SLOT(ResetSenha()));
+
+    ui->pushButtonResetarSenha->setVisible(false);
 
     setWindowTitle("Cadastro de Usuários");
 }
@@ -132,9 +135,11 @@ void Edituser::Load()
     ui->LnEdtname->setText(m_mod->getname());
     ui->LnEdtemail->setText(m_mod->getemail());
     ui->DtEdtcontractsince->setDate(m_mod->getcontractsince());
-//    ui->LnEdtpassword->setText(m_mod->getpassword());
     ui->CmbBxprofile->setCurrentId(m_mod->getprofile());
     ui->LnEdtpassword->setEnabled(false);
+    ui->LnEdtConfirmPassword->setEnabled(false);
+
+    ui->pushButtonResetarSenha->setVisible(true);
 
 }
 
@@ -149,3 +154,9 @@ user* Edituser::GetSaved()
 
 }
 
+void Edituser::ResetSenha()
+{
+    ui->LnEdtpassword->setEnabled(true);
+    ui->LnEdtConfirmPassword->setEnabled(true);
+    ui->LnEdtpassword->setFocus();
+}

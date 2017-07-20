@@ -11,8 +11,11 @@ public:
     QRadPluginAction( const QString& text, QObject* parent = 0 );
 
     void setActionDescriptor( const QString& action );
+    void setPermission( const QString &permission);
+    void setEnabledEx();
 private:
     QString m_action;
+    QString m_permission;
 
 private slots:
     void trigger();

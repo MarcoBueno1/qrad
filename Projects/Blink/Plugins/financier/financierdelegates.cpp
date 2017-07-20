@@ -289,7 +289,7 @@ void ColumnDateLate::paint(QPainter *painter,
  QStyleOptionViewItem myOption = option;
 
  QDate date = text.toDate();
- if(( QDate::currentDate() > date.addDays(3)) && (stPaid!= status))
+ if(( QDate::currentDate() > date.addDays(1)) && (stPaid!= status))
  {
       painter->fillRect(option.rect, BG_FIN_COLOR_RED);
  }

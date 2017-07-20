@@ -91,6 +91,7 @@ private:
     QMap<QString, QPluginLoader*>   *m_loaderMap;
     QMainWindow                     *m_mainWindow;
     QRadSplashScreen                 *m_splash;
+    QString GetContent(QString xmlPluginList);
 };
 
 #endif // _QRadPLUGIN_H_

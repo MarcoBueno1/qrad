@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PersistFileToDatabase</class>
+ <widget class="QDialog" name="PersistFileToDatabase">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>905</width>
+    <height>630</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>80</y>
+     <width>881</width>
+     <height>511</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string> Arquivos </string>
+   </property>
+   <widget class="QRadTableViewSearch" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>851</width>
+      <height>441</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>470</y>
+      <width>239</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButtonRemove">
+       <property name="text">
+        <string>Remover</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonAdd">
+       <property name="text">
+        <string>Adicionar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonView">
+       <property name="text">
+        <string>Visualizar</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>810</x>
+     <y>600</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sair</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>880</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string> Pesquisar </string>
+   </property>
+   <widget class="QRadLineEditFakeEnter" name="lineEditSearch">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>861</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>34</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>34</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Verdana</family>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QRadTableViewSearch</class>
+   <extends>QTableView</extends>
+   <header location="global">qradtableviewsearch.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QRadLineEditFakeEnter</class>
+   <extends>QLineEdit</extends>
+   <header location="global">qradlineeditfakeenter.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

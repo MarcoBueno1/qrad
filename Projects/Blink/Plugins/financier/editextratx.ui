@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>579</width>
-    <height>417</height>
+    <height>438</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>9</y>
      <width>560</width>
-     <height>370</height>
+     <height>390</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -32,7 +32,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>120</y>
+      <y>143</y>
       <width>520</width>
       <height>237</height>
      </rect>
@@ -306,12 +306,46 @@
      </item>
     </layout>
    </widget>
+   <widget class="QWidget" name="layoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>25</x>
+      <y>110</y>
+      <width>510</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="Lblmotivo_5">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>60</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Obs</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEditObs"/>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QPushButton" name="PshBtnCancel">
    <property name="geometry">
     <rect>
      <x>396</x>
-     <y>383</y>
+     <y>404</y>
      <width>85</width>
      <height>27</height>
     </rect>
@@ -324,7 +358,7 @@
    <property name="geometry">
     <rect>
      <x>483</x>
-     <y>383</y>
+     <y>404</y>
      <width>85</width>
      <height>27</height>
     </rect>
@@ -336,14 +370,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QRadLineEditCompleter</class>
-   <extends>QLineEdit</extends>
-   <header location="global">qradlineeditcompleter.h</header>
-  </customwidget>
-  <customwidget>
    <class>SComboBox</class>
    <extends>QComboBox</extends>
    <header location="global">scombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QRadLineEditCompleter</class>
+   <extends>QLineEdit</extends>
+   <header location="global">qradlineeditcompleter.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -351,11 +385,13 @@
   <tabstop>dateEdit</tabstop>
   <tabstop>comboBox</tabstop>
   <tabstop>CmbBxmotivo</tabstop>
+  <tabstop>lineEditObs</tabstop>
   <tabstop>groupBox</tabstop>
   <tabstop>lineEditMorador</tabstop>
   <tabstop>pushButtonAdd</tabstop>
-  <tabstop>listView</tabstop>
   <tabstop>pushButtonRemove</tabstop>
+  <tabstop>listView</tabstop>
+  <tabstop>checkBoxMovedOut</tabstop>
   <tabstop>PshBtnCancel</tabstop>
   <tabstop>PshBtnSave</tabstop>
  </tabstops>

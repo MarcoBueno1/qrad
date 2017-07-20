@@ -14,6 +14,8 @@
 #include <QMessageBox>
 #include "qradlicensecontrol.h"
 #include "qradfile.h"
+#include "qradconfig.h"
+#include "connectservererror.h"
 
 
 void centerWidget(QWidget *widget)
@@ -33,7 +35,20 @@ void configureDatabase()
 
     if(!db.open())
     {
-        qDebug() <<"Impossivel conectar no banco";
+        ConnectServerError *c = new ConnectServerError(NULL);
+        c->getError(db.lastError().databaseText());
+        QRadConfig::centralizarWidget(c);
+
+        if(QDialog::Accepted == c->exec())
+        {
+            db.setHostName(QRadFile::GetParamValue("banco/hostname"));
+        }
+        delete c;
+
+        if(!db.open())
+        {
+            exit(1);
+        }
     }
     else
     {
@@ -52,7 +67,7 @@ int main(int argc, char *argv[])
 
     QRadSplashScreen *splash;
     QPixmap pix(":/png/splash.png");
-//    Qt::Alignment topRight = Qt::AlignRight | Qt::AlignTop;
+//    QPixmap pix("");
     int rc;
 
     splash = new QRadSplashScreen(pix, Qt::WindowStaysOnTopHint);
@@ -112,7 +127,7 @@ int main(int argc, char *argv[])
     a.processEvents();
 
     g_pluginLoader = new QRadPluginLoader(g_mainWindow,splash);
-    g_pluginLoader->Load("plugins.xml");
+    g_pluginLoader->Load("plugins.enc");
 
     splash->finish(g_mainWindow);
     g_mainWindow->setParent(0, 0);

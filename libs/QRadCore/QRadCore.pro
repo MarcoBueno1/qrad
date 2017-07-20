@@ -93,7 +93,8 @@ HEADERS +=  qradplugincontainer.h \
     bankticketinterface.h \
     qradprogresswindow.h \
     qrademail.h \
-    emailgui.h
+    emailgui.h \
+    connectservererror.h
 
 
 
@@ -161,7 +162,8 @@ SOURCES +=  qradplugininterface.cpp \
     bankticket.cpp \
     qradprogresswindow.cpp \
     qrademail.cpp \
-    emailgui.cpp
+    emailgui.cpp \
+    connectservererror.cpp
 
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c
@@ -191,7 +193,8 @@ win32:QMAKE_LFLAGS += --enable-auto-import
 FORMS += \
     qradlicensecontrol.ui \
     qradprogresswindow.ui \
-    emailgui.ui
+    emailgui.ui \
+    connectservererror.ui
 #    profileregister.ui
 
 target.path = $${PREFIX}/bin

@@ -105,12 +105,13 @@ bool TicketController::BuildTicket( DwellerList *dlist,
         if( ext )
         {
             txValue = ext->getValue();
-            ReasonExtraTax *pReason = ReasonExtraTax::findByid(ext->getMotivo(), true);
-            if(pReason)
-            {
-                Obs = "Tx. Extra " + pReason->getDescription() + "("+date.toString(FMT_DATE)+")";
-                delete pReason;
-            }
+            Obs = ext->getObs();
+//            ReasonExtraTax *pReason = ReasonExtraTax::findByid(ext->getMotivo(), true);
+//            if(pReason)
+//            {
+//                Obs = "Tx. Extra " + pReason->getDescription() + "("+date.toString(FMT_DATE)+")";
+//                delete pReason;
+//            }
             delete ext;
         }
     }
@@ -237,12 +238,11 @@ bool TicketController::BuildTicket( DwellerList *dlist,
 
 bool TicketController::BuildTicketExtra( extratx *pTx )
 {
-    QRadProgressWindow *pW = QRadProgressWindow::getInstance();
-    pW->setDetail(QString("Criando Taxa Extra..."));
+    QRAD_SHOW_PRPGRESS("Criando Taxa Extra...");
 
     DwellerList *dlist ;
 
-    pW->hide();
+    QRAD_HIDE_PRPGRESS();
     Editextratx *edt = new Editextratx;
     if( QDialog::Accepted != edt->exec())
     {
@@ -252,7 +252,7 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
         delete edt;
         return false;
     }
-    pW->setDetail(QString("Criando Taxa Extra..."));
+    QRAD_SHOW_PRPGRESS_STEP(QString("Criando Taxa Extra..."));
     pTx = edt->GetSaved();
 
     QDate date = pTx->getData();
@@ -270,7 +270,7 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
            dlist = Dweller::findBy(SQL);
            if( !dlist )
            {
-               pW->hide();
+               QRAD_HIDE_PRPGRESS();
                QMessageBox::information(NULL, "Oops!", QString("Todos os boletos de taixa condominial com vencimento %1 já foram emitidos!").arg(date.toString(FMT_DATE)));
                return false;
            }
@@ -306,7 +306,7 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
                      dwdata += dName->getName();
                      delete dName;
                  }
-                 pW->hide();
+                 QRAD_HIDE_PRPGRESS();
                  if( QMessageBox::No == QMessageBox::question(NULL, "Atenção",
                                                               QString("Já foi emitido boleto para %1 este morador neste mês, deseja realmente emitir um novo boleto?").arg(dwdata),
                                                               QMessageBox::Yes|QMessageBox::No,
@@ -316,7 +316,7 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
            }
            if( !OkList.count())
            {
-               pW->hide();
+               QRAD_HIDE_PRPGRESS();
                return false;
            }
            QString Where;
@@ -350,7 +350,7 @@ bool TicketController::BuildTicketExtra( extratx *pTx )
     }
 
     delete edt;
-    pW->hide();
+    QRAD_HIDE_PRPGRESS();
     return true;
 }
 
@@ -896,12 +896,13 @@ bool TicketController::UpdateTickets(QList<BankTicket*> *list)
     QRAD_SHOW_PRPGRESS("Atualizando estado dos boletos..");
     for( int i = 0; (i< list->count()) && bRet ; i++ )
     {
-        QCoreApplication::processEvents();
          pCurrent = list->at(i);
+         QRAD_SHOW_PRPGRESS_STEP(QString("Processando Item:%1 Nosso Número:%2 Valor R$:%3").arg(i).arg(pCurrent->getNossoNumero()).arg(QRadMoney::MoneyHumanForm4(pCurrent->getValor())));
+         QCoreApplication::processEvents();
          if( pCurrent->getTpOp() == tpRegistered)
          {
              ticket *ptkt = ticket::findByNossoNumero(pCurrent->getNossoNumero().toInt(),true);
-             if( ptkt && (ptkt->getStatus() != stRegistered))
+             if( ptkt && ((ptkt->getStatus() != stPaid) && (ptkt->getStatus() != stRegistered)))
              {
                  bRet = ptkt->updateStatus(stRegistered);
                  delete ptkt;
@@ -912,7 +913,7 @@ bool TicketController::UpdateTickets(QList<BankTicket*> *list)
              ticket *ptkt = ticket::findByNossoNumero(pCurrent->getNossoNumero().toInt(),true);
              if(( ptkt && (ptkt->getStatus() != tpLiquidated)) && ptkt->getVencto() > QDate::fromString("05072017","ddMMyyyy"))
              {
-                 bRet = ptkt->UpdateToPaid();
+                 bRet = ptkt->UpdateToPaid(pCurrent->getdtPagto(),pCurrent->getValorPago().replace(",",".").toDouble());
                  delete ptkt;
              }
          }
@@ -1038,7 +1039,7 @@ bool TicketController::ReportExaro( QSqlQueryModel *model, QString reportTitle)
     QRadReportManager   *report = new QRadReportManager();
     int total = 0;
 
-    if ( !report->load( "report" ) )
+    if ( !report->load( "report-tickets" ) )
     {
        QRAD_HIDE_PRPGRESS();
        QMessageBox::critical( NULL, "Erro", "Falha ao carregar arquivo modelo." );
@@ -1047,18 +1048,18 @@ bool TicketController::ReportExaro( QSqlQueryModel *model, QString reportTitle)
     }
     QRAD_SHOW_PRPGRESS_STEP("Carregando Informações...");
     ExaroReport *pReport = dynamic_cast<ExaroReport*>(report->getReport());
-    pReport->setReportTitle(/*reportTitle*/"ATM");
+    pReport->setReportTitle(reportTitle);
 /*
 //select t.nossonumero as \"Nº.Banco\", t.seunumero as \"Nº.Sis\", a.numero as \"Ap\", tw.name as \"Torre\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
 //    " t.valor as \"Valor R$\", t.valorpago as \"Pago R$\"
 */
     QRAD_SHOW_PRPGRESS_STEP("Gerando Relatório...");
-    pReport->setFields("Nº.Banco","Ap", "Torre", "Morador", "Vencto",  "Valor R$"," "," "," "," ");
-    pReport->setTitles("Nº.Banco","Ap", "Torre", "Morador", "Vencto",  "Valor R$"," "," "," "," ");
+    pReport->setFields("Nº.Banco","Ap", "Torre", "Morador","obs", "Vencto",  "Valor R$"," "," "," ");
+    pReport->setTitles("Nº.Banco","Ap", "Torre", "Morador","Obs", "Vencto",  "Valor R$"," "," "," ");
 
     for (int index = 0; index < model->rowCount(); index++)
     {
-        total       += QRadMoney::StrToInt(model->record(index).value("Valor R$").toString());
+        total       += QRadMoney::StrToInt(QRadMoney::MoneyHumanForm3(model->record(index).value("Valor R$").toFloat()));
     }
 
     pReport->setQueryName("tickets");
@@ -1068,8 +1069,10 @@ bool TicketController::ReportExaro( QSqlQueryModel *model, QString reportTitle)
                      .replace(", t.vencto ",", to_char(t.vencto, 'dd-mm-yyyy') "));
 
 
+    report->replace("{Itens}", QString("%1").arg(model->rowCount()));
     report->replace("TOTAL1", "");
     report->setAttributeMoneyValue("TOTAL2", total);
+    debug_message("TOTAL...........................:%s\n", QRadMoney::MoneyHumanForm4(QString::number(total)).toLatin1().data());
 
     QRAD_HIDE_PRPGRESS();
     if ( !report->show() )

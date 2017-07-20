@@ -3,6 +3,7 @@
 #include "qradshared.h"
 #include "qradlog.h"
 #include "qradconfig.h"
+#include "qradsecurefile.h"
 //#include "cashiermodel.h"
 //#include "configurationmodel.h"
 
@@ -86,10 +87,43 @@ QRadPluginLoader::~QRadPluginLoader()
     delete m_pluginList;
 }
 
+QString QRadPluginLoader::GetContent(QString xmlPluginList)
+{
+    bool bValidFile = false;
+    QString content;
+
+    if(xmlPluginList.toLower().contains(".enc"))
+    {
+        QRadSecureFile file( xmlPluginList );
+        if( file.open(QIODevice::ReadOnly) )
+        {
+            content = QString::fromUtf8(file.readAll());
+            bValidFile = true;
+            file.close();
+        }
+    }
+    else
+    {
+        QFile file( xmlPluginList );
+        if( file.open(QIODevice::ReadOnly) )
+        {
+            content = QString::fromUtf8(file.readAll());
+            bValidFile = true;
+            file.close();
+        }
+    }
+    if( !bValidFile )
+    {
+        debug_message("[QRadPluginLoader]::Load() Fail L:%d\n",__LINE__);
+        QRad_LOG_ERROR(QString("Failed to read file {%1}").arg(xmlPluginList));
+    }
+
+    return content;
+}
+
 bool QRadPluginLoader::Load( const QString& xmlPluginList )
 {
     debug_message("[QRadPluginLoader]-->Load(%s)\n", xmlPluginList.toUtf8().data());
-    QFile file( xmlPluginList );
 
 
     /// Add default report smart plugin ( it create its menus onLoad according database config )
@@ -100,22 +134,12 @@ bool QRadPluginLoader::Load( const QString& xmlPluginList )
     m_pluginList->append(descrep);
     ///
 
+    QString content = GetContent(xmlPluginList);
 
-    if( file.open(QIODevice::ReadOnly) )
+    if (!parse(content))
     {
-        QString content = QString::fromUtf8(file.readAll());
-
-
-        if (!parse(content))
-        {
-            debug_message("[QRadPluginLoader]<--Load false L:%d\n",__LINE__);
-            return false;
-        }
-    }
-    else
-    {
-        debug_message("[QRadPluginLoader]::Load() Fail L:%d\n",__LINE__);
-        QRad_LOG_ERROR(QString("Failed to read file {%1}").arg(xmlPluginList));
+        debug_message("[QRadPluginLoader]<--Load false L:%d\n",__LINE__);
+        return false;
     }
 
 
@@ -229,9 +253,6 @@ bool QRadPluginLoader::loadMenu(QRadPluginInterface *plugin, QRadPluginMenu *men
     if( !menu->hotKey().isEmpty())
         action->setShortcut(QKeySequence(menu->hotKey()));
 
-
-
-
 #if (DEVELOPMENT_VERSION == 1)
     action->setEnabled(true);
 #else
@@ -239,6 +260,7 @@ bool QRadPluginLoader::loadMenu(QRadPluginInterface *plugin, QRadPluginMenu *men
 #endif
 
     action->setActionDescriptor(menu->action());
+    action->setPermission(menu->permission());
     lastMenu->addAction( action );
     action->connect( action, SIGNAL(triggered(QString)), plugin, SLOT(Process(QString)) );
 

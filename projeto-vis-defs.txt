@@ -37,6 +37,10 @@
 
 git add ../../Plugins/financier/editticket.cpp ../../Plugins/financier/editticket.h ../../Plugins/financier/editticket.ui ../../Plugins/financier/managerticket.cpp ../../Plugins/financier/managerticket.h ../../Plugins/financier/managerticket.ui ticket.cpp ticket.h
 
+
+
+./qrad -s files -t files -c id -i int -c created.CriadoEm -i QDate -c name.Nome:searchmaster -i QString -c description.Descricao -i QString:search -c lastaccess.UltimoAcesso -i QDate -c typeid.Tipo -i int:multi:filedescription.Description[Documento,Imagem]
+
  
 6. Relatorios:
     1. Que visitantes estão no predito

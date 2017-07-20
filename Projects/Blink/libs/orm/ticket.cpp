@@ -38,7 +38,7 @@ void ticket::getFile(QString path, int Loid)
     ORM::getFile(path, Loid);
 }
 
-bool ticket::UpdateToPaid()
+bool ticket::UpdateToPaid(QDate date, double value )
 {
     QCoreApplication *app = QCoreApplication::instance();
     int Userid = app->property("CurrentUserId").toInt();
@@ -46,7 +46,10 @@ bool ticket::UpdateToPaid()
    AccountToReceiveModel *account = AccountToReceiveModel::findById(getAccountId(),true);
    if( account )
    {
-       if(account->updatePaid(true))
+       account->setPaidDate(date);
+       account->setPaid(true);
+       account->setValuePaid(value);
+       if(account->Save())
        {
            AccountToReceiveHistoryModel *his = new AccountToReceiveHistoryModel;
            his->setDate(QDate::currentDate());
@@ -56,10 +59,14 @@ bool ticket::UpdateToPaid()
            his->Save();
            delete his;
            setStatus(stPaid);
-           updateStatus(stPaid);
+           setPagoEm(date);
+           setValorPago(value);
+//           updatePagoEm(date);
+//           updateStatus(stPaid);
            delete account;
-           return true;
+           return Save();
        }
+       delete account;
    }
 
    return false;

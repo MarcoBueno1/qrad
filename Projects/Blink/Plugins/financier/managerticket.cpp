@@ -20,7 +20,7 @@
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
 #define SQL_ITEMS "select t.nossonumero as \"Nº.Banco\", t.seunumero as \"Nº.Sis\", a.numero as \"Ap\", tw.name as \"Torre\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
-                  "  t.valor as \"Valor R$\", t.valorpago as \"Pago R$\",u.name as \"Criado Por\", t.status as \"Estado\", t.sendstatus as \"e-mail\", t.type as \"Tipo\", t.id, d.id as dwellerid from "\
+                  "  t.valor as \"Valor R$\", t.valorpago as \"Pago R$\",u.name as \"Criado Por\", t.status as \"Estado\", t.sendstatus as \"e-mail\", t.type as \"Tipo\", t.id, d.id as dwellerid, t.obs from "\
                   " ticket t inner join dweller d on d.id = t.clientid inner join vuser u on u.id = t.vuser "\
                   " inner join ap a on a.id = d.ap inner join tower tw on tw.id = d.tower "\
                   " %1 order by t.id desc; "
@@ -359,6 +359,7 @@ void Managerticket::ConfigureTable()
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("dwellerid"));
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("Criado Por"));
+    ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("obs"));
     ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
     ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnCenter);
     ui->tableViewSearch->setItemDelegateForColumn(2, new ColumnCenter);

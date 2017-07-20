@@ -8,5 +8,6 @@ ORM_BEGIN_MAP(extratx)
      ORM_MAP_FIELD(Data, "data")
      ORM_MAP_FIELD(All, "todos")
      ORM_MAP_FIELD(Dweller, "dweller")
+     ORM_MAP_FIELD(Obs, "obs")
 ORM_END_MAP()
 

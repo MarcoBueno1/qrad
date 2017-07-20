@@ -107,6 +107,8 @@ bool ShowBankReturn::Exec(QList<BankTicket*> *list, QStringList Paths)
     QCoreApplication::processEvents();
     BuildTable(list);
 
+    ui->groupBox->setTitle(QString("Total Itens:%1").arg(list->count()));
+
     m_model = new QSqlQueryModel;
 
     m_model->setQuery(SELECT_MEM_TABLE,db);

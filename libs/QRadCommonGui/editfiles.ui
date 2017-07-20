@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Editfiles</class>
+ <widget class="QDialog" name="Editfiles">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>230</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Edit</string>
+  </property>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>781</width>
+     <height>170</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::WinPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QPushButton" name="PshButtonVisualizar">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>140</y>
+      <width>151</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Visualizar...</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>731</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="LblNome_2">
+       <property name="text">
+        <string>Arquivo</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEditName"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonSelecionar">
+       <property name="text">
+        <string>Selecionar..</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>731</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="LblDescricao">
+       <property name="text">
+        <string>Descricao</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="LnEdtDescricao"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>741</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="LblTipo">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Tipo</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="SComboBox" name="CmbBxTipo">
+       <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="editable">
+        <bool>true</bool>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToContents</enum>
+       </property>
+       <item>
+        <property name="text">
+         <string>Documento</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Imagem</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Inserido em</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateTimeEdit" name="dateTimeEditCreated"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Ultima Visualização</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateTimeEdit" name="dateTimeEditLastAccesss"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="PshBtnCancel">
+   <property name="geometry">
+    <rect>
+     <x>623</x>
+     <y>190</y>
+     <width>85</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&amp;Cancelar</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PshBtnSave">
+   <property name="geometry">
+    <rect>
+     <x>710</x>
+     <y>190</y>
+     <width>85</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&amp;Salvar</string>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SComboBox</class>
+   <extends>QComboBox</extends>
+   <header location="global">scombobox.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>lineEditName</tabstop>
+  <tabstop>pushButtonSelecionar</tabstop>
+  <tabstop>CmbBxTipo</tabstop>
+  <tabstop>dateTimeEditCreated</tabstop>
+  <tabstop>dateTimeEditLastAccesss</tabstop>
+  <tabstop>LnEdtDescricao</tabstop>
+  <tabstop>PshBtnCancel</tabstop>
+  <tabstop>PshBtnSave</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

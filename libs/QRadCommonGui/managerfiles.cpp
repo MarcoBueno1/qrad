@@ -6,11 +6,12 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QDir>
 
 
 #define BN_DEFAULT_COLUMN_SEARCH 2
 
-#define SQL_ITEMS "select f.id, f.created as \"Inserido em\", f.name, f.description, f.lastaccess as \"Último Acesso\", t.description from Files f "\
+#define SQL_ITEMS "select f.id, f.created as \"Inserido em\", f.name as \"Nome\", f.description as \"Descrição\", f.lastaccess as \"Último Acesso\", t.description from Files f "\
             " inner join filedescription t on t.id = f.typeid where f.removed <> true and t.tp <> 2 order by id desc "
 
 
@@ -272,11 +273,14 @@ void Managerfiles::doView()
     Files *pFile = Files::findByid(nId,true);
     if( pFile )
     {
-        QString filename = QString("C:\\dvl\\qrad\\bin\\%1").arg(pFile->getName());
+        QString filename = QString("%1/%2").arg(QDir::currentPath()).arg(pFile->getName());
         pFile->getFile(filename,pFile->getLoId());
         QDesktopServices::openUrl(QUrl::fromLocalFile(QString("%1").arg(filename)));//, QUrl::TolerantMode);
         delete pFile;
     }
+    else
+        QMessageBox::warning(this, "Oops!", "arquivo não encontrado");
+
 
 }
 void ManagerfilesdoDrop(QString path)

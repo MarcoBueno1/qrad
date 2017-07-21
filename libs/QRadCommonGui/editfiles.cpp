@@ -7,6 +7,7 @@
 #include <QVariant>
 #include <QFileDialog>
 #include <QUrl>
+#include <QDir>
 #include <QDesktopServices>
 #include "qradprogresswindow.h"
 //#include "managerassociation.h"
@@ -27,17 +28,18 @@ Editfiles::Editfiles(QWidget *parent) :
     ui->CmbBxTipo->setUserName("dsm");
     ui->CmbBxTipo->completer()->setFilterMode(Qt::MatchContains );
 
-
-    ui->comboBoxAssociar->setTable("fileassociation.Associado A");
-    ui->comboBoxAssociar->setField("description.Descrição");
-    ui->comboBoxAssociar->setCanAdd(false);
-    ui->comboBoxAssociar->setUserName("dsm");
-    ui->comboBoxAssociar->completer()->setFilterMode(Qt::MatchContains );
-
     ui->comboBoxAssociar->setVisible(false);
     ui->labelAssociar->setVisible(false);
 
+    ui->comboBoxAssociar->setTable("fileassociation.AssociadoA");
+    ui->comboBoxAssociar->setField("description.Descrição");
+    ui->comboBoxAssociar->setCanAdd(true);
+    ui->comboBoxAssociar->setUserName("dsm");
+    ui->comboBoxAssociar->completer()->setFilterMode(Qt::MatchContains );
+
+
     connect(ui->comboBoxAssociar, SIGNAL(activated(int)), this, SLOT(doAssociate(int)));
+
     connect(ui->pushButtonSelecionar, SIGNAL(clicked()),this,SLOT(doSelect()));
     connect(ui->PshButtonVisualizar, SIGNAL(clicked()),this,SLOT(doView()));
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
@@ -179,11 +181,15 @@ void Editfiles::doSelect()
 }
 void Editfiles::doView()
 {
-    QDesktopServices::openUrl(QUrl::fromLocalFile(QString("%1").arg(ui->lineEditName->text())));//, QUrl::TolerantMode);
     if(m_mod)
     {
+        QString filepath = QString("%1/%2").arg(QDir::currentPath()).arg(ui->lineEditName->text());
+        m_mod->getFile(filepath,m_mod->getLoId());
+        QDesktopServices::openUrl(QUrl::fromLocalFile(filepath));//, QUrl::TolerantMode);
         m_mod->updateLastAccess(QDate::currentDate());
     }
+    else
+       QMessageBox::warning(this, "Oops!", "Para poder visualizar, é necessário primeiro salvar o arquivo.");
 
 }
 void Editfiles::setFile(QString path)

@@ -200,6 +200,12 @@
      </item>
      <item>
       <widget class="SComboBox" name="comboBoxAssociar">
+       <property name="editable">
+        <bool>true</bool>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToContents</enum>
+       </property>
        <item>
         <property name="text">
          <string>Não Associar</string>

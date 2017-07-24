@@ -16,12 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("DSM - Gerência de Condomínios");
 
-/*
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
-*/
 
 //    setWindowIcon(QIcon(":/png/mainicon.png"));
     Clicense *pLic = new Clicense ;

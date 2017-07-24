@@ -35,7 +35,7 @@
 
 
 #define FIN_AP_WITH_NO_PAYER " select ap.numero as \"Ap\", tower.name as \"Torre\" from ap, tower  where not exists( select a2,b2 from ( select d.ap a2 , "\
-                             " d.tower b2 from dweller d where d.payer = true and d.removed <> true) as foo where a2=ap.id and b2=tower.id) and tower.tp = 1"
+                             " d.tower b2 from dweller d where d.payer = true and d.removed <> true and movedout <> true) as foo where a2=ap.id and b2=tower.id) and tower.tp = 1"
 
 
 #define FIN_GET_LAST_NUMBER  "select * from ticket order by nossonumero desc limit 1"

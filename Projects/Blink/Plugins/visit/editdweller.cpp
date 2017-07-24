@@ -78,6 +78,8 @@ EditDweller::EditDweller(QWidget *parent) :
     m_mod = new Dweller;
     m_mod->setRemoved(true);
     m_mod->Save();
+
+    ui->dateEditSince->setDate(QDate::currentDate());
 }
 
 EditDweller::~EditDweller()
@@ -175,18 +177,21 @@ void EditDweller::Save()
       Dweller *d = Dweller::findByCPF( cpf );
       if( d && (d->getid() != m_mod->getid() ))
       {
-        QMessageBox::warning(this,
+        if(QMessageBox::No == QMessageBox::question(this,
                              "Oops!",
-                              QString("Já existe um morador cadastrado com este CPF (%1 ) ").arg(d->getName()));
-        ui->lineEditCPF->selectAll();
-        ui->lineEditCPF->setFocus();
-        delete d;
-        return;
+                              QString("Já existe um morador cadastrado com este CPF (%1 ) ").arg(d->getName()),
+                                                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+        {
+            ui->lineEditCPF->selectAll();
+            ui->lineEditCPF->setFocus();
+            delete d;
+            return;
+        }
       }
     }
     if( ui->checkBoxPayer->isChecked())
     {
-        DwellerList *dl = Dweller::findBy(QString("select * from dweller where ap=%1 and tower=%2 and removed = false and id <> %3 and payer = true")
+        DwellerList *dl = Dweller::findBy(QString("select * from dweller where ap=%1 and tower=%2 and removed = false and id <> %3 and movedout <> true and payer = true")
                 .arg(ui->comboBoxAp->model()->data(ui->comboBoxAp->model()->index(ui->comboBoxAp->currentIndex(), 0)).toInt())
                 .arg(ui->comboBoxApTorre->model()->data(ui->comboBoxApTorre->model()->index(ui->comboBoxApTorre->currentIndex(), 0)).toInt())
                 .arg(m_mod->getid()));
@@ -212,9 +217,14 @@ void EditDweller::Save()
     m_mod->setType( ui->comboBoxTipo->model()->data(ui->comboBoxTipo->model()->index(ui->comboBoxTipo->currentIndex(), 0)).toInt() );
     m_mod->setJobTitle( ui->comboBoxProfissao->model()->data(ui->comboBoxProfissao->model()->index(ui->comboBoxProfissao->currentIndex(), 0)).toInt() ) ;
     m_mod->setemail( ui->lineEditEmail->text());
+    if( !ui->lineEditEmail->text().trimmed().isEmpty())
+        m_mod->setNotifByEmail(true);
+
     m_mod->setRamal(ui->lineEditRamal->text());
     m_mod->setSince(ui->dateEditSince->date());
     m_mod->setMoveOut(ui->dateEditUntil->date());
+    m_mod->setMovedOut(ui->groupBoxMudouSe->isChecked());
+
     m_mod->setObs(ui->textEditObs->toPlainText());
     m_mod->setPayer(ui->checkBoxPayer->isChecked());
     if( ui->dateEditUntil->date() == QDate::currentDate())
@@ -252,6 +262,7 @@ void EditDweller::Load()
     ui->comboBoxTipo->setCurrentId(m_mod->getType());
     ui->comboBoxProfissao->setCurrentId(m_mod->getJobTitle());
     ui->checkBoxPayer->setChecked(m_mod->getPayer());
+    ui->groupBoxMudouSe->setChecked(m_mod->getMovedOut());
 
     RefreshAddressTable();
     RefreshPhoneTable();

@@ -197,5 +197,6 @@
         <file>background-green-1.jpg</file>
         <file>icon_mail.png</file>
         <file>gadden-icon.jpg</file>
+        <file>marca-m.ico</file>
     </qresource>
 </RCC>

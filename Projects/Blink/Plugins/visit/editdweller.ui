@@ -32,7 +32,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QGroupBox" name="groupBox_2">
+   <widget class="QGroupBox" name="groupBoxMovedOut">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -425,7 +425,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_5">
+    <widget class="QGroupBox" name="groupBoxMudouSe">
      <property name="geometry">
       <rect>
        <x>420</x>
@@ -886,7 +886,7 @@
   <tabstop>comboBoxApTorre</tabstop>
   <tabstop>lineEditEmail</tabstop>
   <tabstop>dateEditSince</tabstop>
-  <tabstop>groupBox_5</tabstop>
+  <tabstop>groupBoxMudouSe</tabstop>
   <tabstop>dateEditUntil</tabstop>
   <tabstop>tableViewVeiculos</tabstop>
   <tabstop>pushButtonAddVeiculo</tabstop>

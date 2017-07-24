@@ -54,6 +54,11 @@ LIBS += -L../../../libs/QRadCore \
         -lqradcommongui
 
 
+RESOURCES += \
+    ../icons/resources.qrc
+
+win32:RC_ICONS += ..\icons\marca-m.ico
+
 
 target.path = $${PREFIX}/bin
 INSTALLS += target

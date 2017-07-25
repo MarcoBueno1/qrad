@@ -53,6 +53,8 @@ void Editmetreage::Save()
 
     mod->setDescricao(ui->LnEdtDescricao->text());
     mod->setm2(ui->DblSpnBxm2->value());
+    mod->setMontlyValue(ui->doubleSpinBoxTxCondominial->value());
+
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -74,6 +76,7 @@ void Editmetreage::Load()
       return;
     ui->LnEdtDescricao->setText(m_mod->getDescricao());
     ui->DblSpnBxm2->setValue(m_mod->getm2());
+    ui->doubleSpinBoxTxCondominial->setValue(m_mod->getMontlyValue());
 
 }
 

@@ -467,7 +467,7 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
        <number>6</number>
       </property>
       <item row="0" column="0">
-       <widget class="QTableView" name="tableViewAccountToReceive">
+       <widget class="QRadTableViewSearch" name="tableViewAccountToReceive">
         <property name="font">
          <font>
           <family>Verdana</family>
@@ -1068,6 +1068,11 @@ selection-color: rgb(255, 255, 255);</string>
  </widget>
  <customwidgets>
   <customwidget>
+   <class>QRadTableViewSearch</class>
+   <extends>QTableView</extends>
+   <header location="global">qradtableviewsearch.h</header>
+  </customwidget>
+  <customwidget>
    <class>DSMDateEditEnter</class>
    <extends>QDateEdit</extends>
    <header location="global">dsmdateeditenter.h</header>
@@ -1106,6 +1111,7 @@ selection-color: rgb(255, 255, 255);</string>
   <tabstop>btnExit</tabstop>
  </tabstops>
  <resources>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
  </resources>

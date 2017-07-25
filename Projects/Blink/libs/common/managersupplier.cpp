@@ -24,6 +24,7 @@ Managersupplier::Managersupplier(QWidget *parent) :
     connect(ui->tableViewSearch, SIGNAL(notFound()),this,SLOT(notFound()));
     connect(ui->tableViewSearch,SIGNAL(clicked(QModelIndex)),this,SLOT(TableClicked(QModelIndex)));
     connect(ui->tableViewSearch,SIGNAL(CurrentChanged(QModelIndex)),this,SLOT(CurrentChanged(QModelIndex)));
+    connect(ui->tableViewSearch,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(doEditar()));
 
     connect(ui->PshBtnEditar, SIGNAL(clicked()), this, SLOT(doEditar()));
     connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));

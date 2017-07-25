@@ -247,7 +247,7 @@
 #define SQL_SELECT_MANUFACTURER_COMBO       "select id, manufacturer from QRad_manufacturer where removido = false and manufacturer <> '' order by manufacturer"
 #define SQL_SELECT_SUBSTANCE_COMBO          "select id, susbtance from QRad_anv_dcb "
 #define SQL_SELECT_GROUP_COMBO              "select id, description from QRad_group where removed = false and description <> '' order by description"
-#define SQL_SELECT_SUPPLIER_COMBO           "select id, descricao from supplier where removido = false and descricao <> '' order by descricao"
+#define SQL_SELECT_SUPPLIER_COMBO           "select id, nome from supplier where removed = false and nome <> '' order by nome"
 #define SQL_SELECT_STORE_COMBO              "select id, razaosocial as descricao from QRad_store where removido = false and razaosocial <> '' order by descricao"
 #define SQL_SELECT_BANK_COMBO               "select id, description from fin_bank where removed = false and description <> '' order by description"
 #define SQL_SELECT_CLASSIFICATION_COMBO     "select id, (code || '-' || description) as description from QRad_anvdrugclass"

@@ -44,8 +44,7 @@ bool CCPF::IsValid( QString strCPF )
 
     strCPF = strCPF.remove("-").remove(".").remove("/");
 
-
-    if( strCPF.trimmed().length() != 11 )
+    if(( strCPF.trimmed().length() != 11 ) )
     {
         debug_message("CPF: Tamanho diferente de 11:\n");
         return false;

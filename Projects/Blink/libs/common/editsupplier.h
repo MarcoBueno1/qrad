@@ -6,6 +6,8 @@
 #include "supplier.h"
 #include <QSqlQueryModel>
 #include "column2delegate.h"
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 namespace Ui {
 class Editsupplier;
@@ -30,6 +32,8 @@ public slots:
     void AddAddress();
 
     
+    void onCNPJEdited(QString cnpj);
+    void replyFinished(QNetworkReply *pReply);
 private:
     Ui::Editsupplier *ui;
     supplier* m_mod;
@@ -47,6 +51,7 @@ private:
     void keyPressEvent(QKeyEvent *e);
     void RefreshPhoneTable();
     void RefreshAddressTable();
+    QNetworkAccessManager* m_manager;
 };
 
 #endif // EDITsupplier_H

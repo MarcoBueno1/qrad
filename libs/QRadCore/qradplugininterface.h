@@ -27,6 +27,7 @@ class QRadPluginInterface : public QObject
 
       QStringList* actionList();
       void setSplash( QRadSplashScreen *splash) { m_splash = splash;}
+      QWidget *getParent() {return m_parent;}
 
     public slots:
         virtual void Process( const QString& action ) = 0;

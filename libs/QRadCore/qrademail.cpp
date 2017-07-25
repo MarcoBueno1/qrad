@@ -49,7 +49,10 @@ bool QRadEmail::Send( QString Name,
 
     QRAD_SHOW_PRPGRESS(QString("Enviando e-mail para %1(%2) ...").arg(Name).arg(to));
 
-    listTo.append(to);
+    if(to.contains(";"))
+        listTo.append(to.split(";"));
+    else
+        listTo.append(to);
 
     M2Smtp *newEmail  = new M2Smtp( g_host,
                                     g_user,

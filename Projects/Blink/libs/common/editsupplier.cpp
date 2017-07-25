@@ -7,8 +7,15 @@
 #include <QVariant>
 #include "editphone.h"
 #include "address.h"
+#include "addressv2.h"
 #include "editaddress.h"
 #include "column2delegate.h"
+#include <QNetworkRequest>
+#include <QUrl>
+#include <QJsonParseError>
+#include <QJsonDocument>
+#include <QJsonObject>
+
 
 
 Editsupplier::Editsupplier(QWidget *parent) :
@@ -27,6 +34,7 @@ Editsupplier::Editsupplier(QWidget *parent) :
 
     connect(ui->pushButtonAddAddress, SIGNAL(clicked()),this,SLOT(AddAddress()));
     connect(ui->pushButtonRemoveAddress, SIGNAL(clicked()),this,SLOT(RemoveAddress()));
+    connect(ui->LnEdtCNPJ,SIGNAL(textEdited(QString)),this,SLOT(onCNPJEdited(QString)));
 
 
     m_mod = new supplier;
@@ -39,6 +47,9 @@ Editsupplier::Editsupplier(QWidget *parent) :
     m_CenterDelegate = new ColumnCenter;
     m_BooleanDelegate= new ColumnBool;
 
+    m_manager = new QNetworkAccessManager;
+    connect(m_manager, SIGNAL(finished(QNetworkReply*)),
+             this, SLOT(replyFinished(QNetworkReply*)));
 
 
 
@@ -53,6 +64,7 @@ Editsupplier::~Editsupplier()
     delete m_PhoneDelegate;
     delete m_CenterDelegate;   
     delete m_BooleanDelegate;
+    delete m_manager;
 
     if(  m_mod )
        delete m_mod;
@@ -235,4 +247,51 @@ void Editsupplier::RefreshAddressTable()
 //  ui->tableViewAddress->horizontalHeader()->setStretchLastSection(true);
   ui->tableViewAddress->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
   ui->tableViewAddress->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+}
+
+void Editsupplier::onCNPJEdited(QString cnpj)
+{
+  debug_message("cnpj=%s\n",cnpj.toLatin1().data());
+  QString local_cnpj = cnpj.trimmed().remove(".").remove("-").remove("/");
+  if(local_cnpj.length() == 14)
+  {
+      QString req = QString("https://www.receitaws.com.br/v1/cnpj/%1").arg(local_cnpj);
+      m_manager->get(QNetworkRequest(QUrl(req)));
+      debug_message("tentando acessar %s\n",req.toLatin1().data());
+
+  }
+}
+void Editsupplier::replyFinished(QNetworkReply* pReply)
+{
+
+    QByteArray data=pReply->readAll();
+    QString str(data);
+
+    debug_message("resposta recebida\n%s\n",str.toLatin1().data());
+
+    QJsonParseError err;
+    QJsonDocument doc = QJsonDocument::fromJson(data, &err);
+
+    QJsonObject obj = doc.object();
+
+    QJsonValue val = obj.value("nome");
+    ui->LnEdtNome->setText(val.toString());
+    val = obj.value("fantasia");
+    ui->LnEdtFantasia->setText( val.toString());
+
+    val = obj.value("cep");
+//    AddressV2 *pAddress = AddressV2::findBycep(val.toString().remove(".").remove("-"));
+//    if( !pAddress )
+    {
+        /*
+        pAddress = new AddressV2;
+        pAddress->setcep(val.toString().remove(".").remove("-"));
+        val = obj.value("cep");
+        pAddress->setcity();
+        */
+        //fazer amanha
+    }
+
+    //process str any way you like!
+
 }

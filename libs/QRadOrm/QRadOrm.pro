@@ -37,7 +37,8 @@ SOURCES +=  \
            maincompany.cpp \
     files.cpp \
     filedescription.cpp \
-    fileassociationtype.cpp
+    fileassociationtype.cpp \
+    addressv2.cpp
 
 HEADERS +=  \
            orm.h \
@@ -59,7 +60,8 @@ HEADERS +=  \
            maincompany.h \
     files.h \
     filedescription.h \
-    fileassociationtype.h
+    fileassociationtype.h \
+    addressv2.h
 
 #win32:LIBS +=  -L../QRadCore\release
 #unix:LIBS +=  -L../QRadCore

@@ -138,42 +138,42 @@ void FinancierPlugin::Process( const QString& action )
     }
     else if( ACTION_SHOW_FINANCIER_TICKETMANAGER == action )
     {
-        Managerticketconfig *tick = new Managerticketconfig ;
+        Managerticketconfig *tick = new Managerticketconfig(m_parent) ;
         QRadConfig::centralizarWidget(tick);
         tick->exec();
         delete tick;
     }
     else if( ACTION_SHOW_FINANCIER_BANKACCOUNTMANAGER == action )
     {
-        Managerbankaccount *baccount = new Managerbankaccount ;
+        Managerbankaccount *baccount = new Managerbankaccount(m_parent) ;
         QRadConfig::centralizarWidget(baccount);
         baccount->exec();
         delete baccount;
     }
     else if ( ACTION_SHOW_METREAGE == action )
     {
-        Managermetreage *pMetreage = new Managermetreage;
+        Managermetreage *pMetreage = new Managermetreage(m_parent);
         QRadConfig::centralizarWidget(pMetreage);
         pMetreage->exec();
         delete pMetreage;
     }
     else if ( ACTION_MANAGE_TICKET == action )
     {
-        Managerticket *pTicket = new Managerticket;
+        Managerticket *pTicket = new Managerticket(m_parent);
         QRadConfig::centralizarWidget(pTicket);
         pTicket->exec();
         delete pTicket;
     }
     else if ( ACTION_MANAGE_SUPPLIER == action )
     {
-        Managersupplier *pSupplier = new Managersupplier;
+        Managersupplier *pSupplier = new Managersupplier(m_parent);
         QRadConfig::centralizarWidget(pSupplier);
         pSupplier->exec();
         delete pSupplier;
     }
     else if ( ACTION_MANAGE_SHIPPER == action )
     {
-        Managershipper *pShipper = new Managershipper;
+        Managershipper *pShipper = new Managershipper(m_parent);
         QRadConfig::centralizarWidget(pShipper);
         pShipper->exec();
         delete pShipper;
@@ -183,7 +183,7 @@ void FinancierPlugin::Process( const QString& action )
         QStringList paths = QRadConfig::GetAndPersistDir("RetFile", "","Selecionar Arquivo de Retorno","Arquivos Retorno (*.ret *.RET)",m_parent);
 
         QList<BankTicket*> list;
-        ShowBankReturn *ParsePay = new ShowBankReturn ;
+        ShowBankReturn *ParsePay = new ShowBankReturn(m_parent) ;
 
         #ifdef _WIN32
 //            path = path.remove("file://");
@@ -199,14 +199,14 @@ void FinancierPlugin::Process( const QString& action )
     }
     else if( ACTION_MANAGE_FILES == action)
     {
-        Managerfiles *pFiles = new Managerfiles;
+        Managerfiles *pFiles = new Managerfiles(m_parent);
         QRadConfig::centralizarWidget(pFiles);
         pFiles->exec();
         delete pFiles;
     }
     else if( ACTION_NEW_ACCOUNTTOPAY == action )
     {
-        AccountToPayRegister *RegAccount = new AccountToPayRegister;
+        AccountToPayRegister *RegAccount = new AccountToPayRegister(m_parent);
         if( QDialog::Accepted == RegAccount->exec())
         {
             m_LastId = RegAccount->GetLastInsertedId();

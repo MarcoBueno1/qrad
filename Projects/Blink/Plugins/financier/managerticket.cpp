@@ -41,6 +41,7 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->tableViewSearch, SIGNAL(found(QModelIndex)), this, SLOT(Found(QModelIndex)));
     connect(ui->tableViewSearch, SIGNAL(notFound()),this,SLOT(notFound()));
     connect(ui->tableViewSearch,SIGNAL(clicked(QModelIndex)),this,SLOT(TableClicked(QModelIndex)));
+    connect(ui->tableViewSearch,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(doEdit()));
     connect(ui->tableViewSearch,SIGNAL(CurrentChanged(QModelIndex)),this,SLOT(CurrentChanged(QModelIndex)));
 
     connect(ui->PshBtnTxExtra, SIGNAL(clicked()), this, SLOT(doTxExtra()));
@@ -614,6 +615,7 @@ void Managerticket::doEditDweller()
     QRadPluginContainer *pContainer = QRadPluginContainer::getInstance();
 
     QRadPluginInterface *iface = pContainer->plugin("visitplugin");
+
     if( !iface )
     {
         QMessageBox::warning(NULL,
@@ -622,8 +624,12 @@ void Managerticket::doEditDweller()
         return;
     }
 
+    QWidget *pParent = iface->getParent();
+    iface->setParent(this);
+
     iface->setParam("dwellerid", id);
     iface->Process("EditMorador");
+    iface->setParent(pParent);
     refreshTable();
 }
 

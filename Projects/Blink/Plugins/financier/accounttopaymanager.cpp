@@ -71,6 +71,8 @@ AccountToPayManager::AccountToPayManager(QWidget *parent) :
     connect(m_ui->comboBoxBankFilter, SIGNAL(currentIndexChanged(int)), this, SLOT(GetAccountToPay()));
     connect(m_ui->tableViewAccountToPay->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             this, SLOT(fillTheFields(QModelIndex)));
+    connect(m_ui->tableViewAccountToPay, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditAccountToPay()));
+
 
     m_ui->tableViewAccountToPay->setStyleSheet("");
 }

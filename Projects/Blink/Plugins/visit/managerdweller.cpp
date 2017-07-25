@@ -23,6 +23,7 @@ ManagerDweller::ManagerDweller(QWidget *parent) :
     connect(ui->tableViewSearch, SIGNAL(found(QModelIndex)), this, SLOT(Found(QModelIndex)));
     connect(ui->tableViewSearch, SIGNAL(notFound()),this,SLOT(notFound()));
     connect(ui->tableViewSearch,SIGNAL(clicked(QModelIndex)),this,SLOT(TableClicked(QModelIndex)));
+    connect(ui->tableViewSearch,SIGNAL(doubleClicked(QModelIndex)), SLOT(doEditar()));
     connect(ui->tableViewSearch,SIGNAL(CurrentChanged(QModelIndex)),this,SLOT(CurrentChanged(QModelIndex)));
 
     connect(ui->PshBtnEditar, SIGNAL(clicked()), this, SLOT(doEditar()));

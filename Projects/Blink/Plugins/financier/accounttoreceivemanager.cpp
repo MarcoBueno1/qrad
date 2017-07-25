@@ -70,6 +70,8 @@ AccountToReceiveManager::AccountToReceiveManager(QWidget *parent) :
     connect(m_ui->comboBoxClientFilter, SIGNAL(currentIndexChanged(int)), this, SLOT(GetAccountToReceive()));
     connect(m_ui->tableViewAccountToReceive->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
             this, SLOT(fillTheFields(QModelIndex)));
+    connect(m_ui->tableViewAccountToReceive, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditAccountToReceive()));
+
 
     m_ui->tableViewAccountToReceive->setStyleSheet("");
 }

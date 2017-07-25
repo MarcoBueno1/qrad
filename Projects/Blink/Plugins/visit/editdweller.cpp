@@ -47,22 +47,22 @@ EditDweller::EditDweller(QWidget *parent) :
 
     debug_message("---\n");
 
-    ui->comboBoxApTorre->setTable("tower");
-    ui->comboBoxApTorre->setField("Name");
+    ui->comboBoxApTorre->setTable("tower.Torre");
+    ui->comboBoxApTorre->setField("Name.Nome");
     ui->comboBoxApTorre->setCanAdd(true);
     ui->comboBoxApTorre->setUserName("dsm");
     if( ui->comboBoxApTorre->completer() )
         ui->comboBoxApTorre->completer()->setFilterMode(Qt::MatchContains );
 	
-    ui->comboBoxTipo->setTable("dweller_type");
-    ui->comboBoxTipo->setField("Name");
+    ui->comboBoxTipo->setTable("dweller_type.Tipo");
+    ui->comboBoxTipo->setField("Name.Nome");
     ui->comboBoxTipo->setCanAdd(true);
     ui->comboBoxTipo->setUserName("dsm");
     if( ui->comboBoxTipo->completer() )
         ui->comboBoxTipo->completer()->setFilterMode(Qt::MatchContains );
 
-	ui->comboBoxProfissao->setTable("jobtitle");
-    ui->comboBoxProfissao->setField("Name");
+    ui->comboBoxProfissao->setTable("jobtitle.Profissão");
+    ui->comboBoxProfissao->setField("Name.Nome");
     ui->comboBoxProfissao->setCanAdd(true);
     ui->comboBoxProfissao->setUserName("dsm");
     if( ui->comboBoxProfissao->completer() )
@@ -161,11 +161,11 @@ void EditDweller::Save()
             return;
         }
     }
-    else if( !CCPF::IsValid(cpf))
+    else if( !CCPF::IsValid(cpf) && !CCNPJ::IsValid(cpf))
     {
         QMessageBox::warning(this,
                                  "Atenção",
-                                 "Conteúdo do campo CPF inválido, preencha-o ou deixe-o vazio");
+                                 "Conteúdo do campo CPF/CNPJ inválido, preencha-o ou deixe-o vazio");
         ui->lineEditCPF->selectAll();
         ui->lineEditCPF->setFocus();
         return;
@@ -179,7 +179,7 @@ void EditDweller::Save()
       {
         if(QMessageBox::No == QMessageBox::question(this,
                              "Oops!",
-                              QString("Já existe um morador cadastrado com este CPF (%1 ) ").arg(d->getName()),
+                              QString("Já existe um morador cadastrado com este CPF (%1 ), deseja cadastrar mesmo assim? ").arg(d->getName()),
                                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
         {
             ui->lineEditCPF->selectAll();

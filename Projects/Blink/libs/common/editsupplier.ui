@@ -85,45 +85,6 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>10</y>
-      <width>731</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="LblNome">
-       <property name="text">
-        <string>Nome</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="LnEdtNome"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="LblCNPJ">
-       <property name="text">
-        <string>CNPJ</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="LnEdtCNPJ">
-       <property name="maximumSize">
-        <size>
-         <width>200</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
       <y>40</y>
       <width>731</width>
       <height>24</height>
@@ -190,6 +151,45 @@
       <string>-</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>9</y>
+      <width>731</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="LblCNPJ">
+       <property name="text">
+        <string>CNPJ</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="LnEdtCNPJ">
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="LblNome">
+       <property name="text">
+        <string>Nome</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="LnEdtNome"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QFrame" name="topmenu">
@@ -468,16 +468,20 @@
   </widget>
  </widget>
  <tabstops>
-  <tabstop>LnEdtNome</tabstop>
   <tabstop>LnEdtCNPJ</tabstop>
+  <tabstop>LnEdtNome</tabstop>
   <tabstop>LnEdtFantasia</tabstop>
   <tabstop>tableViewPhone</tabstop>
   <tabstop>pushButtonAddPhone</tabstop>
   <tabstop>pushButtonRemovePhone</tabstop>
+  <tabstop>tableViewAddress</tabstop>
+  <tabstop>pushButtonAddAddress</tabstop>
+  <tabstop>pushButtonRemoveAddress</tabstop>
   <tabstop>PshBtnCancel</tabstop>
   <tabstop>PshBtnSave</tabstop>
  </tabstops>
  <resources>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
  </resources>

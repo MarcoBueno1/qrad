@@ -15,7 +15,11 @@
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonObject>
-
+#include "cep.h"
+#include "state.h"
+#include "street.h"
+#include "city.h"
+#include "neighborhood.h"
 
 
 Editsupplier::Editsupplier(QWidget *parent) :
@@ -280,17 +284,96 @@ void Editsupplier::replyFinished(QNetworkReply* pReply)
     ui->LnEdtFantasia->setText( val.toString());
 
     val = obj.value("cep");
-//    AddressV2 *pAddress = AddressV2::findBycep(val.toString().remove(".").remove("-"));
-//    if( !pAddress )
+
+    QString SQL = QString("select a.id, s.name as \"Rua\", a.number as \"Número\", c.Number as \"Cep\", n.name as \"Bairro\", ci.name as \"Cidade\", st.name as \"Estado\" "\
+                          " from address a "\
+                          " inner join street s on s.id = a.street"\
+                          " inner join cep c on c.id = a.cep"\
+                          " inner join neighborhood n on n.id = a.neighborhood"\
+                          " inner join city ci on ci.id = a.city"\
+                          " inner join state st on st.id = a.state"\
+                          " where ownertype = 2 and owner = %1").arg(m_mod->getid());
+
+    AddressV2List *pAddressList = AddressV2::findBy(SQL);
+    if( !pAddressList )
     {
-        /*
-        pAddress = new AddressV2;
-        pAddress->setcep(val.toString().remove(".").remove("-"));
-        val = obj.value("cep");
-        pAddress->setcity();
-        */
-        //fazer amanha
+        AddressV2 *pAddress = pAddressList->at(0);
+        CepList *CepList = Cep::findByNumber(val.toString().remove(".").remove("-"));
+        if( !cep )
+        {
+            cep = new Cep;
+            cep->setNumber(val.toString().remove(".").remove("-"));
+            if( !cep->Save())
+            {
+                delete cep;
+                QMessageBox::warning(this, "Oops!", "Erro ao salvar o CEP!");
+                return;
+            }
+        }
+        val = obj.value("uf");
+        State *pState =  State::findByName(val.toString());
+        if(pState)
+        {
+            pState = new State;
+            pState->setName(val.toString());
+            if( !pState->Save())
+            {
+                delete pState;
+                QMessageBox::warning(this, "Oops!", "Erro ao salvar o Estado!");
+                return;
+            }
+        }
+        val = obj.value("logradouro");
+        Street *pStreet=  Street::findByName(val.toString());
+        if( !pStreet )
+        {
+            pStreet = new State;
+            pStreet->setName(val.toString());
+            if( !pStreet->Save())
+            {
+                delete pStreet;
+                QMessageBox::warning(this, "Oops!", "Erro ao salvar Rua!");
+                return;
+            }
+        }
+        val = obj.value("municipio");
+        City *pCity=  City::findByName(val.toString());
+        if( !pCity )
+        {
+            pCity = new City;
+            pCity->setName(val.toString());
+            if( !pCity->Save())
+            {
+                delete pCity;
+                QMessageBox::warning(this, "Oops!", "Erro ao salvar Cidade!");
+                return;
+            }
+        }
+        val = obj.value("municipio");
+        Neighborhood *pNei=  Neighborhood::findByName(val.toString());
+        if( !pNei )
+        {
+            pNei = new Neighborhood;
+            pNei->setName(val.toString());
+            if( !pNei->Save())
+            {
+                delete pNei;
+                QMessageBox::warning(this, "Oops!", "Erro ao salvar Bairro!");
+                return;
+            }
+        }
+        pAddress->setcep(cep->getId());
+        pAddress->setcity(pCity->getid());
+        pAddress->setNeighborhood(pNei->getid());
+        pAddress->setstate(pState->getid());
+        pAddress->setstreet(pStreet->getid());
+        pAddress->setOwner(m_mod->getid());
+        pAddress->setOwnerType(2);
+        pAddress->Save();
+        RefreshAddressTable();
     }
+
+
 
     //process str any way you like!
 

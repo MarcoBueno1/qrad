@@ -38,7 +38,12 @@ SOURCES +=  \
     files.cpp \
     filedescription.cpp \
     fileassociationtype.cpp \
-    addressv2.cpp
+    addressv2.cpp \
+    street.cpp \
+    cep.cpp \
+    neighborhood.cpp \
+    city.cpp \
+    state.cpp
 
 HEADERS +=  \
            orm.h \
@@ -61,7 +66,12 @@ HEADERS +=  \
     files.h \
     filedescription.h \
     fileassociationtype.h \
-    addressv2.h
+    addressv2.h \
+    street.h \
+    cep.h \
+    neighborhood.h \
+    city.h \
+    state.h
 
 #win32:LIBS +=  -L../QRadCore\release
 #unix:LIBS +=  -L../QRadCore

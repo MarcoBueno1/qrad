@@ -615,7 +615,11 @@ bool BuildTkt::BuildShipping(QString strDir, QString FileName )
 
     m_dwTimeout = 40000;
 
+    debug_message("Antes Send Remessa\n");
+
     bool bRet = Send(cmdSnd);
+
+    debug_message("Depois Send Remessa\n");
 
     QRAD_HIDE_PRPGRESS();
 

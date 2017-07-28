@@ -677,6 +677,7 @@ bool TicketController::doShipp(QString dir, QString filename,BBO_TYPE type, BBOL
     if( !doPrepare(type, status))
     {
         pW->hide();
+        debug_message("Saindo antes do shipp, prepare com erro...");
         return false;
     }
 

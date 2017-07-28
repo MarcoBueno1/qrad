@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "DSM-PRO"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.3"
 #define MyAppPublisher "Marco Bueno"
 #define MyAppURL "bueno.marco@gmail.com"
 #define MyAppExeName "main.exe"
@@ -66,7 +66,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "C:\dvl\qrad\bin\*"; DestDir: "c:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\dvl\qrad\bin\*.dll"; DestDir: "c:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\dvl\qrad\bin\*.exe"; DestDir: "c:\DSM-PRO"; Flags: ignoreversion
 
 
 ;------------Libs DSM

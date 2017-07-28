@@ -217,8 +217,9 @@ void EditDweller::Save()
     m_mod->setType( ui->comboBoxTipo->model()->data(ui->comboBoxTipo->model()->index(ui->comboBoxTipo->currentIndex(), 0)).toInt() );
     m_mod->setJobTitle( ui->comboBoxProfissao->model()->data(ui->comboBoxProfissao->model()->index(ui->comboBoxProfissao->currentIndex(), 0)).toInt() ) ;
     m_mod->setemail( ui->lineEditEmail->text());
-    if( !ui->lineEditEmail->text().trimmed().isEmpty())
-        m_mod->setNotifByEmail(true);
+    m_mod->setNotifByEmail( ui->groupBoxNotifyByEmail->isChecked());
+//    if( !ui->lineEditEmail->text().trimmed().isEmpty())
+//        m_mod->setNotifByEmail(true);
 
     m_mod->setRamal(ui->lineEditRamal->text());
     m_mod->setSince(ui->dateEditSince->date());
@@ -263,6 +264,7 @@ void EditDweller::Load()
     ui->comboBoxProfissao->setCurrentId(m_mod->getJobTitle());
     ui->checkBoxPayer->setChecked(m_mod->getPayer());
     ui->groupBoxMudouSe->setChecked(m_mod->getMovedOut());
+    ui->groupBoxNotifyByEmail->setCheckable(m_mod->getNotifByEmail());
 
     RefreshAddressTable();
     RefreshPhoneTable();

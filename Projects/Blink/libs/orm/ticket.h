@@ -57,6 +57,7 @@ DECLARE_CLASS(ticket)
      ORM_DECLARE_ATTRIBUTE(ticket, bool, Removed)
      ORM_DECLARE_ATTRIBUTE(ticket, int, ExtraTxId)
      ORM_DECLARE_ATTRIBUTE(ticket, double, Discount)
+     ORM_DECLARE_ATTRIBUTE(ticket, QDate, IssueDate)
      ORM_MATCH_TABLE(ticket, "ticket")
 public:
     int saveFile(QString path);

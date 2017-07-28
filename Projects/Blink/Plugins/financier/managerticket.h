@@ -55,6 +55,7 @@ public slots:
     void doImport();
     void doEmail();
     void doPrintView();
+    void doEmailToAll();
 private:
     Ui::Managerticket *ui;
 
@@ -85,6 +86,7 @@ private:
     QAction *ReporitCurrent;
     QAction *RemoveCurrent;
     QAction *EmailCurrent;
+    QAction *EmailToAll;
     QAction *PrintCurrentView;
     void AutoSizeColumn(QSqlQueryModel *model);
     QStringList m_percents;

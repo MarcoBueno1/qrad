@@ -23,6 +23,7 @@ ORM_BEGIN_MAP(ticket)
      ORM_MAP_FIELD(Removed, "removed");
      ORM_MAP_FIELD(ExtraTxId, "extratxid");
      ORM_MAP_FIELD(Discount, "discount");
+     ORM_MAP_FIELD(IssueDate, "issuedate");
 ORM_END_MAP()
 
 

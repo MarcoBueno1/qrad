@@ -59,6 +59,7 @@ void FinancierPlugin::onLoad(QRadPluginContainer* container)
     appendAction(ACTION_READ_SHIPP);
     appendAction(ACTION_MANAGE_FILES);
     appendAction(ACTION_NEW_ACCOUNTTOPAY);
+//    appendAction(ACTION_TEST_SUPPLIER_HTTP_RESP);
 
 
 }
@@ -214,6 +215,12 @@ void FinancierPlugin::Process( const QString& action )
         delete RegAccount;
 
     }
+//    else if( ACTION_TEST_SUPPLIER_HTTP_RESP == action)
+//    {
+//        Editsupplier *edt = new Editsupplier(m_parent) ;
+//        edt->replyFinished(NULL) ;
+//        delete edt;
+//    }
 }
 
 void FinancierPlugin::setParam(QString paramName, QVariant paramValue)

@@ -15,14 +15,15 @@ Editphone::Editphone(QWidget *parent) :
     
     m_mod = NULL;
     m_lastMod = NULL;
-        ui->CmbBxoperator->setTable("Operadora");
-    ui->CmbBxoperator->setField("Name");
+
+    ui->CmbBxoperator->setTable("operadora.Operadora");
+    ui->CmbBxoperator->setField("Name.Nome");
     ui->CmbBxoperator->setCanAdd(true);
     ui->CmbBxoperator->setUserName("dsm");
     if(ui->CmbBxoperator->completer())
         ui->CmbBxoperator->completer()->setFilterMode(Qt::MatchContains );
-    ui->CmbBxtype->setTable("phonetype");
-    ui->CmbBxtype->setField("type");
+    ui->CmbBxtype->setTable("phonetype.Tipo");
+    ui->CmbBxtype->setField("type.Tipo");
     ui->CmbBxtype->setCanAdd(true);
     ui->CmbBxtype->setUserName("dsm");
     if(ui->CmbBxtype->completer())

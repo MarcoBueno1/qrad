@@ -6,5 +6,6 @@ ORM_BEGIN_MAP(shipper)
      ORM_MAP_FIELD(Data, "data");
      ORM_MAP_FIELD(Hora, "hora");
      ORM_MAP_FIELD(User, "vuser");
+     ORM_MAP_FIELD(Amount, "amount");
 ORM_END_MAP()
 

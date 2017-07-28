@@ -33,6 +33,7 @@
 #define ACTION_READ_SHIPP                           "ReadShipp"
 #define ACTION_MANAGE_FILES                         "ManageFiles"
 #define ACTION_NEW_ACCOUNTTOPAY                     "NewAccountToPay"
+#define ACTION_TEST_SUPPLIER_HTTP_RESP              "TestHTTPREsponse"
 
 
 class FinancierPlugin : public QRadPluginInterface 

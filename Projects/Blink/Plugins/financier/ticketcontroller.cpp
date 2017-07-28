@@ -19,6 +19,7 @@
 #include "emailgui.h"
 #include "qrademail.h"
 #include "qradreportmanager.h"
+#include "shipper.h"
 
 /*
 #define FIN_AP_WITH_NO_PAYER "select * from dweller d2 "\
@@ -41,6 +42,7 @@
 #define FIN_GET_LAST_NUMBER  "select * from ticket order by nossonumero desc limit 1"
 
 #define UPDATE_ALL_TICKETS "update ticket set status = %3 where (type = %1) and removed <> true and status = %2"
+#define COUNT_ALL_SHIPP_TICKETS "select count(*) from ticket where (type = %1) and removed <> true and status = %2"
 
 #define FIN_PRINT_ALL_TICKETS "select * from  ticket where (type = %1) and removed <> true and status = %2"
 
@@ -74,6 +76,9 @@ TicketController::~TicketController()
 
     delete g_tkt ;
 }
+
+
+//  alter table ticket add column issuedate date ;
 
 bool TicketController::BuildTicket( DwellerList *dlist,
                                    QDate date,
@@ -174,6 +179,8 @@ bool TicketController::BuildTicket( DwellerList *dlist,
          tkt->setSendStatus(pDweller->getNotifByEmail()&&!pDweller->getemail().isEmpty()?stPending:stDisabled);
          tkt->setUser(QRadConfig::GetCurrentUserId());
          tkt->setExtraTxId(ExtraTxId);
+         tkt->setIssueDate(QDate::currentDate());
+
 
 
          if( !tkt->Save() )
@@ -588,6 +595,9 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
             Type = QString("%1 ").arg(type);
         }
 
+//        shipper *pShip = new shipper;
+//        pShip->setAmount();
+
         if( !query.exec(QString(UPDATE_ALL_TICKETS).arg(Type).arg(status).arg(stBuiltShipp)))
         {
             debug_message("Warning: Nao foi possivel atualizar o status de tickets para stBuiltShipp(%s)!!\n", query.lastError().text().toLatin1().data());
@@ -614,7 +624,11 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
             return false;
         }
 
-        g_tkt->AppendTicket(pDweller, value, ptkt->getVencto(),QString("%1").arg(ptkt->getNossoNumero()),QString("%1").arg(ptkt->getSeuNumero()));
+        double valor       = ptkt->getValor();
+        QString Discount = QString("%1").arg(QRadRound::PowerRound(QRadRound::PowerRound(valor/100)*(ptkt->getDiscount())));
+        Discount.replace(".", ",");
+
+        g_tkt->AppendTicket(pDweller, value, ptkt->getVencto(),QString("%1").arg(ptkt->getNossoNumero()),QString("%1").arg(ptkt->getSeuNumero()),ptkt->getObs(),Discount);
         debug_message("Antes AddTickets\n");
         if(g_tkt->AddTickets())
         {
@@ -633,7 +647,7 @@ bool TicketController::doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt)
 
             if(g_tkt->Print(false,FullFileName))
             {
-                ptkt->updateLoId(ptkt->saveFile(FullFileName));
+//                ptkt->updateLoId(ptkt->saveFile(FullFileName));
                 pW->hide();
                 delete pDweller;
                 return true;
@@ -926,36 +940,55 @@ bool TicketController::UpdateTickets(QList<BankTicket*> *list)
     return bRet;
 }
 
-bool TicketController::SendEmail(int id )
+bool TicketController::SendEmail(int id, bool bSilent )
 {
   QRAD_SHOW_PRPGRESS("Perparando infraestrutura ...")
+
+  debug_message("ticket antes\n");
+
   ticket *tkt = ticket::findByid(id,true);
   if(!tkt)
   {
-      QRAD_HIDE_PRPGRESS();
-      QMessageBox::warning(NULL,QString("Oops!"), QString("Não foi possivel encontrar o boleto!"));
+      if( !bSilent )
+      {
+          QRAD_HIDE_PRPGRESS();
+          QMessageBox::warning(NULL,QString("Oops!"), QString("Não foi possivel encontrar o boleto!"));
+      }
       return false;
   }
+
+  debug_message("Dweller antes\n");
+
   Dweller *pdw = Dweller::findByid(tkt->getclientid());
   if(!pdw)
   {
-      QRAD_HIDE_PRPGRESS();
-      QMessageBox::warning(NULL,QString("Oops!"), QString("Não foi possivel encontrar o Morador!"));
+      if( !bSilent )
+      {
+          QRAD_HIDE_PRPGRESS();
+          QMessageBox::warning(NULL,QString("Oops!"), QString("Não foi possivel encontrar o Morador!"));
+      }
       delete tkt;
       delete pdw;
       return false;
   }
   if(pdw->getemail().isEmpty())
   {
-      QRAD_HIDE_PRPGRESS();
-      QMessageBox::warning(NULL,QString("Oops!"), QString("Este morador não possui e-mail cadastrado!"));
+      if( !bSilent )
+      {
+          QRAD_HIDE_PRPGRESS();
+          QMessageBox::warning(NULL,QString("Oops!"), QString("Este morador não possui e-mail cadastrado!"));
+      }
       delete tkt;
       delete pdw;
       return false;
   }
 
+  debug_message("ap antes\n");
+
   Ap *ap = Ap::findByid(pdw->getap());
   Tower *tw = Tower::findByid(pdw->gettower());
+
+  debug_message("FullFileName antes\n");
 
 
   QString Path = QString("c:\\dvl\\acbr\\%1").arg(QDate::currentDate().toString("dd_MM_yyyy"));
@@ -966,43 +999,67 @@ bool TicketController::SendEmail(int id )
           .arg(tkt->getNossoNumero());
 
   QRAD_HIDE_PRPGRESS();
+  debug_message("doPrint antes\n");
+
   if( !doPrint((BBO_TYPE)tkt->getType(),(BBOL_STATUS)tkt->getStatus(),tkt))
   {
-      QMessageBox::warning(NULL,QString("Oops!"), QString("Erro ao gerar arquivo %1!").arg(FullFileName));
+      if( !bSilent )
+      {
+          QMessageBox::warning(NULL,QString("Oops!"), QString("Erro ao gerar arquivo %1!").arg(FullFileName));
+      }
       delete tkt;
       delete pdw;
       delete ap;
       delete tw;
       return false;
   }
+
+  debug_message("Print ok\n");
 
 
   EmailGui *gui = new EmailGui;
 
   gui->setFile(FullFileName);
   gui->setTo(pdw->getemail());
-  gui->setSubject(tkt->getObs());
-  gui->setText(QString("Prezado Morador,<br/><br/>        Segue em anexo boleto para pagamento.<br/><br/><br/><br/>Atenciosamente\n"));
-
-  if( QDialog::Accepted != gui->exec())
+  if( QDate::currentDate() == QDate(2017,07,27)) /// apenas para corrigir erro de envio sem desconto
   {
-      QMessageBox::warning(NULL,QString("Cancelado!"), QString("Operação Cancelada!"));
-      delete tkt;
-      delete pdw;
-      delete gui;
-      delete ap;
-      delete tw;
-      return false;
+      gui->setSubject(tkt->getObs()+ " COM DESCONTO",true);
+      gui->setText(QString("Prezado Morador,<br/><br/>        Segue em anexo boleto para pagamento( POR FAVOR DESCONSIDERAR E-MAIL ANTERIOR).<br/><br/><br/><br/>Atenciosamente\n"));
+  }
+  else
+  {
+      gui->setSubject(tkt->getObs());
+      gui->setText(QString("Prezado Morador,<br/><br/>        Segue em anexo boleto para pagamento.<br/><br/><br/><br/>Atenciosamente\n"));
   }
 
+  if( !bSilent )
+  {
+      if( QDialog::Accepted != gui->exec())
+      {
+          QMessageBox::warning(NULL,QString("Cancelado!"), QString("Operação Cancelada!"));
+          delete tkt;
+          delete pdw;
+          delete gui;
+          delete ap;
+          delete tw;
+          return false;
+      }
+  }
+
+  debug_message("QRadEmail antes\n");
 
 
   QRAD_SHOW_PRPGRESS_STEP("Enviando...");
   QRadEmail *mail = QRadEmail::getInstance();
+
+  debug_message("QRadEmail depois\n");
   if(!mail)
   {
-      QRAD_HIDE_PRPGRESS();
-      QMessageBox::warning(NULL,QString("Oops!"), QString("Não foi possível inicializar infraestrutura de e-mail!"));
+      if( !bSilent )
+      {
+          QRAD_HIDE_PRPGRESS();
+          QMessageBox::warning(NULL,QString("Oops!"), QString("Não foi possível inicializar infraestrutura de e-mail!"));
+      }
       delete tkt;
       delete pdw;
       delete gui;
@@ -1010,6 +1067,12 @@ bool TicketController::SendEmail(int id )
       delete tw;
       return false;
   }
+
+  debug_message("Enviando... %s %s %s %s %s\n",
+                pdw->getName().toLatin1().data(),
+                pdw->getemail().toLatin1().data(),
+                tkt->getObs().toLatin1().data(),
+                FullFileName.toLatin1().data());
 
   QStringList files;
   files.append(FullFileName);
@@ -1018,13 +1081,26 @@ bool TicketController::SendEmail(int id )
   {
       bRet = tkt->updateSendStatus(stSent);
   }
-  delete tkt;
-  delete pdw;
-  delete gui;
-  delete ap;
-  delete tw;
-  QRAD_HIDE_PRPGRESS();
+  else
+  {
+      tkt->updateSendStatus(stErrSent);
+  }
+  debug_message("delete 1\n");
 
+  delete tkt;
+  debug_message("delete 2\n");
+  delete pdw;
+  debug_message("delete 3\n");
+  delete gui;
+  debug_message("delete 4\n");
+  delete ap;
+  debug_message("delete 5\n");
+  delete tw;
+
+  if( !bSilent )
+      QRAD_HIDE_PRPGRESS();
+
+  debug_message("retornando\n");
   return bRet;
 }
 bool TicketController::ReportExaro( QSqlQueryModel *model, QString reportTitle)
@@ -1083,4 +1159,61 @@ bool TicketController::ReportExaro( QSqlQueryModel *model, QString reportTitle)
     delete report;
 
     return true;
+}
+
+#define SQL_EMAIL_ITEMS "select t.* from "\
+                        " ticket t inner join dweller d on d.id = t.clientid inner join vuser u on u.id = t.vuser "\
+                        " inner join ap a on a.id = d.ap inner join tower tw on tw.id = d.tower "\
+                        " where (t.status = %1 or t.status =%2 or t.status = %3 ) and  t.sendstatus <> %4 and t.vencto >= '%5' order by t.id desc; "
+
+//>=
+
+bool TicketController::SendToAll()
+{
+  QDate *date = new QDate(2017,07,26); // hardcoded ..
+  QString SQL = QString(SQL_EMAIL_ITEMS).arg(stCreated).arg(stBuiltShipp).arg(stRegistered).arg(stSent).arg(date->toString(FMT_DATE_DB));
+
+  delete date;
+
+  debug_message("antes initacbr \n");
+
+  QRAD_SHOW_PRPGRESS("Iniciando envio...");
+
+
+  if(!InitAcbr())
+  {
+      QMessageBox::information(NULL, "Oops!", "Não foi possivel inicializar a infraestrutura!");
+      return false;
+  }
+
+  debug_message("SQL: %s\n",SQL.toLatin1().data());
+  ticketList *tktlst = ticket::findBy(SQL);
+  if( !tktlst )
+  {
+      QMessageBox::information(NULL, "Oops!", "Não existem e-mails pendentes para envio!");
+      return true;
+  }
+  for( int i = 0; tktlst && (i < tktlst->count()); i++ )
+  {
+      ticket *tkt = tktlst->at(i);
+      if( tkt->getSendStatus() == stDisabled) // double check, perhaps user changed configuration abaut that....
+      {
+          Dweller *pDw = Dweller::findByid(tkt->getclientid());
+          if(pDw && pDw->getNotifByEmail() && !pDw->getemail().trimmed().isEmpty())
+          {
+              tkt->setSendStatus(stPending);
+              tkt->updateStatus(stPending);
+          }
+      }
+      if( tkt->getSendStatus() == stPending)
+      {
+          SendEmail(tkt->getid(),true);
+      }
+  }
+  QRAD_HIDE_PRPGRESS();
+
+  QMessageBox::information(NULL, "Ok!", "Todos e-mails foram enviados!");
+  return true;
+
+  return true;
 }

@@ -42,8 +42,8 @@ SOURCES +=  \
     street.cpp \
     cep.cpp \
     neighborhood.cpp \
-    city.cpp \
-    state.cpp
+    phonecompany.cpp \
+    phonetype.cpp
 
 HEADERS +=  \
            orm.h \
@@ -70,8 +70,8 @@ HEADERS +=  \
     street.h \
     cep.h \
     neighborhood.h \
-    city.h \
-    state.h
+    phonecompany.h \
+    phonetype.h
 
 #win32:LIBS +=  -L../QRadCore\release
 #unix:LIBS +=  -L../QRadCore

@@ -26,8 +26,9 @@ public:
     bool Remove(int id, QString strMsgText );
     bool ProcessRetList(QList<BankTicket*> *list);
     static bool UpdateTickets(QList<BankTicket*> *list);
-    bool SendEmail(int id );
+    bool SendEmail(int id, bool bSilent=false );
     bool ReportExaro( QSqlQueryModel *model, QString reportTitle);
+    bool SendToAll();
 private:
     BuildTkt *g_tkt;
     ticketconfig *m_pTktConfig;

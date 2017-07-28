@@ -274,18 +274,38 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
 
    QRAD_SHOW_PRPGRESS("Inicializando infraestutura...");
 
+   debug_message("Antes purge");
    if( !Send(cmdPurge))
    {
         qDebug() << "Saindo da init com false :";
        QRAD_HIDE_PRPGRESS();
        return false;
    }
+   debug_message("antes pCompany\n");
 
    m_pCompany = pCompany;
    m_pTktConfig = pTktConfig;
    m_pBank = pBank;
    m_pAccount = pAccount;
 
+
+   City *pCity = City::findByid(m_pCompany->getcity(),true);
+   if(!pCity)
+       debug_message("nao encontrei a cidade de id =%d\n", m_pCompany->getcity());
+
+   debug_message("m_pCompany->getname()=%s\n", m_pCompany->getname().toLatin1().data());
+   debug_message("m_pCompany->getcnpj()=%s\n", m_pCompany->getcnpj().toLatin1().data());
+   debug_message("m_pCompany->getAddrees()=%s\n", m_pCompany->getAddrees().toLatin1().data());
+   debug_message("m_pCompany->getHouseNumber()=%s\n", m_pCompany->getHouseNumber().toLatin1().data());
+   debug_message("m_pCompany->getNeighborhood()=%s\n", m_pCompany->getNeighborhood().toLatin1().data());
+   debug_message("m_pCompany->getCity()=%s\n", m_pCompany->getCity()->getName().toLatin1().data());
+   debug_message("m_pCompany->getCEP()=%s\n", m_pCompany->getCEP().toLatin1().data());
+   debug_message("m_pCompany->getState()=%s\n", m_pCompany->getState()->getSign().toLatin1().data());
+   debug_message("m_pCompany->getRespEmis()=%d\n", m_pTktConfig->getRespEmis()-1);
+   debug_message("m_pCompany->getname()=%d\n", m_pTktConfig->getTipoPessoa()-1);
+   debug_message("m_pCompany->getname()=%s\n", m_pTktConfig->getCodigoCedente().toLatin1().data());
+   debug_message("m_pCompany->getname()=%d\n", m_pTktConfig->getLayoutBol()-1);
+   debug_message("m_pCompany->getname()=%d\n", m_pTktConfig->getTipoCobranca()-1);
 
    QString paramCedente = QString(TKT_CONFIG_CEDENTE)
            .arg(m_pCompany->getname())
@@ -303,15 +323,19 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
            .arg(m_pTktConfig->getLayoutBol()-1)
            .arg(m_pTktConfig->getTipoCobranca()-1);
 
+   debug_message("depois 1\n");
+
    QString paramConta = QString(TKT_CONFIG_ACCOUNT)
            .arg(m_pAccount->getConta())
            .arg(m_pAccount->getDigitoAgencia())
            .arg(m_pAccount->getAgencia())
            .arg(m_pAccount->getDigitoAgencia());
+   debug_message("depois 2\n");
 
    QString paramBank = QString(TKT_CONFIG_BANK)
             .arg(m_pBank->getCode())
             .arg(m_pTktConfig->getcnab()-1);
+   debug_message("depois 3\n");
 
    QString cmdConfig =  QString("%1%2(%3%4%5)")
                         .arg(TKT_PREFIX)
@@ -320,12 +344,18 @@ bool BuildTkt::Init(MainCompany *pCompany, ticketconfig *pTktConfig, BankModel *
                         .arg(paramConta)
                         .arg(paramBank);
 
+   debug_message("depois strings\n");
+
    QRAD_SHOW_PRPGRESS_STEP("Configurando boletos...");
 
-   m_dwTimeout = 2000;
+   m_dwTimeout = 6000;
+
+   debug_message("antes send\n");
    bool bRet = Send(cmdConfig);
+   debug_message("depois send \n");
 
    QRAD_HIDE_PRPGRESS();
+   debug_message("depois hide \n");
    return bRet;
 }
 
@@ -346,6 +376,7 @@ bool BuildTkt::Print(bool bPrinter, QString strPath)
     bool Ret = Send(cmdPrint);
     if( Ret )
     {
+       QFile::remove(strPath);
        QFile::rename("C:\\ACBrMonitorPLUS\\boleto.pdf",strPath);
     }
 

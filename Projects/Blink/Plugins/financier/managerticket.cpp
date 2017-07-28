@@ -49,6 +49,8 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
 
     connect(ui->radioButtonAll,SIGNAL(clicked()), this, SLOT(doRefresh()));
+    connect(ui->radioButtonRegistered,SIGNAL(clicked()), this, SLOT(doRefresh()));
+    connect(ui->radioButtonRemessa,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonNotPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->comboBoxMonth,SIGNAL(currentIndexChanged(int)), this, SLOT(doRefresh()));
@@ -66,12 +68,10 @@ Managerticket::Managerticket(QWidget *parent) :
  //   connect(ui->pushButtonEditDweller,SIGNAL(clicked()), this, SLOT(doEditDweller()));
 
 
-
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
-
 
     ui->comboBoxMonth->setCurrentIndex(0);
 
@@ -118,7 +118,11 @@ void Managerticket::createMenu()
     EditMenu->addSeparator();
     EmailCurrent = EditMenu->addAction(tr("Enviar e-mail"));
     EmailCurrent->setIcon(QIcon(":/png/icon_mail.png"));
+    EditMenu->addSeparator();
+    EmailToAll = EditMenu->addAction(tr("Enviar e-mail (Todos)"));
+    EmailToAll->setIcon(QIcon(":/png/icon_mail.png"));
     menuBar->addMenu(EditMenu);
+
 
     PrintMenu = new QMenu(tr("&Imprimir"), this);
     PrintCurrentView = PrintMenu->addAction(tr("Listagem de tela"));
@@ -131,6 +135,7 @@ void Managerticket::createMenu()
 
     connect(EditCurrent , SIGNAL(triggered()), this, SLOT(doEdit()));
     connect(EmailCurrent, SIGNAL(triggered()), this, SLOT(doEmail()));
+    connect(EmailToAll, SIGNAL(triggered()), this, SLOT(doEmailToAll()));
     connect(PrintCurrentView, SIGNAL(triggered()), this, SLOT(doPrintView()));
 
     ui->tableViewSearch->addContextSeparator();
@@ -260,6 +265,16 @@ void Managerticket::LoadTableView()
     else if(ui->radioButtonNew->isChecked())
     {
         aux = QString(" where t.status = %1 ").arg(stCreated);
+        bHasWhere = true;
+    }
+    else if( ui->radioButtonRemessa->isChecked())
+    {
+        aux = QString(" where t.status = %1 ").arg(stBuiltShipp);
+        bHasWhere = true;
+    }
+    else if( ui->radioButtonRegistered->isChecked())
+    {
+        aux = QString(" where t.status = %1 ").arg(stRegistered);
         bHasWhere = true;
     }
     else
@@ -415,6 +430,7 @@ void Managerticket::MatchNewest(ticket *newest )
 }
 void Managerticket::doTxExtra()
 {
+    this->setEnabled(false);
     TicketController *pController = new TicketController;
 
     if(!pController->BuildTicketExtra(0))
@@ -432,10 +448,12 @@ void Managerticket::doTxExtra()
     }
     delete pController;
     doRefresh();
+    this->setEnabled(true);
 }
 
 void Managerticket::doTxCondominial()
 {
+    this->setEnabled(false);
     TicketController *pController = new TicketController;
 
     if(pController->BuildTicketCond())
@@ -447,6 +465,7 @@ void Managerticket::doTxCondominial()
 
     delete pController;
     doRefresh();
+    this->setEnabled(true);
 }
 
 void Managerticket::doSair()
@@ -464,6 +483,7 @@ void Managerticket::doRefresh()
 
 void Managerticket::doReprint()
 {
+    this->setEnabled(false);
 
     int id = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
                                                          ui->tableViewSearch->getColumnOf("id")).data().toInt();
@@ -473,12 +493,14 @@ void Managerticket::doReprint()
     if( !tkt)
     {
         QMessageBox::warning(this, "Oops!","Selecione um boleto para poder reimprimir!");
+        this->setEnabled(true);
         return;
     }
     if( tkt->getStatus() == stCreated )
     {
         QMessageBox::warning(this, "Oops!","Este boleto está em estado de \"Criado\", por favor Exporte os arquivos (.REM/.PDF)!");
         delete tkt;
+        this->setEnabled(true);
         return;
     }
 
@@ -497,6 +519,7 @@ void Managerticket::doReprint()
     }
     delete pController;
     delete tkt;
+    this->setEnabled(true);
 }
 
 void Managerticket::doEdit()
@@ -586,17 +609,21 @@ void Managerticket::dragMoveEvent(QDragMoveEvent *event)
 
 void Managerticket::doExport()
 {
-    /// Por Enquanto só taxa extra
+    this->setEnabled(false);
     TicketController *pController = new TicketController;
 
     if(!pController->doShipp("","",tpAll))
     {
         QMessageBox::warning(this, "Oops!", "Problema ao gerar arquivo de remessa!");
+        delete pController;
+        this->setEnabled(true);
         return;
     }
     if( !pController->doPrint(tpAll,stCreated))
     {
         QMessageBox::warning(this, "Oops!", "Problema ao gerar arquivo de boletos!");
+        delete pController;
+        this->setEnabled(true);
         return;
     }
      QMessageBox::information(this, "Ok!", "Arquivos gerados com sucesso!");
@@ -605,6 +632,7 @@ void Managerticket::doExport()
      pController->SendEmail();
 
      delete pController;
+     this->setEnabled(true);
 }
 
 void Managerticket::doEditDweller()
@@ -630,11 +658,34 @@ void Managerticket::doEditDweller()
     iface->setParam("dwellerid", id);
     iface->Process("EditMorador");
     iface->setParent(pParent);
+
+    int emailStatus = ui->tableViewSearch->currentIndex().sibling( ui->tableViewSearch->currentIndex().row(),
+                                                                  ui->tableViewSearch->getColumnOf("e-mail")).data().toInt();
+
+    if( (BBOL_SEND_STATUS)emailStatus == stDisabled )
+    {
+        Dweller *dw = Dweller::findByid(id);
+        if(dw && dw->getNotifByEmail() && !dw->getemail().trimmed().isEmpty())
+        {
+            int ticketid = ui->tableViewSearch->currentIndex().sibling( ui->tableViewSearch->currentIndex().row(),
+                                                                        ui->tableViewSearch->getColumnOf("t.id")).data().toInt();
+
+            ticket *ptkt = ticket::findByid(ticketid,true);
+            if(ptkt)
+            {
+                ptkt->updateSendStatus(stPending);
+                delete ptkt;
+            }
+
+        }
+    }
     refreshTable();
 }
 
 void Managerticket::doImport()
 {
+    this->setEnabled(false);
+
     QStringList paths = QRadConfig::GetAndPersistDir("RetFile", "","Selecionar Arquivo de Retorno","Arquivos Retorno (*.ret *.RET)",this);
 
     QList<BankTicket*> list;
@@ -650,9 +701,13 @@ void Managerticket::doImport()
         QMessageBox::information(NULL,"Oops!", QString("Operação cancelada!"));
     }
     delete ParsePay;
+    this->setEnabled(true);
+
 }
 void Managerticket::doEmail()
 {
+    this->setEnabled(false);
+
     int id = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
                                                          ui->tableViewSearch->getColumnOf("id")).data().toInt();
 
@@ -661,11 +716,23 @@ void Managerticket::doEmail()
     if(pController->SendEmail(id))
     {
         QMessageBox::information(NULL,"Ok!", QString("E-mail enviado com sucesso!"));
-        refreshTable();
     }
-
     delete pController;
 
+    this->setEnabled(true);
+    refreshTable();
+}
+
+void Managerticket::doEmailToAll()
+{
+    this->setEnabled(false);
+    TicketController *pController = new TicketController;
+
+    pController->SendToAll();
+
+    delete pController;
+    this->setEnabled(true);
+    refreshTable();
 }
 
 void Managerticket::doPrintView()

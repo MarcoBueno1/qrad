@@ -111,20 +111,10 @@
                 <string>Situação</string>
                </property>
                <layout class="QGridLayout" name="gridLayout_5">
-                <item row="0" column="0">
-                 <widget class="QRadioButton" name="radioButtonAll">
+                <item row="1" column="1">
+                 <widget class="QRadioButton" name="radioButtonNew">
                   <property name="text">
-                   <string>&amp;Todos</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QRadioButton" name="radioButtonNotPayed">
-                  <property name="text">
-                   <string>Em &amp;Atraso</string>
+                   <string>&amp;Novos</string>
                   </property>
                  </widget>
                 </item>
@@ -135,10 +125,34 @@
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="1">
-                 <widget class="QRadioButton" name="radioButtonNew">
+                <item row="0" column="1">
+                 <widget class="QRadioButton" name="radioButtonNotPayed">
                   <property name="text">
-                   <string>&amp;Novos</string>
+                   <string>Em &amp;Atraso</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QRadioButton" name="radioButtonAll">
+                  <property name="text">
+                   <string>&amp;Todos</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QRadioButton" name="radioButtonRemessa">
+                  <property name="text">
+                   <string>Em Remessa</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QRadioButton" name="radioButtonRegistered">
+                  <property name="text">
+                   <string>Registrados</string>
                   </property>
                  </widget>
                 </item>
@@ -425,6 +439,7 @@
   </customwidget>
  </customwidgets>
  <resources>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
  </resources>

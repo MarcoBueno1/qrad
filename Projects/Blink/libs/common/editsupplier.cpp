@@ -18,8 +18,12 @@
 #include "cep.h"
 #include "state.h"
 #include "street.h"
-#include "city.h"
+//#include "city.h"
 #include "neighborhood.h"
+#include "phone.h"
+#include "phonecompany.h"
+#include "phonetype.h"
+
 
 
 Editsupplier::Editsupplier(QWidget *parent) :
@@ -267,8 +271,92 @@ void Editsupplier::onCNPJEdited(QString cnpj)
 }
 void Editsupplier::replyFinished(QNetworkReply* pReply)
 {
-
     QByteArray data=pReply->readAll();
+#if 0
+
+    QByteArray data = "{"\
+                      "  \"atividade_principal\": ["\
+                      "    {"\
+                      "      \"text\": \"Fabricação de produtos do refino de petróleo\","\
+                      "      \"code\": \"19.21-7-00\""\
+                      "    }"\
+                      "  ],"\
+                      "  \"data_situacao\": \"03/11/2005\","\
+                      "  \"nome\": \"PETROLEO BRASILEIRO S A PETROBRAS\","\
+                      "  \"efr\": \"UNIÃO\","\
+                      "  \"uf\": \"RJ\","\
+                      "  \"telefone\": \"(21) 3224-8091 / (21) 3224-4477\","\
+                      "  \"email\": \"atendimentofiscossco@petrobras.com.br\","\
+                      "  \"atividades_secundarias\": ["\
+                      "    {"\
+                      "      \"text\": \"Extração de petróleo e gás natural\","\
+                      "      \"code\": \"06.00-0-01\""\
+                      "    },"\
+                      "    {"\
+                      "      \"text\": \"Produção de gás; processamento de gás natural\","\
+                      "      \"code\": \"35.20-4-01\""\
+                      "    },"\
+                      "    {"\
+                      "      \"text\": \"Comércio atacadista de álcool carburante, biodiesel, gasolina e demais derivados de petróleo, exceto lubrificantes, não realizado por transportador retalhista (T.R.R.)\","\
+                      "      \"code\": \"46.81-8-01\""\
+                      "    }"\
+                      "  ],"\
+                      "  \"qsa\": ["\
+                      "    {"\
+                      "      \"qual\": \"10-Diretor\","\
+                      "      \"nome\": \"SOLANGE DA SILVA GUEDES\""\
+                      "    },"\
+                      "    {"\
+                      "      \"qual\": \"10-Diretor\","\
+                      "      \"nome\": \"IVAN DE SOUZA MONTEIRO\""\
+                      "    },"\
+                      "    {"\
+                      "      \"qual\": \"10-Diretor\","\
+                      "      \"nome\": \"HUGO REPSOLD JUNIOR\""\
+                      "    },"\
+                      "    {"\
+                      "      \"qual\": \"10-Diretor\","\
+                      "      \"nome\": \"JORGE CELESTINO RAMOS\""\
+                      "    },"\
+                      "    {"\
+                      "      \"qual\": \"10-Diretor\","\
+                      "      \"nome\": \"ROBERTO MORO\""\
+                      "    },"\
+                      "    {"\
+                      "      \"qual\": \"10-Diretor\","\
+                      "      \"nome\": \"JOAO ADALBERTO ELEK JUNIOR\""\
+                      "    },"\
+                      "    {"\
+                      "      \"qual\": \"16-Presidente\","\
+                      "      \"nome\": \"PEDRO PULLEN PARENTE\""\
+                      "    },"\
+                      "    {"\
+                      "      \"qual\": \"10-Diretor\","\
+                      "      \"nome\": \"NELSON LUIZ COSTA SILVA\""\
+                      "    }"\
+                      "  ],"\
+                      "  \"situacao\": \"ATIVA\","\
+                      "  \"bairro\": \"CENTRO\","\
+                      "  \"logradouro\": \"AV REPUBLICA DO CHILE\","\
+                      "  \"numero\": \"65\","\
+                      "  \"cep\": \"20.031-170\","\
+                      "  \"municipio\": \"RIO DE JANEIRO\","\
+                      "  \"abertura\": \"28/09/1966\","\
+                      "  \"natureza_juridica\": \"203-8 - Sociedade de Economia Mista\","\
+                      "  \"fantasia\": \"PETROBRAS\","\
+                      "  \"cnpj\": \"33.000.167/0001-01\","\
+                      "  \"ultima_atualizacao\": \"2017-07-06T01:42:57.628Z\","\
+                      "  \"status\": \"OK\","\
+                      "  \"tipo\": \"MATRIZ\","\
+                      "  \"complemento\": \"\","\
+                      "  \"motivo_situacao\": \"\","\
+                      "  \"situacao_especial\": \"\","\
+                      "  \"data_situacao_especial\": \"\","\
+                      "  \"capital_social\": \"205431960490.52\","\
+                      "  \"extra\": {}"\
+                      "}";
+#endif
+
     QString str(data);
 
     debug_message("resposta recebida\n%s\n",str.toLatin1().data());
@@ -279,13 +367,14 @@ void Editsupplier::replyFinished(QNetworkReply* pReply)
     QJsonObject obj = doc.object();
 
     QJsonValue val = obj.value("nome");
-    ui->LnEdtNome->setText(val.toString());
+    if(ui->LnEdtNome->text().trimmed().isEmpty())
+        ui->LnEdtNome->setText(val.toString());
     val = obj.value("fantasia");
-    ui->LnEdtFantasia->setText( val.toString());
+    if( ui->LnEdtFantasia->text().isEmpty())
+        ui->LnEdtFantasia->setText( val.toString());
 
-    val = obj.value("cep");
 
-    QString SQL = QString("select a.id, s.name as \"Rua\", a.number as \"Número\", c.Number as \"Cep\", n.name as \"Bairro\", ci.name as \"Cidade\", st.name as \"Estado\" "\
+    QString SQL = QString("select a.* "\
                           " from address a "\
                           " inner join street s on s.id = a.street"\
                           " inner join cep c on c.id = a.cep"\
@@ -297,25 +386,42 @@ void Editsupplier::replyFinished(QNetworkReply* pReply)
     AddressV2List *pAddressList = AddressV2::findBy(SQL);
     if( !pAddressList )
     {
-        AddressV2 *pAddress = pAddressList->at(0);
-        CepList *CepList = Cep::findByNumber(val.toString().remove(".").remove("-"));
-        if( !cep )
+        Cep *pCep;
+//        City *pCity;
+        State *pState;
+        Street *pStreet;
+        AddressV2 *pAddress;
+        Neighborhood *pNei;
+
+        val = obj.value("cep");
+
+//        AddressV2 *pAddress = pAddressList->at(0);
+        CepList *pCepList = Cep::findByNumber(val.toString().remove(".").remove("-"));
+        if( !pCepList )
         {
-            cep = new Cep;
-            cep->setNumber(val.toString().remove(".").remove("-"));
-            if( !cep->Save())
+            pCep = new Cep;
+            pCep->setNumber(val.toString().remove(".").remove("-"));
+            if( !pCep->Save())
             {
-                delete cep;
+                delete pCep;
                 QMessageBox::warning(this, "Oops!", "Erro ao salvar o CEP!");
                 return;
             }
         }
+        else
+        {
+            pCep = pCepList->at(0);
+        }
+
+        debug_message("Depois CEP\n");
+
+
         val = obj.value("uf");
-        State *pState =  State::findByName(val.toString());
-        if(pState)
+        StateList *pStateList =  State::findBySign(val.toString());
+        if( !pStateList )
         {
             pState = new State;
-            pState->setName(val.toString());
+            pState->setSign(val.toString());
             if( !pState->Save())
             {
                 delete pState;
@@ -323,11 +429,18 @@ void Editsupplier::replyFinished(QNetworkReply* pReply)
                 return;
             }
         }
-        val = obj.value("logradouro");
-        Street *pStreet=  Street::findByName(val.toString());
-        if( !pStreet )
+        else
         {
-            pStreet = new State;
+            pState = pStateList->at(0);
+        }
+
+        debug_message("Depois UF\n");
+
+        val = obj.value("logradouro");
+        StreetList *pStreetList=  Street::findByName(val.toString());
+        if( !pStreetList )
+        {
+            pStreet = new Street;
             pStreet->setName(val.toString());
             if( !pStreet->Save())
             {
@@ -336,22 +449,32 @@ void Editsupplier::replyFinished(QNetworkReply* pReply)
                 return;
             }
         }
-        val = obj.value("municipio");
-        City *pCity=  City::findByName(val.toString());
-        if( !pCity )
+        else
         {
-            pCity = new City;
-            pCity->setName(val.toString());
-            if( !pCity->Save())
-            {
-                delete pCity;
-                QMessageBox::warning(this, "Oops!", "Erro ao salvar Cidade!");
-                return;
-            }
+            pStreet = pStreetList->at(0);
         }
+
         val = obj.value("municipio");
-        Neighborhood *pNei=  Neighborhood::findByName(val.toString());
-        if( !pNei )
+//        CityList *pCityList=  City::findByName(val.toString());
+//        if( !pCityList )
+//        {
+//            pCity = new City;
+//            pCity->setName(val.toString());
+//            if( !pCity->Save())
+//            {
+//                delete pCity;
+//                QMessageBox::warning(this, "Oops!", "Erro ao salvar Cidade!");
+//                return;
+//            }
+//        }
+//        else
+//        {
+//            pCity = pCityList->at(0);
+//        }
+
+        val = obj.value("bairro");
+        NeighborhoodList *pNeiList=  Neighborhood::findByName(val.toString());
+        if( !pNeiList )
         {
             pNei = new Neighborhood;
             pNei->setName(val.toString());
@@ -362,19 +485,56 @@ void Editsupplier::replyFinished(QNetworkReply* pReply)
                 return;
             }
         }
-        pAddress->setcep(cep->getId());
-        pAddress->setcity(pCity->getid());
+        else
+        {
+            pNei = pNeiList->at(0);
+        }
+        debug_message("Depois Bairro\n");
+
+        pAddress = new AddressV2;
+        pAddress->setcep(pCep->getId());
+        debug_message("Depois setcep\n");
+        pAddress->setcity(1); /// provisoriamente
+        debug_message("Depois setcity\n");
         pAddress->setNeighborhood(pNei->getid());
+        debug_message("Depois setNeighbo\n");
         pAddress->setstate(pState->getid());
+        debug_message("Depois setState\n");
         pAddress->setstreet(pStreet->getid());
+        debug_message("Antes setStreet\n");
         pAddress->setOwner(m_mod->getid());
+        debug_message("Antes setOwner\n");
         pAddress->setOwnerType(2);
-        pAddress->Save();
-        RefreshAddressTable();
+        debug_message("Antes Save\n");
+        if(pAddress->Save())
+            RefreshAddressTable();
+
+        delete pAddress;
+
     }
 
 
+    SQL = QString(" select p.* "\
+                  " from phone p inner join operadora o on o.id = p.operator  "\
+                  " inner join phonetype t on t.id = p.type  "\
+                  " where p.owner = %1 and ownertype = 2 ").arg(m_mod?m_mod->getid():0);
 
+
+    PhoneList *pPhoneList = Phone::findBy(SQL);
+    if( !pPhoneList )
+    {
+        Phone *pPhone = new Phone;
+
+        val = obj.value("telefone");
+
+        pPhone->setNumber(val.toString());
+        pPhone->setOperator(1);
+        pPhone->setOwner(m_mod->getid());
+        pPhone->setOwnerType(2);
+        pPhone->setType(1);
+        pPhone->Save();
+        delete pPhone;
+        RefreshPhoneTable();
+    }
     //process str any way you like!
-
 }

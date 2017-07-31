@@ -59,6 +59,7 @@ void FinancierPlugin::onLoad(QRadPluginContainer* container)
     appendAction(ACTION_READ_SHIPP);
     appendAction(ACTION_MANAGE_FILES);
     appendAction(ACTION_NEW_ACCOUNTTOPAY);
+    appendAction(TEST_EXPORT_PDF);
 //    appendAction(ACTION_TEST_SUPPLIER_HTTP_RESP);
 
 
@@ -213,6 +214,14 @@ void FinancierPlugin::Process( const QString& action )
             m_LastId = RegAccount->GetLastInsertedId();
         }
         delete RegAccount;
+
+    }
+    else if( TEST_EXPORT_PDF ==  action )
+    {
+        Managerticket *ptkts = new Managerticket(m_parent);
+//        QRadConfig::centralizarWidget(pFiles);
+        ptkts->TestExportPDF();
+        delete ptkts;
 
     }
 //    else if( ACTION_TEST_SUPPLIER_HTTP_RESP == action)

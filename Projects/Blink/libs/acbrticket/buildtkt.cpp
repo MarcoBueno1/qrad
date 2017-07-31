@@ -163,7 +163,7 @@ bool BuildTkt::Send(QString cmd)
     bool result = file->write(cmd.toLatin1())?true:false;
     file->flush();
     file->close();
-    qDebug() << "Escrito:" << cmd.toLatin1();
+//    qDebug() << "Escrito:" << cmd.toLatin1();
     delete file;
 
     if( result ) // verifica retorno
@@ -206,7 +206,7 @@ bool BuildTkt::Send(QString cmd)
         result = true;
 //         qDebug() << "Vai ler dados:";
         QString answer = receivefile->readAll();
-//         qDebug() << "leu:";
+        debug_message( "Recebido[%s]\n", answer.toLatin1().data());
         if( !answer.startsWith("OK:"))
         {
             result = false;
@@ -381,6 +381,7 @@ bool BuildTkt::Print(bool bPrinter, QString strPath)
     }
 
     QRAD_HIDE_PRPGRESS();
+    debug_message("Retornando do print: %s\n", Ret?"true":"false");
     return Ret;
 }
 

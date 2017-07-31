@@ -32,6 +32,8 @@ public:
     explicit Managerticket(QWidget *parent = 0);
     ~Managerticket();
 
+    void TestExportPDF();
+
 //    void resizeEvent(QResizeEvent* event);
 public slots:
     void notFound();

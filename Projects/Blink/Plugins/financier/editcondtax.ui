@@ -179,6 +179,9 @@
       <height>20</height>
      </rect>
     </property>
+    <property name="calendarPopup">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLabel" name="LblValue_2">
     <property name="geometry">

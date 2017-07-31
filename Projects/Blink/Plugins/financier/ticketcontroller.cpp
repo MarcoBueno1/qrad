@@ -726,9 +726,11 @@ void TicketController::OpenRemDir()
 }
 void TicketController::OpenPDF()
 {
-    QString toName = QString("%1Boletos%2.pdf").arg(DEFAULT_REM_DIR).arg(QDate::currentDate().toString("ddMMyyyy"));
-    QFile::rename(DEFAULT_PDF_FILE,toName);
-    //QDesktopServices::openUrl(QUrl::fromLocalFile(toName));//, QUrl::TolerantMode);
+//    QString toName = QString("%1Boletos%2.pdf").arg(DEFAULT_REM_DIR).arg(QDate::currentDate().toString("ddMMyyyy"));
+//    QFile::rename(DEFAULT_PDF_FILE,toName);
+//QDesktopServices::openUrl(QUrl::fromLocalFile(toName));//, QUrl::TolerantMode);
+
+    OpenRemDir();
 
 }
 void TicketController::SendEmail()

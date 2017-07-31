@@ -34,6 +34,7 @@
 #define ACTION_MANAGE_FILES                         "ManageFiles"
 #define ACTION_NEW_ACCOUNTTOPAY                     "NewAccountToPay"
 #define ACTION_TEST_SUPPLIER_HTTP_RESP              "TestHTTPREsponse"
+#define TEST_EXPORT_PDF                             "TestExportPDF"
 
 
 class FinancierPlugin : public QRadPluginInterface 

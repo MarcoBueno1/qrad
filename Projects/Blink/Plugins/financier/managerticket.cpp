@@ -161,7 +161,14 @@ Managerticket::~Managerticket()
      }
     delete m_Model;
 
-    delete ui;
+     delete ui;
+}
+
+void Managerticket::TestExportPDF()
+{
+  refreshTable();
+  ui->tableViewSearch->setCurrentIndex(m_Model->index(0,0));
+  doReprint();
 }
 
 void Managerticket::KeyPressTimeout()
@@ -315,6 +322,25 @@ void Managerticket::LoadTableView()
 //    ui->tableViewSearch->horizontalHeader()->setStretchLastSection(true);
 
     QApplication::processEvents();
+
+    double total=0;
+    double totalpaid=0;
+//    double totalN=0;
+//    double totalpaidN=0;
+
+    for (int index = 0; index < m_Model->rowCount(); index++)
+    {
+//        total     += QRadMoney::StrToInt(QRadMoney::MoneyHumanForm3(m_Model->record(index).value("Valor R$").toFloat()));
+//        totalpaid += QRadMoney::StrToInt(QRadMoney::MoneyHumanForm3(m_Model->record(index).value("Pago R$").toFloat()));
+
+        total     += m_Model->record(index).value("Valor R$").toFloat();
+        totalpaid += m_Model->record(index).value("Pago R$").toFloat();
+    }
+//    debug_message( "Total: %02.02f  TotalPago: %02.02f\n", total,totalpaid );
+//    debug_message( "TotalN: %02.02f  TotalPagoN: %02.02f\n", totalN,totalpaidN );
+
+    ui->labelTotalEmitido->setText(QString("Total: R$ %1").arg(QRadMoney::MoneyHumanForm(total)));
+    ui->labelTotalPago->setText(QString("Total Pago: R$ %1").arg(QRadMoney::MoneyHumanForm(totalpaid)));
 }
 
 void Managerticket::DoRefresh()
@@ -485,8 +511,8 @@ void Managerticket::doReprint()
 {
     this->setEnabled(false);
 
-    int id = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
-                                                         ui->tableViewSearch->getColumnOf("id")).data().toInt();
+    int id = ui->tableViewSearch->currentIndex().sibling( ui->tableViewSearch->currentIndex().row(),
+                                                          ui->tableViewSearch->getColumnOf("id")).data().toInt();
 
 
     ticket *tkt = ticket::findByid(id,true);
@@ -507,7 +533,7 @@ void Managerticket::doReprint()
     debug_message("antes TicketController\n");
 
     TicketController *pController = new TicketController;
-    if(pController->doPrint((BBO_TYPE)tkt->getType(),(BBOL_STATUS)tkt->getStatus(), tkt))
+    if(!pController->doPrint((BBO_TYPE)tkt->getType(),(BBOL_STATUS)tkt->getStatus(), tkt))
     {
         QMessageBox::warning(this, "Oops!","Problema na reimpressão do boleto!");
     }
@@ -679,7 +705,7 @@ void Managerticket::doEditDweller()
 
         }
     }
-    refreshTable();
+    doRefresh();
 }
 
 void Managerticket::doImport()
@@ -720,7 +746,7 @@ void Managerticket::doEmail()
     delete pController;
 
     this->setEnabled(true);
-    refreshTable();
+    doRefresh();
 }
 
 void Managerticket::doEmailToAll()
@@ -732,7 +758,7 @@ void Managerticket::doEmailToAll()
 
     delete pController;
     this->setEnabled(true);
-    refreshTable();
+    doRefresh();
 }
 
 void Managerticket::doPrintView()

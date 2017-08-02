@@ -199,7 +199,7 @@
                         <Picture>
                             <properties>
                                 <objectName type="QString" >picture_1</objectName>
-                                <geometry type="QRectF" >-11.0208,-14.7708,389,190</geometry>
+                                <geometry type="QRectF" >7.9792,9.2292,356,160</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>
@@ -611,7 +611,7 @@
                                 <Field>
                                     <properties>
                                         <objectName type="QString" >field</objectName>
-                                        <geometry type="QRectF" >6,5,146,43</geometry>
+                                        <geometry type="QRectF" >7,5,146,43</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >0,0,0,255</color>
@@ -1095,7 +1095,7 @@
                         <Picture>
                             <properties>
                                 <objectName type="QString" >picture</objectName>
-                                <geometry type="QRectF" >25.92,21.7292,344,100</geometry>
+                                <geometry type="QRectF" >32.92,21.7292,344,100</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>
@@ -1135,7 +1135,7 @@
                         <LineItem>
                             <properties>
                                 <objectName type="QString" >lineitem</objectName>
-                                <geometry type="QRectF" >-14.8333,0.458333,2683,13.5833</geometry>
+                                <geometry type="QRectF" >8.1667,0.458333,2655,13.5833</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>

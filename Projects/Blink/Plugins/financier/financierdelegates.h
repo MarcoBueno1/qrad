@@ -1,104 +1,137 @@
 #ifndef _FINANCIER_DELEGATES_
 #define _FINANCIER_DELEGATES_
-#include <QItemDelegate>
+#include "qraddelegate.h"
 #include "accounttypemodel.h"
 
-class ColumnAccountType : public QItemDelegate
+class ColumnAccountType : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnFinancierDescription: public QItemDelegate
+class ColumnFinancierDescription: public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnFinancierDate: public QItemDelegate
+class ColumnFinancierDate: public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnFinancierMoney : public QItemDelegate
+class ColumnFinancierMoney : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
 
-class ColumnFinancierAccountPaid : public QItemDelegate
+class ColumnFinancierAccountPaid : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnFinancierAccountOperation : public QItemDelegate
+class ColumnFinancierAccountOperation : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
-class ColumnEmail : public QItemDelegate
+class ColumnEmail : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnTktStatus : public QItemDelegate
+class ColumnTktStatus : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnTktType : public QItemDelegate
+class ColumnTktType : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
-class ColumnDateLate : public QItemDelegate
+class ColumnDateLate : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnDateTicketNull : public QItemDelegate
+class ColumnDateTicketNull : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
+};
+
+class ColumnMoneyTktPaid : public QRadDelegate
+{
+    Q_OBJECT
+public:
+    void paint(QPainter *painter,
+                            const QStyleOptionViewItem &option,
+                            const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
 #endif

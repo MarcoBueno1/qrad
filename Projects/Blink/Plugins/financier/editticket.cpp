@@ -68,6 +68,7 @@ void Editticket::Save()
            // mod->setStatus(stValueModified);
             mod->setStatus(stCreated);
 
+        mod->setStatus(stCreated); /// provisoriamente para facilitar a vida  ( transformar de remessa em criado )
     }
 
     //if(mod->getStatus() == stBuiltShipp)

@@ -21,6 +21,8 @@ DECLARE_CLASS(AccountToPayModel)
     ORM_DECLARE_ATTRIBUTE(AccountToPayModel,int, BankId)
     ORM_DECLARE_ATTRIBUTE(AccountToPayModel,bool, Removed)
     ORM_DECLARE_ATTRIBUTE(AccountToPayModel,QString, DocNumber)
+    ORM_DECLARE_ATTRIBUTE(AccountToPayModel,int, PaymentWay)
+
    
     ORM_MATCH_TABLE(AccountToPayModel, "fin_accounttopay")
 ORM_END_MAP()

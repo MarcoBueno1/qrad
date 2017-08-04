@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
-#define SQL_ITEMS "select cnpj, nome, fantasia,id from supplier where removed<> true order by nome"
+#define SQL_ITEMS "select cnpj, nome, fantasia,id from supplier where removed<> true and tp <> 2 order by nome"
 
 Managersupplier::Managersupplier(QWidget *parent) :
     QDialog(parent),

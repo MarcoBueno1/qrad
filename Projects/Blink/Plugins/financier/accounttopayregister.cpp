@@ -2,6 +2,11 @@
 #include "ui_accounttopayregister.h"
 #include "qradmoney.h"
 #include "dsmsgmessages.h"
+#include <QCompleter>
+
+
+// alter table fin_accounttopay add column paymentway integer;
+//alter table supplier add column tp integer default 1 ;
 
 AccountToPayRegister::AccountToPayRegister(QWidget *parent) :
     QDialog(parent),
@@ -14,7 +19,27 @@ AccountToPayRegister::AccountToPayRegister(QWidget *parent) :
     m_modelSupplier     = new QSqlQueryModel;
     m_modelBank         = new QSqlQueryModel;
 
-    m_ui->lineEditValue->setValidator(m_expMoney);
+
+    m_ui->comboBoxPaymentway->setTable("paymentway.Forma de Pagamento");
+    m_ui->comboBoxPaymentway->setField("description.Nome");
+    m_ui->comboBoxPaymentway->setCanAdd(true);
+    m_ui->comboBoxPaymentway->setUserName("dsm");
+    if( m_ui->comboBoxPaymentway->completer() )
+        m_ui->comboBoxPaymentway->completer()->setFilterMode(Qt::MatchContains );
+
+
+    m_ui->comboBoxSupplier->setTable("supplier.Fornecedor");
+    m_ui->comboBoxSupplier->setField("nome.Nome");
+    m_ui->comboBoxSupplier->setCanAdd(true);
+    m_ui->comboBoxSupplier->setUserName("dsm");
+    if( m_ui->comboBoxSupplier->completer() )
+        m_ui->comboBoxSupplier->completer()->setFilterMode(Qt::MatchContains );
+
+    m_EditSupplier = new Editsupplier;
+    m_ui->comboBoxSupplier->SetEditor(m_EditSupplier);
+
+
+//    m_ui->lineEditValue->setValidator(m_expMoney);
 
     m_accountToPayId = 0;
     m_accountToPayDescription.clear();
@@ -40,6 +65,7 @@ AccountToPayRegister::~AccountToPayRegister()
     delete m_modelAccountType;
     delete m_modelSupplier;
     delete m_modelBank;
+    delete m_EditSupplier;
 }
 
 void AccountToPayRegister::changeEvent(QEvent *e)
@@ -63,9 +89,11 @@ void AccountToPayRegister::GetAccountTypeValues(void)
 
 void AccountToPayRegister::GetSupplierValues(void)
 {
+    /*
     m_modelSupplier->setQuery(SQL_SELECT_SUPPLIER_COMBO);
     m_ui->comboBoxSupplier->setModel(m_modelSupplier);
     m_ui->comboBoxSupplier->setModelColumn(1);
+    */
 }
 
 void AccountToPayRegister::GetBankValues(void)
@@ -85,7 +113,9 @@ void AccountToPayRegister::SendAccountToPayId(int accountToPayId)
     m_ui->dateEditVencDate->setDate(accountToPayModel->getVencDate());
     m_ui->comboBoxAccountType->setCurrentIndex(m_ui->comboBoxAccountType->findText(QString("%1").arg(accountToPayModel->getAccountTypeId())));
     m_ui->lineEditDocNumber->setText(accountToPayModel->getDocNumber());
-    m_ui->lineEditValue->setText(QRadMoney::MoneyHumanForm2(accountToPayModel->getValue()));
+    m_ui->doubleSpinBoxValue->setValue(accountToPayModel->getValue());
+
+    m_ui->comboBoxPaymentway->setCurrentId(accountToPayModel->getPaymentWay());
 
     if (accountToPayModel->getSupplierId() == 0)
     {
@@ -94,9 +124,10 @@ void AccountToPayRegister::SendAccountToPayId(int accountToPayId)
     else
     {
         m_ui->groupBoxSupplier->setChecked(true);
-        m_ui->comboBoxSupplier->setModelColumn(0);
-        m_ui->comboBoxSupplier->setCurrentIndex(m_ui->comboBoxSupplier->findText(QString("%1").arg(accountToPayModel->getSupplierId())));
-        m_ui->comboBoxSupplier->setModelColumn(1);
+        m_ui->comboBoxSupplier->setCurrentId(accountToPayModel->getSupplierId());
+//        m_ui->comboBoxSupplier->setModelColumn(0);
+//        m_ui->comboBoxSupplier->setCurrentIndex(m_ui->comboBoxSupplier->findText(QString("%1").arg(accountToPayModel->getSupplierId())));
+//        m_ui->comboBoxSupplier->setModelColumn(1);
     }
 
     if (accountToPayModel->getBankId() == 0)
@@ -178,13 +209,13 @@ void AccountToPayRegister::SaveAccountToPay(void)
         accountToPayModel->setVencDate(vencDate);
         accountToPayModel->setAccountTypeId(m_ui->comboBoxAccountType->currentText().toInt());
         accountToPayModel->setDocNumber(m_ui->lineEditDocNumber->text().toUpper());
-        accountToPayModel->setValue(QRadMoney::MoneyComputerForm2(m_ui->lineEditValue->text()));
+        accountToPayModel->setValue(m_ui->doubleSpinBoxValue->value());
 
         if (m_ui->groupBoxSupplier->isChecked())
         {
-            m_ui->comboBoxSupplier->setModelColumn(0);
-            accountToPayModel->setSupplierId(m_ui->comboBoxSupplier->currentText().toInt());
-            m_ui->comboBoxSupplier->setModelColumn(1);
+//            m_ui->comboBoxSupplier->setModelColumn(0);
+            accountToPayModel->setSupplierId(m_ui->comboBoxSupplier->model()->data(m_ui->comboBoxSupplier->model()->index(m_ui->comboBoxSupplier->currentIndex(), 0)).toInt());
+//            m_ui->comboBoxSupplier->setModelColumn(1);
         }
         else
         {
@@ -205,6 +236,8 @@ void AccountToPayRegister::SaveAccountToPay(void)
         }
 
         accountToPayModel->setObs(m_ui->textEditObs->toPlainText().toUpper());
+
+        accountToPayModel->setPaymentWay( m_ui->comboBoxPaymentway->model()->data(m_ui->comboBoxPaymentway->model()->index(m_ui->comboBoxPaymentway->currentIndex(), 0)).toInt());
 
         if (m_accountToPayId != 0)
         {

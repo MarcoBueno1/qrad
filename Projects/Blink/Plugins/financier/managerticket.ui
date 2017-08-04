@@ -13,7 +13,7 @@
   <property name="minimumSize">
    <size>
     <width>0</width>
-    <height>0</height>
+    <height>50</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -293,63 +293,76 @@
             <property name="title">
              <string> Totais</string>
             </property>
-            <widget class="QWidget" name="">
-             <property name="geometry">
-              <rect>
-               <x>30</x>
-               <y>17</y>
-               <width>701</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_2">
-              <item>
-               <widget class="QLabel" name="labelTotalEmitido">
-                <property name="font">
-                 <font>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">color: rgb(41, 0, 125);</string>
-                </property>
-                <property name="text">
-                 <string>Total Emitido R$ 0,00</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-                <property name="textInteractionFlags">
-                 <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="labelTotalPago">
-                <property name="font">
-                 <font>
-                  <pointsize>9</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">color: rgb(0, 122, 0);</string>
-                </property>
-                <property name="text">
-                 <string>Total Pago R$ 0,00</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-                <property name="textInteractionFlags">
-                 <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLabel" name="labelTotalEmitido">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(41, 0, 125);</string>
+               </property>
+               <property name="text">
+                <string>Total Emitido R$ 0,00</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelTotalPago">
+               <property name="font">
+                <font>
+                 <pointsize>9</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(0, 122, 0);</string>
+               </property>
+               <property name="text">
+                <string>Total Pago R$ 0,00</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelSaldo">
+               <property name="font">
+                <font>
+                 <pointsize>9</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(135, 0, 0);</string>
+               </property>
+               <property name="text">
+                <string>Saldo R$ 0,00</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>
@@ -422,46 +435,38 @@
            </widget>
           </item>
           <item>
-           <widget class="QGroupBox" name="groupBox_4">
+           <widget class="QGroupBox" name="groupBoxPeriod">
             <property name="minimumSize">
              <size>
-              <width>200</width>
-              <height>0</height>
+              <width>250</width>
+              <height>55</height>
              </size>
             </property>
             <property name="title">
              <string>Período</string>
             </property>
-            <widget class="QComboBox" name="comboBoxMonth">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>20</y>
-               <width>171</width>
-               <height>22</height>
-              </rect>
-             </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
-              <property name="text">
-               <string>Últimos 3 Meses</string>
-              </property>
+              <widget class="QDateEdit" name="dateEditSince">
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
              <item>
-              <property name="text">
-               <string>Últimos 6 Meses</string>
-              </property>
+              <widget class="QDateEdit" name="dateEditUntil">
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
-             <item>
-              <property name="text">
-               <string>Ano Atual</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Tudo</string>
-              </property>
-             </item>
-            </widget>
+            </layout>
            </widget>
           </item>
          </layout>

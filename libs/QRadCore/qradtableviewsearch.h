@@ -21,6 +21,7 @@
 #include <QLineEdit>
 #include <QMenu>
 #include "model.h"
+#include "qraddelegate.h"
 
 typedef enum e_mode
 {
@@ -60,6 +61,9 @@ public:
     void addContextSeparator();
     void addContextAction(QAction *action );
 
+    void setItemDelegateForColumn(int nColumn, QRadDelegate *delegate);
+
+
 protected:
     void getAlignment();
     int rowsPerViewport();
@@ -80,6 +84,7 @@ public slots:
     void TblColumnResized(int logicalIndex, int oldSize, int newSize);
     void customMenuRequested(QPoint pt);
     void doCopyLine();
+    void doExport();
 signals:
     void found(QModelIndex index);
     void notFound();
@@ -110,8 +115,10 @@ private:
     bool MixFilteredSearch(QString text);
     int m_nDefaultColumnSearch;
     QAction *m_copyLine;
+    QAction *m_ExportExcel;
     QAction *m_copyCel;
     QAction *m_copyRow;
+    QMap<int, QRadDelegate *> m_map;
 
 
     QString BuildClmnTableName();

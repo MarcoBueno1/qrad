@@ -26,7 +26,7 @@
 
 
 
-Editsupplier::Editsupplier(QWidget *parent) :
+Editsupplier::Editsupplier(QWidget *parent, bool CleanUp) :
     QDialog(parent),
     ui(new Ui::Editsupplier)
 {
@@ -34,6 +34,7 @@ Editsupplier::Editsupplier(QWidget *parent) :
     
     m_mod = NULL;
     m_lastMod = NULL;
+    m_CleanUp = CleanUp;
     
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
@@ -272,6 +273,16 @@ void Editsupplier::onCNPJEdited(QString cnpj)
 void Editsupplier::replyFinished(QNetworkReply* pReply)
 {
     QByteArray data=pReply->readAll();
+    int statusCode = pReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    debug_message("statusCode: %d\n", statusCode);
+    if(statusCode == 302)
+    {
+        QUrl newUrl = pReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+        debug_message("redirected to %s\n",newUrl.toString().toLatin1().data());
+        QNetworkRequest newRequest(newUrl);
+        m_manager->get(newRequest);
+        return;
+    }
 #if 0
 
     QByteArray data = "{"\
@@ -537,4 +548,18 @@ void Editsupplier::replyFinished(QNetworkReply* pReply)
         RefreshPhoneTable();
     }
     //process str any way you like!
+}
+void Editsupplier::closeEvent(QCloseEvent *event)
+{
+    if( m_CleanUp )
+    {
+        m_mod = NULL;
+        m_lastMod = NULL;
+        RefreshPhoneTable();
+        RefreshAddressTable();
+        ui->LnEdtCNPJ->clear();
+        ui->LnEdtFantasia->clear();
+        ui->LnEdtNome->clear();
+        ui->LnEdtCNPJ->setFocus();
+    }
 }

@@ -20,9 +20,9 @@
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
 #define SQL_ITEMS "select t.nossonumero as \"Nº.Banco\", t.seunumero as \"Nº.Sis\", a.numero as \"Ap\", tw.name as \"Torre\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
-                  "  t.valor as \"Valor R$\", t.valorpago as \"Pago R$\",u.name as \"Criado Por\", t.status as \"Estado\", t.sendstatus as \"e-mail\", t.type as \"Tipo\", t.id, d.id as dwellerid, t.obs from "\
+                  "  t.valor as \"Valor R$\", t.valorpago as \"Pago R$\",u.name as \"Criado Por\", t.status as \"Estado\", t.sendstatus as \"e-mail\", t.type as \"Tipo\", t.id, d.id as dwellerid, t.obs, t.discount from "\
                   " ticket t inner join dweller d on d.id = t.clientid inner join vuser u on u.id = t.vuser "\
-                  " inner join ap a on a.id = d.ap inner join tower tw on tw.id = d.tower "\
+                  " inner join ap a on a.id = d.ap inner join tower tw on tw.id = d.tower and t.removed <> true"\
                   " %1 order by t.id desc; "
 
 Managerticket::Managerticket(QWidget *parent) :
@@ -33,6 +33,9 @@ Managerticket::Managerticket(QWidget *parent) :
 
     m_keyinterval = NULL;
     m_Model = new QSqlQueryModel;
+
+    ui->dateEditSince->setDate(QDate::currentDate());
+    ui->dateEditUntil->setDate(QDate::currentDate());
 
 //    ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
 //    ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 15px; min-width: 20px;}; \nselection-background-color: rgb(102, 176, 239); \nselection-color: rgb(255, 255, 255)");
@@ -53,7 +56,8 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonRemessa,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonNotPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
-    connect(ui->comboBoxMonth,SIGNAL(currentIndexChanged(int)), this, SLOT(doRefresh()));
+    connect(ui->dateEditSince,SIGNAL(dateChanged(QDate)), this, SLOT(DatesChanged(QDate)));
+    connect(ui->dateEditUntil,SIGNAL(dateChanged(QDate)), this, SLOT(DatesChanged(QDate)));
 //    connect(ui->pushButtonReprint, SIGNAL(clicked()),this, SLOT(doReprint()));
  //   connect(ui->pushButtonEdit, SIGNAL(clicked()),this, SLOT(doEdit()));
   //  connect(ui->pushButtonRemove, SIGNAL(clicked()),this, SLOT(doRemove()));
@@ -72,8 +76,6 @@ Managerticket::Managerticket(QWidget *parent) :
     flags |= Qt::WindowMaximizeButtonHint;
     setWindowFlags(flags);
     setWindowState(Qt::WindowMaximized);
-
-    ui->comboBoxMonth->setCurrentIndex(0);
 
     setAcceptDrops(true);
 
@@ -291,20 +293,23 @@ void Managerticket::LoadTableView()
 //        bNeedOr = true;
     }
     QDate dtInicio;// = QDate::currentDate();
-    switch (ui->comboBoxMonth->currentIndex())
+    QDate dtFim;// = QDate::currentDate();
+    if(ui->groupBoxPeriod->isChecked())
     {
-       case 0: // 3 months
-              dtInicio = QDate::currentDate().addMonths(-3);
-       case 1: // 6 months
-              dtInicio = QDate::currentDate().addMonths(-6);
-       case 2: // this year
-              dtInicio = QDate(QDate::currentDate().year(),1,1);
-       case 3: // all
-              dtInicio = QDate(2017,1,1);
+        dtInicio = ui->dateEditSince->date();
+        dtFim    = ui->dateEditUntil->date();
+        aux += QString(" %1 %2 (t.vencto between '%3' and '%4' )").arg(bHasWhere?"":" Where ").arg(!bHasWhere?"":bNeedOr?" Or ":" and ").arg(dtInicio.toString(FMT_DATE_DB)).arg(dtFim.toString(FMT_DATE_DB));
+    }
+    else  /// modo automatico, devem entrar atrasados e todos do dia por padrao
+    {
+        if(ui->radioButtonAll->isChecked())
+            aux += QString(" where t.vencto = '%1' or (t.status <> 3 and t.vencto < '%1')").arg(QDate::currentDate().toString(FMT_DATE_DB));
+        else
+            aux += QString(" %1 %2 (t.vencto = '%3' )").arg(bHasWhere?"":" Where ").arg(!bHasWhere?"":bNeedOr?" Or ":" and ").arg(QDate::currentDate().toString(FMT_DATE_DB));
+
     }
 
-    QDate dtFim = QDate(dtInicio.year()+10, dtInicio.month(),dtInicio.daysInMonth());
-    aux += QString(" %1 %2 (t.vencto between '%3' and '%4' )").arg(bHasWhere?"":" Where ").arg(!bHasWhere?"":bNeedOr?" Or ":" and ").arg(dtInicio.toString(FMT_DATE_DB)).arg(dtFim.toString(FMT_DATE_DB));
+
 
     if( !ui->radioButtonAllType->isChecked())
     {
@@ -341,6 +346,16 @@ void Managerticket::LoadTableView()
 
     ui->labelTotalEmitido->setText(QString("Total: R$ %1").arg(QRadMoney::MoneyHumanForm(total)));
     ui->labelTotalPago->setText(QString("Total Pago: R$ %1").arg(QRadMoney::MoneyHumanForm(totalpaid)));
+
+    ui->labelSaldo->setText(QString("Saldo: R$ %1")
+                            .arg(QRadMoney::MoneyHumanForm(totalpaid-total)));
+
+    if( totalpaid>total )
+        ui->labelSaldo->setStyleSheet("color: rgb(0, 122, 0);");
+    else
+        ui->labelSaldo->setStyleSheet("color: rgb(135, 0, 0);");
+    ///color: rgb(0, 122, 0); verde ...
+    ///color: rgb(135, 0, 0); vermelho
 }
 
 void Managerticket::DoRefresh()
@@ -402,6 +417,7 @@ void Managerticket::ConfigureTable()
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("dwellerid"));
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("Criado Por"));
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("obs"));
+    ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("discount"));
     ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
     ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnCenter);
     ui->tableViewSearch->setItemDelegateForColumn(2, new ColumnCenter);
@@ -410,7 +426,7 @@ void Managerticket::ConfigureTable()
     ui->tableViewSearch->setItemDelegateForColumn(5, new ColumnDateLate);
     ui->tableViewSearch->setItemDelegateForColumn(6, new ColumnDateTicketNull);
     ui->tableViewSearch->setItemDelegateForColumn(7, new ColumnMoney);
-    ui->tableViewSearch->setItemDelegateForColumn(8, new ColumnMoney);
+    ui->tableViewSearch->setItemDelegateForColumn(8, new ColumnMoneyTktPaid);
     ui->tableViewSearch->setItemDelegateForColumn(9, new ColumnCenter);
 
     ui->tableViewSearch->setItemDelegateForColumn(10, new ColumnTktStatus);
@@ -875,9 +891,9 @@ void Managerticket::doPrintView()
 
 void Managerticket::AutoSizeColumn(QSqlQueryModel * model)
 {
-    int j =0;
+    int j;
 
-    for( j; j < 8; j++)
+    for( j=0; j < 8; j++)
     {
         debug_message("no loop\n");
 
@@ -892,4 +908,8 @@ void Managerticket::AutoSizeColumn(QSqlQueryModel * model)
 
 
     }
+}
+void Managerticket::DatesChanged(QDate date)
+{
+  doRefresh();
 }

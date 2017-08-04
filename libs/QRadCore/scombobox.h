@@ -67,6 +67,7 @@ public:
     {
         m_Permission = Permission;
     }
+    void SetEditor(QDialog *pEditor);
 
 
     QString Table()
@@ -145,6 +146,7 @@ private:
 
   QString m_UIFileName;
   QSqlDatabase m_currentdb;
+  QDialog *m_pEditor;
 
 
   void showEvent ( QShowEvent * event );

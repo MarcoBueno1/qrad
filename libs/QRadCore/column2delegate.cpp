@@ -17,12 +17,17 @@ void ColumnMoney2::paint(QPainter *painter,
     QStyleOptionViewItem myOption = option;
 
     myOption.displayAlignment = (Qt::AlignRight | Qt::AlignVCenter);
-    drawDisplay(painter, myOption, myOption.rect, QRadMoney::MoneyHumanForm2(val.toDouble()));
+    drawDisplay(painter, myOption, myOption.rect, FormatValue(val).toString());
     drawFocus(painter, myOption, myOption.rect);
 }
 
+QVariant ColumnMoney2::FormatValue(QVariant value) const
+{
+    return QVariant(QRadMoney::MoneyHumanForm2(value.toDouble()));
+}
+
 ColumnSCombo::ColumnSCombo(QObject *parent, SComboBox* cmb)
-    : QItemDelegate(parent)
+    : QRadDelegate(parent)
 {
 	m_combobox = cmb;
 	
@@ -59,8 +64,14 @@ void ColumnSCombo::setCombo(SComboBox* combo)
 	m_combobox = combo;
 }
 
+QVariant ColumnSCombo::FormatValue(QVariant value) const
+{
+    return value;
+}
+
+
 ColumnCombo::ColumnCombo(QObject *parent, QComboBox* cmb)
-    : QItemDelegate(parent)
+    : QRadDelegate(parent)
 {
 	m_combobox = cmb;
 	
@@ -95,10 +106,14 @@ void ColumnCombo::setCombo(QComboBox* combo)
 	
 	m_combobox = combo;
 }
+QVariant ColumnCombo::FormatValue(QVariant value) const
+{
+    return value;
+}
 
 
 ColumnSpin::ColumnSpin(QObject *parent, QSpinBox* cmb)
-    : QItemDelegate(parent)
+    : QRadDelegate(parent)
 {
 	m_spinbox = cmb;
 	
@@ -132,6 +147,11 @@ void ColumnSpin::setSpin(QSpinBox* spin)
 	m_spinbox = spin;
 }
 
+QVariant ColumnSpin::FormatValue(QVariant value) const
+{
+    return value;
+}
+
 
 
 void ColumnObs::paint(QPainter *painter,
@@ -143,9 +163,14 @@ void ColumnObs::paint(QPainter *painter,
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = (Qt::AlignLeft | Qt::AlignVCenter);
-    drawDisplay(painter, myOption, myOption.rect, text.toString().mid(0,48));
+    drawDisplay(painter, myOption, myOption.rect, FormatValue(text).toString());
     drawFocus(painter, myOption, myOption.rect);
 }
+QVariant ColumnObs::FormatValue(QVariant value) const
+{
+    return value.toString().mid(0,48);
+}
+
 
 void ColumnPercent::paint(QPainter *painter,
                            const QStyleOptionViewItem &option,
@@ -153,9 +178,8 @@ void ColumnPercent::paint(QPainter *painter,
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
-    QString percent = text.toString();
+    QString percent = FormatValue(text).toString();
 
-    percent += "%";
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = (Qt::AlignHCenter | Qt::AlignVCenter);
@@ -163,6 +187,12 @@ void ColumnPercent::paint(QPainter *painter,
     drawFocus(painter, myOption, myOption.rect);
 }
 
+QVariant ColumnPercent::FormatValue(QVariant value) const
+{
+    QString percent = value.toString() +"%";
+
+    return percent;
+}
 
 void ColumnCenter::paint(QPainter *painter,
                          const QStyleOptionViewItem &option,
@@ -177,6 +207,12 @@ void ColumnCenter::paint(QPainter *painter,
     drawFocus(painter, myOption, myOption.rect);
 }
 
+QVariant ColumnCenter::FormatValue(QVariant value) const
+{
+    return value;
+}
+
+
 void ColumnLeft::paint(QPainter *painter,
                        const QStyleOptionViewItem &option,
                        const QModelIndex &index) const
@@ -189,20 +225,30 @@ void ColumnLeft::paint(QPainter *painter,
     drawDisplay(painter, myOption, myOption.rect, text.toString());
     drawFocus(painter, myOption, myOption.rect);
 }
+
+QVariant ColumnLeft::FormatValue(QVariant value) const
+{
+    return value;
+}
+
 void ColumnBalance::paint(QPainter *painter,
                           const QStyleOptionViewItem &option,
                           const QModelIndex &index) const
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
-    QString balance = text.toString();
+    QString balance = FormatValue(text).toString();
 
-    balance.replace(" ","");
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = Qt::AlignCenter;
     drawDisplay(painter, myOption, myOption.rect, balance);
     drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnBalance::FormatValue(QVariant value) const
+{
+    return value.toString().replace(" ","");
 }
 
 void ColumnRight::paint(QPainter *painter,
@@ -218,22 +264,19 @@ void ColumnRight::paint(QPainter *painter,
     drawFocus(painter, myOption, myOption.rect);
 }
 
+QVariant ColumnRight::FormatValue(QVariant value) const
+{
+    return value;
+}
+
 void ColumnCPF::paint(QPainter *painter,
                       const QStyleOptionViewItem &option,
                       const QModelIndex &index) const
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
-    QString cpf;
+    QString cpf = FormatValue(text).toString();
 
-    if (text.toString().length() == 0)
-    {
-        cpf = QString::fromUtf8("NÃO INFORMADO");
-    }
-    else
-    {
-        cpf = text.toString().mid(0,3) + "." + text.toString().mid(3,3) + "." + text.toString().mid(6,3) + "-" + text.toString().mid(9,2);
-    }
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = Qt::AlignCenter;
@@ -241,6 +284,22 @@ void ColumnCPF::paint(QPainter *painter,
     drawFocus(painter, myOption, myOption.rect);
 }
 
+
+QVariant ColumnCPF::FormatValue(QVariant value) const
+{
+    QString cpf;
+
+    if (value.toString().length() == 0)
+    {
+        cpf = QString::fromUtf8("NÃO INFORMADO");
+    }
+    else
+    {
+        cpf = value.toString().mid(0,3) + "." + value.toString().mid(3,3) + "." + value.toString().mid(6,3) + "-" + value.toString().mid(9,2);
+    }
+
+    return cpf;
+}
 
 void ColumnBoolIcon::paint(QPainter *painter,
                        const QStyleOptionViewItem &option,
@@ -257,21 +316,24 @@ void ColumnBoolIcon::paint(QPainter *painter,
     rect.setWidth(24);
     rect.setHeight(24);
 
-    if (text.toBool())
-    {
-        result = QString::fromUtf8("SIM");
+    result = FormatValue(text).toString();
+    if (result == "SIM")
         painter->drawPixmap(rect, pix);
-    }
     else
-    {
-        result = QString::fromUtf8("NÃO");
         painter->drawPixmap(rect, pixError);
-    }
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = Qt::AlignCenter;
     drawDisplay(painter, myOption, myOption.rect, result);
     drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnBoolIcon::FormatValue(QVariant value) const
+{
+    if (value.toBool())
+        return QString::fromUtf8("SIM");
+
+    return QString::fromUtf8("NãO");
 }
 
 void ColumnBool::paint(QPainter *painter,
@@ -282,14 +344,7 @@ void ColumnBool::paint(QPainter *painter,
     QStyleOptionViewItem myOption = option;
     QString result;
 
-    if (text.toBool())
-    {
-        result = QString::fromUtf8("SIM");
-    }
-    else
-    {
-        result = QString::fromUtf8("NÃO");
-    }
+    result = FormatValue(text).toString();
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = Qt::AlignCenter;
@@ -297,6 +352,13 @@ void ColumnBool::paint(QPainter *painter,
     drawFocus(painter, myOption, myOption.rect);
 }
 
+QVariant ColumnBool::FormatValue(QVariant value) const
+{
+    if (value.toBool())
+        return QString::fromUtf8("SIM");
+
+    return QString::fromUtf8("NãO");
+}
 
 void ColumnCNPJ::paint(QPainter *painter,
                        const QStyleOptionViewItem &option,
@@ -306,19 +368,27 @@ void ColumnCNPJ::paint(QPainter *painter,
     QStyleOptionViewItem myOption = option;
     QString cnpj;
 
-    if (text.toString().length() == 0)
-    {
-        cnpj = QString::fromUtf8("NÃO INFORMADO");
-    }
-    else
-    {
-        cnpj = text.toString().mid(0,2) + "." + text.toString().mid(2,3) + "." + text.toString().mid(5,3) + "/" + text.toString().mid(8,4) + "-" + text.toString().mid(12,2);
-    }
+    cnpj = FormatValue(text).toString();
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = Qt::AlignCenter;
     drawDisplay(painter, myOption, myOption.rect, cnpj);
     drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnCNPJ::FormatValue(QVariant value) const
+{
+    QString cnpj;
+    if (value.toString().length() == 0)
+    {
+        cnpj = QString::fromUtf8("NÃO INFORMADO");
+    }
+    else
+    {
+        cnpj = value.toString().mid(0,2) + "." + value.toString().mid(2,3) + "." + value.toString().mid(5,3) + "/" + value.toString().mid(8,4) + "-" + value.toString().mid(12,2);
+    }
+
+    return cnpj;
 }
 
 void ColumnPhone::paint(QPainter *painter,
@@ -329,7 +399,7 @@ void ColumnPhone::paint(QPainter *painter,
     QStyleOptionViewItem myOption = option;
     QString phone;
 
-    phone = "(" + text.toString().mid(0,2) + ") " + text.toString().mid(2,5) + "-" + text.toString().mid(7);
+    phone = FormatValue(text).toString();
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = Qt::AlignCenter;
@@ -337,6 +407,12 @@ void ColumnPhone::paint(QPainter *painter,
     drawDisplay(painter, myOption, myOption.rect, phone);
     drawFocus(painter, myOption, myOption.rect);
 }
+
+QVariant ColumnPhone::FormatValue(QVariant value) const
+{
+    return "(" + value.toString().mid(0,2) + ") " + value.toString().mid(2,5) + "-" + value.toString().mid(7);
+}
+
 
 void ColumnDate::paint(QPainter *painter,
                        const QStyleOptionViewItem &option,
@@ -348,18 +424,19 @@ void ColumnDate::paint(QPainter *painter,
     /* Como sera o alinhamento */
     myOption.displayAlignment = Qt::AlignCenter;
 
-    QString strDate;
-
-  //  if(text.toDate() == QDate(1960,01,01) || text.toDate() == QDate(3000,01,01))
-  //      strDate = "Sem Validade";
-  //  else
-        strDate = text.toDate().toString(FMT_DATE);
+    QString strDate = FormatValue(text).toString();
 
 
 
     drawDisplay(painter, myOption, myOption.rect, strDate);
     drawFocus(painter, myOption, myOption.rect);
 }
+
+QVariant ColumnDate::FormatValue(QVariant value) const
+{
+    return value.toDate().toString(FMT_DATE);;
+}
+
 
 void ColumnDateTime::paint(QPainter *painter,
                            const QStyleOptionViewItem &option,
@@ -371,34 +448,43 @@ void ColumnDateTime::paint(QPainter *painter,
     /* Como sera o alinhamento */
     myOption.displayAlignment = Qt::AlignCenter;
 
-    drawDisplay(painter, myOption, myOption.rect, text.toDateTime().toString(QString("%1 %2").arg(FMT_DATE).arg(FMT_TIME)));
+    drawDisplay(painter, myOption, myOption.rect, FormatValue(text).toString());
     drawFocus(painter, myOption, myOption.rect);
+}
+
+
+QVariant ColumnDateTime::FormatValue(QVariant value) const
+{
+    return value.toDateTime().toString(QString("%1 %2").arg(FMT_DATE).arg(FMT_TIME));
 }
 
 void ColumnDateTimeNull::paint(QPainter *painter,
                            const QStyleOptionViewItem &option,
                            const QModelIndex &index) const
 {
-    QDate date = index.model()->data(index.model()->index(index.row(),5)).toDate();
-//    QTime time = index.model()->data(index.model()->index(index.row(),4)).toTime();
-
-    QVariant text = index.model()->data(index, Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
-    QString strText= text.toString(); //toDate().toString(QString("%1").arg(FMT_DATE));
+    QString strText= FormatValue(index.model()->data(index.model()->index(index.row(),5)).toDate()).toString();
 
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = Qt::AlignCenter;
 
-    if( date == QDate(2000,1,1) )
+    if( strText == "NO CONDOMÍNIO" )
     {
         painter->fillRect(option.rect, BG_COLOR_YELLOW);
-        strText = "NO CONDOMÍNIO";
     }
 
     drawDisplay(painter, myOption, myOption.rect, strText);
     drawFocus(painter, myOption, myOption.rect);
 }
+
+QVariant ColumnDateTimeNull::FormatValue(QVariant value) const
+{
+    if( value.toDate() == QDate(2000,1,1) )
+        return QString("NO CONDOMÍNIO");
+    return value.toDate().toString(FMT_DATE);
+}
+
 
 void ColumnMoney::paint(QPainter *painter,
                         const QStyleOptionViewItem &option,
@@ -409,13 +495,18 @@ void ColumnMoney::paint(QPainter *painter,
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = (Qt::AlignRight | Qt::AlignVCenter);
-    drawDisplay(painter, myOption, myOption.rect, QRadMoney::MoneyHumanForm2(text.toDouble()));
+    drawDisplay(painter, myOption, myOption.rect, FormatValue(text).toString());
     drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnMoney::FormatValue(QVariant value) const
+{
+   return QRadMoney::MoneyHumanForm2(value.toDouble());
 }
 
 
 ColumnCheckBox::ColumnCheckBox(QObject *parent)
-    : QItemDelegate(parent)
+    : QRadDelegate(parent)
 {
 }
 
@@ -450,6 +541,11 @@ void ColumnCheckBox::updateEditorGeometry(QWidget *editor,
     editor->setGeometry(option.rect);
 }
 
+QVariant ColumnCheckBox::FormatValue(QVariant value) const
+{
+   return value;
+}
+
 bool ColumnCheckBox::eventFilter(QObject *object, QEvent *event)
 {
     QWidget *editor = qobject_cast<QWidget*>(object);
@@ -461,10 +557,10 @@ bool ColumnCheckBox::eventFilter(QObject *object, QEvent *event)
         case Qt::Key_Escape:
             return false;
         default:
-            return QItemDelegate::eventFilter(object,event);
+            return QRadDelegate::eventFilter(object,event);
         }
     }
-    return QItemDelegate::eventFilter(object,event);
+    return QRadDelegate::eventFilter(object,event);
 }
 
 

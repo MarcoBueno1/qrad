@@ -1138,7 +1138,8 @@ bool TicketController::ReportExaro( QSqlQueryModel *model, QString reportTitle)
 
     for (int index = 0; index < model->rowCount(); index++)
     {
-        total += model->record(index).value("Valor R$").toFloat();
+        total       += QRadMoney::StrToInt(QRadMoney::MoneyHumanForm3(model->record(index).value("Valor R$").toFloat()));
+//        total += model->record(index).value("Valor R$").toFloat();
     }
 
     pReport->setQueryName("tickets");

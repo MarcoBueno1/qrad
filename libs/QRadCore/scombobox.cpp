@@ -24,6 +24,7 @@ SComboBox::SComboBox(QWidget *parent) :
 {
     debug_message("-->SComboBox\n");
     m_CurrentId = -1;
+    m_pEditor = NULL;
     m_pModelLocal = new QSqlQueryModel;
     connect(this, SIGNAL(OnEdit()), this, SLOT(doEdit()));
     connect(this, SIGNAL(OnUpdate(QString)), this, SLOT(doUpdate(QString)));
@@ -32,6 +33,9 @@ SComboBox::SComboBox(QWidget *parent) :
 }
 SComboBox::~SComboBox()
 {
+    if(m_pEditor)
+        delete m_pEditor;
+
     delete m_pModelLocal;
 }
 
@@ -259,19 +263,33 @@ QString SComboBox::CreateEditUi()
 
 void SComboBox::doEdit(void)
 {
-        QString New = CreateEditUi();
-        if( !New.isEmpty())
-        {
-            doUpdate(New);
-        }
-        else
-        {
-            setCurrentIndex(0);
-        }
+    QString New;
+    if( m_pEditor )
+    {
+        m_pEditor->exec();
+        QSqlQueryModel *LastInserted = new QSqlQueryModel;
+        LastInserted->setQuery(QString("select %2 from %1 where removed <> true order by id desc limit 1")
+                           .arg(TableName().toLower()).arg(FieldName().toLower()), m_currentdb);
+        New = LastInserted->index(0,0).data().toString();
+        delete LastInserted;
+    }
+    else
+    {
+         New = CreateEditUi();
+    }
+
+    if( !New.isEmpty())
+    {
+        doUpdate(New);
+    }
+    else
+    {
+        setCurrentIndex(0);
+    }
 }
 void SComboBox::doUpdate(QString New)
 {
-            m_pModelLocal->setQuery(QString("select id, %2 from %1 where removed <> false order by tp, %2")
+            m_pModelLocal->setQuery(QString("select id, %2 from %1 where removed <> true order by tp, %2")
                                .arg(TableName().toLower()).arg(FieldName().toLower()), m_currentdb);
 
             setModel(m_pModelLocal);
@@ -541,5 +559,9 @@ QString SComboBox::FieldCaption()
     if( strAux.contains("."))
         strAux = strAux.mid(strAux.indexOf(".")+1);
     return strAux;
+
+}
+void SComboBox::SetEditor(QDialog *pEditor)
+{
 
 }

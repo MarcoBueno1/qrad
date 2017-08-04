@@ -198,5 +198,7 @@
         <file>icon_mail.png</file>
         <file>gadden-icon.jpg</file>
         <file>marca-m.ico</file>
+        <file>icon_table.png</file>
+        <file>icon_clipboard.png</file>
     </qresource>
 </RCC>

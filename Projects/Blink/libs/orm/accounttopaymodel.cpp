@@ -15,4 +15,5 @@ ORM_BEGIN_MAP(AccountToPayModel)
     ORM_MAP_FIELD(BankId, "bankid");
     ORM_MAP_FIELD(Removed, "removed");
     ORM_MAP_FIELD(DocNumber, "docnumber");
+    ORM_MAP_FIELD(PaymentWay, "paymentway");
 ORM_END_MAP()

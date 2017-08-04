@@ -10,6 +10,7 @@
 #include "qradshared.h"
 #include "accounttopaymodel.h"
 #include "accounttopayhistorymodel.h"
+#include "editsupplier.h"
 
 namespace Ui {
     class AccountToPayRegister;
@@ -39,6 +40,8 @@ protected:
 
 private:
     Ui::AccountToPayRegister *m_ui;
+    Editsupplier *m_EditSupplier;
+
 
 private slots:
     void    SaveAccountToPay(void);

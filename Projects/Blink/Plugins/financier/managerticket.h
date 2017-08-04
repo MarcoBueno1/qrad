@@ -58,6 +58,7 @@ public slots:
     void doEmail();
     void doPrintView();
     void doEmailToAll();
+    void DatesChanged(QDate date);
 private:
     Ui::Managerticket *ui;
 

@@ -9,7 +9,8 @@ QT += gui \
     core \
     script \
     printsupport \
-    network
+    network \
+    axcontainer
 
 TEMPLATE = lib
 TARGET = qradcore
@@ -94,7 +95,9 @@ HEADERS +=  qradplugincontainer.h \
     qradprogresswindow.h \
     qrademail.h \
     emailgui.h \
-    connectservererror.h
+    connectservererror.h \
+    excelexporthelper.h \
+    qraddelegate.h
 
 
 
@@ -163,7 +166,9 @@ SOURCES +=  qradplugininterface.cpp \
     qradprogresswindow.cpp \
     qrademail.cpp \
     emailgui.cpp \
-    connectservererror.cpp
+    connectservererror.cpp \
+    excelexporthelper.cpp \
+    qraddelegate.cpp
 
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c

@@ -1,7 +1,6 @@
 ﻿#ifndef COLUMN2DELEGATE_H
 #define COLUMN2DELEGATE_H
 
-#include <QItemDelegate>
 #include <QDate>
 #include <QPainter>
 #include <QMessageBox>
@@ -17,20 +16,24 @@
 #include <QSpinBox>
 #include "qradshared.h"
 #include "scombobox.h"
+#include "qraddelegate.h"
 
 
 
-class ColumnMoney2 : public QItemDelegate
+class ColumnMoney2 : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+
+    QVariant FormatValue(QVariant value) const;
+
 };
 
 
-class ColumnSCombo : public QItemDelegate
+class ColumnSCombo : public QRadDelegate
 {
     Q_OBJECT
 public:
@@ -41,12 +44,15 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 	
 	void setCombo(SComboBox* combo);
+
+    QVariant FormatValue(QVariant value) const;
+
 private:
     SComboBox* m_combobox;
    	
 };
 
-class ColumnCombo : public QItemDelegate
+class ColumnCombo : public QRadDelegate
 {
     Q_OBJECT
 public:
@@ -57,12 +63,15 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 	
 	void setCombo(QComboBox* combo);
+
+    QVariant FormatValue(QVariant value) const;
+
 private:
     QComboBox* m_combobox;
    	
 };
 
-class ColumnSpin : public QItemDelegate
+class ColumnSpin : public QRadDelegate
 {
     Q_OBJECT
 public:
@@ -73,149 +82,184 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 	
 	void setSpin(QSpinBox* spin);
+
+    QVariant FormatValue(QVariant value) const;
+
 private:
     QSpinBox* m_spinbox;
    	
 };
 
 
-class ColumnPercent : public QItemDelegate
+class ColumnPercent : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnCenter : public QItemDelegate
+class ColumnCenter : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnLeft : public QItemDelegate
+class ColumnLeft : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnBalance : public QItemDelegate
+class ColumnBalance : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnRight : public QItemDelegate
+class ColumnRight : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
 
-class ColumnCPF : public QItemDelegate
+class ColumnCPF : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnBoolIcon : public QItemDelegate
+class ColumnBoolIcon : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnBool : public QItemDelegate
+class ColumnBool : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnCNPJ : public QItemDelegate
+class ColumnCNPJ : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnPhone : public QItemDelegate
+class ColumnPhone : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnDateTime : public QItemDelegate
+class ColumnDateTime : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnDate : public QItemDelegate
+class ColumnDate : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnDateTimeNull : public QItemDelegate
+class ColumnDateTimeNull : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnObs : public QItemDelegate
+class ColumnObs : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnMoney : public QItemDelegate
+class ColumnMoney : public QRadDelegate
 {
     Q_OBJECT
 public:
     void paint(QPainter *painter,
                             const QStyleOptionViewItem &option,
                             const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
 };
 
-class ColumnCheckBox : public QItemDelegate
+class ColumnCheckBox : public QRadDelegate
 {
     Q_OBJECT
 
@@ -226,6 +270,8 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model,const QModelIndex &index) const;
     void updateEditorGeometry(QWidget *editor,const QStyleOptionViewItem &option, const QModelIndex &index) const;
     bool eventFilter(QObject *object, QEvent *event);
+    QVariant FormatValue(QVariant value) const;
+
 
 };
 

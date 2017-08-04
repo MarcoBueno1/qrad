@@ -47,13 +47,23 @@ void ColumnAccountType::paint(QPainter *painter,
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
-    QString accountType;
+    QString accountType = FormatValue(text).toString();
 
-    if (text.toInt() == AccountTypeToPay)
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+    drawDisplay(painter, myOption, myOption.rect, accountType);
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnAccountType::FormatValue(QVariant value) const
+{
+    QString accountType;
+    if (value.toInt() == AccountTypeToPay)
     {
         accountType = QString::fromUtf8("CONTAS A PAGAR");
     }
-    else if (text.toInt() == AccountTypeToReceive)
+    else if (value.toInt() == AccountTypeToReceive)
     {
         accountType = QString::fromUtf8("CONTAS A RECEBER");
     }
@@ -62,11 +72,9 @@ void ColumnAccountType::paint(QPainter *painter,
         accountType = QString::fromUtf8("CONTAS A PAGAR/RECEBER");
     }
 
-    /* Como sera o alinhamento */
-    myOption.displayAlignment = Qt::AlignCenter;
-    drawDisplay(painter, myOption, myOption.rect, accountType);
-    drawFocus(painter, myOption, myOption.rect);
+    return accountType;
 }
+
 
 void ColumnFinancierDescription::paint(QPainter *painter,
                                        const QStyleOptionViewItem &option,
@@ -80,9 +88,15 @@ void ColumnFinancierDescription::paint(QPainter *painter,
     /* Como sera o alinhamento */
     myOption.displayAlignment = Qt::AlignLeft | Qt::AlignVCenter;
 
-    drawDisplay(painter, myOption, myOption.rect, text.toString().mid(1));
+    drawDisplay(painter, myOption, myOption.rect, FormatValue(text).toString());
     drawFocus(painter, myOption, myOption.rect);
 }
+
+QVariant ColumnFinancierDescription::FormatValue(QVariant value) const
+{
+    return value.toString().mid(1);
+}
+
 
 void ColumnFinancierDate::paint(QPainter *painter,
                                 const QStyleOptionViewItem &option,
@@ -90,12 +104,23 @@ void ColumnFinancierDate::paint(QPainter *painter,
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
-    QDate   date;
-    QString dateStr;
-
-    date.setDate(text.toString().mid(1,4).toInt(), text.toString().mid(6,2).toInt(), text.toString().mid(9,2).toInt());
+    QString dateStr = FormatValue(text).toString();
 
     FORMAT_FINACIER;
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+
+    drawDisplay(painter, myOption, myOption.rect, dateStr);
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnFinancierDate::FormatValue(QVariant value) const
+{
+    QDate date;
+    QString dateStr;
+
+    date.setDate(value.toString().mid(1,4).toInt(), value.toString().mid(6,2).toInt(), value.toString().mid(9,2).toInt());
 
     if (date.daysTo(QDate(2000,1,1)) == 0)
     {
@@ -105,12 +130,7 @@ void ColumnFinancierDate::paint(QPainter *painter,
     {
         dateStr = date.toString(FMT_DATE);
     }
-
-    /* Como sera o alinhamento */
-    myOption.displayAlignment = Qt::AlignCenter;
-
-    drawDisplay(painter, myOption, myOption.rect, dateStr);
-    drawFocus(painter, myOption, myOption.rect);
+    return dateStr;
 }
 
 void ColumnFinancierMoney::paint(QPainter *painter,
@@ -119,18 +139,16 @@ void ColumnFinancierMoney::paint(QPainter *painter,
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
-    QString moneyPaid;
+    QString moneyPaid = FormatValue(text).toString();
 
     FORMAT_FINACIER;
 
-    if (text.toString().mid(1).toDouble() == 0)
+    if (moneyPaid == "-" )
     {
-        moneyPaid = "-";
         myOption.displayAlignment = (Qt::AlignHCenter | Qt::AlignVCenter);
     }
     else
     {
-        moneyPaid = QRadMoney::MoneyHumanForm2(QRadMoney::Round(text.toString().mid(1).toDouble()));
         myOption.displayAlignment = (Qt::AlignRight | Qt::AlignVCenter);
     }
 
@@ -140,17 +158,42 @@ void ColumnFinancierMoney::paint(QPainter *painter,
     drawFocus(painter, myOption, myOption.rect);
 }
 
+QVariant ColumnFinancierMoney::FormatValue(QVariant value) const
+{
+    QString moneyPaid;
+    if (value.toString().mid(1).toDouble() == 0)
+    {
+        moneyPaid = "-";
+    }
+    else
+    {
+        moneyPaid = QRadMoney::MoneyHumanForm2(QRadMoney::Round(value.toString().mid(1).toDouble()));
+    }
+
+    return moneyPaid;
+}
+
+
 void ColumnFinancierAccountPaid::paint(QPainter *painter,
                                        const QStyleOptionViewItem &option,
                                        const QModelIndex &index) const
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
-    QString paid;
+    QString paid = FormatValue(text).toString();
 
     FORMAT_FINACIER;
 
-    if (text.toString().mid(1) == "T")
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+    drawDisplay(painter, myOption, myOption.rect, paid);
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnFinancierAccountPaid::FormatValue(QVariant value) const
+{
+    QString paid;
+    if (value.toString().mid(1) == "T")
     {
         paid = QString::fromUtf8("PAGO");
     }
@@ -159,10 +202,7 @@ void ColumnFinancierAccountPaid::paint(QPainter *painter,
         paid = QString::fromUtf8("EM ABERTO");
     }
 
-    /* Como sera o alinhamento */
-    myOption.displayAlignment = Qt::AlignCenter;
-    drawDisplay(painter, myOption, myOption.rect, paid);
-    drawFocus(painter, myOption, myOption.rect);
+    return paid;
 }
 
 void ColumnFinancierAccountOperation::paint(QPainter *painter,
@@ -171,21 +211,30 @@ void ColumnFinancierAccountOperation::paint(QPainter *painter,
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
-    QString operation;
+    QString operation = FormatValue(text).toString();
 
-    if (text.toInt() == AccountOpCreate)
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+    drawDisplay(painter, myOption, myOption.rect, operation);
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnFinancierAccountOperation::FormatValue(QVariant value) const
+{
+    QString operation;
+    if (value.toInt() == AccountOpCreate)
     {
         operation = QString::fromUtf8("CRIAÇÃO");
     }
-    else if (text.toInt() == AccountOpEdit)
+    else if (value.toInt() == AccountOpEdit)
     {
         operation = QString::fromUtf8("EDIÇÃO");
     }
-    else if (text.toInt() == AccountOpRemove)
+    else if (value.toInt() == AccountOpRemove)
     {
         operation = QString::fromUtf8("REMOÇÃO");
     }
-    else if (text.toInt() == AccountOpPaid)
+    else if (value.toInt() == AccountOpPaid)
     {
         operation = QString::fromUtf8("QUITAÇÃO");
     }
@@ -194,11 +243,9 @@ void ColumnFinancierAccountOperation::paint(QPainter *painter,
         operation = QString::fromUtf8("ESTORNO");
     }
 
-    /* Como sera o alinhamento */
-    myOption.displayAlignment = Qt::AlignCenter;
-    drawDisplay(painter, myOption, myOption.rect, operation);
-    drawFocus(painter, myOption, myOption.rect);
+    return operation;
 }
+
 
 
 void ColumnEmail::paint(QPainter *painter,
@@ -207,9 +254,18 @@ void ColumnEmail::paint(QPainter *painter,
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
-    QString status;
+    QString status = FormatValue(text).toString();
 
-    switch (text.toInt())
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+    drawDisplay(painter, myOption, myOption.rect, status);
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnEmail::FormatValue(QVariant value) const
+{
+    QString status;
+    switch (value.toInt())
     {
     case -1:
             status = QString::fromUtf8("Desabilitado");
@@ -222,10 +278,7 @@ void ColumnEmail::paint(QPainter *painter,
             break;
     }
 
-    /* Como sera o alinhamento */
-    myOption.displayAlignment = Qt::AlignCenter;
-    drawDisplay(painter, myOption, myOption.rect, status);
-    drawFocus(painter, myOption, myOption.rect);
+    return status;
 }
 
 void ColumnTktStatus::paint(QPainter *painter,
@@ -234,21 +287,29 @@ void ColumnTktStatus::paint(QPainter *painter,
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
-    QString status;
+    QString status = FormatValue(text).toString();
 
 
     switch (text.toInt())
     {
-    /*
-     *   stCreated,
-  stBuiltShipp,
-  stRegistered,
-  stPaid,
-  stModified,
-  stDateModified,
-  stValueModified,
-  stDateValueModified
-     */
+      case stPaid:
+         painter->fillRect(option.rect, BG_FIN_COLOR_GREEN);
+         break;
+      default:
+         break;
+    }
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+    drawDisplay(painter, myOption, myOption.rect, status);
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnTktStatus::FormatValue(QVariant value) const
+{
+    QString status;
+    switch (value.toInt())
+    {
     case stCreated:
          status = QString::fromUtf8("Criado");
          break;
@@ -260,7 +321,6 @@ void ColumnTktStatus::paint(QPainter *painter,
         break;
     case stPaid:
          status = QString::fromUtf8("Pago");
-         painter->fillRect(option.rect, BG_FIN_COLOR_GREEN);
          break;
     case stModified:
         status = QString::fromUtf8("Modificado");
@@ -272,11 +332,7 @@ void ColumnTktStatus::paint(QPainter *painter,
         status = QString::fromUtf8("Valor e Data Alterados");
         break;
     }
-
-    /* Como sera o alinhamento */
-    myOption.displayAlignment = Qt::AlignCenter;
-    drawDisplay(painter, myOption, myOption.rect, status);
-    drawFocus(painter, myOption, myOption.rect);
+    return status;
 }
 
 
@@ -296,8 +352,13 @@ void ColumnDateLate::paint(QPainter *painter,
 
  /* Como sera o alinhamento */
  myOption.displayAlignment = Qt::AlignCenter;
- drawDisplay(painter, myOption, myOption.rect, text.toDate().toString(FMT_DATE));
+ drawDisplay(painter, myOption, myOption.rect, FormatValue(text).toString());
  drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnDateLate::FormatValue(QVariant value) const
+{
+  return value.toDate().toString(FMT_DATE);
 }
 
 
@@ -307,18 +368,8 @@ void ColumnTktType::paint(QPainter *painter,
 {
   QVariant text = index.model()->data(index, Qt::DisplayRole);
   QStyleOptionViewItem myOption = option;
-  QString status;
+  QString status = FormatValue(text).toString();
 
-
-  switch (text.toInt())
-  {
-  case 0:
-       status = QString::fromUtf8("Tx Conominial");
-       break;
-  case 1:
-       status = QString::fromUtf8("Tx Extra");
-       break;
-  }
 
   /* Como sera o alinhamento */
   myOption.displayAlignment = Qt::AlignCenter;
@@ -326,27 +377,78 @@ void ColumnTktType::paint(QPainter *painter,
   drawFocus(painter, myOption, myOption.rect);
 }
 
+QVariant ColumnTktType::FormatValue(QVariant value) const
+{
+    QString status;
+    switch (value.toInt())
+    {
+    case 0:
+         status = QString::fromUtf8("Tx Conominial");
+         break;
+    case 1:
+         status = QString::fromUtf8("Tx Extra");
+         break;
+    }
+    return status;
+}
+
 void ColumnDateTicketNull::paint(QPainter *painter,
                            const QStyleOptionViewItem &option,
                            const QModelIndex &index) const
 {
-    QDate date = index.model()->data(index, Qt::DisplayRole).toDate();
 //    QTime time = index.model()->data(index.model()->index(index.row(),4)).toTime();
 
     QVariant text = index.model()->data(index, Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
-    QString strText= text.toString(); //toDate().toString(QString("%1").arg(FMT_DATE));
+    QString strText= FormatValue(text).toString(); //toDate().toString(QString("%1").arg(FMT_DATE));
 
 
     /* Como sera o alinhamento */
     myOption.displayAlignment = Qt::AlignCenter;
 
-    if( date == QDate(2000,1,1) )
+
+    drawDisplay(painter, myOption, myOption.rect, strText);
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnDateTicketNull::FormatValue(QVariant value) const
+{
+    QString strText;
+    if( value.toDate() == QDate(2000,1,1) )
     {
        //painter->fillRect(option.rect, BG_COLOR_YELLOW);
         strText = "PENDENTE";
     }
+    else
+        strText = value.toDate().toString(FMT_DATE);
 
-    drawDisplay(painter, myOption, myOption.rect, strText);
+    return strText;
+}
+void ColumnMoneyTktPaid::paint(QPainter *painter,
+                        const QStyleOptionViewItem &option,
+                        const QModelIndex &index) const
+{
+    QVariant PaidValue = index.model()->data(index, Qt::DisplayRole);
+    QVariant Value = index.sibling(index.row(),7).data();
+    QVariant Discount = index.sibling(index.row(),16).data();
+
+    QStyleOptionViewItem myOption = option;
+
+    if( (Value.toString() != PaidValue.toString()) && ( Discount.toDouble() > 0.00 ) )
+        if( PaidValue.toDouble() > 0.00 )
+        {
+            double DiscountR = Value.toDouble() - (Value.toDouble()/100*Discount.toDouble());
+            if( (DiscountR-1) > PaidValue.toDouble())
+                painter->fillRect(option.rect, BG_FIN_COLOR_RED);
+        }
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = (Qt::AlignRight | Qt::AlignVCenter);
+    drawDisplay(painter, myOption, myOption.rect, FormatValue(PaidValue).toString());
     drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnMoneyTktPaid::FormatValue(QVariant value) const
+{
+   return QRadMoney::MoneyHumanForm2(value.toDouble());
 }

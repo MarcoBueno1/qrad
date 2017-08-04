@@ -10,6 +10,13 @@
 #include <QSqlField>
 #include <QClipboard>
 #include "qraddebug.h"
+#include <QFileDialog>
+#include "excelexporthelper.h"
+#include <QModelIndex>
+#include <QMessageBox>
+#include <QWidgetData>
+#include "qradprogresswindow.h"
+#include "qradmoney.h"
 
 
 QRadTableViewSearch::QRadTableViewSearch(QWidget *parent) :
@@ -28,11 +35,18 @@ QRadTableViewSearch::QRadTableViewSearch(QWidget *parent) :
 
     m_menu =new QMenu(this);
 //    m_copyCel  = m_menu->addAction(tr("Copiar"));
-    m_copyLine = m_menu->addAction(tr("Copiar Linha"));
+    m_copyLine = m_menu->addAction(tr("Copiar Linha"));    
+    m_copyLine ->setIcon(QIcon(":/png/icon_clipboard.png"));
+    m_menu->addSeparator();
+    m_ExportExcel = m_menu->addAction(tr("Exportar Tabela(Excel)"));
+    m_ExportExcel->setIcon(QIcon(":/png/icon_table.png"));
+
+    //
     m_menu->addSeparator();
 //    m_copyCol  = m_menu->addAction(tr("Copiar Coluna"));
 
     connect(m_copyLine , SIGNAL(triggered()), this, SLOT(doCopyLine()));
+    connect(m_ExportExcel , SIGNAL(triggered()), this, SLOT(doExport()));
 
 
 
@@ -948,6 +962,12 @@ void QRadTableViewSearch::addContextAction(QAction *action )
 {
     m_menu->addAction(action);
 }
+
+void QRadTableViewSearch::setItemDelegateForColumn(int nColumn, QRadDelegate *delegate)
+{
+    m_map.insert(nColumn,delegate);
+    QTableView::setItemDelegateForColumn(nColumn, delegate);
+}
 void QRadTableViewSearch::addContextSeparator()
 {
     m_menu->addSeparator();
@@ -970,6 +990,76 @@ void QRadTableViewSearch::doCopyLine()
     QClipboard *clipboard = QApplication::clipboard();
 
     clipboard->setText(line);
+}
+void QRadTableViewSearch::doExport()
+{
+    QRAD_SHOW_PRPGRESS("Iniciando...");
+    try
+        {
+            QRAD_HIDE_PRPGRESS();
+            QString filename = QFileDialog::getSaveFileName(this, "Save file", "", ".xlsx");
+            if(filename.isEmpty())
+            {
+                QMessageBox::information(this, "Oops!", "Operação cancelada pelo usuário!");
+            }
+            if(!filename.endsWith(".xlsx"))
+                filename+= ".xlsx";
+
+            QFile::remove(filename);
 
 
+            ExcelExportHelper helper;
+
+            int nColCount = 1;
+            int i;
+            int j;
+            debug_message("Loop Inicial de Headers\n");
+            QRAD_SHOW_PRPGRESS_STEP("Preparando itens");
+            for( i=0; i < this->model()->columnCount(); i++ )
+                if(  !this->isColumnHidden(i) )
+                {
+                    QString ColumName = this->model()->headerData(i,Qt::Horizontal).toString();
+                    debug_message("Inserindo\n");
+                    helper.SetCellValue(1,nColCount++,ColumName);
+                }
+            debug_message("Loop de dados\n");
+            QRAD_SHOW_PRPGRESS_STEP("Exportando dados...");
+            nColCount = 1;
+            for( i=0; i < this->model()->columnCount(); i++ )
+                if(  !this->isColumnHidden(i) )
+                {
+                for( j=0; j < this->model()->rowCount(); j++ )
+                    {
+                      QString Data;
+                      if( m_map.contains(i) )
+                          Data = m_map.find(i).value()->FormatValue(this->model()->data(this->model()->index(j, i),Qt::DisplayRole)).toString();
+                      else
+                          Data = this->model()->data(this->model()->index(j, i),Qt::DisplayRole).toString();
+
+                    bool ok;
+                    Data.toDouble(&ok);
+                    if(ok)
+                        Data = QRadMoney::MoneyHumanForm3(Data.toDouble());
+                    //QString Data = this->in model()->index(j,i).data().toString();
+                    helper.SetCellValue(j+2,nColCount,Data);
+                    QApplication::processEvents();
+                    }
+                nColCount++;
+                }
+
+//            helper.SetCellValue(1,1,"Test-11");
+//            helper.SetCellValue(1,2,"Test-12");
+            debug_message("fim do loop de dados\n");
+            debug_message("tentando salvar em %s\n", filename.toLatin1().data());
+            QRAD_SHOW_PRPGRESS_STEP("Salvando Arquivo...");
+
+            filename.replace("/", "\\");
+            helper.SaveAs(filename);
+            QRAD_HIDE_PRPGRESS();
+        }
+        catch (...)
+        {
+            QRAD_HIDE_PRPGRESS();
+            QMessageBox::critical(this, "Error - Demo", "Erro");
+        }
 }

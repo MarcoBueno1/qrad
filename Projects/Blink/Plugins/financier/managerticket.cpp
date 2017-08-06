@@ -71,6 +71,7 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->comboBoxTypeTxExtr,SIGNAL(activated(int)), this, SLOT(doCmboTxExtActivacted(int)));
     connect(ui->dateEditSince,SIGNAL(dateChanged(QDate)), this, SLOT(DatesChanged(QDate)));
     connect(ui->dateEditUntil,SIGNAL(dateChanged(QDate)), this, SLOT(DatesChanged(QDate)));
+    connect(ui->groupBoxPeriod, SIGNAL(clicked(bool)), this, SLOT(CmbBxPeriodClicked(bool)));
 //    connect(ui->pushButtonReprint, SIGNAL(clicked()),this, SLOT(doReprint()));
  //   connect(ui->pushButtonEdit, SIGNAL(clicked()),this, SLOT(doEdit()));
   //  connect(ui->pushButtonRemove, SIGNAL(clicked()),this, SLOT(doRemove()));
@@ -940,6 +941,10 @@ void Managerticket::DatesChanged(QDate date)
   doRefresh();
 }
 void Managerticket::doCmboTxExtActivacted(int item)
+{
+  doRefresh();
+}
+void Managerticket::CmbBxPeriodClicked(bool bChecked)
 {
   doRefresh();
 }

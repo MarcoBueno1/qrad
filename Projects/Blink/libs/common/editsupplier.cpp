@@ -173,6 +173,11 @@ void Editsupplier::EditPhone()
 {
     int id = ui->tableViewPhone->model()->index(ui->tableViewPhone->currentIndex().row(),0).data().toInt();
     Phone *p = Phone::findByPrimaryKey(id);
+    if(!p)
+    {
+       QMessageBox::warning(this,"Oops!", "Por favor seleione um telefone para editar...");
+       return;
+    }
     if(p)
     {
         Editphone *phone = new Editphone();
@@ -245,6 +250,12 @@ void Editsupplier::EditAddress()
 {
     int id = ui->tableViewAddress->model()->index(ui->tableViewAddress->currentIndex().row(),0).data().toInt();
     Address *p = Address::findByid(id);
+    if(!p)
+    {
+      QMessageBox::warning(this,"Oops!", "Por favor seleione um endereço para editar...");
+      return;
+    }
+
     if(p)
     {
         Editaddress *pAddress = new Editaddress();
@@ -333,7 +344,7 @@ void Editsupplier::replyFinished(QNetworkReply* pReply)
         m_manager->get(newRequest);
         return;
     }
-    if((( statusCode != 200 ) && data.trimmed().isEmpty() ) && (m_ReqCount < 10) )
+    if((( statusCode != 200 ) && data.trimmed().isEmpty() ) && (m_ReqCount < 150) )
     {
         QString local_cnpj =ui->LnEdtCNPJ->text().trimmed().remove(".").remove("-").remove("/");
         if(local_cnpj.length() == 14)
@@ -347,7 +358,9 @@ void Editsupplier::replyFinished(QNetworkReply* pReply)
             m_manager->get(QNetworkRequest(QUrl(req)));
             debug_message("retentando acessar %s\n",req.toLatin1().data());
             m_ReqCount++;
+
         }
+        return;
     }
 
 
@@ -606,7 +619,7 @@ void Editsupplier::replyFinished(QNetworkReply* pReply)
 
         val = obj.value("telefone");
 
-        pPhone->setNumber(val.toString());
+        pPhone->setNumber(val.toString().remove("(").remove("-").remove(")"));
         pPhone->setOperator(1);
         pPhone->setOwner(m_mod->getid());
         pPhone->setOwnerType(2);

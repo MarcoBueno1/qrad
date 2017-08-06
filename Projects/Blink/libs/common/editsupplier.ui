@@ -44,7 +44,7 @@
     <property name="title">
      <string>Telefones</string>
     </property>
-    <widget class="QTableView" name="tableViewPhone">
+    <widget class="QRadTableViewSearch" name="tableViewPhone">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -140,7 +140,7 @@
     <property name="title">
      <string> Endereços </string>
     </property>
-    <widget class="QTableView" name="tableViewAddress">
+    <widget class="QRadTableViewSearch" name="tableViewAddress">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -549,6 +549,13 @@
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QRadTableViewSearch</class>
+   <extends>QTableView</extends>
+   <header location="global">qradtableviewsearch.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>LnEdtCNPJ</tabstop>
   <tabstop>LnEdtNome</tabstop>
@@ -565,6 +572,12 @@
   <tabstop>PshBtnSave</tabstop>
  </tabstops>
  <resources>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>

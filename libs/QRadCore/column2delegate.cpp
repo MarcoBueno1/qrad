@@ -357,7 +357,7 @@ QVariant ColumnBool::FormatValue(QVariant value) const
     if (value.toBool())
         return QString::fromUtf8("SIM");
 
-    return QString::fromUtf8("NãO");
+    return QString::fromUtf8("NÃO");
 }
 
 void ColumnCNPJ::paint(QPainter *painter,

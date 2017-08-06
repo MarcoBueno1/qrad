@@ -60,6 +60,7 @@ public slots:
     void doEmailToAll();
     void DatesChanged(QDate date);
     void doCmboTxExtActivacted(int item);
+    void CmbBxPeriodClicked(bool bChecked);
 private:
     Ui::Managerticket *ui;
 

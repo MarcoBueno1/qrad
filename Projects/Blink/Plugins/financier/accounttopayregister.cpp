@@ -163,8 +163,16 @@ void AccountToPayRegister::SaveAccountToPay(void)
     QString description;
     QDate   vencDate;
 
+    if( 0.00 == m_ui->doubleSpinBoxValue->value())
+    {
+      QMessageBox::information(this, "Oops!", "O Valor não pode ficar zerado!");
+      m_ui->doubleSpinBoxValue->setFocus();
+      return;
+    }
+
     for (int index = 1; index <= max; index++)
     {
+        debug_message("loop para criar %d contas a pagar...\n", max);
         AccountToPayModel   *accountToPayModel = new AccountToPayModel;
 
         m_accountToPayDescription = m_ui->lineEditDesciption->text();
@@ -239,13 +247,14 @@ void AccountToPayRegister::SaveAccountToPay(void)
 
 //        accountToPayModel->setPaymentWay( m_ui->comboBoxPaymentway_2->model()->data(m_ui->comboBoxPaymentway_2->model()->index(m_ui->comboBoxPaymentway_2->currentIndex(), 0)).toInt());
 
-        if (m_accountToPayId != 0)
+        if ((m_accountToPayId != 0) && (max==1))
         {
             accountToPayModel->setId(m_accountToPayId);
         }
         if(!accountToPayModel->Save())
         {
             flag = false;
+            debug_message("SaveAccountToPay ...... saiu como false com brea...\n");
             break;
         }
         else

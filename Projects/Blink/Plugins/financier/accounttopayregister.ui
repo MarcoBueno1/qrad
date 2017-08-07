@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>450</width>
-    <height>463</height>
+    <height>481</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -310,6 +310,12 @@
    </item>
    <item row="3" column="0">
     <widget class="DSMGroupBoxEnter" name="groupBoxRepeat" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>70</height>
+      </size>
+     </property>
      <property name="title" stdset="0">
       <string>Repetir Conta</string>
      </property>
@@ -319,111 +325,97 @@
      <property name="checked" stdset="0">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>62</width>
-        <height>48</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QLabel" name="label_8">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Repetir</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="DSMSpinBoxEnter" name="spinBoxRepeat">
-         <property name="minimumSize">
-          <size>
-           <width>60</width>
-           <height>26</height>
-          </size>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="minimum">
-          <number>1</number>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>0</y>
-        <width>361</width>
-        <height>46</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>Período</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="DSMComboBoxEnter" name="comboBoxRepeat">
-         <property name="minimumSize">
-          <size>
-           <width>140</width>
-           <height>26</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>26</height>
-          </size>
-         </property>
-         <property name="editable">
-          <bool>true</bool>
-         </property>
-         <item>
-          <property name="text">
-           <string>Diariamente</string>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
-         </item>
-         <item>
           <property name="text">
-           <string>Semanalmente</string>
+           <string>Repetir</string>
           </property>
-         </item>
-         <item>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="DSMSpinBoxEnter" name="spinBoxRepeat">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>26</height>
+           </size>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_9">
           <property name="text">
-           <string>Mensalmente</string>
+           <string>Período</string>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Anualmente</string>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
-         </item>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="DSMComboBoxEnter" name="comboBoxRepeat">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>26</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>26</height>
+           </size>
+          </property>
+          <property name="editable">
+           <bool>true</bool>
+          </property>
+          <item>
+           <property name="text">
+            <string>Diariamente</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Semanalmente</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Mensalmente</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Anualmente</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
    <item row="4" column="0">
@@ -437,7 +429,10 @@
      <property name="checked" stdset="0">
       <bool>false</bool>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -450,10 +445,7 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
+      <item>
        <widget class="SComboBox" name="comboBoxSupplier">
         <property name="minimumSize">
          <size>
@@ -472,19 +464,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </widget>
    </item>
@@ -499,7 +478,10 @@
      <property name="checked" stdset="0">
       <bool>false</bool>
      </property>
-     <layout class="QGridLayout" name="gridLayout_4">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -512,10 +494,7 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
+      <item>
        <widget class="DSMComboBoxEnter" name="comboBoxBank">
         <property name="minimumSize">
          <size>
@@ -533,19 +512,6 @@
          <bool>true</bool>
         </property>
        </widget>
-      </item>
-      <item row="0" column="1">
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </widget>

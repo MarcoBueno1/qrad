@@ -224,15 +224,20 @@ void AccountToPayManager::GetAccountToPay(void)
     debug_message("\nSQL_SELECT_ACCOUNTTOPAY=%s\n", strDebug.toLatin1().data());
 
     m_ui->tableViewAccountToPay->setModel(m_selectAccountToPay);
-    m_ui->tableViewAccountToPay->show();
+  //  m_ui->tableViewAccountToPay->show();
     m_ui->tableViewAccountToPay->selectRow(0);
 
     double total = 0;
     double totalpaid = 0;
     for (int index = 0; index < m_selectAccountToPay->rowCount(); index++)
     {
-        total     = QRadRound::PowerRound(total) + QRadRound::PowerRound(m_selectAccountToPay->record(index).value("value").toFloat());
-        totalpaid = QRadRound::PowerRound(totalpaid) + QRadRound::PowerRound(m_selectAccountToPay->record(index).value("valuepaid").toFloat());
+
+        debug_message("Value: %s ValuePaid: %s\n", m_selectAccountToPay->record(index).value("value").toString().toLatin1().data(),
+                      m_selectAccountToPay->record(index).value("valuepaid").toString().toLatin1().data() );
+        QString strAux = m_selectAccountToPay->record(index).value("value").toString().remove("P").remove("T").remove("V").remove("H");
+        total     = QRadRound::PowerRound(total) + QRadRound::PowerRound(strAux.toFloat());
+        strAux = m_selectAccountToPay->record(index).value("valuepaid").toString().remove("P").remove("T").remove("V").remove("H");
+        totalpaid = QRadRound::PowerRound(totalpaid) + QRadRound::PowerRound(strAux.toFloat());
     }
 //    debug_message( "Total: %02.02f  TotalPago: %02.02f\n", total,totalpaid );
 //    debug_message( "TotalN: %02.02f  TotalPagoN: %02.02f\n", totalN,totalpaidN );
@@ -503,7 +508,10 @@ void AccountToPayManager::DeleteAccountToPay(void)
         {
             QModelIndex index = m_ui->tableViewAccountToPay->currentIndex();
 
-            if (QMessageBox::question(this, MSG_QUESTION_TITLE, MSG_QUESTION_DELETE_ACCOUNTTOPAY, QMessageBox::Yes|QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
+            QString strText = QString("%1 (%2)").arg(MSG_QUESTION_DELETE_ACCOUNTTOPAY)
+                    .arg( m_selectAccountToPay->record(m_ui->tableViewAccountToPay->currentIndex().row()).value("description").toString() );
+
+            if (QMessageBox::question(this, MSG_QUESTION_TITLE, strText, QMessageBox::Yes|QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
             {
                 AccountToPayModel *accountToPayModel = new AccountToPayModel;
 

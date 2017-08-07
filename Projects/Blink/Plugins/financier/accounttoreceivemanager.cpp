@@ -214,9 +214,10 @@ void AccountToReceiveManager::GetAccountToReceive(void)
     double totalpaid = 0;
     for (int index = 0; index < m_selectAccountToReceive->rowCount(); index++)
     {
-        total     = QRadRound::PowerRound(total) + QRadRound::PowerRound(m_selectAccountToReceive->record(index).value("value").toFloat());
-        totalpaid = QRadRound::PowerRound(totalpaid) + QRadRound::PowerRound(m_selectAccountToReceive->record(index).value("valuepaid").toFloat());
-    }
+        QString strAux = m_selectAccountToReceive->record(index).value("value").toString().remove("P").remove("T").remove("V").remove("H");
+        total     = QRadRound::PowerRound(total) + QRadRound::PowerRound(strAux.toFloat());
+        strAux = m_selectAccountToReceive->record(index).value("valuepaid").toString().remove("P").remove("T").remove("V").remove("H");
+        totalpaid = QRadRound::PowerRound(totalpaid) + QRadRound::PowerRound(strAux.toFloat());    }
 //    debug_message( "Total: %02.02f  TotalPago: %02.02f\n", total,totalpaid );
 //    debug_message( "TotalN: %02.02f  TotalPagoN: %02.02f\n", totalN,totalpaidN );
 

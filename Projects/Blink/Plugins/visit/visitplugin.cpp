@@ -111,8 +111,11 @@ void visitPlugin::Process( const QString& action )
 
         m_editDweller = new EditDweller(m_parent);
 
-        Dweller *current = Dweller::findByid(m_dwellerid);
-        m_editDweller->SetModel(current);
+        if( m_dwellerid )
+        {
+            Dweller *current = Dweller::findByid(m_dwellerid);
+            m_editDweller->SetModel(current);
+        }
     //    QRadConfig::centralizarWidget(m_edit);
         m_editDweller->exec();
         m_dwellerid = 0;

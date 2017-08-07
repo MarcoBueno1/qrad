@@ -35,7 +35,11 @@ Editsupplier::Editsupplier(QWidget *parent, bool CleanUp) :
     m_mod = NULL;
     m_lastMod = NULL;
     m_CleanUp = CleanUp;
+    m_ReqCount = 0;
     
+    ui->labelProgress->setVisible(false);
+    ui->progressBar->setVisible(false);
+
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
     connect(ui->pushButtonAddPhone, SIGNAL(clicked()),this,SLOT(AddPhone()));
@@ -264,6 +268,10 @@ void Editsupplier::onCNPJEdited(QString cnpj)
   QString local_cnpj = cnpj.trimmed().remove(".").remove("-").remove("/");
   if(local_cnpj.length() == 14)
   {
+      ui->labelProgress->setVisible(true);
+      ui->progressBar->setVisible(true);
+      QCoreApplication::processEvents();
+
       QString req = QString("https://www.receitaws.com.br/v1/cnpj/%1").arg(local_cnpj);
       m_manager->get(QNetworkRequest(QUrl(req)));
       debug_message("tentando acessar %s\n",req.toLatin1().data());
@@ -272,6 +280,10 @@ void Editsupplier::onCNPJEdited(QString cnpj)
 }
 void Editsupplier::replyFinished(QNetworkReply* pReply)
 {
+    ui->labelProgress->setVisible(false);
+    ui->progressBar->setVisible(false);
+    QCoreApplication::processEvents();
+
     QByteArray data=pReply->readAll();
     int statusCode = pReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     debug_message("statusCode: %d\n", statusCode);
@@ -283,6 +295,23 @@ void Editsupplier::replyFinished(QNetworkReply* pReply)
         m_manager->get(newRequest);
         return;
     }
+    if((( statusCode != 200 ) && data.trimmed().isEmpty() ) && (m_ReqCount < 10) )
+    {
+        QString local_cnpj =ui->LnEdtCNPJ->text().trimmed().remove(".").remove("-").remove("/");
+        if(local_cnpj.length() == 14)
+        {
+            ui->labelProgress->setText("Tentando acesso...");
+            ui->labelProgress->setVisible(true);
+            ui->progressBar->setVisible(true);
+            QCoreApplication::processEvents();
+
+            QString req = QString("https://www.receitaws.com.br/v1/cnpj/%1").arg(local_cnpj);
+            m_manager->get(QNetworkRequest(QUrl(req)));
+            debug_message("retentando acessar %s\n",req.toLatin1().data());
+            m_ReqCount++;
+        }
+    }
+
 #if 0
 
     QByteArray data = "{"\
@@ -561,5 +590,6 @@ void Editsupplier::closeEvent(QCloseEvent *event)
         ui->LnEdtFantasia->clear();
         ui->LnEdtNome->clear();
         ui->LnEdtCNPJ->setFocus();
+        m_ReqCount = 0;
     }
 }

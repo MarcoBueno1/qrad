@@ -45,6 +45,7 @@ private:
     ColumnCenter *m_CenterDelegate;
     ColumnBool   *m_BooleanDelegate;
     bool m_CleanUp;
+    int m_ReqCount;
 
 
 

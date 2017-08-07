@@ -117,6 +117,9 @@ void EditDweller::SetModel(Dweller* mod)
 
 void EditDweller::CheckIfCanChangeAPTower()
 {
+   if( NULL == m_mod )
+       return;
+
    ticketList *tkt = ticket::findBy(QString("select * from ticket where clientid=%1 and removed = false and status <> %1")
                                 .arg(m_mod->getid())
                                 .arg(stPaid));

@@ -17,13 +17,14 @@
 #include "pdfwrapper.h"
 #include "qradprogresswindow.h"
 #include "qradmoney.h"
+#include <QCompleter>
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
 #define SQL_ITEMS "select t.nossonumero as \"Nº.Banco\", t.seunumero as \"Nº.Sis\", a.numero as \"Ap\", tw.name as \"Torre\", d.name as \"Morador\", t.vencto as \"Vencto\", t.pagoem \"Pago em\", "\
                   "  t.valor as \"Valor R$\", t.valorpago as \"Pago R$\",u.name as \"Criado Por\", t.status as \"Estado\", t.sendstatus as \"e-mail\", t.type as \"Tipo\", t.id, d.id as dwellerid, t.obs, t.discount from "\
                   " ticket t inner join dweller d on d.id = t.clientid inner join vuser u on u.id = t.vuser "\
-                  " inner join ap a on a.id = d.ap inner join tower tw on tw.id = d.tower and t.removed <> true"\
-                  " %1 order by t.id desc; "
+                  " inner join ap a on a.id = d.ap inner join tower tw on tw.id = d.tower and t.removed <> true %1 "\
+                  " %2 order by t.id desc; "
 
 Managerticket::Managerticket(QWidget *parent) :
     QDialog(parent),
@@ -36,6 +37,17 @@ Managerticket::Managerticket(QWidget *parent) :
 
     ui->dateEditSince->setDate(QDate::currentDate());
     ui->dateEditUntil->setDate(QDate::currentDate());
+
+
+    ui->comboBoxTypeTxExtr->setTable("reasonextratx");
+    ui->comboBoxTypeTxExtr->setField("description");
+    ui->comboBoxTypeTxExtr->setCanAdd(false);
+    ui->comboBoxTypeTxExtr->setUserName("dsm");
+    if( ui->comboBoxTypeTxExtr->completer() )
+        ui->comboBoxTypeTxExtr->completer()->setFilterMode(Qt::MatchContains );
+
+    ui->comboBoxTypeTxExtr->setVisible(false);
+
 
 //    ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
 //    ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 15px; min-width: 20px;}; \nselection-background-color: rgb(102, 176, 239); \nselection-color: rgb(255, 255, 255)");
@@ -56,6 +68,7 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonRemessa,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonNotPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->radioButtonPayed,SIGNAL(clicked()), this, SLOT(doRefresh()));
+    connect(ui->comboBoxTypeTxExtr,SIGNAL(activated(int)), this, SLOT(doCmboTxExtActivacted(int)));
     connect(ui->dateEditSince,SIGNAL(dateChanged(QDate)), this, SLOT(DatesChanged(QDate)));
     connect(ui->dateEditUntil,SIGNAL(dateChanged(QDate)), this, SLOT(DatesChanged(QDate)));
 //    connect(ui->pushButtonReprint, SIGNAL(clicked()),this, SLOT(doReprint()));
@@ -89,9 +102,6 @@ Managerticket::Managerticket(QWidget *parent) :
 
     DoRefresh();
     setWindowTitle("Gerenciamento de Boletos");
-
-
-
 }
 
 void Managerticket::createMenu()
@@ -261,11 +271,12 @@ void Managerticket::LoadTableView()
 
     QString strSQL;
     QString aux ;
+    QString aux2 ;
     bool bHasWhere = false;
     bool bNeedOr = false;
 
     if(ui->radioButtonAll->isChecked())
-        strSQL = QString(SQL_ITEMS).arg("");
+        strSQL = QString(SQL_ITEMS).arg("").arg("");
     else if( ui->radioButtonPayed->isChecked())
     {
         aux = QString(" where t.status = %1 ").arg(stPaid);
@@ -309,14 +320,29 @@ void Managerticket::LoadTableView()
 
     }
 
-
-
     if( !ui->radioButtonAllType->isChecked())
     {
        aux += QString(" and t.type = %1 ").arg(ui->radioButtonTxCond->isChecked()?"0":"1");
+       if( ui->radioButtonTxExtra->isChecked())
+       {
+           if(!ui->comboBoxTypeTxExtr->isVisible())
+           {
+               ui->comboBoxTypeTxExtr->setVisible(true);
+           }
+           int currentid = ui->comboBoxTypeTxExtr->model()->data(ui->comboBoxTypeTxExtr->model()->index(ui->comboBoxTypeTxExtr->currentIndex(), 0)).toInt();
+           if( currentid > 0 )
+           {
+               debug_message("Current index of type of extratax: %d ........\n", currentid);
+               aux2 = QString(" inner join extratx ext on ext.id = t.extratxid and ext.motivo = %1 ").arg(currentid);
+           }
+       }
+       else
+       {
+           ui->comboBoxTypeTxExtr->setVisible(false);
+       }
     }
 
-    strSQL = QString(SQL_ITEMS).arg(aux);
+    strSQL = QString(SQL_ITEMS).arg(aux2).arg(aux);
 
     debug_message("\nsqlquery: %s\n",strSQL.toLatin1().data());
 
@@ -344,10 +370,10 @@ void Managerticket::LoadTableView()
 //    debug_message( "Total: %02.02f  TotalPago: %02.02f\n", total,totalpaid );
 //    debug_message( "TotalN: %02.02f  TotalPagoN: %02.02f\n", totalN,totalpaidN );
 
-    ui->labelTotalEmitido->setText(QString("Total: R$ %1").arg(QRadMoney::MoneyHumanForm(total)));
-    ui->labelTotalPago->setText(QString("Total Pago: R$ %1").arg(QRadMoney::MoneyHumanForm(totalpaid)));
+    ui->labelTotalEmitido->setText(QString("Total: %1").arg(QRadMoney::MoneyHumanForm(total)));
+    ui->labelTotalPago->setText(QString("Total Pago: %1").arg(QRadMoney::MoneyHumanForm(totalpaid)));
 
-    ui->labelSaldo->setText(QString("Saldo: R$ %1")
+    ui->labelSaldo->setText(QString("Saldo: %1")
                             .arg(QRadMoney::MoneyHumanForm(totalpaid-total)));
 
     if( totalpaid>total )
@@ -356,6 +382,8 @@ void Managerticket::LoadTableView()
         ui->labelSaldo->setStyleSheet("color: rgb(135, 0, 0);");
     ///color: rgb(0, 122, 0); verde ...
     ///color: rgb(135, 0, 0); vermelho
+    ///
+    ShowCurrentInformations( );
 }
 
 void Managerticket::DoRefresh()
@@ -905,11 +933,13 @@ void Managerticket::AutoSizeColumn(QSqlQueryModel * model)
 
             m_percents.append(QString("%1").arg(percent));
         }
-
-
     }
 }
 void Managerticket::DatesChanged(QDate date)
+{
+  doRefresh();
+}
+void Managerticket::doCmboTxExtActivacted(int item)
 {
   doRefresh();
 }

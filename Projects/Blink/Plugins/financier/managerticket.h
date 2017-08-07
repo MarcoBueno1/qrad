@@ -59,6 +59,7 @@ public slots:
     void doPrintView();
     void doEmailToAll();
     void DatesChanged(QDate date);
+    void doCmboTxExtActivacted(int item);
 private:
     Ui::Managerticket *ui;
 

@@ -53,12 +53,24 @@
        <height>90</height>
       </rect>
      </property>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>50</number>
+     </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>20</number>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>20</number>
+     </attribute>
+     <attribute name="verticalHeaderMinimumSectionSize">
+      <number>18</number>
+     </attribute>
     </widget>
     <widget class="QPushButton" name="pushButtonAddPhone">
      <property name="geometry">
       <rect>
        <x>680</x>
-       <y>46</y>
+       <y>28</y>
        <width>30</width>
        <height>22</height>
       </rect>
@@ -78,6 +90,19 @@
      </property>
      <property name="text">
       <string>-</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonEditPhone">
+     <property name="geometry">
+      <rect>
+       <x>680</x>
+       <y>51</y>
+       <width>30</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Edt</string>
      </property>
     </widget>
    </widget>
@@ -124,12 +149,24 @@
        <height>100</height>
       </rect>
      </property>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>50</number>
+     </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>20</number>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>20</number>
+     </attribute>
+     <attribute name="verticalHeaderMinimumSectionSize">
+      <number>18</number>
+     </attribute>
     </widget>
     <widget class="QPushButton" name="pushButtonAddAddress">
      <property name="geometry">
       <rect>
        <x>679</x>
-       <y>53</y>
+       <y>31</y>
        <width>30</width>
        <height>23</height>
       </rect>
@@ -149,6 +186,19 @@
      </property>
      <property name="text">
       <string>-</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonEditAddress">
+     <property name="geometry">
+      <rect>
+       <x>680</x>
+       <y>56</y>
+       <width>30</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Edt</string>
      </property>
     </widget>
    </widget>
@@ -427,7 +477,7 @@
      <number>1</number>
     </property>
     <property name="text">
-     <string>Cadastro de Fornecedores</string>
+     <string>Fornecedor</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -505,9 +555,11 @@
   <tabstop>LnEdtFantasia</tabstop>
   <tabstop>tableViewPhone</tabstop>
   <tabstop>pushButtonAddPhone</tabstop>
+  <tabstop>pushButtonEditPhone</tabstop>
   <tabstop>pushButtonRemovePhone</tabstop>
   <tabstop>tableViewAddress</tabstop>
   <tabstop>pushButtonAddAddress</tabstop>
+  <tabstop>pushButtonEditAddress</tabstop>
   <tabstop>pushButtonRemoveAddress</tabstop>
   <tabstop>PshBtnCancel</tabstop>
   <tabstop>PshBtnSave</tabstop>

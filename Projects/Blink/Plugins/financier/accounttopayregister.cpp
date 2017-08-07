@@ -19,14 +19,14 @@ AccountToPayRegister::AccountToPayRegister(QWidget *parent) :
     m_modelSupplier     = new QSqlQueryModel;
     m_modelBank         = new QSqlQueryModel;
 
-
-    m_ui->comboBoxPaymentway->setTable("paymentway.Forma de Pagamento");
-    m_ui->comboBoxPaymentway->setField("description.Nome");
-    m_ui->comboBoxPaymentway->setCanAdd(true);
-    m_ui->comboBoxPaymentway->setUserName("dsm");
-    if( m_ui->comboBoxPaymentway->completer() )
-        m_ui->comboBoxPaymentway->completer()->setFilterMode(Qt::MatchContains );
-
+/*
+    m_ui->comboBoxPaymentway_2->setTable("paymentway.Forma de Pagamento");
+    m_ui->comboBoxPaymentway_2->setField("description.Nome");
+    m_ui->comboBoxPaymentway_2->setCanAdd(true);
+    m_ui->comboBoxPaymentway_2->setUserName("dsm");
+    if( m_ui->comboBoxPaymentway_2->completer() )
+        m_ui->comboBoxPaymentway_2->completer()->setFilterMode(Qt::MatchContains );
+*/
 
     m_ui->comboBoxSupplier->setTable("supplier.Fornecedor");
     m_ui->comboBoxSupplier->setField("nome.Nome");
@@ -115,7 +115,7 @@ void AccountToPayRegister::SendAccountToPayId(int accountToPayId)
     m_ui->lineEditDocNumber->setText(accountToPayModel->getDocNumber());
     m_ui->doubleSpinBoxValue->setValue(accountToPayModel->getValue());
 
-    m_ui->comboBoxPaymentway->setCurrentId(accountToPayModel->getPaymentWay());
+//    m_ui->comboBoxPaymentway_2->setCurrentId(accountToPayModel->getPaymentWay());
 
     if (accountToPayModel->getSupplierId() == 0)
     {
@@ -237,7 +237,7 @@ void AccountToPayRegister::SaveAccountToPay(void)
 
         accountToPayModel->setObs(m_ui->textEditObs->toPlainText().toUpper());
 
-        accountToPayModel->setPaymentWay( m_ui->comboBoxPaymentway->model()->data(m_ui->comboBoxPaymentway->model()->index(m_ui->comboBoxPaymentway->currentIndex(), 0)).toInt());
+//        accountToPayModel->setPaymentWay( m_ui->comboBoxPaymentway_2->model()->data(m_ui->comboBoxPaymentway_2->model()->index(m_ui->comboBoxPaymentway_2->currentIndex(), 0)).toInt());
 
         if (m_accountToPayId != 0)
         {

@@ -29,6 +29,7 @@ Managersupplier::Managersupplier(QWidget *parent) :
     connect(ui->PshBtnEditar, SIGNAL(clicked()), this, SLOT(doEditar()));
     connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
+    connect(ui->PshBtnRemove, SIGNAL(clicked()), this, SLOT(doRemove()));
 
     setWindowTitle("Gerência de Fornecedores");
 
@@ -235,7 +236,29 @@ void Managersupplier::doEditar()
         MatchNewest(edt->GetSaved());
     }
     delete edt;
+}
+void Managersupplier::doRemove()
+{
+    QModelIndex currentIndex = ui->tableViewSearch->currentIndex();
+   int nId = currentIndex.sibling(currentIndex.row(),ui->tableViewSearch->getColumnOf("id")).data().toInt();
+   if(nId>0)
+   {
+       if( QMessageBox::No == QMessageBox::question(this,
+                                                 QString("Atenção!"),
+                                                 QString("Tem certeza que deseja remover este Fornecedor? \n"),
+                                                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes ))
+       {
+           return;
+       }
 
+       supplier *sa = supplier::findByPrimaryKey(nId);
+       if(sa)
+       {
+           sa->updateRemoved(true);
+           delete sa;
+           DoRefresh();
+       }
+   }
 }
 
 void Managersupplier::doNovo()

@@ -35,6 +35,8 @@ public slots:
     
     void onCNPJEdited(QString cnpj);
     void replyFinished(QNetworkReply *pReply);
+    void EditPhone();
+    void EditAddress();
 private:
     Ui::Editsupplier *ui;
     supplier* m_mod;

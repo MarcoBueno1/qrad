@@ -43,9 +43,11 @@ Editsupplier::Editsupplier(QWidget *parent, bool CleanUp) :
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
     connect(ui->pushButtonAddPhone, SIGNAL(clicked()),this,SLOT(AddPhone()));
+    connect(ui->pushButtonEditPhone, SIGNAL(clicked()),this,SLOT(EditPhone()));
     connect(ui->pushButtonRemovePhone, SIGNAL(clicked()),this,SLOT(RemovePhone()));
 
     connect(ui->pushButtonAddAddress, SIGNAL(clicked()),this,SLOT(AddAddress()));
+    connect(ui->pushButtonEditAddress, SIGNAL(clicked()),this,SLOT(EditAddress()));
     connect(ui->pushButtonRemoveAddress, SIGNAL(clicked()),this,SLOT(RemoveAddress()));
     connect(ui->LnEdtCNPJ,SIGNAL(textEdited(QString)),this,SLOT(onCNPJEdited(QString)));
 
@@ -167,6 +169,26 @@ void Editsupplier::AddPhone()
     delete phone;
 }
 
+void Editsupplier::EditPhone()
+{
+    int id = ui->tableViewPhone->model()->index(ui->tableViewPhone->currentIndex().row(),0).data().toInt();
+    Phone *p = Phone::findByPrimaryKey(id);
+    if(p)
+    {
+        Editphone *phone = new Editphone();
+
+        phone->setOwner(m_mod->getid());
+        phone->setOwnerType(tpSupplier);
+        phone->SetModel(p);
+        if(phone->exec() == QDialog::Accepted )
+        {
+           RefreshPhoneTable();
+        }
+        delete phone;
+        delete p;
+    }
+}
+
 void Editsupplier::RemovePhone()
 {
     int id = ui->tableViewPhone->model()->index(ui->tableViewPhone->currentIndex().row(),0).data().toInt();
@@ -219,6 +241,22 @@ void Editsupplier::AddAddress()
     delete pAddress;
 }
 
+void Editsupplier::EditAddress()
+{
+    int id = ui->tableViewAddress->model()->index(ui->tableViewAddress->currentIndex().row(),0).data().toInt();
+    Address *p = Address::findByid(id);
+    if(p)
+    {
+        Editaddress *pAddress = new Editaddress();
+        pAddress->SetModel(p);
+        if(pAddress->exec() == QDialog::Accepted )
+        {
+           RefreshAddressTable();
+        }
+        delete pAddress;
+        delete p;
+    }
+}
 void Editsupplier::RemoveAddress()
 {
     int id = ui->tableViewAddress->model()->index(ui->tableViewAddress->currentIndex().row(),0).data().toInt();
@@ -311,6 +349,7 @@ void Editsupplier::replyFinished(QNetworkReply* pReply)
             m_ReqCount++;
         }
     }
+
 
 #if 0
 

@@ -366,10 +366,10 @@
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>70</x>
         <y>0</y>
-        <width>142</width>
-        <height>48</height>
+        <width>361</width>
+        <height>46</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -424,32 +424,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>204</x>
-        <y>0</y>
-        <width>241</width>
-        <height>42</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_8">
-       <item>
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Forma de Pagamento</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="SComboBox" name="comboBoxPaymentway">
-         <property name="editable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
    <item row="4" column="0">
@@ -483,7 +457,7 @@
        <widget class="SComboBox" name="comboBoxSupplier">
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>300</width>
           <height>0</height>
          </size>
         </property>
@@ -545,7 +519,7 @@
        <widget class="DSMComboBoxEnter" name="comboBoxBank">
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>300</width>
           <height>0</height>
          </size>
         </property>
@@ -959,6 +933,11 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
  </widget>
  <customwidgets>
   <customwidget>
+   <class>SComboBox</class>
+   <extends>QComboBox</extends>
+   <header location="global">scombobox.h</header>
+  </customwidget>
+  <customwidget>
    <class>DSMComboBoxEnter</class>
    <extends>QComboBox</extends>
    <header location="global">dsmcomboboxenter.h</header>
@@ -989,11 +968,6 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
    <extends>QSpinBox</extends>
    <header>dsmspinboxenter.h</header>
   </customwidget>
-  <customwidget>
-   <class>SComboBox</class>
-   <extends>QComboBox</extends>
-   <header location="global">scombobox.h</header>
-  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>lineEditDesciption</tabstop>
@@ -1003,7 +977,6 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
   <tabstop>lineEditDocNumber</tabstop>
   <tabstop>spinBoxRepeat</tabstop>
   <tabstop>comboBoxRepeat</tabstop>
-  <tabstop>comboBoxPaymentway</tabstop>
   <tabstop>comboBoxSupplier</tabstop>
   <tabstop>comboBoxBank</tabstop>
   <tabstop>textEditObs</tabstop>

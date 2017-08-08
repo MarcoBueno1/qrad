@@ -98,11 +98,17 @@
           <property name="sortingEnabled">
            <bool>true</bool>
           </property>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>50</number>
+          </attribute>
           <attribute name="horizontalHeaderMinimumSectionSize">
            <number>20</number>
           </attribute>
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>20</number>
           </attribute>
           <attribute name="verticalHeaderMinimumSectionSize">
            <number>18</number>
@@ -226,17 +232,18 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>QRadTableViewSearch</class>
+   <extends>QTableView</extends>
+   <header location="global">qradtableviewsearch.h</header>
+  </customwidget>
+  <customwidget>
    <class>QRadLineEditFakeEnter</class>
    <extends>QLineEdit</extends>
    <header location="global">qradlineeditfakeenter.h</header>
   </customwidget>
-  <customwidget>
-   <class>QRadTableViewSearch</class>
-   <extends>QTableView</extends>
-   <header>qradtableviewsearch.h</header>
-  </customwidget>
  </customwidgets>
  <resources>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
  </resources>

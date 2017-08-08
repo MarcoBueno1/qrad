@@ -94,11 +94,17 @@
           <property name="sortingEnabled">
            <bool>true</bool>
           </property>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>50</number>
+          </attribute>
           <attribute name="horizontalHeaderMinimumSectionSize">
            <number>20</number>
           </attribute>
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>20</number>
           </attribute>
           <attribute name="verticalHeaderMinimumSectionSize">
            <number>18</number>
@@ -180,56 +186,56 @@
     </layout>
    </widget>
   </widget>
-    <widget class="QPushButton" name="PshBtnEditar">
-     <property name="geometry">
-      <rect>
-       <x>620</x>
-       <y>560</y>
-       <width>85</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>&amp;Editar</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="PshBtnNovo">
-     <property name="geometry">
-      <rect>
-       <x>533</x>
-       <y>560</y>
-       <width>85</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>&amp;Novo</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="PshBtnSair">
-     <property name="geometry">
-      <rect>
-       <x>707</x>
-       <y>560</y>
-       <width>85</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>&amp;Sair</string>
-     </property>
-    </widget>
-   </widget>
+  <widget class="QPushButton" name="PshBtnEditar">
+   <property name="geometry">
+    <rect>
+     <x>620</x>
+     <y>560</y>
+     <width>85</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&amp;Editar</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PshBtnNovo">
+   <property name="geometry">
+    <rect>
+     <x>533</x>
+     <y>560</y>
+     <width>85</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&amp;Novo</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PshBtnSair">
+   <property name="geometry">
+    <rect>
+     <x>707</x>
+     <y>560</y>
+     <width>85</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&amp;Sair</string>
+   </property>
+  </widget>
+ </widget>
  <customwidgets>
+  <customwidget>
+   <class>QRadTableViewSearch</class>
+   <extends>QTableView</extends>
+   <header location="global">qradtableviewsearch.h</header>
+  </customwidget>
   <customwidget>
    <class>QRadLineEditFakeEnter</class>
    <extends>QLineEdit</extends>
    <header location="global">qradlineeditfakeenter.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QRadTableViewSearch</class>
-   <extends>QTableView</extends>
-   <header>qradtableviewsearch.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

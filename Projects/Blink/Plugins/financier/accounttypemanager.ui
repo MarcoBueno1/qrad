@@ -316,8 +316,20 @@ selection-color: rgb(255, 255, 255);</string>
       <property name="selectionBehavior">
        <enum>QAbstractItemView::SelectRows</enum>
       </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>50</number>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>20</number>
+      </attribute>
       <attribute name="verticalHeaderVisible">
        <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderDefaultSectionSize">
+       <number>20</number>
+      </attribute>
+      <attribute name="verticalHeaderMinimumSectionSize">
+       <number>18</number>
       </attribute>
      </widget>
     </item>
@@ -702,6 +714,7 @@ selection-color: rgb(255, 255, 255);</string>
   </widget>
  </widget>
  <resources>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
  </resources>

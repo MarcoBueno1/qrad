@@ -226,6 +226,28 @@ void AccountToPayManager::GetAccountToPay(void)
     m_ui->tableViewAccountToPay->setModel(m_selectAccountToPay);
     m_ui->tableViewAccountToPay->show();
     m_ui->tableViewAccountToPay->selectRow(0);
+
+    double total = 0;
+    double totalpaid = 0;
+    for (int index = 0; index < m_selectAccountToPay->rowCount(); index++)
+    {
+        total     = QRadRound::PowerRound(total) + QRadRound::PowerRound(m_selectAccountToPay->record(index).value("value").toFloat());
+        totalpaid = QRadRound::PowerRound(totalpaid) + QRadRound::PowerRound(m_selectAccountToPay->record(index).value("valuepaid").toFloat());
+    }
+//    debug_message( "Total: %02.02f  TotalPago: %02.02f\n", total,totalpaid );
+//    debug_message( "TotalN: %02.02f  TotalPagoN: %02.02f\n", totalN,totalpaidN );
+
+    m_ui->labelPagar->setText(QString("Total: %1").arg(QRadMoney::MoneyHumanForm(total)));
+    m_ui->labelPago->setText(QString("Total Pago: %1").arg(QRadMoney::MoneyHumanForm(totalpaid)));
+
+    m_ui->labelSaldo->setText(QString("Saldo: %1")
+                            .arg(QRadMoney::MoneyHumanForm(QRadRound::PowerRound(totalpaid) - QRadRound::PowerRound(total))));
+
+    if( totalpaid>=total )
+        m_ui->labelSaldo->setStyleSheet("color: rgb(0, 122, 0);");
+    else
+        m_ui->labelSaldo->setStyleSheet("color: rgb(135, 0, 0);");
+
 }
 
 void AccountToPayManager::GetAccountTypeValues(void)

@@ -365,8 +365,8 @@ void Managerticket::LoadTableView()
 //        total     += QRadMoney::StrToInt(QRadMoney::MoneyHumanForm3(m_Model->record(index).value("Valor R$").toFloat()));
 //        totalpaid += QRadMoney::StrToInt(QRadMoney::MoneyHumanForm3(m_Model->record(index).value("Pago R$").toFloat()));
 
-        total     += m_Model->record(index).value("Valor R$").toFloat();
-        totalpaid += m_Model->record(index).value("Pago R$").toFloat();
+        total     = QRadRound::PowerRound(total) + QRadRound::PowerRound(m_Model->record(index).value("Valor R$").toFloat());
+        totalpaid = QRadRound::PowerRound(totalpaid) + QRadRound::PowerRound(m_Model->record(index).value("Pago R$").toFloat());
     }
 //    debug_message( "Total: %02.02f  TotalPago: %02.02f\n", total,totalpaid );
 //    debug_message( "TotalN: %02.02f  TotalPagoN: %02.02f\n", totalN,totalpaidN );
@@ -375,7 +375,7 @@ void Managerticket::LoadTableView()
     ui->labelTotalPago->setText(QString("Total Pago: %1").arg(QRadMoney::MoneyHumanForm(totalpaid)));
 
     ui->labelSaldo->setText(QString("Saldo: %1")
-                            .arg(QRadMoney::MoneyHumanForm(totalpaid-total)));
+                            .arg(QRadMoney::MoneyHumanForm(QRadRound::PowerRound(totalpaid) - QRadRound::PowerRound(total))));
 
     if( totalpaid>total )
         ui->labelSaldo->setStyleSheet("color: rgb(0, 122, 0);");

@@ -309,7 +309,7 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
          <number>1</number>
         </property>
         <property name="text">
-         <string>ATM</string>
+         <string>Gerenciador de Contas a Receber</string>
         </property>
         <property name="textFormat">
          <enum>Qt::AutoText</enum>

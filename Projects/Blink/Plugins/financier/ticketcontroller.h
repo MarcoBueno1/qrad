@@ -29,6 +29,7 @@ public:
     bool SendEmail(int id, bool bSilent=false );
     bool ReportExaro( QSqlQueryModel *model, QString reportTitle);
     bool SendToAll();
+    bool ManualPayment(int TicketId);
 private:
     BuildTkt *g_tkt;
     ticketconfig *m_pTktConfig;

@@ -20,6 +20,7 @@
 #include "qrademail.h"
 #include "qradreportmanager.h"
 #include "shipper.h"
+#include "ticketpayment.h"
 
 /*
 #define FIN_AP_WITH_NO_PAYER "select * from dweller d2 "\
@@ -914,7 +915,9 @@ bool TicketController::UpdateTickets(QList<BankTicket*> *list)
     for( int i = 0; (i< list->count()) && bRet ; i++ )
     {
          pCurrent = list->at(i);
-         QRAD_SHOW_PRPGRESS_STEP(QString("Processando Item:%1 Nosso Número:%2 Valor R$:%3").arg(i).arg(pCurrent->getNossoNumero()).arg(QRadMoney::MoneyHumanForm4(pCurrent->getValor())));
+         QRAD_SHOW_PRPGRESS_STEP(QString("Processando Item:%1 Nosso Número:%2 Valor R$:%3")
+                                 .arg(i).arg(pCurrent->getNossoNumero())
+                                 .arg(QRadMoney::MoneyHumanForm4(pCurrent->getValor())));
          QCoreApplication::processEvents();
          if( pCurrent->getTpOp() == tpRegistered)
          {
@@ -1220,4 +1223,50 @@ bool TicketController::SendToAll()
   return true;
 
   return true;
+}
+bool TicketController::ManualPayment( int TicketId )
+{
+    ticket *tkt = ticket::findByid(TicketId,true);
+    if(!tkt)
+    {
+        QMessageBox::warning(NULL, "Oops!", "Boleto não encontrado, por favor selecione um boleto primeiro");
+        return false;
+    }
+    if( tkt->getStatus() == stPaid)
+    {
+        QMessageBox::warning(NULL, "Oops!", "Boleto já está pago!");
+        delete tkt;
+        return false;
+    }
+
+     TicketPayment *Payment = new  TicketPayment;
+     Dweller *pwd = Dweller::findByid(tkt->getclientid());
+     if(!pwd)
+     {
+         QMessageBox::warning(NULL, "Oops!", QString("Não foi possivel encontrar o morador responsavel pelo pagamento deste bolato: id %1").arg(tkt->getclientid()));
+         delete Payment;
+         delete tkt;
+         return false;
+     }
+     Payment->setInformations(tkt->getValor(), pwd->getName());
+     QRadConfig::centralizarWidget(Payment);
+     if( QDialog::Accepted != Payment->exec())
+     {
+         QMessageBox::warning(NULL, "Oops!", "Operação cancelada!");
+         delete Payment;
+         delete tkt;
+         return false;
+     }
+
+     if( !tkt->UpdateToPaid(Payment->getDate(),Payment->getValue(), Payment->getReason()))
+     {
+         QMessageBox::warning(NULL, "Oops!", "Problema ao salvar informação no servidor! por favor, fazer novamente esta operação.");
+         delete Payment;
+         delete tkt;
+         return false;
+     }
+
+    delete Payment;
+    delete tkt;
+    return true;
 }

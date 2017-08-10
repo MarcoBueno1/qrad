@@ -19,6 +19,8 @@ public:
     AccountToReceiveManager(QWidget *parent = 0);
     ~AccountToReceiveManager();
 
+public slots:
+    void doCmboTxExtActivacted(int item);
 protected:
     QSqlQueryModel  *m_modelAccountType,
                     *m_modelClient,

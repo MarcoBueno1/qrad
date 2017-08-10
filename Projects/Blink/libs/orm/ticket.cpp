@@ -39,7 +39,7 @@ void ticket::getFile(QString path, int Loid)
     ORM::getFile(path, Loid);
 }
 
-bool ticket::UpdateToPaid(QDate date, double value )
+bool ticket::UpdateToPaid(QDate date, double value, QString text )
 {
     QCoreApplication *app = QCoreApplication::instance();
     int Userid = app->property("CurrentUserId").toInt();
@@ -50,6 +50,8 @@ bool ticket::UpdateToPaid(QDate date, double value )
        account->setPaidDate(date);
        account->setPaid(true);
        account->setValuePaid(value);
+       if(!text.isEmpty())
+           account->setObs(QString("%1 (Pgto:%2)").arg(account->getObs()).arg(text));
        if(account->Save())
        {
            AccountToReceiveHistoryModel *his = new AccountToReceiveHistoryModel;
@@ -62,6 +64,8 @@ bool ticket::UpdateToPaid(QDate date, double value )
            setStatus(stPaid);
            setPagoEm(date);
            setValorPago(value);
+           if(!text.isEmpty())
+               setObs(QString("%1 (Pgto:%2)").arg(getObs()).arg(text));
 //           updatePagoEm(date);
 //           updateStatus(stPaid);
            delete account;

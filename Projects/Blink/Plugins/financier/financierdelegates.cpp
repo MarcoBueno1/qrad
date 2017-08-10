@@ -452,3 +452,35 @@ QVariant ColumnMoneyTktPaid::FormatValue(QVariant value) const
 {
    return QRadMoney::MoneyHumanForm2(value.toDouble());
 }
+
+
+void ColumnApTower::paint(QPainter *painter,
+                        const QStyleOptionViewItem &option,
+                        const QModelIndex &index) const
+{
+    QVariant Value = index.model()->data(index, Qt::DisplayRole);
+
+    QStyleOptionViewItem myOption = option;
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+
+    drawDisplay(painter, myOption, myOption.rect, FormatValue(Value).toString());
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnApTower::FormatValue(QVariant value) const
+{
+   QString Tower;
+   QString text = value.toString();
+
+   if( text.at(0) == '1' )
+       Tower =  " O";
+   else if( text.at(0) == '2' )
+       Tower =  " M";
+   else
+       Tower =  " G";
+
+   Tower =text.mid(1) + Tower;
+   return Tower;
+}

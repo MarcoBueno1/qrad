@@ -199,7 +199,7 @@
                         <Picture>
                             <properties>
                                 <objectName type="QString" >picture_1</objectName>
-                                <geometry type="QRectF" >7.9792,9.2292,356,160</geometry>
+                                <geometry type="QRectF" >19.9792,7.2292,154,160</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>

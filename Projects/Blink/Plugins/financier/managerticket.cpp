@@ -134,6 +134,11 @@ void Managerticket::createMenu()
     EditMenu->addSeparator();
     EmailToAll = EditMenu->addAction(tr("Enviar e-mail (Todos)"));
     EmailToAll->setIcon(QIcon(":/png/icon_mail.png"));
+
+    EditMenu->addSeparator();
+    ManualPayment = EditMenu->addAction(tr("Pagamento Manual"));
+    ManualPayment->setIcon(QIcon(":/png/money-icon.png"));
+
     menuBar->addMenu(EditMenu);
 
 
@@ -150,6 +155,7 @@ void Managerticket::createMenu()
     connect(EmailCurrent, SIGNAL(triggered()), this, SLOT(doEmail()));
     connect(EmailToAll, SIGNAL(triggered()), this, SLOT(doEmailToAll()));
     connect(PrintCurrentView, SIGNAL(triggered()), this, SLOT(doPrintView()));
+    connect(ManualPayment, SIGNAL(triggered()), this, SLOT(doManualPayment()));
 
     ui->tableViewSearch->addContextSeparator();
     ui->tableViewSearch->addContextAction(EditCurrent);
@@ -160,6 +166,8 @@ void Managerticket::createMenu()
     ui->tableViewSearch->addContextAction(EditCurrentDweller);
     ui->tableViewSearch->addContextSeparator();
     ui->tableViewSearch->addContextAction(EmailCurrent);
+    ui->tableViewSearch->addContextSeparator();
+    ui->tableViewSearch->addContextAction(ManualPayment);
 
 
     connect(ImportAction, SIGNAL(triggered()), this, SLOT(doImport()));
@@ -448,7 +456,7 @@ void Managerticket::ConfigureTable()
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("obs"));
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("discount"));
     ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
-    ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnCenter);
+    ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnApTower);
     ui->tableViewSearch->setItemDelegateForColumn(2, new ColumnCenter);
     ui->tableViewSearch->setItemDelegateForColumn(3, new ColumnCenter);
     ui->tableViewSearch->setItemDelegateForColumn(4, new ColumnCenter);
@@ -947,4 +955,19 @@ void Managerticket::doCmboTxExtActivacted(int item)
 void Managerticket::CmbBxPeriodClicked(bool bChecked)
 {
   doRefresh();
+}
+
+void Managerticket::doManualPayment()
+{
+    this->setEnabled(false);
+
+    int id = ui->tableViewSearch->currentIndex().sibling(ui->tableViewSearch->currentIndex().row(),
+                                                         ui->tableViewSearch->getColumnOf("id")).data().toInt();
+    TicketController *pController = new TicketController;
+
+    pController->ManualPayment(id);
+
+    delete pController;
+    this->setEnabled(true);
+    doRefresh();
 }

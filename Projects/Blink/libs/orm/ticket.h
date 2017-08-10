@@ -62,7 +62,7 @@ DECLARE_CLASS(ticket)
 public:
     int saveFile(QString path);
     void getFile(QString path, int Loid);
-    bool UpdateToPaid(QDate date, double value);
+    bool UpdateToPaid(QDate date, double value, QString text="");
 
 ORM_END_MAP()
 #endif 

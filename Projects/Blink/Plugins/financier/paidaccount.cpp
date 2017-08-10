@@ -110,3 +110,7 @@ void PaidAccount::SavePaidAccount(void)
     }
 }
 
+double PaidAccount::getValuePaid()
+{
+    return QRadMoney::MoneyComputerForm2(m_ui->lineEditPaidValue->text());
+}

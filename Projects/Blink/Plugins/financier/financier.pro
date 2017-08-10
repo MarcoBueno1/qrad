@@ -58,7 +58,8 @@ SOURCES += financierplugin.cpp \
     managershipper.cpp \
    # showpayments.cpp \
     editextratx.cpp \
-    editcondtax.cpp
+    editcondtax.cpp \
+    ticketpayment.cpp
 
 HEADERS += financierplugin.h \
     accounttypemanager.h \
@@ -96,7 +97,8 @@ HEADERS += financierplugin.h \
     managershipper.h \
    # showpayments.h \
     editextratx.h \
-    editcondtax.h
+    editcondtax.h \
+    ticketpayment.h
  
 
 win32:LIBS += -L../../../../libs/QRadCore/release \
@@ -166,7 +168,8 @@ FORMS += accounttypemanager.ui \
     managershipper.ui \
    # showpayments.ui \
     editextratx.ui \
-    editcondtax.ui
+    editcondtax.ui \
+    ticketpayment.ui
 
 target.path = $${PREFIX}/bin 
 INSTALLS += target

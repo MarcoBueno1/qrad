@@ -23,6 +23,7 @@ public:
     ~PaidAccount();
     void    SendPaidAccountId(int accountId, DSM_AccountType_t accountType);
 
+    double getValuePaid();
 protected:
     int                 m_accountId;
     DSM_AccountType_t   m_accountType;

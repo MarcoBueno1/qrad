@@ -61,6 +61,7 @@ public slots:
     void DatesChanged(QDate date);
     void doCmboTxExtActivacted(int item);
     void CmbBxPeriodClicked(bool bChecked);
+    void doManualPayment();
 private:
     Ui::Managerticket *ui;
 
@@ -93,6 +94,7 @@ private:
     QAction *EmailCurrent;
     QAction *EmailToAll;
     QAction *PrintCurrentView;
+    QAction *ManualPayment;
     void AutoSizeColumn(QSqlQueryModel *model);
     QStringList m_percents;
     QStringList m_aligns;

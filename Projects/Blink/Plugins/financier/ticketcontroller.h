@@ -22,7 +22,7 @@ public:
     void SendEmail();
     bool doShipp(QString dir="", QString filename="",BBO_TYPE type=tpTxCond, BBOL_STATUS status=stCreated);
     bool doPrint(BBO_TYPE type, BBOL_STATUS status, ticket *ptkt=0);
-    bool Edit(int id);
+    bool Edit(int id, bool bReadOnly=false);
     bool Remove(int id, QString strMsgText );
     bool ProcessRetList(QList<BankTicket*> *list);
     static bool UpdateTickets(QList<BankTicket*> *list);

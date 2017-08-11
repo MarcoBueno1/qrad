@@ -16,7 +16,7 @@ class Editticket : public QDialog
     Q_OBJECT
 
 public:
-    explicit Editticket(QWidget *parent = 0);
+    explicit Editticket(QWidget *parent = 0, bool bReadOnly=false);
     ~Editticket();
     void SetModel(ticket* mod);
     ticket* GetSaved();

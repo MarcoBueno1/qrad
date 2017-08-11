@@ -751,7 +751,7 @@ void TicketController::Send(Dweller *pDweller )
 
 }
 
-bool TicketController::Edit(int id)
+bool TicketController::Edit(int id, bool bReadOnly)
 {
     bool bRet = false;
     ticket *tkt = ticket::findByid(id,true);
@@ -760,13 +760,13 @@ bool TicketController::Edit(int id)
         QMessageBox::warning(NULL, "Oops!","Selecione um boleto para poder Editar!");
         return bRet;
     }
-    if( tkt->getStatus() == stPaid)
+    if(( tkt->getStatus() == stPaid) && !bReadOnly)
     {
         QMessageBox::warning(NULL, "Oops!","Este boleto NÃO pode ser editado, Ele já foi pago!");
-        return bRet;
+        bReadOnly = true;
     }
 
-    Editticket *pTkt =  new Editticket;
+    Editticket *pTkt =  new Editticket(NULL,bReadOnly);
     pTkt->SetModel(tkt);
     if( QDialog::Accepted == pTkt->exec())
     {

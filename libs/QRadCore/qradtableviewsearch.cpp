@@ -997,10 +997,11 @@ void QRadTableViewSearch::doExport()
     try
         {
             QRAD_HIDE_PRPGRESS();
-            QString filename = QFileDialog::getSaveFileName(this, "Save file", "", ".xlsx");
+            QString filename = QFileDialog::getSaveFileName(this, "Salvar arquivo", "", ".xlsx");
             if(filename.isEmpty())
             {
                 QMessageBox::information(this, "Oops!", "Operação cancelada pelo usuário!");
+                return;
             }
             if(!filename.endsWith(".xlsx"))
                 filename+= ".xlsx";

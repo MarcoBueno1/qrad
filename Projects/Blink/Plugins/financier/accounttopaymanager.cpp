@@ -47,7 +47,14 @@ AccountToPayManager::AccountToPayManager(QWidget *parent) :
     m_ui->groupBoxAccountType->setChecked(false);
     m_ui->groupBoxSupplier->setChecked(false);
 
+//    InitialConfig();
+    GetAccountTypeValues();
+    GetSupplierValues();
+    GetBankValues();
     InitialConfig();
+
+    m_ui->dateEditStart->setFocus();
+
 
     connect(m_ui->btnNew, SIGNAL(pressed()), this, SLOT(NewAccountToPay()));
     connect(m_ui->btnEdit, SIGNAL(pressed()), this, SLOT(EditAccountToPay()));
@@ -102,12 +109,14 @@ void AccountToPayManager::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
 
+/*
     GetAccountTypeValues();
     GetSupplierValues();
     GetBankValues();
     InitialConfig();
 
     m_ui->dateEditStart->setFocus();
+*/
 }
 
 void AccountToPayManager::resizeEvent(QResizeEvent *event)
@@ -231,13 +240,10 @@ void AccountToPayManager::GetAccountToPay(void)
     double totalpaid = 0;
     for (int index = 0; index < m_selectAccountToPay->rowCount(); index++)
     {
-
-        debug_message("Value: %s ValuePaid: %s\n", m_selectAccountToPay->record(index).value("value").toString().toLatin1().data(),
-                      m_selectAccountToPay->record(index).value("valuepaid").toString().toLatin1().data() );
-        QString strAux = m_selectAccountToPay->record(index).value("value").toString().remove("P").remove("T").remove("V").remove("H");
-        total     = QRadRound::PowerRound(total) + QRadRound::PowerRound(strAux.toFloat());
-        strAux = m_selectAccountToPay->record(index).value("valuepaid").toString().remove("P").remove("T").remove("V").remove("H");
-        totalpaid = QRadRound::PowerRound(totalpaid) + QRadRound::PowerRound(strAux.toFloat());
+        QString strAux = m_selectAccountToPay->record(index).value("value").toString();
+        total     = QRadRound::PowerRound(total) + QRadRound::PowerRound(strAux.remove("H").remove("P").remove("V").remove("T").toFloat());
+        strAux = m_selectAccountToPay->record(index).value("valuepaid").toString();
+        totalpaid = QRadRound::PowerRound(totalpaid) + QRadRound::PowerRound(strAux.remove("H").remove("P").remove("V").remove("T").toFloat());
     }
 //    debug_message( "Total: %02.02f  TotalPago: %02.02f\n", total,totalpaid );
 //    debug_message( "TotalN: %02.02f  TotalPagoN: %02.02f\n", totalN,totalpaidN );
@@ -440,6 +446,8 @@ void AccountToPayManager::EditAccountToPay(void)
 
 void AccountToPayManager::PayAccount(void)
 {
+
+    debug_message("-->\n");
     if (m_selectAccountToPay->rowCount() > 0)
     {
         if (m_accountToPayPaid)
@@ -479,6 +487,7 @@ void AccountToPayManager::PayAccount(void)
 
             paidAccount->SendPaidAccountId(m_accountToPayId, AccountTypeToPay);
 
+            debug_message("-->paidAccount->exec()\n");
             if (paidAccount->exec() == QDialog::Accepted)
             {
                 AccountToPayHistoryModel *accountToPayHistoryModel = new AccountToPayHistoryModel;
@@ -489,15 +498,21 @@ void AccountToPayManager::PayAccount(void)
                 accountToPayHistoryModel->setDate(QDate::currentDate());
                 accountToPayHistoryModel->setTime(QTime::currentTime());
 
+                debug_message("-->accountToPayHistoryModel->Create()\n");
+
                 accountToPayHistoryModel->Create();
 
+                debug_message("-->delete accountToPayHistoryModel\n");
                 delete accountToPayHistoryModel;
             }
+            debug_message("-->InitialConfig(m_accountToPayRow)\n");
             InitialConfig(m_accountToPayRow);
 
+            debug_message("-->delete paidAccount\n");
             delete paidAccount;
         }
     }
+    debug_message("<--\n");
 }
 
 void AccountToPayManager::DeleteAccountToPay(void)

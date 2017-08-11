@@ -11,7 +11,7 @@
 #include "qradconfig.h"
 
 
-Editticket::Editticket(QWidget *parent) :
+Editticket::Editticket(QWidget *parent, bool bReadOnly) :
     QDialog(parent),
     ui(new Ui::Editticket)
 {
@@ -20,9 +20,22 @@ Editticket::Editticket(QWidget *parent) :
     m_mod = NULL;
     m_lastMod = NULL;
 
-    connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
+    if( bReadOnly )
+    {
+        ui->PshBtnSave->setEnabled(false);
+        ui->DblSpnBxValor->setReadOnly(true);
+        ui->DtEdtVencto->setReadOnly(true);
+        ui->LnEdtAp->setReadOnly(true);
+        ui->LnEdtemail->setReadOnly(true);
+        ui->LnEdtObs->setReadOnly(true);
+        setWindowTitle("Visualização de Boleto");
+    }
+    else
+    {
+        connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
+        setWindowTitle("Edição de Boleto");
+    }
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
-    setWindowTitle("Edição de Boleto");
 }
 
 Editticket::~Editticket()

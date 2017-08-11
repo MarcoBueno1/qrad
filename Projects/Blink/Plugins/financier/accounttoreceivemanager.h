@@ -21,6 +21,8 @@ public:
 
 public slots:
     void doCmboTxExtActivacted(int item);
+    void doEditDweller();
+    void doEdit();
 protected:
     QSqlQueryModel  *m_modelAccountType,
                     *m_modelClient,
@@ -45,6 +47,9 @@ protected:
 
 private:
     Ui::AccountToReceiveManager *m_ui;
+    QAction *ViewCurrentTicket;
+    QAction *EditCurrentDweller;
+
 
 private slots:
     void    fillTheFields(QModelIndex);

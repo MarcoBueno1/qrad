@@ -14,6 +14,8 @@
 #include "qraddebug.h"
 #include <QCompleter>
 #include "ticket.h"
+#include "ticketcontroller.h"
+#include "qradplugincontainer.h"
 
 #define SQL_SELECT_ACCOUNTTORECEIVE         "select fac.id, %1 fac.description as description,%1 case when c.name is NULL then 'NAO INFORMADO' else c.name end as cliente, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.clientid from fin_accounttoreceive fac %4 left join dweller c on c.id = fac.clientid where fac.removed = false %2 order by %3, fac.description"
 #define SQL_SELECT_ACCOUNTTORECEIVE_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, case when c.name is NULL then 'NAO INFORMADO' else c.name end as client from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid left join dweller c on fac.clientid = c.id where fac.removed = false %1 order by %2, fac.description"
@@ -61,7 +63,31 @@ AccountToReceiveManager::AccountToReceiveManager(QWidget *parent) :
     m_ui->groupBoxAccountType->setChecked(false);
     m_ui->groupBoxClient->setChecked(false);
 
+//    InitialConfig();
+    GetAccountTypeValues();
+    GetClientValues();
     InitialConfig();
+
+    m_ui->dateEditStart->setFocus();
+
+    ViewCurrentTicket = new QAction(tr("Ver Boleto"), this);
+    ViewCurrentTicket->setIcon(QIcon(":/png/edit-icon.png"));
+
+    connect(ViewCurrentTicket , SIGNAL(triggered()), this, SLOT(doEdit()));
+
+    EditCurrentDweller = new QAction(tr("Editar Morador"), this);
+    EditCurrentDweller->setIcon(QIcon(":/png/icon_id.png"));
+
+    connect(EditCurrentDweller , SIGNAL(triggered()), this, SLOT(doEditDweller()));
+
+
+
+    m_ui->tableViewAccountToReceive->addContextSeparator();
+    m_ui->tableViewAccountToReceive->addContextAction(ViewCurrentTicket);
+    m_ui->tableViewAccountToReceive->addContextSeparator();
+    m_ui->tableViewAccountToReceive->addContextAction(EditCurrentDweller);
+
+
 
     connect(m_ui->btnNew, SIGNAL(pressed()), this, SLOT(NewAccountToReceive()));
     connect(m_ui->btnEdit, SIGNAL(pressed()), this, SLOT(EditAccountToReceive()));
@@ -103,6 +129,8 @@ AccountToReceiveManager::~AccountToReceiveManager()
     delete m_modelAccountType;
     delete m_modelClient;
     delete m_modelBank;
+    delete ViewCurrentTicket;
+    delete EditCurrentDweller;
 }
 
 void AccountToReceiveManager::changeEvent(QEvent *e)
@@ -120,12 +148,13 @@ void AccountToReceiveManager::changeEvent(QEvent *e)
 void AccountToReceiveManager::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
-
+/*
     GetAccountTypeValues();
     GetClientValues();
     InitialConfig();
 
     m_ui->dateEditStart->setFocus();
+    */
 }
 
 void AccountToReceiveManager::resizeEvent(QResizeEvent *event)
@@ -281,7 +310,7 @@ void AccountToReceiveManager::GetAccountToReceive(void)
 
     debug_message("\nSQL_SELECT_ACCOUNTTORECEIVE=%s\n", strDebug.toLatin1().data());
     m_ui->tableViewAccountToReceive->setModel(m_selectAccountToReceive);
-    m_ui->tableViewAccountToReceive->show();
+ //   m_ui->tableViewAccountToReceive->show();
     m_ui->tableViewAccountToReceive->selectRow(0);
 
 
@@ -291,12 +320,12 @@ void AccountToReceiveManager::GetAccountToReceive(void)
     double totalpaid = 0;
     for (int index = 0; index < m_selectAccountToReceive->rowCount(); index++)
     {
-        QString strAux = m_selectAccountToReceive->record(index).value("value").toString().remove("P").remove("T").remove("V").remove("H");
-        total     = QRadRound::PowerRound(total) + QRadRound::PowerRound(strAux.toFloat());
-        strAux = m_selectAccountToReceive->record(index).value("valuepaid").toString().remove("P").remove("T").remove("V").remove("H");
-        totalpaid = QRadRound::PowerRound(totalpaid) + QRadRound::PowerRound(strAux.toFloat());    }
-//    debug_message( "Total: %02.02f  TotalPago: %02.02f\n", total,totalpaid );
-//    debug_message( "TotalN: %02.02f  TotalPagoN: %02.02f\n", totalN,totalpaidN );
+        QString strAux = m_selectAccountToReceive->record(index).value("value").toString();
+        total     = QRadRound::PowerRound(total) + QRadRound::PowerRound(strAux.remove("H").remove("P").remove("V").remove("T").toFloat());
+        strAux = m_selectAccountToReceive->record(index).value("valuepaid").toString();
+        totalpaid = QRadRound::PowerRound(totalpaid) + QRadRound::PowerRound(strAux.remove("H").remove("P").remove("V").remove("T").toFloat());
+    }
+    debug_message( "Total: %02.02f  TotalPago: %02.02f\n", total,totalpaid );
 
     m_ui->labelPagar->setText(QString("Total: %1").arg(QRadMoney::MoneyHumanForm(total)));
     m_ui->labelPago->setText(QString("Total Pago: %1").arg(QRadMoney::MoneyHumanForm(totalpaid)));
@@ -483,6 +512,7 @@ void AccountToReceiveManager::EditAccountToReceive(void)
 
 void AccountToReceiveManager::PayAccount(void)
 {
+    debug_message("-->\n");
     if (m_selectAccountToReceive->rowCount() > 0)
     {
         if (m_accountToReceivePaid)
@@ -533,6 +563,9 @@ void AccountToReceiveManager::PayAccount(void)
 
             paidAccount->SendPaidAccountId(m_accountToReceiveId, AccountTypeToReceive);
 
+            debug_message("-->\n");
+
+
             if (paidAccount->exec() == QDialog::Accepted)
             {
                 ////
@@ -547,6 +580,7 @@ void AccountToReceiveManager::PayAccount(void)
                     tkt->setStatus(stPaid);
                     tkt->Save();
                 }
+                debug_message("-->\n");
 
                 AccountToReceiveHistoryModel *accountToReceiveHistoryModel = new AccountToReceiveHistoryModel;
 
@@ -556,8 +590,12 @@ void AccountToReceiveManager::PayAccount(void)
                 accountToReceiveHistoryModel->setDate(QDate::currentDate());
                 accountToReceiveHistoryModel->setTime(QTime::currentTime());
 
-                accountToReceiveHistoryModel->Create();
+                debug_message("-->\n");
 
+                accountToReceiveHistoryModel->Create();
+                debug_message("-->\n");
+
+/*
                 AccountToReceiveModel *account = AccountToReceiveModel::findByPrimaryKey(m_accountToReceiveId);
                 Debt *debt = account->getDebt();
                 QSqlQueryModel paymentId;
@@ -575,13 +613,21 @@ void AccountToReceiveManager::PayAccount(void)
                     debt->setPaid(true);//checkPaid();
                     delete payment;
                 }
+*/
 
                 delete accountToReceiveHistoryModel;
+                debug_message("-->\n");
+
 
             }
             InitialConfig(m_accountToReceiveRow);
+            debug_message("-->\n");
+
 
             delete paidAccount;
+
+            debug_message("-->\n");
+
         }
     }
 }
@@ -590,7 +636,7 @@ void AccountToReceiveManager::DeleteAccountToReceive(void)
 {
     if (m_selectAccountToReceive->rowCount() > 0)
     {
-        QModelIndex index = m_ui->tableViewAccountToReceive->currentIndex();
+//        QModelIndex index = m_ui->tableViewAccountToReceive->currentIndex();
 
         if (QMessageBox::question(this, MSG_QUESTION_TITLE, MSG_QUESTION_DELETE_ACCOUNTTOPAY, QMessageBox::Yes|QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
         {
@@ -667,5 +713,77 @@ void AccountToReceiveManager::ShowReport(void)
 }
 void AccountToReceiveManager::doCmboTxExtActivacted(int item)
 {
+  Q_UNUSED(item);
+
   GetAccountToReceive();
+}
+
+void AccountToReceiveManager::doEdit()
+{
+
+    int accountid = m_ui->tableViewAccountToReceive->currentIndex().sibling(m_ui->tableViewAccountToReceive->currentIndex().row(),
+                                                         m_ui->tableViewAccountToReceive->getColumnOf("id")).data().toInt();
+
+    ticket *tkt = ticket::findByAccountId(accountid,true);
+    if( !tkt )
+    {
+        QMessageBox::warning(this, "Oops!", "Não existe boleto associado a esta conta!");
+        return;
+    }
+
+    TicketController *pController = new TicketController;
+
+    pController->Edit(tkt->getid(), true);
+
+    delete pController;
+    delete tkt;
+}
+void AccountToReceiveManager::doEditDweller()
+{
+    int id = m_ui->tableViewAccountToReceive->currentIndex().sibling(m_ui->tableViewAccountToReceive->currentIndex().row(),
+                                                         m_ui->tableViewAccountToReceive->getColumnOf("id")).data().toInt();
+
+    AccountToReceiveModel *ac = AccountToReceiveModel::findById(id,true);
+    if(!ac)
+    {
+        QMessageBox::warning(this, "Oops!", "Não foi possível encontrar a conta atual!, por favor selecione uma conta!");
+        return;
+    }
+    int dwellerid = ac->getClientId();
+    if( !dwellerid )
+    {
+        ticket *tkt = ticket::findByAccountId(id,true);
+        if( !tkt )
+        {
+            QMessageBox::warning(this, "Oops!", "Não foi possível encontrar o Morador!");
+            delete ac;
+            return;
+        }
+        dwellerid = tkt->getclientid();
+        delete tkt;
+    }
+
+
+    delete ac;
+
+    QRadPluginContainer *pContainer = QRadPluginContainer::getInstance();
+
+    QRadPluginInterface *iface = pContainer->plugin("visitplugin");
+
+    if( !iface )
+    {
+        QMessageBox::warning(NULL,
+                             QString("Oops!"),
+                             QString("Não foi possível acessar o cadastro de moradores!"));
+        return;
+    }
+
+    QWidget *pParent = iface->getParent();
+    iface->setParent(this);
+
+    iface->setParam("dwellerid", id);
+    iface->Process("EditMorador");
+    iface->setParent(pParent);
+
+    GetAccountToReceive();
 }

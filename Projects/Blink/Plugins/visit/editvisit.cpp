@@ -50,7 +50,7 @@ Editvisit::Editvisit(QWidget *parent) :
     ui->lineEditMorador->setSelect("select d.name || ' | ' || t.name || ' | ' || a.numero, d.id, d.name, a.numero, t.name, d.ramal "\
          "from dweller d "\
          "inner join tower t on t.id= d.tower "\
-         "inner join ap a on a.id = d.ap  where removed = false");
+         "inner join ap a on a.id = d.ap  where d.removed = false");
     ui->lineEditMorador->Add(ui->lineEditAP);
     ui->lineEditMorador->Add(ui->lineEditTorre);
     ui->lineEditMorador->Add(ui->lineEditRamal);

@@ -1,5 +1,7 @@
 #include "visit.h"
 
+//alter table visit add column visittype integer default 0 ;
+
 visitList* visit::m_allList = NULL;
 
 MODEL_BEGIN_MAP(visit)
@@ -12,6 +14,7 @@ MODEL_BEGIN_MAP(visit)
      MODEL_MAP_FIELD(saida_hora, "saida_hora");
      MODEL_MAP_FIELD(autorizador, "autorizador");
      MODEL_MAP_FIELD(Notified, "notified");
+     MODEL_MAP_FIELD(Type, "visittype");
 MODEL_END_MAP()
 
 QList<visit*>* visit::findAll()

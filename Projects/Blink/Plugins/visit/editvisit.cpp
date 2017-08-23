@@ -64,6 +64,25 @@ Editvisit::Editvisit(QWidget *parent) :
     if( ui->comboBoxReason->completer() )
         ui->comboBoxReason->completer()->setFilterMode(Qt::MatchContains );
 
+
+    ui->comboBoxReason->setTable("company.Empresa");
+    ui->comboBoxReason->setField("name.Nome");
+    ui->comboBoxReason->setPermission("usedweller");
+    ui->comboBoxReason->setCanAdd(true);
+    ui->comboBoxReason->setUserName("dsm");
+    if( ui->comboBoxReason->completer() )
+        ui->comboBoxReason->completer()->setFilterMode(Qt::MatchContains );
+
+
+    m_deliveryto = new QSqlQueryModel;
+    m_deliveryto->setQuery(SQL_SELECT_CLIENT_COMBO);
+    ui->comboBoxDeliveryTo->setModel(m_deliveryto);
+    ui->comboBoxDeliveryTo->setModelColumn(1);
+    if(ui->comboBoxDeliveryTo->completer())
+        ui->comboBoxDeliveryTo->completer()->setFilterMode(Qt::MatchContains );
+
+    connect(ui->groupBoxDelivery, SIGNAL(clicked(bool)), this, SLOT(DeliveryCheck(bool)));
+
     ui->groupBoxSaida->setVisible(false);
 
     /*
@@ -77,6 +96,7 @@ Editvisit::Editvisit(QWidget *parent) :
 
 Editvisit::~Editvisit()
 {
+    delete m_deliveryto;
     delete ui;
 }
 void Editvisit::showEvent(QShowEvent *event)
@@ -209,8 +229,17 @@ void Editvisit::Load()
    ui->lineEditAP->setEnabled(false);
    ui->lineEditTorre->setEnabled(false);
    ui->lineEditRamal->setEnabled(false);
-   ui->labelStatus->setText("Finalizar Vizita");
-   ui->PshBtnSave->setText("C&oncluir");
+   if( m_mod->getType() == visNormal )
+   {
+       ui->labelStatus->setText("Finalizar Vizita");
+       ui->PshBtnSave->setText("C&oncluir");
+   }
+   else
+   {
+       ui->labelStatus->setText("Finalizar Entrega do Documento/Objeto");
+       ui->PshBtnSave->setText("C&oncluir");
+
+   }
    QShortcut *shortcut = new QShortcut(QKeySequence("Alt+o"), this);
    QObject::connect(shortcut, SIGNAL(activated()), ui->PshBtnSave, SLOT(click()));
 
@@ -375,4 +404,9 @@ void Editvisit::notFound()
     ui->lineEditAnunciarChegada->setText("SIM");
     ui->lineEditAnunciarChegada->setStyleSheet(styleSheet);
 //    delete pVis;
+}
+
+void Editvisit::DeliveryCheck(bool bChecked)
+{
+    ui->groupBoxAutorizadoPor->setEnabled(!bChecked );
 }

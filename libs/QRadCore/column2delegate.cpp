@@ -564,3 +564,40 @@ bool ColumnCheckBox::eventFilter(QObject *object, QEvent *event)
 }
 
 
+void ColumnImageMail::paint(QPainter *painter,
+                         const QStyleOptionViewItem &option,
+                         const QModelIndex &index) const
+{
+    QString val;
+    QVariant cell = index.model()->data(index, Qt::DisplayRole);
+    QStyleOptionViewItem myOption = option;
+
+     if( cell.toInt() )
+     {
+         QString imgFile = ":/png/icon_mail.png";
+         QPixmap pixmap(imgFile);
+         painter->drawPixmap(myOption.rect, pixmap);
+     }
+     else
+     {
+         QString imgFile = ":/png/customer.jpg";
+         QPixmap pixmap(imgFile);
+         painter->drawPixmap(myOption.rect, pixmap);
+
+     }
+
+
+
+//    val = val.toDate().toString(FMT_DATE);
+    drawDisplay(painter, myOption, myOption.rect, val);
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnImageMail::FormatValue(QVariant value) const
+{
+    QString strType = "Visita";
+    if(value.toInt())
+        strType = "Entrega Doc";
+
+   return strType;
+}

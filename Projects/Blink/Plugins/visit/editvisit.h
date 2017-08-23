@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QKeyEvent>
 #include "visit.h"
+#include <QSqlQueryModel>
 
 namespace Ui {
 class Editvisit;
@@ -26,10 +27,12 @@ public slots:
     
     void baterFoto();
     void notFound();
+    void DeliveryCheck(bool bChecked);
 private:
     Ui::Editvisit *ui;
     visit* m_mod;
     visit* m_lastMod;
+    QSqlQueryModel *m_deliveryto;
     int m_idVisitante;
     int m_foto;
     void Load();

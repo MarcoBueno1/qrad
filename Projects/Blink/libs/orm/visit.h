@@ -3,6 +3,12 @@
  
 #include "model.h"
 
+typedef enum tp_vis
+{
+    visNormal,
+    visDelivery
+}QRAD_VISIT_TYPE, *PQRAD_VISIT_TYPE;
+
 DECLARE_MODEL(visit)
 
 class visit : public Model
@@ -16,6 +22,7 @@ class visit : public Model
      MODEL_DECLARE_ATTRIBUTE(QTime, saida_hora);
      MODEL_DECLARE_ATTRIBUTE(int, autorizador);
      MODEL_DECLARE_ATTRIBUTE(bool, Notified);
+     MODEL_DECLARE_ATTRIBUTE(int, Type);
 
      MODEL_MATCH_TABLE(visit, "visit")
 

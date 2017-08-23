@@ -8,7 +8,7 @@
 #define BN_DEFAULT_COLUMN_SEARCH 3
 
 #define SQL_ITEMS_OPENED "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome as \"Visitante\", "\
-                         " (select d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\" "\
+                         " (select d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\" , v.visittype as \"Tipo\" "\
                          " from dweller d "\
                          " inner join tower t on t.id = d.tower "\
                          "inner join ap a on a.id = d.ap where d.id = v.autorizador), "\
@@ -18,7 +18,7 @@
                          " order by v.id desc"
 
 #define SQL_ITEMS_CLOSED "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome as \"Visitante\", "\
-                        " (select d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\" "\
+                        " (select d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\" , v.visittype as \"Tipo\" "\
                         " from dweller d "\
                         " inner join tower t on t.id = d.tower "\
                         "inner join ap a on a.id = d.ap where d.id = v.autorizador), "\
@@ -28,7 +28,7 @@
                          " order by data_saida, saida_hora desc"
 
 #define SQL_ITEMS_ALL "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome as \"Visitante\", "\
-                        " (select d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\" "\
+                        " (select d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\"  , v.visittype as \"Tipo\" "\
                         " from dweller d "\
                         " inner join tower t on t.id = d.tower "\
                         "inner join ap a on a.id = d.ap where d.id = v.autorizador), "\
@@ -47,6 +47,7 @@ Managervisit::Managervisit(QWidget *parent) :
     m_Model = new QSqlQueryModel;
 
     m_DateNullDelagate = new ColumnDateTimeNull;
+    m_ColumImage = new ColumnImageMail;
 
     //QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
 
@@ -83,6 +84,7 @@ Managervisit::~Managervisit()
     }
     delete m_Model;
     delete m_DateNullDelagate;
+    delete m_ColumImage;
 
     delete ui;
 }
@@ -227,6 +229,9 @@ void Managervisit::ConfigureTable()
 
     ui->tableViewSearch->setItemDelegateForColumn(ui->tableViewSearch->getColumnOf("Saida / Situação"),
                                                   m_DateNullDelagate);
+
+    ui->tableViewSearch->setItemDelegateForColumn(ui->tableViewSearch->getColumnOf("Tipo"),
+                                                    m_ColumImage);
 
     ui->tableViewSearch->setItemDelegateForColumn(ui->tableViewSearch->getColumnOf("Hora Saída"),
                                                   m_DateNullDelagate);

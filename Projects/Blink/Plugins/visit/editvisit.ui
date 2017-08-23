@@ -23,7 +23,7 @@
      <x>10</x>
      <y>50</y>
      <width>781</width>
-     <height>500</height>
+     <height>511</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -38,7 +38,7 @@
       <x>10</x>
       <y>10</y>
       <width>760</width>
-      <height>310</height>
+      <height>351</height>
      </rect>
     </property>
     <property name="title">
@@ -308,7 +308,7 @@
        <x>440</x>
        <y>210</y>
        <width>311</width>
-       <height>80</height>
+       <height>121</height>
       </rect>
      </property>
      <property name="title">
@@ -317,8 +317,8 @@
      <widget class="QLineEdit" name="lineEditPreAutorizado">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>20</y>
+        <x>170</x>
+        <y>34</y>
         <width>113</width>
         <height>27</height>
        </rect>
@@ -333,8 +333,8 @@
      <widget class="QLabel" name="label_7">
       <property name="geometry">
        <rect>
-        <x>7</x>
-        <y>31</y>
+        <x>17</x>
+        <y>45</y>
         <width>100</width>
         <height>17</height>
        </rect>
@@ -346,8 +346,8 @@
      <widget class="QLabel" name="label_8">
       <property name="geometry">
        <rect>
-        <x>8</x>
-        <y>59</y>
+        <x>18</x>
+        <y>73</y>
         <width>141</width>
         <height>17</height>
        </rect>
@@ -359,8 +359,8 @@
      <widget class="QLineEdit" name="lineEditAnunciarChegada">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>50</y>
+        <x>170</x>
+        <y>64</y>
         <width>113</width>
         <height>27</height>
        </rect>
@@ -396,13 +396,36 @@
       <string>Motivo</string>
      </property>
     </widget>
+    <widget class="SComboBox" name="comboBoxCompany">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>310</y>
+       <width>321</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>310</y>
+       <width>46</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Empresa</string>
+     </property>
+    </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_4">
+   <widget class="QGroupBox" name="groupBoxAutorizadoPor">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>340</y>
-      <width>910</width>
+      <y>368</y>
+      <width>431</width>
       <height>130</height>
      </rect>
     </property>
@@ -427,7 +450,7 @@
       <rect>
        <x>77</x>
        <y>27</y>
-       <width>360</width>
+       <width>340</width>
        <height>27</height>
       </rect>
      </property>
@@ -492,7 +515,7 @@
       <rect>
        <x>310</x>
        <y>93</y>
-       <width>120</width>
+       <width>100</width>
        <height>27</height>
       </rect>
      </property>
@@ -511,6 +534,74 @@
      </property>
      <property name="text">
       <string>Ramal</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBoxDelivery">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>370</y>
+      <width>321</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string> Entrega de Documentos e Objetos</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>19</y>
+       <width>304</width>
+       <height>73</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string> Obs </string>
+     </property>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="geometry">
+       <rect>
+        <x>8</x>
+        <y>17</y>
+        <width>290</width>
+        <height>49</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>12</x>
+       <y>101</y>
+       <width>26</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Para</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBoxDeliveryTo">
+     <property name="geometry">
+      <rect>
+       <x>47</x>
+       <y>100</y>
+       <width>261</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="editable">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
@@ -837,18 +928,20 @@
   <tabstop>TmEdtHora</tabstop>
   <tabstop>DtEdtSaida</tabstop>
   <tabstop>TmEdtsaida_hora</tabstop>
-  <tabstop>lineEditPreAutorizado</tabstop>
-  <tabstop>lineEditAnunciarChegada</tabstop>
   <tabstop>comboBoxReason</tabstop>
+  <tabstop>comboBoxCompany</tabstop>
   <tabstop>lineEditMorador</tabstop>
   <tabstop>lineEditAP</tabstop>
   <tabstop>lineEditTorre</tabstop>
   <tabstop>lineEditRamal</tabstop>
   <tabstop>pushButtonBaterFoto</tabstop>
+  <tabstop>lineEditPreAutorizado</tabstop>
+  <tabstop>lineEditAnunciarChegada</tabstop>
   <tabstop>PshBtnCancel</tabstop>
   <tabstop>PshBtnSave</tabstop>
  </tabstops>
  <resources>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
  </resources>

@@ -253,7 +253,7 @@
 #define SQL_SELECT_CLASSIFICATION_COMBO     "select id, (code || '-' || description) as description from QRad_anvdrugclass"
 #define SQL_SELECT_ACCOUNTTYPE_COMBO        "select id, description from fin_accounttype where removed = false and description <> '' and (type = %1 or type = %2) order by description"
 #define SQL_SELECT_CLIENT_COMBO             "select id, name from dweller where removed = false and name <> '' order by name"
-#define SQL_SELECT_CLIENT_COMBO_PAYER       "select id, name from dweller where removed = false and name <> '' and payer = true order by name"
+#define SQL_SELECT_CLIENT_COMBO_PAYER       "select dw.id, a.numero || ' ' || SUBSTRING(t.name,1,1) || ' ' || '(' || dw.name || ')' from dweller dw inner join tower t on t.id = dw.tower inner join ap a on a.id = dw.ap where dw.removed = false and dw.name <> '' and dw.payer = true order by t.id, a.id, dw.name"
 #define SQL_SELECT_SELLER_COMBO             "select u.id, u.name from QRad_user u, QRad_profile p where u.profile = p.id and p.presell_register = true and u.removed = false order by u.name"
 #define SQL_SELECT_USER_COMBO               "select u.id, u.name from vuser u where u.removed = false order by u.name"
 #define SQL_SELECT_MEASURE_COMBO            "select id, acronym from QRad_measure order by id"

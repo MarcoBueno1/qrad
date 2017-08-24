@@ -68,7 +68,9 @@
 "DataMoraJuros=%20\n"\
 "Especie=%21\n"\
 "DataDesconto=%22\n"\
-"ValorDesconto=%23\n"
+"ValorDesconto=%23\n"\
+"DataDocumento=%24\n"\
+"DataProcessamento=%25\n"
 
 
 
@@ -392,14 +394,15 @@ bool BuildTkt::AppendTicket(Dweller *pDweller,
                             QString NossoNumero,
                             QString SeuNumero,
                             QString Mensagem,
-                            QString Discount)
+                            QString Discount,
+                            QDate BuildDate)
 {
     m_TktCount++;
 
     QRAD_SHOW_PRPGRESS(QString("Adicionando boleto (%1)...").arg(pDweller->getName()));
 
 
-    Ticket *tkt =  new Ticket(pDweller,strValue,dtVencto, NossoNumero,SeuNumero,Mensagem, Discount);
+    Ticket *tkt =  new Ticket(pDweller,strValue,dtVencto, NossoNumero,SeuNumero,Mensagem, Discount,BuildDate);
 
     m_tickets.append(tkt);
 
@@ -460,6 +463,7 @@ bool BuildTkt::AddTickets()
        Dweller *pDweller = m_tickets.at(i)->getDweller();
        QString strValue  = m_tickets.at(i)->getValue();
        QDate   dtVencto  = m_tickets.at(i)->getDate();
+       QDate   BuildDate  = m_tickets.at(i)->getBuildDate();
        int dwSpecie  =  m_pTktConfig->getespecie();
        QString strSpecie;
        QString NossoNumero = QString("%1").arg(m_tickets.at(i)->getNossoNumero());
@@ -532,7 +536,9 @@ bool BuildTkt::AddTickets()
             .arg(dtVencto.toString("dd/MM/yyyy"))
             .arg(strSpecie)
             .arg(dtVencto.toString("dd/MM/yyyy"))
-            .arg(ValorDiscount);
+            .arg(ValorDiscount)
+            .arg(BuildDate.toString("dd/MM/yyyy"))
+            .arg(BuildDate.toString("dd/MM/yyyy"));
 
        if( pTower )
            delete pTower;
@@ -808,11 +814,13 @@ Ticket::Ticket(Dweller *dweller,
                QString NossoNumero,
                QString SeuNumero,
                QString Mensagem,
-               QString Discount)
+               QString Discount,
+               QDate BuildDate)
 {
     m_dweller = dweller;
     m_value =  value;
     m_date = date;
+    m_BuildDate = BuildDate;
     m_NossoNumero = NossoNumero;
     m_SeuNumero = SeuNumero;
     m_Mensagem = Mensagem;
@@ -844,6 +852,10 @@ QString Ticket::getMensagem()
 QDate   Ticket::getDate()
 {
     return m_date;
+}
+QDate   Ticket::getBuildDate()
+{
+    return m_BuildDate;
 }
 QString Ticket::getDiscount()
 {

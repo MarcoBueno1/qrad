@@ -60,6 +60,60 @@ void AppendTicket()
     }
 }
 
+void AppendEngecoDivida()
+{
+    Dweller *pDweller = Dweller::findByPrimaryKey(587); // Drogaria Nazaré
+// 05/12/2012
+// R$ 574,88
+    int i;
+    printf("Primeiro loop\n");
+    QDate date = QDate(2012,12,5);
+    for( i = 0; date <= QDate(2013,8,5); i++ )
+    {
+
+        g_tkt->AppendTicket(pDweller,"574,88", date,QString("%1").arg(20158353+10+i),QString("04"),QString("TAXA CONDOMINIAL 521,06 + FUNDO DE RESERVA 53,82 \nTOTAL 574,88"), "", date.addDays(-5));
+        date = date.addMonths(1);
+        //printf("no loop\n");
+    }
+    printf("Segundo loop\n");
+    date =  QDate(2013,9,5);
+    for( ; date <= QDate(2014,12,5); i++ )
+    {
+        g_tkt->AppendTicket(pDweller,"522,62", date,QString("%1").arg(20158353+10+i),QString("04"),"TAXA CONDOMINIAL", "", date.addDays(-5));
+        date = date.addMonths(1);
+    }
+    printf("Terceiro loop\n");
+    date =  QDate(2015,1,5);
+    for( ; date <= QDate(2017,5,5); i++ )
+    {
+        g_tkt->AppendTicket(pDweller,"616,69", date,QString("%1").arg(20158353+10+i),"703 G","TAXA CONDOMINIAL",QString("5"),date.addDays(-5));
+        date = date.addMonths(1);
+    }
+    printf("Quarto loop\n");
+    date =  QDate(2013,11,28);
+    g_tkt->AppendTicket(pDweller,"133,34", date,QString("%1").arg(20158353+10+i),"04","TAXA EXTRA",QString(""),date.addDays(-5));
+    date =  QDate(2013,12,30);
+    g_tkt->AppendTicket(pDweller,"133,34", date,QString("%1").arg(20158353+10+i),"04","TAXA EXTRA",QString(""),date.addDays(-5));
+    date =  QDate(2014,1,20);
+    g_tkt->AppendTicket(pDweller,"133,34", date,QString("%1").arg(20158353+10+i),"04","TAXA EXTRA",QString(""),date.addDays(-5));
+    date =  QDate(2014,2,28);
+    g_tkt->AppendTicket(pDweller,"133,34", date,QString("%1").arg(20158353+10+i),"04","TAXA EXTRA",QString(""),date.addDays(-5));
+    date =  QDate(2014,3,27);
+    g_tkt->AppendTicket(pDweller,"93,44", date,QString("%1").arg(20158353+10+i),"04","TAXA EXTRA",QString(""),date.addDays(-5));
+    date =  QDate(2014,4,28);
+    g_tkt->AppendTicket(pDweller,"38,65", date,QString("%1").arg(20158353+10+i),"04","TAXA EXTRA",QString(""),date.addDays(-5));
+    date =  QDate(2015,8,5);
+    g_tkt->AppendTicket(pDweller,"139,35", date,QString("%1").arg(20158353+10+i),"04","TAXA EXTRA",QString(""),date.addDays(-5));
+    date =  QDate(2017,3,15);
+    g_tkt->AppendTicket(pDweller,"150,00", date,QString("%1").arg(20158353+10+i),"04","TAXA EXTRA",QString(""),date.addDays(-5));
+    date =  QDate(2017,4,15);
+    g_tkt->AppendTicket(pDweller,"150,00", date,QString("%1").arg(20158353+10+i),"04","TAXA EXTRA",QString(""),date.addDays(-5));
+    date =  QDate(2017,7,15);
+    g_tkt->AppendTicket(pDweller,"150,00", date,QString("%1").arg(20158353+10+i),"04","TAXA EXTRA",QString(""),date.addDays(-5));
+
+}
+
+
 void AppendTicketFromTicketsDb()
 {
     ticketList *tickets = ticket::findBy("select * from ticket where status = 1 or status = 3 order by clientid");
@@ -391,7 +445,8 @@ void PrintMenu()
   printf( "\n12. ExtractReturn(ONLY_REGISTERED)\n" );
   printf( "\n13. AppendTicketFromTicketsDb\n");
   printf( "\n14. AdjustMissingAccounts()\n");
-  printf( "\n15. Close Program\n" );
+  printf( "\n15. AppendEngecoDivida()\n");
+  printf( "\n16. Close Program\n" );
 
 /*
 
@@ -433,7 +488,7 @@ int main(int argc, char *argv[])
                    BuildShipping();
                    break;
            case 5:
-                   if(g_tkt->Print())
+                   if(g_tkt->Print(false))
                    {
                        printf( "\nPrint executado com sucesso\n");
                    }
@@ -469,12 +524,15 @@ int main(int argc, char *argv[])
            case 14:
                   AdjustMissingAccounts();
                   break;
+           case 15:
+                  AppendEngecoDivida();
+                  break;
 
            default:
                    break;
         }
 
-      }while( cOption != 15 );
+      }while( cOption != 16 );
 
     qDebug() << "antes delete g_tkt";
     delete g_tkt;

@@ -7,7 +7,7 @@
 #include "qradconfig.h"
 #include "qradpluginaction.h"
 
-#define BLINK_RELEASE "1.0.5"
+#define BLINK_RELEASE "1.0.8"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "DSM-PRO"
-#define MyAppVersion "1.0.5"
+#define MyAppVersion "1.0.8"
 #define MyAppPublisher "Marco Bueno"
 #define MyAppURL "bueno.marco@gmail.com"
 #define MyAppExeName "main.exe"
@@ -73,29 +73,29 @@ Source: "C:\dvl\qrad\bin\*.exe"; DestDir: "c:\DSM-PRO"; Flags: ignoreversion
 ;------------Libs DSM
 
 ;Source: "*.dll"; DestDir: "{pf}\DSM"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\qt5MultimediaWidgets.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\Qt5Multimedia.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\Qt5Script.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\Qt5PrintSupport.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\Qt5OpenGL.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\Qt5Network.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\Qt5Core.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\Qt5Gui.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\Qt5Sql.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\Qt5Widgets.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\Qt5Xml.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\libgcc_s_dw2-1.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\libstdc++-6.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\libwinpthread-1.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\qt5MultimediaWidgets.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\Qt5Multimedia.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\Qt5Script.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\Qt5PrintSupport.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\Qt5OpenGL.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\Qt5Network.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\Qt5Core.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\Qt5Gui.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\Qt5Sql.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\Qt5Widgets.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\Qt5Xml.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\libgcc_s_dw2-1.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\libstdc++-6.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+Source: "C:\Qt\5.9.1\mingw53_32\bin\libwinpthread-1.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
 
 ;------------ Libs QT
 
-;Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\bin\*.dll"; DestDir: "Atividades"; Flags: ignoreversion
+;Source: "C:\Qt\5.9.1\mingw53_32\bin\*.dll"; DestDir: "Atividades"; Flags: ignoreversion
 	
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\plugins\imageformats\*"; DestDir: "C:\DSM-PRO\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\plugins\sqldrivers\*"; DestDir: "C:\DSM-PRO\sqldrivers"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\plugins\printsupport\*"; DestDir: "C:\DSM-PRO\printsupport"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Qt\Qt5.6.0\5.6\mingw49_32\plugins\platforms\*"; DestDir: "C:\DSM-PRO\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Qt\5.9.1\mingw53_32\plugins\imageformats\*"; DestDir: "C:\DSM-PRO\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Qt\5.9.1\mingw53_32\plugins\sqldrivers\*"; DestDir: "C:\DSM-PRO\sqldrivers"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Qt\5.9.1\mingw53_32\plugins\printsupport\*"; DestDir: "C:\DSM-PRO\printsupport"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Qt\5.9.1\mingw53_32\plugins\platforms\*"; DestDir: "C:\DSM-PRO\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

@@ -323,12 +323,12 @@
                                         <geometry type="QRectF" >8,2,384,67</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -431,12 +431,12 @@
                                         <geometry type="QRectF" >399.398,2,496,67</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -467,12 +467,12 @@
                                         <geometry type="QRectF" >905.46,2,214,67</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -503,12 +503,12 @@
                                         <geometry type="QRectF" >1127.65,0,661.771,67</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -533,6 +533,40 @@
                                         <text type="QString" >{TITLE4}</text>
                                     </properties>
                                 </Text>
+                                <LineItem>
+                                    <properties>
+                                        <objectName type="QString" >lineitem_1</objectName>
+                                        <geometry type="QRectF" >-14.8333,58.4583,2683,7.5833</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >0,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <lineStyle type="int" >1</lineStyle>
+                                    </properties>
+                                </LineItem>
                             </children>
                         </DetailHeader>
                         <Detail>

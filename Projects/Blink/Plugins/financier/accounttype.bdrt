@@ -4,7 +4,7 @@
         <objectName type="QString" >report</objectName>
         <name type="QString" >report name</name>
         <author type="QString" >(c) 2008 BogDan</author>
-        <script type="QString" >accounttypetopay.exec();&#xd;
+        <script type="QString" >accounttypetopay.exec();&#xd;&#xd;&#xd;
 accounttypetoreceive.exec();</script>
         <queries type="QVariantMap" />
         <uis type="QVariantMap" />
@@ -341,7 +341,7 @@ accounttypetoreceive.exec();</script>
                         </backgroundBrush>
                         <backgroundMode type="int" >0</backgroundMode>
                         <opacity type="int" >100</opacity>
-                        <font type="QFont" >DejaVu Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
                         <bandType type="int" >1</bandType>
                         <order type="int" >0</order>
                         <indentation type="int" >0</indentation>
@@ -354,12 +354,12 @@ accounttypetoreceive.exec();</script>
                                 <geometry type="QRectF" >0,0,1798,41</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
-                                        <color type="QColor" >253,253,253,255</color>
+                                        <color type="QColor" >85,0,0,255</color>
                                         <style type="int" >1</style>
                                         <texture type="QPixmap" ></texture>
                                     </brush>
                                     <capStyle type="int" >16</capStyle>
-                                    <color type="QColor" >253,253,253,255</color>
+                                    <color type="QColor" >85,0,0,255</color>
                                     <isCosmetic type="bool" >true</isCosmetic>
                                     <joinStyle type="int" >64</joinStyle>
                                     <miterLimit type="double" >2</miterLimit>
@@ -384,6 +384,40 @@ accounttypetoreceive.exec();</script>
                                 <text type="QString" >RESUMO</text>
                             </properties>
                         </Text>
+                        <LineItem>
+                            <properties>
+                                <objectName type="QString" >lineitem_2</objectName>
+                                <geometry type="QRectF" >-14.8333,33.4583,2683,9.5833</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <lineStyle type="int" >1</lineStyle>
+                            </properties>
+                        </LineItem>
                     </children>
                 </Title>
                 <Title>
@@ -416,7 +450,7 @@ accounttypetoreceive.exec();</script>
                         </backgroundBrush>
                         <backgroundMode type="int" >0</backgroundMode>
                         <opacity type="int" >100</opacity>
-                        <font type="QFont" >DejaVu Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
                         <bandType type="int" >1</bandType>
                         <order type="int" >1</order>
                         <indentation type="int" >0</indentation>
@@ -815,7 +849,7 @@ accounttypetoreceive.exec();</script>
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
-                                <font type="QFont" >DejaVu Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
                                 <bandType type="int" >3</bandType>
                                 <order type="int" >0</order>
                                 <indentation type="int" >0</indentation>
@@ -832,12 +866,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >5.52,0,435,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -868,12 +902,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >5.52,44,435,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -904,12 +938,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >546.575,44,143,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -940,12 +974,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >734.833,44,190,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -976,12 +1010,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >941.665,44,190,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -1012,12 +1046,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >1147.94,44,186.826,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >255,255,255,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >255,255,255,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -1048,12 +1082,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >1356,44,120,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >255,255,255,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >255,255,255,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -1078,6 +1112,40 @@ accounttypetoreceive.exec();</script>
                                         <text type="QString" >%</text>
                                     </properties>
                                 </Text>
+                                <LineItem>
+                                    <properties>
+                                        <objectName type="QString" >lineitem_3</objectName>
+                                        <geometry type="QRectF" >-14.8333,77.4583,2683,8.5833</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >0,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <lineStyle type="int" >1</lineStyle>
+                                    </properties>
+                                </LineItem>
                             </children>
                         </DetailHeader>
                         <Detail>
@@ -1667,7 +1735,7 @@ accounttypetoreceive.exec();</script>
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
-                                <font type="QFont" >DejaVu Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
                                 <bandType type="int" >3</bandType>
                                 <order type="int" >0</order>
                                 <indentation type="int" >0</indentation>
@@ -1684,12 +1752,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >5.52,44,435,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -1720,12 +1788,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >546.575,44,143,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -1756,12 +1824,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >734.833,44,190,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -1792,12 +1860,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >941.665,44,190,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -1828,12 +1896,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >1147.94,44,186.826,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >255,255,255,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >255,255,255,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -1864,12 +1932,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >1356,44,120,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >255,255,255,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >255,255,255,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -1900,12 +1968,12 @@ accounttypetoreceive.exec();</script>
                                         <geometry type="QRectF" >5.52,0,435,40</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
-                                                <color type="QColor" >253,253,253,255</color>
+                                                <color type="QColor" >85,0,0,255</color>
                                                 <style type="int" >1</style>
                                                 <texture type="QPixmap" ></texture>
                                             </brush>
                                             <capStyle type="int" >16</capStyle>
-                                            <color type="QColor" >253,253,253,255</color>
+                                            <color type="QColor" >85,0,0,255</color>
                                             <isCosmetic type="bool" >true</isCosmetic>
                                             <joinStyle type="int" >64</joinStyle>
                                             <miterLimit type="double" >2</miterLimit>
@@ -1930,6 +1998,40 @@ accounttypetoreceive.exec();</script>
                                         <text type="QString" >CONTAS A PAGAR</text>
                                     </properties>
                                 </Text>
+                                <LineItem>
+                                    <properties>
+                                        <objectName type="QString" >lineitem_4</objectName>
+                                        <geometry type="QRectF" >-14.8333,78.4583,2683,7.5833</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >0,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <lineStyle type="int" >1</lineStyle>
+                                    </properties>
+                                </LineItem>
                             </children>
                         </DetailHeader>
                         <Detail>

@@ -1,6 +1,8 @@
 #include "visit.h"
 
 //alter table visit add column visittype integer default 0 ;
+// alter table visit add column company integer;
+// alter table visit add column obs character varying ;
 
 visitList* visit::m_allList = NULL;
 
@@ -15,6 +17,8 @@ MODEL_BEGIN_MAP(visit)
      MODEL_MAP_FIELD(autorizador, "autorizador");
      MODEL_MAP_FIELD(Notified, "notified");
      MODEL_MAP_FIELD(Type, "visittype");
+     MODEL_MAP_FIELD(Company, "company");
+     MODEL_MAP_FIELD(Obs, "obs");
 MODEL_END_MAP()
 
 QList<visit*>* visit::findAll()

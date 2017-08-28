@@ -23,6 +23,8 @@ class visit : public Model
      MODEL_DECLARE_ATTRIBUTE(int, autorizador);
      MODEL_DECLARE_ATTRIBUTE(bool, Notified);
      MODEL_DECLARE_ATTRIBUTE(int, Type);
+     MODEL_DECLARE_ATTRIBUTE(int, Company);
+     MODEL_DECLARE_ATTRIBUTE(int, Obs);
 
      MODEL_MATCH_TABLE(visit, "visit")
 

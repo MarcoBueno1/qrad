@@ -486,6 +486,42 @@ QVariant ColumnDateTimeNull::FormatValue(QVariant value) const
 }
 
 
+
+void ColumnTimeNull::paint(QPainter *painter,
+                           const QStyleOptionViewItem &option,
+                           const QModelIndex &index) const
+{
+    QStyleOptionViewItem myOption = option;
+    QString strText= FormatValue(index.model()->data(index.model()->index(index.row(),5)).toDate()).toString();
+    QString strText2= index.model()->data(index.model()->index(index.row(),6)).toDate().toString(FMT_TIME);
+
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = Qt::AlignCenter;
+
+    if( strText == "NO CONDOMÍNIO" )
+    {
+        painter->fillRect(option.rect, BG_COLOR_YELLOW);
+    }
+    else
+    {
+        strText = strText2;
+    }
+
+    drawDisplay(painter, myOption, myOption.rect, strText);
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnTimeNull::FormatValue(QVariant value) const
+{
+    if( value.toDate() == QDate(2000,1,1) )
+        return QString("NO CONDOMÍNIO");
+    return value.toDate().toString(FMT_DATE);
+}
+
+
+
+
 void ColumnMoney::paint(QPainter *painter,
                         const QStyleOptionViewItem &option,
                         const QModelIndex &index) const
@@ -580,7 +616,7 @@ void ColumnImageMail::paint(QPainter *painter,
      }
      else
      {
-         QString imgFile = ":/png/customer.jpg";
+         QString imgFile = ":/png/icon_id.png";
          QPixmap pixmap(imgFile);
          painter->drawPixmap(myOption.rect, pixmap);
 

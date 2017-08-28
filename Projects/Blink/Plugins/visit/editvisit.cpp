@@ -13,6 +13,8 @@
 #include "tower.h"
 #include "preaut.h"
 
+// alter table visit add column company integer;
+
 #define PORTEIRO_FUL_PATH "visit.jpg"
 
 Editvisit::Editvisit(QWidget *parent) :
@@ -46,8 +48,8 @@ Editvisit::Editvisit(QWidget *parent) :
     ui->lineEditRG->Add(ui->lineEditVisitante);
 
 
-//    ui->lineEditMorador->setSelect("select nome || ' | ' || torre || ' | ' || ap, id, nome, ap, torre, ramal from dweller");
-    ui->lineEditMorador->setSelect("select d.name || ' | ' || t.name || ' | ' || a.numero, d.id, d.name, a.numero, t.name, d.ramal "\
+    //ui->lineEditMorador->setSelect("select d.name || ' | ' || t.name || ' | ' || a.numero, d.id, d.name, a.numero, t.name, d.ramal "
+    ui->lineEditMorador->setSelect("select d.name || ' | ' || a.numero || ' ' || t.name , d.id, d.name, a.numero, t.name, d.ramal "\
          "from dweller d "\
          "inner join tower t on t.id= d.tower "\
          "inner join ap a on a.id = d.ap  where d.removed = false");
@@ -58,20 +60,20 @@ Editvisit::Editvisit(QWidget *parent) :
 
     ui->comboBoxReason->setTable("reason");
     ui->comboBoxReason->setField("description");
-    ui->comboBoxReason->setPermission("usedweller");
+    ui->comboBoxReason->setPermission("usevisit");
     ui->comboBoxReason->setCanAdd(true);
     ui->comboBoxReason->setUserName("dsm");
     if( ui->comboBoxReason->completer() )
         ui->comboBoxReason->completer()->setFilterMode(Qt::MatchContains );
 
 
-    ui->comboBoxReason->setTable("company.Empresa");
-    ui->comboBoxReason->setField("name.Nome");
-    ui->comboBoxReason->setPermission("usedweller");
-    ui->comboBoxReason->setCanAdd(true);
-    ui->comboBoxReason->setUserName("dsm");
-    if( ui->comboBoxReason->completer() )
-        ui->comboBoxReason->completer()->setFilterMode(Qt::MatchContains );
+    ui->comboBoxCompany->setTable("company.Empresa");
+    ui->comboBoxCompany->setField("name.Nome");
+    ui->comboBoxCompany->setPermission("usevisit");
+    ui->comboBoxCompany->setCanAdd(true);
+    ui->comboBoxCompany->setUserName("dsm");
+    if( ui->comboBoxCompany->completer() )
+        ui->comboBoxCompany->completer()->setFilterMode(Qt::MatchContains );
 
 
     m_deliveryto = new QSqlQueryModel;
@@ -82,6 +84,9 @@ Editvisit::Editvisit(QWidget *parent) :
         ui->comboBoxDeliveryTo->completer()->setFilterMode(Qt::MatchContains );
 
     connect(ui->groupBoxDelivery, SIGNAL(clicked(bool)), this, SLOT(DeliveryCheck(bool)));
+
+
+    ui->groupBoxDelivery->setVisible(false);
 
     ui->groupBoxSaida->setVisible(false);
 
@@ -221,6 +226,7 @@ void Editvisit::Load()
    ui->DtEdtData->setEnabled(false);
    ui->TmEdtHora->setEnabled(false);
    ui->comboBoxReason->setEnabled(false);
+   ui->comboBoxCompany->setEnabled(false);
    ui->groupBoxEntrada->setEnabled(false);
    ui->lineEditRG->setEnabled(false);
    ui->lineEditCPF->setEnabled(false);

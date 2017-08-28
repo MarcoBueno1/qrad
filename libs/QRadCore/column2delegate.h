@@ -236,6 +236,17 @@ public:
     QVariant FormatValue(QVariant value) const;
 
 };
+class ColumnTimeNull : public QRadDelegate
+{
+    Q_OBJECT
+public:
+    void paint(QPainter *painter,
+                            const QStyleOptionViewItem &option,
+                            const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
+};
+
 
 class ColumnObs : public QRadDelegate
 {

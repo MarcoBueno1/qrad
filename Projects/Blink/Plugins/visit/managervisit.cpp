@@ -7,16 +7,25 @@
 
 #define BN_DEFAULT_COLUMN_SEARCH 3
 
-#define SQL_ITEMS_OPENED "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome as \"Visitante\", "\
-                         " (select d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\" , v.visittype as \"Tipo\" "\
-                         " from dweller d "\
-                         " inner join tower t on t.id = d.tower "\
-                         "inner join ap a on a.id = d.ap where d.id = v.autorizador), "\
-                         "data_saida as \"Saida / Situação\", saida_hora as \"Hora Saída\" from visit v "\
-                         "inner join Visitante  vi on vi.id = v.visitante  "\
-                         "where data_saida = '2000-01-01' "\
-                         " order by v.id desc"
+#define SQL_ITEMS_OPENED "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome as \"Visitante\",  "\
+                        " d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\",  "\
+                        " data_saida as \"Saida / Situação\", saida_hora as \"Hora Saída\", v.visittype as \"Tipo\" from visit v "\
+                        " inner join dweller d on d.id = v.autorizador  "\
+                        " inner join tower t on t.id = d.tower "\
+                        " inner join ap a on a.id = d.ap "\
+                        " inner join visitante  vi on vi.id = v.visitante  where data_saida = '2000-01-01'  order by v.id desc "
 
+
+#define SQL_ITEMS_CLOSED "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome as \"Visitante\",  "\
+                        " d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\",  "\
+                        " data_saida as \"Saida / Situação\", saida_hora as \"Hora Saída\", v.visittype as \"Tipo\" from visit v "\
+                        " inner join dweller d on d.id = v.autorizador  "\
+                        " inner join tower t on t.id = d.tower "\
+                        " inner join ap a on a.id = d.ap "\
+                        " inner join visitante  vi on vi.id = v.visitante  where data_saida <> '2000-01-01'  order by data_saida, saida_hora desc"
+
+
+/*
 #define SQL_ITEMS_CLOSED "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome as \"Visitante\", "\
                         " (select d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\" , v.visittype as \"Tipo\" "\
                         " from dweller d "\
@@ -26,15 +35,15 @@
                          "inner join Visitante  vi on vi.id = v.visitante  "\
                          "where data_saida <> '2000-01-01' "\
                          " order by data_saida, saida_hora desc"
+*/
 
-#define SQL_ITEMS_ALL "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome as \"Visitante\", "\
-                        " (select d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\"  , v.visittype as \"Tipo\" "\
-                        " from dweller d "\
-                        " inner join tower t on t.id = d.tower "\
-                        "inner join ap a on a.id = d.ap where d.id = v.autorizador), "\
-                         "data_saida as \"Saida / Situação\", saida_hora as \"Hora Saída\" from visit v "\
-                         "inner join Visitante  vi on vi.id = v.visitante  "\
-                         " order by v.id desc"
+#define SQL_ITEMS_ALL "select v.id, data_entrada as \"Entrou Em\", hora_entrada as \"Hora\", vi.nome as \"Visitante\",  "\
+    " d.name || ' (' || t.name || ' AP:' || a.numero || ')' as \"Convidado de\",  "\
+    " data_saida as \"Saida / Situação\", saida_hora as \"Hora Saída\", v.visittype as \"Tipo\" from visit v "\
+    " inner join dweller d on d.id = v.autorizador  "\
+    " inner join tower t on t.id = d.tower "\
+    " inner join ap a on a.id = d.ap "\
+    " inner join visitante  vi on vi.id = v.visitante  order by v.id desc "
 
 
 Managervisit::Managervisit(QWidget *parent) :
@@ -47,6 +56,7 @@ Managervisit::Managervisit(QWidget *parent) :
     m_Model = new QSqlQueryModel;
 
     m_DateNullDelagate = new ColumnDateTimeNull;
+    m_TimeNullDelagate = new ColumnTimeNull;
     m_ColumImage = new ColumnImageMail;
 
     //QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
@@ -84,6 +94,7 @@ Managervisit::~Managervisit()
     }
     delete m_Model;
     delete m_DateNullDelagate;
+    delete m_TimeNullDelagate;
     delete m_ColumImage;
 
     delete ui;
@@ -163,11 +174,20 @@ void Managervisit::LoadTableView()
     QApplication::processEvents();
 
     if(ui->radioButtonOpened->isChecked())
+    {
         m_Model->setQuery(SQL_ITEMS_OPENED);
+        debug_message("SQL %s\n", SQL_ITEMS_OPENED);
+    }
     else if(ui->radioButtonEnded->isChecked())
+    {
         m_Model->setQuery(SQL_ITEMS_CLOSED);
+        debug_message("SQL %s\n", SQL_ITEMS_CLOSED);
+    }
     else
+    {
         m_Model->setQuery(SQL_ITEMS_ALL);
+        debug_message("SQL %s\n", SQL_ITEMS_ALL);
+    }
 
 
     QApplication::processEvents();
@@ -234,7 +254,7 @@ void Managervisit::ConfigureTable()
                                                     m_ColumImage);
 
     ui->tableViewSearch->setItemDelegateForColumn(ui->tableViewSearch->getColumnOf("Hora Saída"),
-                                                  m_DateNullDelagate);
+                                                  m_TimeNullDelagate);
 }
 
 void Managervisit::keyPressEvent(QKeyEvent *event)

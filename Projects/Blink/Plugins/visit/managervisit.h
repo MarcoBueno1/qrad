@@ -39,6 +39,7 @@ private:
     QTimer *m_keyinterval;
     QSqlQueryModel  *m_Model;
     ColumnDateTimeNull *m_DateNullDelagate;
+    ColumnTimeNull *m_TimeNullDelagate;
     ColumnImageMail *m_ColumImage;
 
     void ShowCurrentInformations( void );

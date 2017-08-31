@@ -31,7 +31,9 @@ protected:
     int             m_accountToReceiveId,
                     m_accountToReceiveRow;
     QString         m_dateStr,
-                    m_strAux;
+                    m_strAux,
+                    m_InnerJoinTicket;
+
 
     bool            m_accountToReceivePaid;
 

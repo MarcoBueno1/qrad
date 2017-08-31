@@ -18,7 +18,7 @@
 #include "qradplugincontainer.h"
 
 #define SQL_SELECT_ACCOUNTTORECEIVE         "select fac.id, %1 fac.description as description,%1 case when c.name is NULL then 'NAO INFORMADO' else c.name end as cliente, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.clientid from fin_accounttoreceive fac %4 left join dweller c on c.id = fac.clientid where fac.removed = false %2 order by %3, fac.description"
-#define SQL_SELECT_ACCOUNTTORECEIVE_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, case when c.name is NULL then 'NAO INFORMADO' else c.name end as client from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid left join dweller c on fac.clientid = c.id where fac.removed = false %1 order by %2, fac.description"
+#define SQL_SELECT_ACCOUNTTORECEIVE_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, case when c.name is NULL then 'NAO INFORMADO' else c.name end as client from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid %3 left join dweller c on fac.clientid = c.id where fac.removed = false %1 order by %2, fac.description"
 #define SQL_DELETE_ACCOUNTTORECEIVE         "update fin_accounttoreceive set removed = true where id = %1"
 
 #define SQL_SELECT_FORMATED                 "case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else case when vencdate < current_date then 'V' else 'H' end end end || "
@@ -173,7 +173,6 @@ void AccountToReceiveManager::closeEvent(QCloseEvent *event)
 
 void AccountToReceiveManager::GetAccountToReceive(void)
 {
-    QString InnerJoinTicket;
     m_strAux = "";
     if (m_ui->radioButtonIssueDate->isChecked())
     {
@@ -248,18 +247,18 @@ void AccountToReceiveManager::GetAccountToReceive(void)
     //// inner join ticket ....
     if( m_ui->radioButtonOlympic->isChecked())
     {
-       InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id  ";
-       InnerJoinTicket +=  " inner join dweller dw on dw.id = tkt.clientid and dw.tower = 1 ";
+       m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id  ";
+       m_InnerJoinTicket +=  " inner join dweller dw on dw.id = tkt.clientid and dw.tower = 1 ";
     }
     else if( m_ui->radioButtonMarine->isChecked())
     {
-       InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id  ";
-       InnerJoinTicket +=  " inner join dweller dw on dw.id = tkt.clientid and dw.tower = 2 ";
+       m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id  ";
+       m_InnerJoinTicket +=  " inner join dweller dw on dw.id = tkt.clientid and dw.tower = 2 ";
     }
     else if( m_ui->radioButtonGreen->isChecked())
     {
-       InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id ";
-       InnerJoinTicket +=  " inner join dweller dw on dw.id = tkt.clientid and dw.tower = 3 ";
+       m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id ";
+       m_InnerJoinTicket +=  " inner join dweller dw on dw.id = tkt.clientid and dw.tower = 3 ";
     }
 
     if( m_ui->radioButtonAllType->isChecked())
@@ -267,10 +266,10 @@ void AccountToReceiveManager::GetAccountToReceive(void)
     if( m_ui->radioButtonTxCond->isChecked())
     {
         m_ui->comboBoxTypeTxExtr->setVisible(false);
-        if(InnerJoinTicket.isEmpty())
-            InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id and tkt.type = 0 ";
+        if(m_InnerJoinTicket.isEmpty())
+            m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id and tkt.type = 0 ";
         else
-            InnerJoinTicket.insert(strlen(" inner join ticket tkt on tkt.accountid = fac.id ")," and tkt.type = 0 ");
+            m_InnerJoinTicket.insert(strlen(" inner join ticket tkt on tkt.accountid = fac.id ")," and tkt.type = 0 ");
 
     }
     else if( m_ui->radioButtonTxExtra->isChecked())
@@ -288,10 +287,10 @@ void AccountToReceiveManager::GetAccountToReceive(void)
         }
 
 
-        if(InnerJoinTicket.isEmpty())
-            InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id and tkt.type = 1 " + aux2;
+        if(m_InnerJoinTicket.isEmpty())
+            m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id and tkt.type = 1 " + aux2;
         else
-            InnerJoinTicket.insert(strlen(" inner join ticket tkt on tkt.accountid = fac.id ")," and tkt.type = 1 " + aux2);
+            m_InnerJoinTicket.insert(strlen(" inner join ticket tkt on tkt.accountid = fac.id ")," and tkt.type = 1 " + aux2);
     }
 
 
@@ -300,13 +299,13 @@ void AccountToReceiveManager::GetAccountToReceive(void)
                                    .arg(SQL_SELECT_FORMATED)
                                    .arg(m_strAux)
                                    .arg(m_dateStr)
-                                   .arg(InnerJoinTicket));
+                                   .arg(m_InnerJoinTicket));
 
     QString strDebug = QString(SQL_SELECT_ACCOUNTTORECEIVE)
             .arg(SQL_SELECT_FORMATED)
             .arg(m_strAux)
             .arg(m_dateStr)
-            .arg(InnerJoinTicket);
+            .arg(m_InnerJoinTicket);
 
     debug_message("\nSQL_SELECT_ACCOUNTTORECEIVE=%s\n", strDebug.toLatin1().data());
     m_ui->tableViewAccountToReceive->setModel(m_selectAccountToReceive);
@@ -682,7 +681,8 @@ void AccountToReceiveManager::ShowReport(void)
 
         select->setQuery(QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
                          .arg(m_strAux)
-                         .arg(m_dateStr));
+                         .arg(m_dateStr)
+                         .arg(m_InnerJoinTicket));
 
         debug_message("SQL: %s\n", QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
                       .arg(m_strAux)

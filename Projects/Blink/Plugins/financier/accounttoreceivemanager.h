@@ -18,6 +18,7 @@ class AccountToReceiveManager : public QDialog {
 public:
     AccountToReceiveManager(QWidget *parent = 0);
     ~AccountToReceiveManager();
+    void Test();
 
 public slots:
     void doCmboTxExtActivacted(int item);

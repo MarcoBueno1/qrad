@@ -686,7 +686,8 @@ void AccountToReceiveManager::ShowReport(void)
 
         debug_message("SQL: %s\n", QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
                       .arg(m_strAux)
-                      .arg(m_dateStr).toLatin1().data());
+                      .arg(m_dateStr)
+                      .arg(m_InnerJoinTicket).toLatin1().data());
 
 
         for (int index = 0; index < select->rowCount(); index++)
@@ -786,4 +787,17 @@ void AccountToReceiveManager::doEditDweller()
     iface->setParent(pParent);
 
     GetAccountToReceive();
+}
+
+void AccountToReceiveManager::Test()
+{
+ // set
+    m_ui->radioButtonTxExtra->setChecked(true);
+    m_ui->comboBoxTypeTxExtr->setCurrentIndex(1);
+//2017-06-25
+    m_ui->dateEditStart->setDate(QDate(2017,6,25));
+
+    GetAccountToReceive();
+
+    ShowReport();
 }

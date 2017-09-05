@@ -18,7 +18,8 @@
 #include "qradplugincontainer.h"
 
 #define SQL_SELECT_ACCOUNTTORECEIVE         "select fac.id, %1 fac.description as description,%1 case when c.name is NULL then 'NAO INFORMADO' else c.name end as cliente, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.clientid from fin_accounttoreceive fac %4 left join dweller c on c.id = fac.clientid where fac.removed = false %2 order by %3, fac.description"
-#define SQL_SELECT_ACCOUNTTORECEIVE_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, case when c.name is NULL then 'NAO INFORMADO' else c.name end as client from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid %3 left join dweller c on fac.clientid = c.id where fac.removed = false %1 order by %2, fac.description"
+#define SQL_SELECT_ACCOUNTTORECEIVE_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, case when c.name is NULL then 'NAO INFORMADO' else c.name end as client from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid %2 left join dweller c on fac.clientid = c.id where fac.removed = false %1 order by %3"
+//, fac.description"
 #define SQL_DELETE_ACCOUNTTORECEIVE         "update fin_accounttoreceive set removed = true where id = %1"
 
 #define SQL_SELECT_FORMATED                 "case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else case when vencdate < current_date then 'V' else 'H' end end end || "
@@ -41,6 +42,8 @@ AccountToReceiveManager::AccountToReceiveManager(QWidget *parent) :
     m_modelAccountType   = new QSqlQueryModel;
     m_modelClient      = new QSqlQueryModel;
     m_modelBank          = new QSqlQueryModel;
+
+    m_orderby =-1;
 
 
     m_ui->comboBoxTypeTxExtr->setTable("reasonextratx");
@@ -120,6 +123,10 @@ AccountToReceiveManager::AccountToReceiveManager(QWidget *parent) :
     connect(m_ui->comboBoxTypeTxExtr,SIGNAL(activated(int)), this, SLOT(doCmboTxExtActivacted(int)));
 
     m_ui->tableViewAccountToReceive->setStyleSheet("");
+
+    connect(m_ui->tableViewAccountToReceive->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sectionClicked(int)));
+    connect(m_ui->tableViewAccountToReceive->horizontalHeader(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), this, SLOT(sortIndicatorChanged(int,Qt::SortOrder)));
+
 }
 
 AccountToReceiveManager::~AccountToReceiveManager()
@@ -666,6 +673,19 @@ void AccountToReceiveManager::DeleteAccountToReceive(void)
 
 void AccountToReceiveManager::ShowReport(void)
 {
+    enum enOrderBy
+    {
+        ObDescription=1,
+        ObCliente,
+        ObIssuedate,
+        ObVencdate,
+        ObPaiddate,
+        ObValue,
+        ObValuePaid,
+        ObPaid
+    };
+
+
     if (m_selectAccountToReceive->rowCount() > 0)
     {
         QSqlQueryModel *select = new QSqlQueryModel;
@@ -679,15 +699,69 @@ void AccountToReceiveManager::ShowReport(void)
            return;
         }
 
+        QString OrderBy;
+        switch(m_orderby)
+        {
+          case ObDescription:
+            OrderBy = "fac.description ";
+            if(m_NeedDesc)
+                OrderBy += " desc ";
+            break;
+          case ObCliente:
+            OrderBy = "client ";
+            if(m_NeedDesc)
+                OrderBy += " desc ";
+            break;
+          case ObIssuedate:
+            OrderBy = "issuedate ";
+            if(m_NeedDesc)
+                OrderBy += " desc ";
+            break;
+          case ObVencdate:
+            OrderBy = "vencdate ";
+            if(m_NeedDesc)
+                OrderBy += " desc ";
+            break;
+          case ObPaiddate:
+            OrderBy = "paiddate ";
+            if(m_NeedDesc)
+                OrderBy += " desc ";
+            break;
+          case ObValue:
+            OrderBy = "value ";
+            if(m_NeedDesc)
+                OrderBy += " desc ";
+            break;
+          case ObValuePaid:
+            OrderBy = "valuepaid ";
+            break;
+          case ObPaid:
+            OrderBy = "status ";
+            if(!m_NeedDesc)
+                OrderBy += " desc ";
+            debug_message("OrderBy = %s\n",OrderBy.toLatin1().data());
+            break;
+          default:
+            OrderBy = m_dateStr;
+            OrderBy +=", fac.description ";
+            debug_message("OrderBy = %s\n",OrderBy.toLatin1().data());
+            break;
+        }
+
+
+        debug_message("OrderBy = %s\n",OrderBy.toLatin1().data());
+
         select->setQuery(QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
                          .arg(m_strAux)
-                         .arg(m_dateStr)
-                         .arg(m_InnerJoinTicket));
+//                         .arg(m_dateStr)
+                         .arg(m_InnerJoinTicket)
+                         .arg(OrderBy));
 
         debug_message("SQL: %s\n", QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
                       .arg(m_strAux)
-                      .arg(m_dateStr)
-                      .arg(m_InnerJoinTicket).toLatin1().data());
+                     // .arg(m_dateStr)
+                      .arg(m_InnerJoinTicket)
+                      .arg(OrderBy).toLatin1().data());
 
 
         for (int index = 0; index < select->rowCount(); index++)
@@ -698,7 +772,9 @@ void AccountToReceiveManager::ShowReport(void)
 
         report->setQuery("account", QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
                                                 .arg(m_strAux)
-                                                .arg(m_dateStr));
+                       //                         .arg(m_dateStr)
+                                                .arg(m_InnerJoinTicket)
+                                                .arg(OrderBy));
 
         report->setAttributeMoneyValue("TOTAL", total);
         report->setAttributeMoneyValue("TOTAL_PAID", totalPaid);
@@ -800,4 +876,20 @@ void AccountToReceiveManager::Test()
     GetAccountToReceive();
 
     ShowReport();
+}
+
+void AccountToReceiveManager::sectionClicked(int orderby)
+{
+
+}
+
+void AccountToReceiveManager::sortIndicatorChanged(int orderby,Qt::SortOrder sortOrder)
+{
+    debug_message("OrderBy=%d sortOrder=%d\n", orderby, sortOrder);
+    m_orderby = orderby;
+    m_NeedDesc = sortOrder;
+
+    m_ui->tableViewAccountToReceive->sortByColumn(orderby, sortOrder);
+
+
 }

@@ -24,6 +24,8 @@ public slots:
     void doCmboTxExtActivacted(int item);
     void doEditDweller();
     void doEdit();
+    void sectionClicked(int orderby);
+    void sortIndicatorChanged(int orderby, Qt::SortOrder sortOrder);
 protected:
     QSqlQueryModel  *m_modelAccountType,
                     *m_modelClient,
@@ -52,6 +54,8 @@ private:
     Ui::AccountToReceiveManager *m_ui;
     QAction *ViewCurrentTicket;
     QAction *EditCurrentDweller;
+    int m_orderby;
+    int m_NeedDesc;
 
 
 private slots:

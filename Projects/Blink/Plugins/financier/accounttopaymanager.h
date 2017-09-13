@@ -19,6 +19,8 @@ public:
     AccountToPayManager(QWidget *parent = 0);
     ~AccountToPayManager();
 
+public slots:
+    void sortIndicatorChanged(int orderby, Qt::SortOrder sortOrder);
 protected:
     QSqlQueryModel  *m_modelAccountType,
                     *m_modelSupplier,
@@ -44,6 +46,9 @@ protected:
 
 private:
     Ui::AccountToPayManager *m_ui;
+    int m_orderby;
+    int m_NeedDesc;
+
 
 private slots:
     void    fillTheFields(QModelIndex);

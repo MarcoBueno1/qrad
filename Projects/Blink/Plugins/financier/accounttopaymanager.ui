@@ -525,6 +525,9 @@ selection-color: rgb(255, 255, 255);</string>
         <attribute name="horizontalHeaderMinimumSectionSize">
          <number>20</number>
         </attribute>
+        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+         <bool>true</bool>
+        </attribute>
         <attribute name="verticalHeaderVisible">
          <bool>false</bool>
         </attribute>
@@ -1299,6 +1302,12 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
   <tabstop>btnExit</tabstop>
  </tabstops>
  <resources>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>

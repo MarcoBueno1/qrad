@@ -17,12 +17,30 @@
 #include "ticketcontroller.h"
 #include "qradplugincontainer.h"
 
-#define SQL_SELECT_ACCOUNTTORECEIVE         "select fac.id, %1 fac.description as description,%1 case when c.name is NULL then 'NAO INFORMADO' else c.name end as cliente, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.clientid from fin_accounttoreceive fac %4 left join dweller c on c.id = fac.clientid where fac.removed = false %2 order by %3, fac.description"
+//// novo SQL mais inteligente
+#define SQL_SELECT_ACCOUNTTORECEIVE "select fac.id, case when a.numero is null then fac.description else a.numero || ' ' || substring(t.name from 1 for 1) end as description, "\
+                                    " case when c.name is NULL then 'NAO INFORMADO' else c.name end as client, "\
+                                    " fac.issuedate as issuedate,fac.vencdate as vencdate, "\
+                                    " case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, "\
+                                    " fac.value as value, case when fac.valuepaid is null then 0 else fac.valuepaid end as "\
+                                    " valuepaid, case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, "\
+                                    " case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else "\
+                                    " case when vencdate < current_date then 'V' else 'H' end end end as situation "\
+                                    " from fin_accounttoreceive fac "\
+                                    " %1 join ticket tkt on tkt.accountid = fac.id %2 "\
+                                    " %1 join dweller c on tkt.clientid = c.id "\
+                                    " %1 join ap a on c.ap = a.id "\
+                                    " %1 join tower t on c.tower = t.id %3"\
+                                    " %4 where fac.removed = false %5 order by t.name desc, a.id, %6"
+///                                        " where fac.removed = false order by t.name desc, ap.id limit 10 "
+
+
+//#define SQL_SELECT_ACCOUNTTORECEIVE         "select fac.id, %1 fac.description as description,%1 case when c.name is NULL then 'NAO INFORMADO' else c.name end as cliente, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.clientid from fin_accounttoreceive fac %4 left join dweller c on c.id = fac.clientid where fac.removed = false %2 order by %3, fac.description"
 #define SQL_SELECT_ACCOUNTTORECEIVE_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, case when c.name is NULL then 'NAO INFORMADO' else c.name end as client from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid %2 left join dweller c on fac.clientid = c.id where fac.removed = false %1 order by %3"
 //, fac.description"
 #define SQL_DELETE_ACCOUNTTORECEIVE         "update fin_accounttoreceive set removed = true where id = %1"
 
-#define SQL_SELECT_FORMATED                 "case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else case when vencdate < current_date then 'V' else 'H' end end end || "
+#define SQL_SELECT_FORMATED                 "case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else case when vencdate < current_date then 'V' else 'H' end end end as situation"
 
 #define CHECK_STR(str) {str += " and ";}
 
@@ -180,25 +198,40 @@ void AccountToReceiveManager::closeEvent(QCloseEvent *event)
 
 void AccountToReceiveManager::GetAccountToReceive(void)
 {
+   QString JoinType = "left";
+   QString TicketType;
+   QString Tower;
+   QString ExtraTaxJoin;
+   QString Where;
+   QString OrderBy;
+
+
+//    " %1 join ticket tkt on tkt.accountid = fac.id %2 "\
+//    " %1 join dweller c on tkt.clientid = c.id "\
+//    " %1 join ap a on c.ap = a.id "\
+//    " %1 join tower t on c.tower = t.id %3"\
+//    " %4 where fac.removed = false %5 %6"
+
+//    m_InnerJoinTicket ="";
     m_strAux = "";
     if (m_ui->radioButtonIssueDate->isChecked())
     {
-        m_dateStr = "fac.issuedate";
+        OrderBy = "fac.issuedate";
     }
     else if (m_ui->radioButtonVencDate->isChecked())
     {
-        m_dateStr = "fac.vencdate";
+        OrderBy = "fac.vencdate";
     }
     else
     {
-        m_dateStr = "fac.paiddate";
+        OrderBy = "fac.paiddate";
     }
 
     if (m_ui->groupBoxDate->isChecked())
     {
-        CHECK_STR(m_strAux);
-        m_strAux += QString(" %1 between '%2' and '%3' ")
-                                .arg(m_dateStr)
+        CHECK_STR(Where);
+        Where += QString(" %1 between '%2' and '%3' ")
+                                .arg(OrderBy)
                                 .arg(m_ui->dateEditStart->date().toString(FMT_DATE_DB))
                                 .arg(m_ui->dateEditEnd->date().toString(FMT_DATE_DB));
     }
@@ -209,30 +242,30 @@ void AccountToReceiveManager::GetAccountToReceive(void)
     }
     else if (m_ui->checkBoxAccountOpen->isChecked())
     {
-        CHECK_STR(m_strAux);
-        m_strAux += " fac.paid = false ";
+        CHECK_STR(Where);
+        Where += " fac.paid = false ";
     }
     else if (m_ui->checkBoxAccountPaid->isChecked())
     {
-        CHECK_STR(m_strAux);
-        m_strAux += " fac.paid = true ";
+        CHECK_STR(Where);
+        Where += " fac.paid = true ";
     }
     else
     {
-        CHECK_STR(m_strAux);
-        m_strAux += " fac.paid = true and fac.paid = false ";
+        CHECK_STR(Where);
+        Where += " fac.paid = true and fac.paid = false ";
     }
 
     if (m_ui->groupBoxAccountType->isChecked())
     {
         int accountTypeId;
 
-        CHECK_STR(m_strAux);
+        CHECK_STR(Where);
 
         disconnect(m_ui->comboBoxAccountTypeFilter, SIGNAL(currentIndexChanged(int)), this, SLOT(GetAccountToReceive()));
 
         GET_COMBOBOX_ID(accountTypeId, m_ui->comboBoxAccountTypeFilter);
-        m_strAux += QString(" fac.accounttypeid = %1 ").arg(accountTypeId);
+        Where += QString(" fac.accounttypeid = %1 ").arg(accountTypeId);
 
         connect(m_ui->comboBoxAccountTypeFilter, SIGNAL(currentIndexChanged(int)), this, SLOT(GetAccountToReceive()));
     }
@@ -241,12 +274,12 @@ void AccountToReceiveManager::GetAccountToReceive(void)
     {
         int clientId;
 
-        CHECK_STR(m_strAux);
+        CHECK_STR(Where);
 
         disconnect(m_ui->comboBoxClientFilter, SIGNAL(currentIndexChanged(int)), this, SLOT(GetAccountToReceive()));
 
         GET_COMBOBOX_ID(clientId, m_ui->comboBoxClientFilter);
-        m_strAux += QString(" fac.clientid = %1 ").arg(clientId);
+        Where += QString(" fac.clientid = %1 ").arg(clientId);
 
         connect(m_ui->comboBoxClientFilter, SIGNAL(currentIndexChanged(int)), this, SLOT(GetAccountToReceive()));
     }
@@ -254,18 +287,24 @@ void AccountToReceiveManager::GetAccountToReceive(void)
     //// inner join ticket ....
     if( m_ui->radioButtonOlympic->isChecked())
     {
-       m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id  ";
-       m_InnerJoinTicket +=  " inner join dweller dw on dw.id = tkt.clientid and dw.tower = 1 ";
+//       m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id  ";
+//       m_InnerJoinTicket +=  " inner join dweller dw on dw.id = tkt.clientid and dw.tower = 1 ";
+         Tower = " and t.id = 1";
+         JoinType = " inner ";
     }
     else if( m_ui->radioButtonMarine->isChecked())
     {
-       m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id  ";
-       m_InnerJoinTicket +=  " inner join dweller dw on dw.id = tkt.clientid and dw.tower = 2 ";
+//       m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id  ";
+//       m_InnerJoinTicket +=  " inner join dweller dw on dw.id = tkt.clientid and dw.tower = 2 ";
+        Tower = " and t.id = 2";
+        JoinType = " inner ";
     }
     else if( m_ui->radioButtonGreen->isChecked())
     {
-       m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id ";
-       m_InnerJoinTicket +=  " inner join dweller dw on dw.id = tkt.clientid and dw.tower = 3 ";
+//       m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id ";
+//       m_InnerJoinTicket +=  " inner join dweller dw on dw.id = tkt.clientid and dw.tower = 3 ";
+        Tower = " and t.id = 3";
+        JoinType = " inner ";
     }
 
     if( m_ui->radioButtonAllType->isChecked())
@@ -273,46 +312,52 @@ void AccountToReceiveManager::GetAccountToReceive(void)
     if( m_ui->radioButtonTxCond->isChecked())
     {
         m_ui->comboBoxTypeTxExtr->setVisible(false);
-        if(m_InnerJoinTicket.isEmpty())
-            m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id and tkt.type = 0 ";
-        else
-            m_InnerJoinTicket.insert(strlen(" inner join ticket tkt on tkt.accountid = fac.id ")," and tkt.type = 0 ");
+//        if(m_InnerJoinTicket.isEmpty())
+//            m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id and tkt.type = 0 ";
+//        else
+//            m_InnerJoinTicket.insert(strlen(" inner join ticket tkt on tkt.accountid = fac.id ")," and tkt.type = 0 ");
+        TicketType = " and tkt.type = 0 ";
+        JoinType = " inner ";
 
     }
     else if( m_ui->radioButtonTxExtra->isChecked())
     {
-        QString aux2;
+//        QString aux2;
         if(!m_ui->comboBoxTypeTxExtr->isVisible())
         {
             m_ui->comboBoxTypeTxExtr->setVisible(true);
         }
         int currentid = m_ui->comboBoxTypeTxExtr->model()->data(m_ui->comboBoxTypeTxExtr->model()->index(m_ui->comboBoxTypeTxExtr->currentIndex(), 0)).toInt();
+        debug_message("Current index of type of extratax: %d , currentindex=%d........\n", currentid, m_ui->comboBoxTypeTxExtr->currentIndex());
         if( currentid > 0 )
         {
-            debug_message("Current index of type of extratax: %d ........\n", currentid);
-            aux2 = QString(" inner join extratx ext on ext.id = tkt.extratxid and ext.motivo = %1 ").arg(currentid);
+            ExtraTaxJoin = QString(" inner join extratx ext on ext.id = tkt.extratxid and ext.motivo = %1 ").arg(currentid);
         }
+        JoinType = " inner ";
 
 
-        if(m_InnerJoinTicket.isEmpty())
-            m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id and tkt.type = 1 " + aux2;
-        else
-            m_InnerJoinTicket.insert(strlen(" inner join ticket tkt on tkt.accountid = fac.id ")," and tkt.type = 1 " + aux2);
+//        if(m_InnerJoinTicket.isEmpty())
+//            m_InnerJoinTicket =   " inner join ticket tkt on tkt.accountid = fac.id and tkt.type = 1 " + aux2;
+//        else
+//            m_InnerJoinTicket.insert(strlen(" inner join ticket tkt on tkt.accountid = fac.id ")," and tkt.type = 1 " + aux2);
     }
 
 
-
     m_selectAccountToReceive->setQuery(QString(SQL_SELECT_ACCOUNTTORECEIVE)
-                                   .arg(SQL_SELECT_FORMATED)
-                                   .arg(m_strAux)
-                                   .arg(m_dateStr)
-                                   .arg(m_InnerJoinTicket));
+                                   .arg(JoinType)
+                                   .arg(TicketType)
+                                   .arg(Tower)
+                                   .arg(ExtraTaxJoin)
+                                   .arg(Where)
+                                   .arg(OrderBy));
 
-    QString strDebug = QString(SQL_SELECT_ACCOUNTTORECEIVE)
-            .arg(SQL_SELECT_FORMATED)
-            .arg(m_strAux)
-            .arg(m_dateStr)
-            .arg(m_InnerJoinTicket);
+    QString strDebug = QString(QString(SQL_SELECT_ACCOUNTTORECEIVE)
+                               .arg(JoinType)
+                               .arg(TicketType)
+                               .arg(Tower)
+                               .arg(ExtraTaxJoin)
+                               .arg(Where)
+                               .arg(OrderBy));
 
     debug_message("\nSQL_SELECT_ACCOUNTTORECEIVE=%s\n", strDebug.toLatin1().data());
     m_ui->tableViewAccountToReceive->setModel(m_selectAccountToReceive);
@@ -749,20 +794,32 @@ void AccountToReceiveManager::ShowReport(void)
         }
 
 
-        debug_message("OrderBy = %s\n",OrderBy.toLatin1().data());
+        ///////
+        /// \brief nova logica para aproveitar SQL principal
+        ///
+        QString TableViewQuery = m_selectAccountToReceive->query().lastQuery();
 
-        select->setQuery(QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
-                         .arg(m_strAux)
-//                         .arg(m_dateStr)
-                         .arg(m_InnerJoinTicket)
-                         .arg(OrderBy));
 
-        debug_message("SQL: %s\n", QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
-                      .arg(m_strAux)
-                     // .arg(m_dateStr)
-                      .arg(m_InnerJoinTicket)
-                      .arg(OrderBy).toLatin1().data());
+        TableViewQuery = TableViewQuery.replace("fac.issuedate as issuedate,","to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate,");
+        TableViewQuery = TableViewQuery.replace("fac.vencdate as vencdate,","to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate,");
+        TableViewQuery = TableViewQuery.replace("case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate,","case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate,");
+        TableViewQuery = TableViewQuery.replace("fac.value as value,","to_char(fac.value, 'FM9G999G990D00') as value,");
+        TableViewQuery = TableViewQuery.replace("case when fac.valuepaid is null then 0 else fac.valuepaid end as  valuepaid, case when fac.paid is true then 'T' else 'F' end as paid,", "case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status,");
+        TableViewQuery = TableViewQuery.replace("fac.accounttypeid,","fat.description as accounttype,");
+        TableViewQuery = TableViewQuery.replace( "from fin_accounttoreceive fac",  "from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid ");
 
+
+        //debug_message("OrderBy = %s\n",OrderBy.toLatin1().data());
+
+        select->setQuery(TableViewQuery);
+
+//        debug_message("SQL: %s\n", QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
+//                      .arg(m_strAux)
+//                     // .arg(m_dateStr)
+//                      .arg(m_InnerJoinTicket)
+//                      .arg(OrderBy).toLatin1().data());
+
+        debug_message("SQL Report:%s\n",TableViewQuery.toLatin1().data());
 
         for (int index = 0; index < select->rowCount(); index++)
         {
@@ -770,11 +827,13 @@ void AccountToReceiveManager::ShowReport(void)
             totalPaid   += QRadMoney::StrToInt(select->record(index).value("valuepaid").toString());
         }
 
-        report->setQuery("account", QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
-                                                .arg(m_strAux)
-                       //                         .arg(m_dateStr)
-                                                .arg(m_InnerJoinTicket)
-                                                .arg(OrderBy));
+//        report->setQuery("account", QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
+  //                                              .arg(m_strAux)
+    //                   //                         .arg(m_dateStr)
+      //                                          .arg(m_InnerJoinTicket)
+        //                                        .arg(OrderBy));
+
+          report->setQuery("account", TableViewQuery);
 
         report->setAttributeMoneyValue("TOTAL", total);
         report->setAttributeMoneyValue("TOTAL_PAID", totalPaid);
@@ -869,9 +928,10 @@ void AccountToReceiveManager::Test()
 {
  // set
     m_ui->radioButtonTxExtra->setChecked(true);
-    m_ui->comboBoxTypeTxExtr->setCurrentIndex(1);
 //2017-06-25
     m_ui->dateEditStart->setDate(QDate(2017,6,25));
+
+    m_ui->comboBoxTypeTxExtr->setCurrentIndex(1);
 
     GetAccountToReceive();
 

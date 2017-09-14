@@ -16,22 +16,25 @@
 #define BG_FIN_COLOR_BLUE       QColor(0, 85, 255)
 
 
+#define FIN_COLUMN_FORMAT 10
+
+
 #define FORMAT_FINACIER { \
-if (text.toString().mid(0,1) == "P") \
+if (Format.toString().mid(0,1) == "P") \
 {\
  if (option.state & QStyle::State_Enabled)\
  {\
   painter->fillRect(option.rect, BG_FIN_COLOR_GREEN);\
  }\
 }\
-else if (text.toString().mid(0,1) == "V")\
+else if (Format.toString().mid(0,1) == "V")\
 {\
  if (option.state & QStyle::State_Enabled)\
  {\
   painter->fillRect(option.rect, BG_FIN_COLOR_RED);\
  }\
 }\
-else if (text.toString().mid(0,1) == "H")\
+else if (Format.toString().mid(0,1) == "H")\
 {\
  if (option.state & QStyle::State_Enabled)\
  {\
@@ -81,6 +84,7 @@ void ColumnFinancierDescription::paint(QPainter *painter,
                                        const QModelIndex &index) const
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
+    QVariant Format = index.model()->index(index.row(),FIN_COLUMN_FORMAT).data(Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
 
     FORMAT_FINACIER;
@@ -94,7 +98,7 @@ void ColumnFinancierDescription::paint(QPainter *painter,
 
 QVariant ColumnFinancierDescription::FormatValue(QVariant value) const
 {
-    return value.toString().mid(1);
+    return value.toString();
 }
 
 
@@ -103,6 +107,7 @@ void ColumnFinancierDate::paint(QPainter *painter,
                                 const QModelIndex &index) const
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
+    QVariant Format = index.model()->index(index.row(),FIN_COLUMN_FORMAT).data(Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
     QString dateStr = FormatValue(text).toString();
 
@@ -120,7 +125,7 @@ QVariant ColumnFinancierDate::FormatValue(QVariant value) const
     QDate date;
     QString dateStr;
 
-    date.setDate(value.toString().mid(1,4).toInt(), value.toString().mid(6,2).toInt(), value.toString().mid(9,2).toInt());
+    date = value.toDate();
 
     if (date.daysTo(QDate(2000,1,1)) == 0)
     {
@@ -138,6 +143,7 @@ void ColumnFinancierMoney::paint(QPainter *painter,
                                  const QModelIndex &index) const
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
+    QVariant Format = index.model()->index(index.row(),FIN_COLUMN_FORMAT).data(Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
     QString moneyPaid = FormatValue(text).toString();
 
@@ -161,13 +167,13 @@ void ColumnFinancierMoney::paint(QPainter *painter,
 QVariant ColumnFinancierMoney::FormatValue(QVariant value) const
 {
     QString moneyPaid;
-    if (value.toString().mid(1).toDouble() == 0)
+    if (value.toString().toDouble() == 0)
     {
         moneyPaid = "-";
     }
     else
     {
-        moneyPaid = QRadMoney::MoneyHumanForm2(QRadMoney::Round(value.toString().mid(1).toDouble()));
+        moneyPaid = QRadMoney::MoneyHumanForm2(QRadMoney::Round(value.toString().toDouble()));
     }
 
     return moneyPaid;
@@ -179,6 +185,7 @@ void ColumnFinancierAccountPaid::paint(QPainter *painter,
                                        const QModelIndex &index) const
 {
     QVariant text = index.model()->data(index, Qt::DisplayRole);
+    QVariant Format = index.model()->index(index.row(),FIN_COLUMN_FORMAT).data(Qt::DisplayRole);
     QStyleOptionViewItem myOption = option;
     QString paid = FormatValue(text).toString();
 
@@ -193,7 +200,7 @@ void ColumnFinancierAccountPaid::paint(QPainter *painter,
 QVariant ColumnFinancierAccountPaid::FormatValue(QVariant value) const
 {
     QString paid;
-    if (value.toString().mid(1) == "T")
+    if (value.toString().mid(0) == "T")
     {
         paid = QString::fromUtf8("PAGO");
     }

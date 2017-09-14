@@ -13,6 +13,7 @@
 #include "qraddebug.h"
 
 #define SQL_SELECT_ACCOUNTTOPAY         "select fac.id, %1 fac.description as description, %1 case when s.nome is null then 'NAO INFORMADO' else s.nome end as fornecedor, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.supplierid, fac.bankid from fin_accounttopay fac left outer join supplier s on fac.supplierid = s.id where fac.removed = false %2 order by %3, fac.description"
+
 #define SQL_SELECT_ACCOUNTTOPAY_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, s.nome as supplier, fb.description as bank from fin_accounttopay fac inner join fin_accounttype fat on fat.id = fac.accounttypeid left outer join supplier s on fac.supplierid = s.id left outer join fin_bank fb on fac.bankid = fb.id where fac.removed = false %1 order by %2 "
 #define SQL_DELETE_ACCOUNTTOPAY         "update fin_accounttopay set removed = true where id = %1"
 

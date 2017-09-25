@@ -459,7 +459,7 @@
     </layout>
    </item>
    <item row="3" column="0" colspan="2">
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBoxAccounts">
      <property name="font">
       <font>
        <family>Verdana</family>
@@ -526,7 +526,7 @@ selection-color: rgb(255, 255, 255);</string>
          <number>20</number>
         </attribute>
         <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-         <bool>true</bool>
+         <bool>false</bool>
         </attribute>
         <attribute name="verticalHeaderVisible">
          <bool>false</bool>

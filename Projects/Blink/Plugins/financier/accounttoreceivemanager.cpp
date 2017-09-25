@@ -20,10 +20,11 @@
 //// novo SQL mais inteligente
 #define SQL_SELECT_ACCOUNTTORECEIVE "select fac.id, case when a.numero is null then fac.description else a.numero || ' ' || substring(t.name from 1 for 1) end as description, "\
                                     " case when c.name is NULL then 'NAO INFORMADO' else c.name end as client, "\
+                                    " fac.accounttypeid, "\
                                     " fac.issuedate as issuedate,fac.vencdate as vencdate, "\
                                     " case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, "\
                                     " fac.value as value, case when fac.valuepaid is null then 0 else fac.valuepaid end as "\
-                                    " valuepaid, case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, "\
+                                    " valuepaid, case when fac.paid is true then 'T' else 'F' end as paid, "\
                                     " case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else "\
                                     " case when vencdate < current_date then 'V' else 'H' end end end as situation "\
                                     " from fin_accounttoreceive fac "\
@@ -31,12 +32,12 @@
                                     " %1 join dweller c on tkt.clientid = c.id "\
                                     " %1 join ap a on c.ap = a.id "\
                                     " %1 join tower t on c.tower = t.id %3"\
-                                    " %4 where fac.removed = false %5 order by t.name desc, a.id, %6"
+                                    " %4 where fac.removed = false %5 order by %6"
 ///                                        " where fac.removed = false order by t.name desc, ap.id limit 10 "
 
 
 //#define SQL_SELECT_ACCOUNTTORECEIVE         "select fac.id, %1 fac.description as description,%1 case when c.name is NULL then 'NAO INFORMADO' else c.name end as cliente, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.clientid from fin_accounttoreceive fac %4 left join dweller c on c.id = fac.clientid where fac.removed = false %2 order by %3, fac.description"
-#define SQL_SELECT_ACCOUNTTORECEIVE_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, case when c.name is NULL then 'NAO INFORMADO' else c.name end as client from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid %2 left join dweller c on fac.clientid = c.id where fac.removed = false %1 order by %3"
+//#define SQL_SELECT_ACCOUNTTORECEIVE_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, case when c.name is NULL then 'NAO INFORMADO' else c.name end as client from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid %2 left join dweller c on fac.clientid = c.id where fac.removed = false %1 order by %3"
 //, fac.description"
 #define SQL_DELETE_ACCOUNTTORECEIVE         "update fin_accounttoreceive set removed = true where id = %1"
 
@@ -123,6 +124,7 @@ AccountToReceiveManager::AccountToReceiveManager(QWidget *parent) :
     connect(m_ui->radioButtonPaidDate, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
     connect(m_ui->checkBoxAccountOpen, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
     connect(m_ui->checkBoxAccountPaid, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
+    connect(m_ui->checkBoxPrevalecerAPTorre, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
     connect(m_ui->groupBoxDate, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
     connect(m_ui->groupBoxAccountType, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
     connect(m_ui->groupBoxClient, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
@@ -142,8 +144,8 @@ AccountToReceiveManager::AccountToReceiveManager(QWidget *parent) :
 
     m_ui->tableViewAccountToReceive->setStyleSheet("");
 
-    connect(m_ui->tableViewAccountToReceive->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sectionClicked(int)));
-    connect(m_ui->tableViewAccountToReceive->horizontalHeader(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), this, SLOT(sortIndicatorChanged(int,Qt::SortOrder)));
+  //  connect(m_ui->tableViewAccountToReceive->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sectionClicked(int)));
+  //  connect(m_ui->tableViewAccountToReceive->horizontalHeader(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), this, SLOT(sortIndicatorChanged(int,Qt::SortOrder)));
 
 }
 
@@ -204,6 +206,14 @@ void AccountToReceiveManager::GetAccountToReceive(void)
    QString ExtraTaxJoin;
    QString Where;
    QString OrderBy;
+   QString PrevalecOrderBy;
+
+   if( m_ui->checkBoxPrevalecerAPTorre->isChecked())
+   {
+        PrevalecOrderBy = " t.name desc, a.id, ";
+   }
+
+
 
 
 //    " %1 join ticket tkt on tkt.accountid = fac.id %2 "\
@@ -216,15 +226,18 @@ void AccountToReceiveManager::GetAccountToReceive(void)
     m_strAux = "";
     if (m_ui->radioButtonIssueDate->isChecked())
     {
-        OrderBy = "fac.issuedate";
+        OrderBy += "fac.issuedate";
+        PrevalecOrderBy += "fac.issuedate";
     }
     else if (m_ui->radioButtonVencDate->isChecked())
     {
-        OrderBy = "fac.vencdate";
+        OrderBy += "fac.vencdate";
+        PrevalecOrderBy +="fac.vencdate";
     }
     else
     {
-        OrderBy = "fac.paiddate";
+        OrderBy += "fac.paiddate";
+        PrevalecOrderBy += "fac.paiddate";
     }
 
     if (m_ui->groupBoxDate->isChecked())
@@ -343,21 +356,21 @@ void AccountToReceiveManager::GetAccountToReceive(void)
     }
 
 
-    m_selectAccountToReceive->setQuery(QString(SQL_SELECT_ACCOUNTTORECEIVE)
-                                   .arg(JoinType)
-                                   .arg(TicketType)
-                                   .arg(Tower)
-                                   .arg(ExtraTaxJoin)
-                                   .arg(Where)
-                                   .arg(OrderBy));
+    QString TableViewQuery = QString(SQL_SELECT_ACCOUNTTORECEIVE)
+            .arg(JoinType)
+            .arg(TicketType)
+            .arg(Tower)
+            .arg(ExtraTaxJoin)
+            .arg(Where)
+            .arg(PrevalecOrderBy);
 
-    QString strDebug = QString(QString(SQL_SELECT_ACCOUNTTORECEIVE)
-                               .arg(JoinType)
-                               .arg(TicketType)
-                               .arg(Tower)
-                               .arg(ExtraTaxJoin)
-                               .arg(Where)
-                               .arg(OrderBy));
+    TableViewQuery = TableViewQuery.replace("fac.accounttypeid,","case when tkt.type is null then fat.description else case when tkt.type = 0 then 'CONDOMÍNIO' else 'TX EXTRA' end end as accounttype,");
+    TableViewQuery = TableViewQuery.replace( "from fin_accounttoreceive fac",  "from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid ");
+
+
+    m_selectAccountToReceive->setQuery(TableViewQuery);
+
+    QString strDebug = QString(TableViewQuery);
 
     debug_message("\nSQL_SELECT_ACCOUNTTORECEIVE=%s\n", strDebug.toLatin1().data());
     m_ui->tableViewAccountToReceive->setModel(m_selectAccountToReceive);
@@ -432,35 +445,37 @@ void AccountToReceiveManager::InitialConfig(int row)
 void AccountToReceiveManager::ConfigHeaderTable(void)
 {
     m_ui->tableViewAccountToReceive->hideColumn(0);
-    m_ui->tableViewAccountToReceive->hideColumn(9);
+//    m_ui->tableViewAccountToReceive->hideColumn(9);
     m_ui->tableViewAccountToReceive->hideColumn(10);
     m_ui->tableViewAccountToReceive->hideColumn(11);
 
-    m_selectAccountToReceive->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Descrição"));
-    m_selectAccountToReceive->setHeaderData(2, Qt::Horizontal, QString::fromUtf8("Devedor"));
-    m_selectAccountToReceive->setHeaderData(3, Qt::Horizontal, QString::fromUtf8("Data de Lançamento"));
-    m_selectAccountToReceive->setHeaderData(4, Qt::Horizontal, QString::fromUtf8("Data de Vencimento"));
-    m_selectAccountToReceive->setHeaderData(5, Qt::Horizontal, QString::fromUtf8("Data de Quitação"));
-    m_selectAccountToReceive->setHeaderData(6, Qt::Horizontal, QString::fromUtf8("Valor"));
-    m_selectAccountToReceive->setHeaderData(7, Qt::Horizontal, QString::fromUtf8("Valor Pago"));
-    m_selectAccountToReceive->setHeaderData(8, Qt::Horizontal, QString::fromUtf8("Status"));
+    m_selectAccountToReceive->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Descrição/AP Torre"));
+    m_selectAccountToReceive->setHeaderData(2, Qt::Horizontal, QString::fromUtf8("Devedor / Condômino"));
+    m_selectAccountToReceive->setHeaderData(3, Qt::Horizontal, QString::fromUtf8("Tipo"));
+    m_selectAccountToReceive->setHeaderData(4, Qt::Horizontal, QString::fromUtf8("Data de Lançamento"));
+    m_selectAccountToReceive->setHeaderData(5, Qt::Horizontal, QString::fromUtf8("Data de Vencimento"));
+    m_selectAccountToReceive->setHeaderData(6, Qt::Horizontal, QString::fromUtf8("Data de Quitação"));
+    m_selectAccountToReceive->setHeaderData(7, Qt::Horizontal, QString::fromUtf8("Valor"));
+    m_selectAccountToReceive->setHeaderData(8, Qt::Horizontal, QString::fromUtf8("Valor Pago"));
+    m_selectAccountToReceive->setHeaderData(9, Qt::Horizontal, QString::fromUtf8("Status"));
 
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(1, new ColumnFinancierDescription);
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(2, new ColumnFinancierDescription);
-    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(3, new ColumnFinancierDate);
+    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(3, new ColumnFinancierDescription);
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(4, new ColumnFinancierDate);
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(5, new ColumnFinancierDate);
-    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(6, new ColumnFinancierMoney);
+    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(6, new ColumnFinancierDate);
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(7, new ColumnFinancierMoney);
-    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(8, new ColumnFinancierAccountPaid);
+    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(8, new ColumnFinancierMoney);
+    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(9, new ColumnFinancierAccountPaid);
 
-    m_ui->tableViewAccountToReceive->setColumnWidth(1, 0.25 * m_ui->tableViewAccountToReceive->width());
-    m_ui->tableViewAccountToReceive->setColumnWidth(2, 0.15 * m_ui->tableViewAccountToReceive->width());
-    m_ui->tableViewAccountToReceive->setColumnWidth(3, 0.11 * m_ui->tableViewAccountToReceive->width());
-    m_ui->tableViewAccountToReceive->setColumnWidth(4, 0.11 * m_ui->tableViewAccountToReceive->width());
-    m_ui->tableViewAccountToReceive->setColumnWidth(5, 0.10 * m_ui->tableViewAccountToReceive->width());
-    m_ui->tableViewAccountToReceive->setColumnWidth(6, 0.10 * m_ui->tableViewAccountToReceive->width());
-    m_ui->tableViewAccountToReceive->setColumnWidth(7, 0.10 * m_ui->tableViewAccountToReceive->width());
+//    m_ui->tableViewAccountToReceive->setColumnWidth(1, 0.25 * m_ui->tableViewAccountToReceive->width());
+//    m_ui->tableViewAccountToReceive->setColumnWidth(2, 0.15 * m_ui->tableViewAccountToReceive->width());
+//    m_ui->tableViewAccountToReceive->setColumnWidth(3, 0.11 * m_ui->tableViewAccountToReceive->width());
+//    m_ui->tableViewAccountToReceive->setColumnWidth(4, 0.11 * m_ui->tableViewAccountToReceive->width());
+//   m_ui->tableViewAccountToReceive->setColumnWidth(5, 0.10 * m_ui->tableViewAccountToReceive->width());
+//    m_ui->tableViewAccountToReceive->setColumnWidth(6, 0.10 * m_ui->tableViewAccountToReceive->width());
+//    m_ui->tableViewAccountToReceive->setColumnWidth(7, 0.10 * m_ui->tableViewAccountToReceive->width());
     m_ui->tableViewAccountToReceive->horizontalHeader()->setStretchLastSection(true);
 }
 
@@ -468,7 +483,7 @@ void AccountToReceiveManager::fillTheFields(QModelIndex currentIndex)
 {
     m_accountToReceiveId = currentIndex.sibling(currentIndex.row(),0).data().toInt();
     m_accountToReceiveRow = m_ui->tableViewAccountToReceive->currentIndex().row();
-    m_accountToReceivePaid = (currentIndex.sibling(currentIndex.row(),8).data().toString().mid(1) == "T")?true:false;
+    m_accountToReceivePaid = (currentIndex.sibling(currentIndex.row(),9).data().toString() == "T")?true:false;
 
     if (m_accountToReceivePaid)
     {
@@ -718,6 +733,7 @@ void AccountToReceiveManager::DeleteAccountToReceive(void)
 
 void AccountToReceiveManager::ShowReport(void)
 {
+    this->setEnabled(false);
     enum enOrderBy
     {
         ObDescription=1,
@@ -741,6 +757,7 @@ void AccountToReceiveManager::ShowReport(void)
         {
            QMessageBox::critical( this, "Erro", "Falha ao carregar arquivo modelo." );
            delete report;
+           this->setEnabled(true);
            return;
         }
 
@@ -804,9 +821,10 @@ void AccountToReceiveManager::ShowReport(void)
         TableViewQuery = TableViewQuery.replace("fac.vencdate as vencdate,","to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate,");
         TableViewQuery = TableViewQuery.replace("case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate,","case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate,");
         TableViewQuery = TableViewQuery.replace("fac.value as value,","to_char(fac.value, 'FM9G999G990D00') as value,");
-        TableViewQuery = TableViewQuery.replace("case when fac.valuepaid is null then 0 else fac.valuepaid end as  valuepaid, case when fac.paid is true then 'T' else 'F' end as paid,", "case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status,");
-        TableViewQuery = TableViewQuery.replace("fac.accounttypeid,","fat.description as accounttype,");
-        TableViewQuery = TableViewQuery.replace( "from fin_accounttoreceive fac",  "from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid ");
+        TableViewQuery = TableViewQuery.replace("case when fac.paid is true then 'T' else 'F' end as paid,", "case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status,");
+        TableViewQuery = TableViewQuery.replace("case when fac.valuepaid is null then 0 else fac.valuepaid end as  valuepaid,","to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid,");
+        //TableViewQuery = TableViewQuery.replace("fac.accounttypeid,","case when tkt.type is null then fat.description else case when tkt.type = 0 then 'CONDOMÍNIO' else 'TX EXTRA' end end as accounttype,");
+        //TableViewQuery = TableViewQuery.replace( "from fin_accounttoreceive fac",  "from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid ");
 
 
         //debug_message("OrderBy = %s\n",OrderBy.toLatin1().data());
@@ -846,6 +864,8 @@ void AccountToReceiveManager::ShowReport(void)
         delete report;
         delete select;
     }
+    this->setEnabled(true);
+
 }
 void AccountToReceiveManager::doCmboTxExtActivacted(int item)
 {

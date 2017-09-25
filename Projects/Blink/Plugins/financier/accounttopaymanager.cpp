@@ -12,7 +12,27 @@
 #include "qradconfig.h"
 #include "qraddebug.h"
 
-#define SQL_SELECT_ACCOUNTTOPAY         "select fac.id, %1 fac.description as description, %1 case when s.nome is null then 'NAO INFORMADO' else s.nome end as fornecedor, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.supplierid, fac.bankid from fin_accounttopay fac left outer join supplier s on fac.supplierid = s.id where fac.removed = false %2 order by %3, fac.description"
+#define SQL_SELECT_ACCOUNTTOPAY \
+"select fac.id, "\
+"   fac.description as description, "\
+"   case when s.nome is null then 'NAO INFORMADO' else s.nome end as fornecedor, "\
+"   fac.issuedate as issuedate, "\
+"   fac.vencdate as vencdate, "\
+"   case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, "\
+"   fac.value as value, "\
+"   case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid,"\
+"   case when fac.paid is true then 'T' else 'F' end as paid, "\
+"   fac.accounttypeid, "\
+"   case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else case when vencdate < current_date then 'V' else 'H' end end end as situation, "\
+"   s.nome as supplier, "\
+"   fb.description as bank, "\
+"   fat.description as accounttype "\
+"   from fin_accounttopay fac "\
+"   inner join fin_accounttype fat on fat.id = fac.accounttypeid "\
+"   left outer join fin_bank fb on fac.bankid = fb.id "\
+"   left outer join supplier s on fac.supplierid = s.id where fac.removed = false %1 order by %2, fac.description "\
+
+//#define SQL_SELECT_ACCOUNTTOPAY         "select fac.id, %1 fac.description as description, %1 case when s.nome is null then 'NAO INFORMADO' else s.nome end as fornecedor, %1 fac.issuedate as issuedate, %1 fac.vencdate as vencdate, %1 case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, %1 fac.value as value, %1 case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, %1 case when fac.paid is true then 'T' else 'F' end as paid, fac.accounttypeid, fac.supplierid, fac.bankid from fin_accounttopay fac left outer join supplier s on fac.supplierid = s.id where fac.removed = false %2 order by %3, fac.description"
 
 #define SQL_SELECT_ACCOUNTTOPAY_REPORT  "select fac.id, fac.description, to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, to_char(fac.value, 'FM9G999G990D00') as value, to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, fat.description as accounttype, s.nome as supplier, fb.description as bank from fin_accounttopay fac inner join fin_accounttype fat on fat.id = fac.accounttypeid left outer join supplier s on fac.supplierid = s.id left outer join fin_bank fb on fac.bankid = fb.id where fac.removed = false %1 order by %2 "
 #define SQL_DELETE_ACCOUNTTOPAY         "update fin_accounttopay set removed = true where id = %1"
@@ -86,7 +106,7 @@ AccountToPayManager::AccountToPayManager(QWidget *parent) :
 
     m_ui->tableViewAccountToPay->setStyleSheet("");
 
-    connect(m_ui->tableViewAccountToPay->horizontalHeader(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), this, SLOT(sortIndicatorChanged(int,Qt::SortOrder)));
+  //  connect(m_ui->tableViewAccountToPay->horizontalHeader(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), this, SLOT(sortIndicatorChanged(int,Qt::SortOrder)));
 
 }
 
@@ -227,18 +247,19 @@ void AccountToPayManager::GetAccountToPay(void)
     }
 
     m_selectAccountToPay->setQuery(QString(SQL_SELECT_ACCOUNTTOPAY)
-                                   .arg(SQL_SELECT_FORMATED)
                                    .arg(m_strAux)
                                    .arg(m_dateStr));
 
     QString strDebug = QString(SQL_SELECT_ACCOUNTTOPAY)
-            .arg(SQL_SELECT_FORMATED)
             .arg(m_strAux)
             .arg(m_dateStr);
 
     debug_message("\nSQL_SELECT_ACCOUNTTOPAY=%s\n", strDebug.toLatin1().data());
 
     m_ui->tableViewAccountToPay->setModel(m_selectAccountToPay);
+
+    m_ui->groupBoxAccounts->setTitle(QString("Contas a Pagar(%1)").arg(m_selectAccountToPay->rowCount()));
+
   //  m_ui->tableViewAccountToPay->show();
     m_ui->tableViewAccountToPay->selectRow(0);
 
@@ -322,6 +343,8 @@ void AccountToPayManager::ConfigHeaderTable(void)
     m_ui->tableViewAccountToPay->hideColumn(9);
     m_ui->tableViewAccountToPay->hideColumn(10);
     m_ui->tableViewAccountToPay->hideColumn(11);
+    m_ui->tableViewAccountToPay->hideColumn(12);
+    m_ui->tableViewAccountToPay->hideColumn(13);
 
     m_selectAccountToPay->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Descrição"));
     m_selectAccountToPay->setHeaderData(2, Qt::Horizontal, QString::fromUtf8("Fornecedor"));
@@ -355,7 +378,9 @@ void AccountToPayManager::fillTheFields(QModelIndex currentIndex)
 {
     m_accountToPayId = currentIndex.sibling(currentIndex.row(),0).data().toInt();
     m_accountToPayRow = m_ui->tableViewAccountToPay->currentIndex().row();
-    m_accountToPayPaid = (currentIndex.sibling(currentIndex.row(),8).data().toString().mid(1) == "T")?true:false;
+    m_accountToPayPaid = (currentIndex.sibling(currentIndex.row(),8).data().toString() == "T")?true:false;
+
+    debug_message( "CONTEUDO DO FIELD 8: %s\n", currentIndex.sibling(currentIndex.row(),8).data().toString().toLatin1().data());
 
     if (m_accountToPayPaid)
     {
@@ -562,6 +587,7 @@ void AccountToPayManager::DeleteAccountToPay(void)
 
 void AccountToPayManager::ShowReport(void)
 {
+    this->setEnabled(false);
     enum enOrderBy
     {
         ObDescription=1,
@@ -587,6 +613,8 @@ void AccountToPayManager::ShowReport(void)
         {
            QMessageBox::critical( this, "Erro", "Falha ao carregar arquivo modelo." );
            delete report;
+           this->setEnabled(true);
+
            return;
         }
         QString OrderBy;
@@ -639,13 +667,17 @@ void AccountToPayManager::ShowReport(void)
         }
 
 
-        select->setQuery(QString(SQL_SELECT_ACCOUNTTOPAY_REPORT)
-                         .arg(m_strAux)
-                         .arg(OrderBy));
+        QString LastQuery = m_selectAccountToPay->query().lastQuery();
 
-        debug_message("SQL: %s\n",QString(SQL_SELECT_ACCOUNTTOPAY_REPORT)
-                                 .arg(m_strAux)
-                                 .arg(OrderBy).toLatin1().data());
+        LastQuery = LastQuery.replace("fac.issuedate as issuedate,","to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate,");
+        LastQuery = LastQuery.replace("fac.vencdate as vencdate,","to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate,");
+        LastQuery = LastQuery.replace("case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate,","case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate,");
+        LastQuery = LastQuery.replace("fac.value as value,","to_char(fac.value, 'FM9G999G990D00') as value,");
+
+
+        select->setQuery(LastQuery);
+
+        debug_message("SQL: %s\n",LastQuery.toLatin1().data());
 
         for (int index = 0; index < select->rowCount(); index++)
         {
@@ -654,9 +686,7 @@ void AccountToPayManager::ShowReport(void)
         }
 
 
-        report->setQuery("account", QString(SQL_SELECT_ACCOUNTTOPAY_REPORT)
-                                                .arg(m_strAux)
-                                                .arg(m_dateStr));
+        report->setQuery("account", LastQuery);
 
         report->setAttributeMoneyValue("TOTAL", total);
         report->setAttributeMoneyValue("TOTAL_PAID", totalPaid);
@@ -669,6 +699,8 @@ void AccountToPayManager::ShowReport(void)
         delete report;
         delete select;
     }
+    this->setEnabled(true);
+
 }
 
 void AccountToPayManager::sortIndicatorChanged(int orderby,Qt::SortOrder sortOrder)

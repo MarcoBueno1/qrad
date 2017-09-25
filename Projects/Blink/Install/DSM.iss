@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "DSM-PRO"
-#define MyAppVersion "1.0.8"
+#define MyAppVersion "1.0.10"
 #define MyAppPublisher "Marco Bueno"
 #define MyAppURL "bueno.marco@gmail.com"
 #define MyAppExeName "main.exe"
@@ -87,6 +87,7 @@ Source: "C:\Qt\5.9.1\mingw53_32\bin\Qt5Xml.dll"; DestDir: "C:\DSM-PRO"; Flags: i
 Source: "C:\Qt\5.9.1\mingw53_32\bin\libgcc_s_dw2-1.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
 Source: "C:\Qt\5.9.1\mingw53_32\bin\libstdc++-6.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
 Source: "C:\Qt\5.9.1\mingw53_32\bin\libwinpthread-1.dll"; DestDir: "C:\DSM-PRO"; Flags: ignoreversion
+
 
 ;------------ Libs QT
 

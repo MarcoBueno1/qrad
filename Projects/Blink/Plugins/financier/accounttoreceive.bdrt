@@ -320,7 +320,7 @@
                                 <Text>
                                     <properties>
                                         <objectName type="QString" >text_1</objectName>
-                                        <geometry type="QRectF" >6,0,467,70</geometry>
+                                        <geometry type="QRectF" >6,0,402,70</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >85,0,0,255</color>
@@ -350,7 +350,7 @@
                                         <font type="QFont" >Verdana,2.5,-1,5,75,0,0,0,0,0</font>
                                         <textFlags type="int" >132</textFlags>
                                         <sizePolicy type="int" >0</sizePolicy>
-                                        <text type="QString" >DESCRIÇÃO</text>
+                                        <text type="QString" >DESCRIÇÃO/AP Torre</text>
                                     </properties>
                                 </Text>
                                 <Text>
@@ -458,7 +458,7 @@
                                         <font type="QFont" >Verdana,2.5,-1,5,75,0,0,0,0,0</font>
                                         <textFlags type="int" >132</textFlags>
                                         <sizePolicy type="int" >0</sizePolicy>
-                                        <text type="QString" >CLIENTE</text>
+                                        <text type="QString" >DEVEDOR / CONDÔMINO</text>
                                     </properties>
                                 </Text>
                                 <Text>
@@ -717,7 +717,7 @@
                                 <Field>
                                     <properties>
                                         <objectName type="QString" >field</objectName>
-                                        <geometry type="QRectF" >6,4,467,35</geometry>
+                                        <geometry type="QRectF" >6,1.35417,406,41</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >0,0,0,255</color>

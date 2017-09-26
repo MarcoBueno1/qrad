@@ -60,7 +60,8 @@ SOURCES += financierplugin.cpp \
     editextratx.cpp \
     editcondtax.cpp \
     ticketpayment.cpp \
-    actoreceivereport.cpp
+    actoreceivereport.cpp \
+    actopayreport.cpp
 
 HEADERS += financierplugin.h \
     accounttypemanager.h \
@@ -100,7 +101,8 @@ HEADERS += financierplugin.h \
     editextratx.h \
     editcondtax.h \
     ticketpayment.h \
-    actoreceivereport.h
+    actoreceivereport.h \
+    actopayreport.h
  
 
 win32:LIBS += -L../../../../libs/QRadCore/release \
@@ -172,7 +174,8 @@ FORMS += accounttypemanager.ui \
     editextratx.ui \
     editcondtax.ui \
     ticketpayment.ui \
-    actoreceivereport.ui
+    actoreceivereport.ui \
+    actopayreport.ui
 
 target.path = $${PREFIX}/bin 
 INSTALLS += target

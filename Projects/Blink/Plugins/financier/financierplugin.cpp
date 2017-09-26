@@ -10,6 +10,7 @@
 #include "managerfiles.h"
 #include "accounttopayregister.h"
 #include "actoreceivereport.h"
+#include "actopayreport.h"
 
 FinancierPlugin::FinancierPlugin()
 {
@@ -63,6 +64,7 @@ void FinancierPlugin::onLoad(QRadPluginContainer* container)
     appendAction(TEST_EXPORT_PDF);
     appendAction(TEST_ACCOUNTTOREVEIVEMANAGER);
     appendAction(ACTION_ACCOUNT_TO_RECEIVE_REPORT);
+    appendAction(ACTION_ACCOUNT_TO_PAY_REPORT);
 //    appendAction(ACTION_TEST_SUPPLIER_HTTP_RESP);
 
 
@@ -241,6 +243,13 @@ void FinancierPlugin::Process( const QString& action )
         report->exec();
         delete report;
     }
+    else if( ACTION_ACCOUNT_TO_PAY_REPORT == action )
+    {
+        actopayreport *report = new actopayreport ;
+        report->exec();
+        delete report;
+    }
+
 //    else if( ACTION_TEST_SUPPLIER_HTTP_RESP == action)
 //    {
 //        Editsupplier *edt = new Editsupplier(m_parent) ;

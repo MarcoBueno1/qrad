@@ -51,10 +51,10 @@ QString actopayreport::MountSQLReport()
                                         " inner join fin_accounttype fat on fat.id = fac.accounttypeid "\
                                         " left outer join supplier s on fac.supplierid = s.id "\
                                         " left outer join fin_bank fb on fac.bankid = fb.id "\
-                                        " where fac.removed = false %1 order by %2 "
+                                        " where fac.removed = false %1 %2 "
 
     QString aux;
-    QString Where;
+    QString Where = " and ";
     QString OrderBy;
     if( ui->groupBoxFilterData->isChecked() )
     {
@@ -79,7 +79,7 @@ QString actopayreport::MountSQLReport()
 
     if( ui->groupBoxFilterApenasDe->isChecked() )
     {
-       if( Where.length())
+        if( Where.length() > 5)
             Where += " and ";
 
        Where += QString(" s.id = %1 ").arg(m_Fornecedor->index(ui->comboBoxFornecedor->currentIndex(),0).data().toInt());
@@ -92,14 +92,14 @@ QString actopayreport::MountSQLReport()
     }
     else if (ui->checkBoxPaid->isChecked())
     {
-        if( Where.length())
+        if( Where.length() > 5)
              Where += " and ";
 
         Where += " fac.paid = true ";
     }
     else
     {
-        if( Where.length())
+        if( Where.length() > 5)
              Where += " and ";
 
         Where += " fac.paid = false ";
@@ -111,7 +111,7 @@ QString actopayreport::MountSQLReport()
 
         GET_COMBOBOX_ID(accountTypeId, ui->comboBoxTipodeConta);
 
-        if( Where.length())
+        if( Where.length() > 5)
              Where += " and ";
 
         Where += QString(" fac.accounttypeid = %1 ").arg(accountTypeId);
@@ -121,8 +121,8 @@ QString actopayreport::MountSQLReport()
     if( ui->checkBoxOrderIssue->isChecked() )
     {
         if( !OrderBy.length() )
-            OrderBy = " order by ";
-        if( OrderBy != "order by ")
+            OrderBy =  " order by ";
+        if( OrderBy != " order by ")
             OrderBy += ",";
 
         OrderBy += " fac.issuedate";
@@ -130,8 +130,8 @@ QString actopayreport::MountSQLReport()
     if( ui->checkBoxOrderVncto->isChecked() )
     {
         if( !OrderBy.length() )
-            OrderBy = " order by ";
-        if( OrderBy != "order by ")
+            OrderBy =  " order by ";
+        if( OrderBy != " order by ")
             OrderBy += ",";
 
         OrderBy += " fac.vencdate";
@@ -139,8 +139,8 @@ QString actopayreport::MountSQLReport()
     if( ui->checkBoxOrderPayment->isChecked() )
     {
         if( !OrderBy.length() )
-            OrderBy = " order by ";
-        if( OrderBy != "order by ")
+            OrderBy =  " order by ";
+        if( OrderBy != " order by ")
             OrderBy += ",";
 
         OrderBy += " fac.paiddate";
@@ -148,8 +148,8 @@ QString actopayreport::MountSQLReport()
     if( ui->checkBoxOrderPessoa->isChecked() )
     {
         if( !OrderBy.length() )
-            OrderBy = " order by ";
-        if( OrderBy != "order by ")
+            OrderBy =  " order by ";
+        if( OrderBy != " order by ")
             OrderBy += ",";
 
         OrderBy += " s.name";
@@ -157,8 +157,8 @@ QString actopayreport::MountSQLReport()
     if( ui->checkBoxOrderSituation->isChecked() )
     {
         if( !OrderBy.length() )
-            OrderBy = " order by ";
-        if( OrderBy != "order by ")
+            OrderBy =  " order by ";
+        if( OrderBy != " order by ")
             OrderBy += ",";
 
         OrderBy += " fac.paid";

@@ -32,7 +32,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -54,7 +54,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -78,7 +78,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="doubleSpinBoxTxCondominial"/>
+      <widget class="QDoubleSpinBox" name="doubleSpinBoxTxCondominial">
+       <property name="maximum">
+        <double>9999.989999999999782</double>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QLabel" name="Lblm2">

@@ -8,7 +8,10 @@ typedef enum tp_operation
 {
     tpRegistered,
     tpLiquidated,
+    tpDeed,
+    tpChanges,
     tpOther
+
 
 }QRAD_BANKTKT_TYPEOP, *PQRAD_BANKTKT_TYPEOP;
 

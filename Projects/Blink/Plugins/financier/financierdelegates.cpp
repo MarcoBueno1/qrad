@@ -2,6 +2,7 @@
 #include "qradshared.h"
 #include "qradmoney.h"
 #include "ticket.h"
+#include "bankticket.h"
 
 #include <QColor>
 #include <QPainter>
@@ -491,3 +492,5 @@ QVariant ColumnApTower::FormatValue(QVariant value) const
    Tower =text.mid(1) + Tower;
    return Tower;
 }
+
+

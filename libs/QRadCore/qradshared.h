@@ -190,6 +190,7 @@
 #define BG_COLOR_BLUE           QString("background-color: rgb(0, 85, 255);")
 #define BG_COLOR_RED            QString("background-color: red;")
 #define BG_COLOR_ORANGE         QString("background-color: rgb(255, 170, 0);")
+#define BG_COLOR_GREEN          QString("background-color: green;")
 
 #define AUTO_CONFIG_FOCUS       QString("QLineEdit{ %1 %2 } QLineEdit:focus{ %3 %4 %5 %6}").arg(FG_COLOR_NORMAL).arg(BG_COLOR_NORMAL).arg(FG_COLOR_FOCUSED).arg(BG_COLOR_FOCUSED).arg(FG_SEL_COLOR_FOCUSED).arg(BG_SEL_COLOR_FOCUSED)
 

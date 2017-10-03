@@ -637,3 +637,60 @@ QVariant ColumnImageMail::FormatValue(QVariant value) const
 
    return strType;
 }
+
+void ColumnRetBankAndPaid::paint(QPainter *painter,
+                        const QStyleOptionViewItem &option,
+                        const QModelIndex &index) const
+{
+    QVariant PaidValue = index.model()->data(index, Qt::DisplayRole);
+    QVariant Type = index.sibling(index.row(),6).data();
+
+    QStyleOptionViewItem myOption = option;
+
+    QString strText = FormatValue(PaidValue).toString();
+
+
+    switch(Type.toInt())
+    {
+      case 0:
+                        strText = "Registrado";
+                        painter->fillRect(option.rect, BG_COLOR_YELLOW);
+                        break;
+      case 1:
+                        debug_message( "tpLiquidated = Vlr: %s, orig: %s\n",strText.toLatin1().data(),PaidValue.toString().toLatin1().data());
+                        painter->fillRect(option.rect, BG_FIN_COLOR_GREEN);
+                        break;
+      case 2:
+                        strText = "Baixa";
+                        painter->fillRect(option.rect, BG_COLOR_YELLOW);
+                        break;
+      case 3:
+                        strText = "Alteração";
+                        painter->fillRect(option.rect, BG_COLOR_YELLOW);
+                        break;
+      case 4:
+                        strText = "Outros";
+                        painter->fillRect(option.rect, BG_COLOR_YELLOW);
+                        break;
+
+    }
+
+//    if( (Value.toString() != PaidValue.toString()) && ( Discount.toDouble() > 0.00 ) )
+//        if( PaidValue.toDouble() > 0.00 )
+//        {
+//            double DiscountR = Value.toDouble() - (Value.toDouble()/100*Discount.toDouble());
+//            if( (DiscountR-1) > PaidValue.toDouble())
+//                painter->fillRect(option.rect, BG_FIN_COLOR_RED);
+//        }
+
+    /* Como sera o alinhamento */
+    myOption.displayAlignment = (Qt::AlignRight | Qt::AlignVCenter);
+    drawDisplay(painter, myOption, myOption.rect, strText);
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnRetBankAndPaid::FormatValue(QVariant value) const
+{
+
+   return QRadMoney::MoneyHumanForm2(value.toString().replace(",",".").toDouble());
+}

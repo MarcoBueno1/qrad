@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>643</width>
-    <height>502</height>
+    <width>730</width>
+    <height>554</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="pushButtonOk">
    <property name="geometry">
     <rect>
-     <x>550</x>
-     <y>474</y>
+     <x>630</x>
+     <y>520</y>
      <width>81</width>
      <height>22</height>
     </rect>
@@ -32,8 +32,8 @@
   <widget class="QPushButton" name="pushButtonCancel">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>474</y>
+     <x>540</x>
+     <y>520</y>
      <width>81</width>
      <height>22</height>
     </rect>
@@ -47,7 +47,7 @@
     <rect>
      <x>2</x>
      <y>4</y>
-     <width>631</width>
+     <width>711</width>
      <height>468</height>
     </rect>
    </property>
@@ -59,7 +59,7 @@
      <rect>
       <x>4</x>
       <y>18</y>
-      <width>621</width>
+      <width>701</width>
       <height>441</height>
      </rect>
     </property>
@@ -67,6 +67,66 @@
      <bool>false</bool>
     </attribute>
    </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>5</x>
+     <y>475</y>
+     <width>370</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Filtrar Ocorrência </string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QRadioButton" name="radioButtonTodos">
+      <property name="text">
+       <string>Todos</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1" rowspan="2">
+     <widget class="QRadioButton" name="radioButtonRegistrados">
+      <property name="text">
+       <string>Registrados</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QRadioButton" name="radioButtonAlterados">
+      <property name="text">
+       <string>Alterados</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" rowspan="2">
+     <widget class="QRadioButton" name="radioButtonLiquidados">
+      <property name="text">
+       <string>Liquidados</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QRadioButton" name="radioButtonBaixados">
+      <property name="text">
+       <string>Baixados</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QRadioButton" name="radioButtonOutros">
+      <property name="text">
+       <string>Outros</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

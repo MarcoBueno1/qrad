@@ -664,6 +664,11 @@ MotivoRejeicao1=04-Compensação Eletrônica.
 */
 #define TKT_LIQUIDATED "toRetornoLiquidado"
 #define TKT_REGISTERED "toRetornoRegistroConfirmado"
+#define TKT_CHANGES "Alteracao"
+#define TKT_DEED "Baixa"
+
+
+
 
 bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QString FileName )
 {
@@ -731,11 +736,21 @@ bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QStri
           if(tickets)
           {
               if( TKT_LIQUIDATED == TipoOperacao )
+              {
                   tpOp = tpLiquidated;
+                  debug_message( "tpLiquidated = Vlr: %s Pagador:%s\n",VlrRecebido.toLatin1().data(), Nome.toLatin1().data());
+              }
               else if(TKT_REGISTERED == TipoOperacao )
                   tpOp = tpRegistered;
+              else if( TipoOperacao.contains(TKT_CHANGES))
+                  tpOp = tpChanges;
+              else if( TipoOperacao.contains(TKT_DEED))
+                  tpOp = tpDeed;
               else
+              {
                   tpOp = tpOther;
+                  debug_message( "tpOther = %s\n",TipoOperacao.toLatin1().data());
+              }
 
 
               BankTicket *pNew = new BankTicket("",

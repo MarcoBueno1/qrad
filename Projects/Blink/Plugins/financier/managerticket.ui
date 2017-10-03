@@ -466,6 +466,23 @@
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
+              <widget class="QRadioButton" name="radioButtonVencimento">
+               <property name="text">
+                <string>Dt. Vencimento</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radioButtonCriacao">
+               <property name="text">
+                <string>Dt.Criação</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QDateEdit" name="dateEditSince">
                <property name="calendarPopup">
                 <bool>true</bool>

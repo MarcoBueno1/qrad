@@ -83,6 +83,10 @@ Managerticket::Managerticket(QWidget *parent) :
     connect(ui->radioButtonTxExtra,SIGNAL(clicked()), this, SLOT(doRefresh()));
     connect(ui->pushButtonExportar,SIGNAL(clicked()), this, SLOT(doExport()));
     connect(ui->pushButtonImport,SIGNAL(clicked()), this, SLOT(doImport()));
+
+    connect(ui->radioButtonCriacao,SIGNAL(clicked(bool)), this, SLOT(CmbBxPeriodClicked(bool)));
+    connect(ui->radioButtonVencimento,SIGNAL(clicked(bool)), this, SLOT(CmbBxPeriodClicked(bool)));
+
  //   connect(ui->pushButtonEditDweller,SIGNAL(clicked()), this, SLOT(doEditDweller()));
 
 
@@ -318,7 +322,7 @@ void Managerticket::LoadTableView()
     {
         dtInicio = ui->dateEditSince->date();
         dtFim    = ui->dateEditUntil->date();
-        aux += QString(" %1 %2 (t.vencto between '%3' and '%4' )").arg(bHasWhere?"":" Where ").arg(!bHasWhere?"":bNeedOr?" Or ":" and ").arg(dtInicio.toString(FMT_DATE_DB)).arg(dtFim.toString(FMT_DATE_DB));
+        aux += QString(" %1 %2 (t.%5 between '%3' and '%4' )").arg(bHasWhere?"":" Where ").arg(!bHasWhere?"":bNeedOr?" Or ":" and ").arg(dtInicio.toString(FMT_DATE_DB)).arg(dtFim.toString(FMT_DATE_DB)).arg(ui->radioButtonCriacao->isChecked()?"issuedate":"vencto");
     }
     else  /// modo automatico, devem entrar atrasados e todos do dia por padrao
     {

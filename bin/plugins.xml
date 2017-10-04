@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 
 <pluginlist>
     <!-- Pre-sell Plugin -->
@@ -32,5 +32,7 @@
         <menu path="Financeiro/Freferencias" title="Arquiovos de Remessa" action="ManageShipper" hotkey="CTRL+E" permission="gerenciarboletos" />
         <menu path="Configurações" title="Boletos" action="ManageTicketConfig" hotkey="CTRL+Y" permission="gerenciarboletos" />
         <menu path="Cadastro/Arquivos" title="Arquivos" action="ManageFiles" hotkey="CTRL+A" permission="gerenciarboletos" />
+        <menu path="Relatorios/Financeiro" title="Contas a Receber" action="AccounttoReceiveReport" hotkey="CTRL+R" permission="gerarrelatorios" />
+        <menu path="Relatorios/Financeiro" title="Contas a Pagar" action="AccounttoPayReport" hotkey="CTRL+T" permission="gerarrelatorios" />
     </plugin>
 </pluginlist>

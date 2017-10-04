@@ -267,12 +267,14 @@ QString actoReceiveReport::MountSQLReport()
 void actoReceiveReport::BuildReport(bool)
 {
 
+    this->setEnabled(false);
   QRadReportManager   *report = new QRadReportManager();
 
   if ( !report->load( "accounttoreceive" ) )
   {
      QMessageBox::critical( this, "Erro", "Falha ao carregar arquivo modelo." );
      delete report;
+     this->setEnabled(true);
      return;
   }
 
@@ -305,5 +307,6 @@ void actoReceiveReport::BuildReport(bool)
 
   delete report;
   delete select;
+  this->setEnabled(true);
 
 }

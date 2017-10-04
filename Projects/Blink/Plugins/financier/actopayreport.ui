@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Relatório de Contas a Pagar</string>
   </property>
   <widget class="QPushButton" name="pushButtonBuild">
    <property name="geometry">

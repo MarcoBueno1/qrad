@@ -172,12 +172,14 @@ QString actopayreport::MountSQLReport()
 void actopayreport::BuildReport(bool)
 {
 
+  this->setEnabled(false);
   QRadReportManager   *report = new QRadReportManager();
 
   if ( !report->load( "accounttopay" ) )
   {
      QMessageBox::critical( this, "Erro", "Falha ao carregar arquivo modelo." );
      delete report;
+     this->setEnabled(true);
      return;
   }
 
@@ -210,5 +212,6 @@ void actopayreport::BuildReport(bool)
 
   delete report;
   delete select;
+  this->setEnabled(true);
 
 }

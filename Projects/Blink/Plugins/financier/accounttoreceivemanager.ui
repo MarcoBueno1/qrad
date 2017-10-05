@@ -1215,14 +1215,21 @@ selection-color: rgb(255, 255, 255);</string>
         <property name="spacing">
          <number>0</number>
         </property>
-        <item row="0" column="0">
+        <item row="1" column="0">
          <widget class="QCheckBox" name="checkBoxAccountOpen">
           <property name="text">
-           <string>Contas em A&amp;berto</string>
+           <string>A vencer</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="checkBoxVencidas">
+          <property name="text">
+           <string>Vencidas</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
          <widget class="QCheckBox" name="checkBoxAccountPaid">
           <property name="text">
            <string>Contas &amp;Pagas</string>
@@ -1295,7 +1302,6 @@ selection-color: rgb(255, 255, 255);</string>
   <tabstop>radioButtonVencDate</tabstop>
   <tabstop>radioButtonPaidDate</tabstop>
   <tabstop>checkBoxAccountOpen</tabstop>
-  <tabstop>checkBoxAccountPaid</tabstop>
   <tabstop>groupBoxAccountType</tabstop>
   <tabstop>comboBoxAccountTypeFilter</tabstop>
   <tabstop>groupBoxClient</tabstop>
@@ -1309,12 +1315,6 @@ selection-color: rgb(255, 255, 255);</string>
   <tabstop>btnExit</tabstop>
  </tabstops>
  <resources>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
-  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>

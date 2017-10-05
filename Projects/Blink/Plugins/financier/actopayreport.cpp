@@ -43,7 +43,7 @@ QString actopayreport::MountSQLReport()
                                         " case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, "\
                                         " to_char(fac.value, 'FM9G999G990D00') as value, "\
                                         " to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid, "\
-                                        " case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, "\
+                                        " case when fac.paid = true then 'PAGO' when current_date > fac.vencdate then 'VENCIDA' else 'A VENCER' end as status, "\
                                         " fat.description as accounttype, "\
                                         " s.nome as supplier, "\
                                         " fb.description as bank "\
@@ -55,6 +55,7 @@ QString actopayreport::MountSQLReport()
 
     QString aux;
     QString Where = " and ";
+    QString WhereVencidas;
     QString OrderBy;
     if( ui->groupBoxFilterData->isChecked() )
     {
@@ -83,6 +84,7 @@ QString actopayreport::MountSQLReport()
             Where += " and ";
 
        Where += QString(" s.id = %1 ").arg(m_Fornecedor->index(ui->comboBoxFornecedor->currentIndex(),0).data().toInt());
+       WhereVencidas += QString(" and  s.id = %1 ").arg(m_Fornecedor->index(ui->comboBoxFornecedor->currentIndex(),0).data().toInt());
     }
 
     //// p
@@ -115,6 +117,7 @@ QString actopayreport::MountSQLReport()
              Where += " and ";
 
         Where += QString(" fac.accounttypeid = %1 ").arg(accountTypeId);
+        WhereVencidas += QString(" and fac.accounttypeid = %1 ").arg(accountTypeId);
     }
 
     /// order by
@@ -164,9 +167,36 @@ QString actopayreport::MountSQLReport()
         OrderBy += " fac.paid";
     }
 
+    if( ui->checkBoxOrderTipo->isChecked() )
+    {
+        if( !OrderBy.length() )
+            OrderBy =  " order by ";
+        if( OrderBy != " order by ")
+            OrderBy += ",";
+
+        OrderBy += " fat.description";
+
+    }
 
 
-    aux = QString(SQL_SELECT_ACCOUNTTOPAY_REPORT).arg(Where).arg(OrderBy);
+
+    if( ui->checkBoxVencidas->isChecked() )
+    {
+        QString WhereUnion = QString(" and ( fac.paid = false and fac.vencdate < '%1') %2 ")
+                .arg(QDate::currentDate().toString(FMT_DATE_DB))
+                .arg(WhereVencidas);
+        QString Union = "(" + QString(SQL_SELECT_ACCOUNTTOPAY_REPORT).arg(WhereUnion).arg(OrderBy);
+        aux  =  QString(" %1) union  ( ")
+                .arg(Union);
+        aux += QString(SQL_SELECT_ACCOUNTTOPAY_REPORT).arg(Where).arg(OrderBy);
+        aux += ") ";
+        aux += OrderBy.replace("fac.paid", "status").remove("fac.").replace("s.name", "supplier" ).replace("fat.description", "accounttype");
+    }
+    else
+    {
+        aux = QString(SQL_SELECT_ACCOUNTTOPAY_REPORT).arg(Where).arg(OrderBy);
+
+    }
     return aux;
 }
 void actopayreport::BuildReport(bool)

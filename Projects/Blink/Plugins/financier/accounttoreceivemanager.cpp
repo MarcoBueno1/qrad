@@ -26,7 +26,9 @@
                                     " fac.value as value, case when fac.valuepaid is null then 0 else fac.valuepaid end as "\
                                     " valuepaid, case when fac.paid is true then 'T' else 'F' end as paid, "\
                                     " case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else "\
-                                    " case when vencdate < current_date then 'V' else 'H' end end end as situation "\
+                                    " case when vencdate < current_date then 'V' else 'H' end end end as situation, "\
+                                    " case when t.name is null then '' else t.name end as torre,"\
+                                    " case when a.id is null then 0 else a.id end as apart"\
                                     " from fin_accounttoreceive fac "\
                                     " %1 join ticket tkt on tkt.accountid = fac.id %2 "\
                                     " %1 join dweller c on tkt.clientid = c.id "\
@@ -81,6 +83,7 @@ AccountToReceiveManager::AccountToReceiveManager(QWidget *parent) :
 
     m_ui->checkBoxAccountOpen->setChecked(true);
     m_ui->checkBoxAccountPaid->setChecked(true);
+    m_ui->checkBoxVencidas->setChecked(true);
 
     m_ui->groupBoxAccountType->setChecked(false);
     m_ui->groupBoxClient->setChecked(false);
@@ -124,6 +127,7 @@ AccountToReceiveManager::AccountToReceiveManager(QWidget *parent) :
     connect(m_ui->radioButtonPaidDate, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
     connect(m_ui->checkBoxAccountOpen, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
     connect(m_ui->checkBoxAccountPaid, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
+    connect(m_ui->checkBoxVencidas, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
     connect(m_ui->checkBoxPrevalecerAPTorre, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
     connect(m_ui->groupBoxDate, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
     connect(m_ui->groupBoxAccountType, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
@@ -207,6 +211,7 @@ void AccountToReceiveManager::GetAccountToReceive(void)
    QString Where;
    QString OrderBy;
    QString PrevalecOrderBy;
+   QString WhereVencidas;
 
    if( m_ui->checkBoxPrevalecerAPTorre->isChecked())
    {
@@ -216,10 +221,10 @@ void AccountToReceiveManager::GetAccountToReceive(void)
 
 
 
-//    " %1 join ticket tkt on tkt.accountid = fac.id %2 "\
-//    " %1 join dweller c on tkt.clientid = c.id "\
-//    " %1 join ap a on c.ap = a.id "\
-//    " %1 join tower t on c.tower = t.id %3"\
+//    " %1 join ticket tkt on tkt.accountid = fac.id %2 "
+//    " %1 join dweller c on tkt.clientid = c.id "
+//    " %1 join ap a on c.ap = a.id "
+//    " %1 join tower t on c.tower = t.id %3"
 //    " %4 where fac.removed = false %5 %6"
 
 //    m_InnerJoinTicket ="";
@@ -279,6 +284,7 @@ void AccountToReceiveManager::GetAccountToReceive(void)
 
         GET_COMBOBOX_ID(accountTypeId, m_ui->comboBoxAccountTypeFilter);
         Where += QString(" fac.accounttypeid = %1 ").arg(accountTypeId);
+        WhereVencidas += QString(" and fac.accounttypeid = %1 ").arg(accountTypeId);
 
         connect(m_ui->comboBoxAccountTypeFilter, SIGNAL(currentIndexChanged(int)), this, SLOT(GetAccountToReceive()));
     }
@@ -293,6 +299,7 @@ void AccountToReceiveManager::GetAccountToReceive(void)
 
         GET_COMBOBOX_ID(clientId, m_ui->comboBoxClientFilter);
         Where += QString(" fac.clientid = %1 ").arg(clientId);
+        WhereVencidas += QString(" and fac.clientid = %1 ").arg(clientId);
 
         connect(m_ui->comboBoxClientFilter, SIGNAL(currentIndexChanged(int)), this, SLOT(GetAccountToReceive()));
     }
@@ -355,17 +362,52 @@ void AccountToReceiveManager::GetAccountToReceive(void)
 //            m_InnerJoinTicket.insert(strlen(" inner join ticket tkt on tkt.accountid = fac.id ")," and tkt.type = 1 " + aux2);
     }
 
+    QString TableViewQuery;
 
-    QString TableViewQuery = QString(SQL_SELECT_ACCOUNTTORECEIVE)
-            .arg(JoinType)
-            .arg(TicketType)
-            .arg(Tower)
-            .arg(ExtraTaxJoin)
-            .arg(Where)
-            .arg(PrevalecOrderBy);
+    if( m_ui->checkBoxVencidas->isChecked() )
+    {
+        QString WhereUnion = QString(" and ( fac.paid = false and fac.vencdate < '%1') %2 ")
+                .arg(QDate::currentDate().toString(FMT_DATE_DB))
+                .arg(WhereVencidas);
+        QString Union = "( " +  QString(SQL_SELECT_ACCOUNTTORECEIVE)
+                .arg(JoinType)
+                .arg(TicketType)
+                .arg(Tower)
+                .arg(ExtraTaxJoin)
+                .arg(WhereUnion)
+                .arg(PrevalecOrderBy);
 
-    TableViewQuery = TableViewQuery.replace("fac.accounttypeid,","case when tkt.type is null then fat.description else case when tkt.type = 0 then 'CONDOMÍNIO' else 'TX EXTRA' end end as accounttype,");
-    TableViewQuery = TableViewQuery.replace( "from fin_accounttoreceive fac",  "from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid ");
+        TableViewQuery  =  QString(" %1) union ( ")
+                .arg(Union);
+
+        TableViewQuery += QString(SQL_SELECT_ACCOUNTTORECEIVE)
+                .arg(JoinType)
+                .arg(TicketType)
+                .arg(Tower)
+                .arg(ExtraTaxJoin)
+                .arg(Where)
+                .arg(PrevalecOrderBy);
+        TableViewQuery += QString(" ) ") + QString("order by ") + PrevalecOrderBy.replace("t.name", "torre").replace("c.name", "client").replace("fac.paid", "status").replace("a.id", "apart").remove("fac.");
+    }
+    else
+    {
+
+        TableViewQuery = QString(SQL_SELECT_ACCOUNTTORECEIVE)
+                .arg(JoinType)
+                .arg(TicketType)
+                .arg(Tower)
+                .arg(ExtraTaxJoin)
+                .arg(Where)
+                .arg(PrevalecOrderBy);
+    }
+
+
+
+
+    TableViewQuery = TableViewQuery.replace("fac.accounttypeid,",
+                                            "case when tkt.type is null then fat.description else case when tkt.type = 0 then 'CONDOMÍNIO' else 'TX EXTRA' end end as accounttype,");
+    TableViewQuery = TableViewQuery.replace( "from fin_accounttoreceive fac",
+                                             "from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid ");
 
 
     m_selectAccountToReceive->setQuery(TableViewQuery);
@@ -448,6 +490,8 @@ void AccountToReceiveManager::ConfigHeaderTable(void)
 //    m_ui->tableViewAccountToReceive->hideColumn(9);
     m_ui->tableViewAccountToReceive->hideColumn(10);
     m_ui->tableViewAccountToReceive->hideColumn(11);
+    m_ui->tableViewAccountToReceive->hideColumn(12);
+    m_ui->tableViewAccountToReceive->hideColumn(13);
 
     m_selectAccountToReceive->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Descrição/AP Torre"));
     m_selectAccountToReceive->setHeaderData(2, Qt::Horizontal, QString::fromUtf8("Devedor / Condômino"));
@@ -821,7 +865,8 @@ void AccountToReceiveManager::ShowReport(void)
         TableViewQuery = TableViewQuery.replace("fac.vencdate as vencdate,","to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate,");
         TableViewQuery = TableViewQuery.replace("case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate,","case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate,");
         TableViewQuery = TableViewQuery.replace("fac.value as value,","to_char(fac.value, 'FM9G999G990D00') as value,");
-        TableViewQuery = TableViewQuery.replace("case when fac.paid is true then 'T' else 'F' end as paid,", "case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status,");
+        TableViewQuery = TableViewQuery.replace("case when fac.paid is true then 'T' else 'F' end as paid,",
+                                                "case when fac.paid = true then 'PAGO' when current_date > fac.vencdate then 'VENCIDA' else 'A VENCER' end as status,");
         TableViewQuery = TableViewQuery.replace("case when fac.valuepaid is null then 0 else fac.valuepaid end as  valuepaid,","to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid,");
         //TableViewQuery = TableViewQuery.replace("fac.accounttypeid,","case when tkt.type is null then fat.description else case when tkt.type = 0 then 'CONDOMÍNIO' else 'TX EXTRA' end end as accounttype,");
         //TableViewQuery = TableViewQuery.replace( "from fin_accounttoreceive fac",  "from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid ");

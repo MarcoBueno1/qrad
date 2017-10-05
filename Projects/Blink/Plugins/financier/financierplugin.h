@@ -36,6 +36,7 @@
 #define ACTION_TEST_SUPPLIER_HTTP_RESP              "TestHTTPREsponse"
 #define TEST_EXPORT_PDF                             "TestExportPDF"
 #define TEST_ACCOUNTTOREVEIVEMANAGER                "TestAccountToReceiveManager"
+#define TEST_ACCOUNTTOPAYMANAGER                    "TestAccountToPayManager"
 #define ACTION_ACCOUNT_TO_RECEIVE_REPORT            "AccounttoReceiveReport"
 #define ACTION_ACCOUNT_TO_PAY_REPORT                "AccounttoPayReport"
 

@@ -205,9 +205,13 @@ QVariant ColumnFinancierAccountPaid::FormatValue(QVariant value) const
     {
         paid = QString::fromUtf8("PAGO");
     }
+    else if (value.toString().mid(0) == "V")
+    {
+        paid = QString::fromUtf8("VENCIDA");
+    }
     else
     {
-        paid = QString::fromUtf8("EM ABERTO");
+        paid = QString::fromUtf8("A VENCER");
     }
 
     return paid;

@@ -63,6 +63,7 @@ void FinancierPlugin::onLoad(QRadPluginContainer* container)
     appendAction(ACTION_NEW_ACCOUNTTOPAY);
     appendAction(TEST_EXPORT_PDF);
     appendAction(TEST_ACCOUNTTOREVEIVEMANAGER);
+    appendAction(TEST_ACCOUNTTOPAYMANAGER);
     appendAction(ACTION_ACCOUNT_TO_RECEIVE_REPORT);
     appendAction(ACTION_ACCOUNT_TO_PAY_REPORT);
 //    appendAction(ACTION_TEST_SUPPLIER_HTTP_RESP);
@@ -236,6 +237,14 @@ void FinancierPlugin::Process( const QString& action )
             m_accountToReceiveManager = new AccountToReceiveManager(m_parent);
         }
         m_accountToReceiveManager->Test();
+    }
+    else if( TEST_ACCOUNTTOPAYMANAGER == action )
+    {
+        if (!m_accountToPayManager)
+        {
+            m_accountToPayManager = new AccountToPayManager(m_parent);
+        }
+        m_accountToPayManager->Test();
     }
     else if( ACTION_ACCOUNT_TO_RECEIVE_REPORT == action )
     {

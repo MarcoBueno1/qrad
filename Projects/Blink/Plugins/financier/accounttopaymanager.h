@@ -19,6 +19,7 @@ public:
     AccountToPayManager(QWidget *parent = 0);
     ~AccountToPayManager();
 
+    void Test();
 public slots:
     void sortIndicatorChanged(int orderby, Qt::SortOrder sortOrder);
 protected:

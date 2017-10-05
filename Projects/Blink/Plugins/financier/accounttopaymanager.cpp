@@ -14,8 +14,8 @@
 
 #define SQL_SELECT_ACCOUNTTOPAY \
 "select fac.id, "\
-"   fac.description as description, "\
 "   case when s.nome is null then 'NAO INFORMADO' else s.nome end as fornecedor, "\
+"   fac.description as description, "\
 "   fac.issuedate as issuedate, "\
 "   fac.vencdate as vencdate, "\
 "   case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, "\
@@ -66,6 +66,7 @@ AccountToPayManager::AccountToPayManager(QWidget *parent) :
 
     m_ui->checkBoxAccountOpen->setChecked(true);
     m_ui->checkBoxAccountPaid->setChecked(true);
+    m_ui->checkBoxVencidas->setChecked(true);
 
     m_ui->groupBoxAccountType->setChecked(false);
     m_ui->groupBoxSupplier->setChecked(false);
@@ -161,6 +162,7 @@ void AccountToPayManager::closeEvent(QCloseEvent *event)
 
 void AccountToPayManager::GetAccountToPay(void)
 {
+    QString WhereVencidas;
     m_strAux = "";
     if (m_ui->radioButtonIssueDate->isChecked())
     {
@@ -214,6 +216,7 @@ void AccountToPayManager::GetAccountToPay(void)
 
         GET_COMBOBOX_ID(accountTypeId, m_ui->comboBoxAccountTypeFilter);
         m_strAux += QString(" fac.accounttypeid = %1 ").arg(accountTypeId);
+        WhereVencidas += QString("and fac.accounttypeid = %1 ").arg(accountTypeId);
 
         connect(m_ui->comboBoxAccountTypeFilter, SIGNAL(currentIndexChanged(int)), this, SLOT(GetAccountToPay()));
     }
@@ -228,6 +231,7 @@ void AccountToPayManager::GetAccountToPay(void)
 
         GET_COMBOBOX_ID(supplierId, m_ui->comboBoxSupplierFilter);
         m_strAux += QString(" fac.supplierid = %1 ").arg(supplierId);
+        WhereVencidas += QString("and fac.supplierid = %1 ").arg(supplierId);
 
         connect(m_ui->comboBoxSupplierFilter, SIGNAL(currentIndexChanged(int)), this, SLOT(GetAccountToPay()));
     }
@@ -242,19 +246,40 @@ void AccountToPayManager::GetAccountToPay(void)
 
         GET_COMBOBOX_ID(bankId, m_ui->comboBoxBankFilter);
         m_strAux += QString(" fac.bankid = %1 ").arg(bankId);
+        WhereVencidas += QString("and fac.bankid = %1 ").arg(bankId);
 
         connect(m_ui->comboBoxBankFilter, SIGNAL(currentIndexChanged(int)), this, SLOT(GetAccountToPay()));
     }
 
-    m_selectAccountToPay->setQuery(QString(SQL_SELECT_ACCOUNTTOPAY)
-                                   .arg(m_strAux)
-                                   .arg(m_dateStr));
+    QString strSQL;
 
-    QString strDebug = QString(SQL_SELECT_ACCOUNTTOPAY)
-            .arg(m_strAux)
-            .arg(m_dateStr);
+    if( m_ui->checkBoxVencidas->isChecked() )
+    {
+        QString WhereUnion = QString(" and ( fac.paid = false and fac.vencdate < '%1') %2 ")
+                .arg(QDate::currentDate().toString(FMT_DATE_DB))
+                .arg(WhereVencidas);
+        QString Union = "(" + QString(SQL_SELECT_ACCOUNTTOPAY).arg(WhereUnion).arg(m_dateStr);
+        strSQL  =  QString(" %1) union  ( ")
+                .arg(Union);
+        strSQL += QString(SQL_SELECT_ACCOUNTTOPAY).arg(m_strAux).arg(m_dateStr);
+        strSQL += ") ";
+        strSQL += " order by " + m_dateStr.remove("fac.") + ", description";
 
-    debug_message("\nSQL_SELECT_ACCOUNTTOPAY=%s\n", strDebug.toLatin1().data());
+    }
+    else
+    {
+        strSQL = QString(SQL_SELECT_ACCOUNTTOPAY)
+                .arg(m_strAux)
+                .arg(m_dateStr);
+
+    }
+
+
+    m_selectAccountToPay->setQuery(strSQL);
+
+
+
+    debug_message("\nSQL_SELECT_ACCOUNTTOPAY=%s\n", strSQL.toLatin1().data());
 
     m_ui->tableViewAccountToPay->setModel(m_selectAccountToPay);
 
@@ -346,8 +371,8 @@ void AccountToPayManager::ConfigHeaderTable(void)
     m_ui->tableViewAccountToPay->hideColumn(12);
     m_ui->tableViewAccountToPay->hideColumn(13);
 
-    m_selectAccountToPay->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Descrição"));
-    m_selectAccountToPay->setHeaderData(2, Qt::Horizontal, QString::fromUtf8("Fornecedor"));
+    m_selectAccountToPay->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Fornecedor"));
+    m_selectAccountToPay->setHeaderData(2, Qt::Horizontal, QString::fromUtf8("Descrição"));
     m_selectAccountToPay->setHeaderData(3, Qt::Horizontal, QString::fromUtf8("Data de\nLançamento"));
     m_selectAccountToPay->setHeaderData(4, Qt::Horizontal, QString::fromUtf8("Data de\nVencimento"));
     m_selectAccountToPay->setHeaderData(5, Qt::Horizontal, QString::fromUtf8("Data de\nQuitação"));
@@ -588,17 +613,17 @@ void AccountToPayManager::DeleteAccountToPay(void)
 void AccountToPayManager::ShowReport(void)
 {
     this->setEnabled(false);
-    enum enOrderBy
-    {
-        ObDescription=1,
-        ObSupplier,
-        ObIssuedate,
-        ObVencdate,
-        ObPaiddate,
-        ObValue,
-        ObValuePaid,
-        ObPaid
-    };
+//    enum enOrderBy
+//    {
+//        ObDescription=1,
+//        ObSupplier,
+//        ObIssuedate,
+//        ObVencdate,
+//        ObPaiddate,
+//        ObValue,
+//        ObValuePaid,
+//        ObPaid
+//    };
 
 
 
@@ -617,62 +642,65 @@ void AccountToPayManager::ShowReport(void)
 
            return;
         }
-        QString OrderBy;
-        switch(m_orderby)
-        {
-          case ObDescription:
-            OrderBy = "fac.description ";
-            if(m_NeedDesc)
-                OrderBy += " desc ";
-            break;
-          case ObSupplier:
-            OrderBy = "supplier ";
-            if(m_NeedDesc)
-                OrderBy += " desc ";
-            break;
-          case ObIssuedate:
-            OrderBy = "issuedate ";
-            if(m_NeedDesc)
-                OrderBy += " desc ";
-            break;
-          case ObVencdate:
-            OrderBy = "vencdate ";
-            if(m_NeedDesc)
-                OrderBy += " desc ";
-            break;
-          case ObPaiddate:
-            OrderBy = "paiddate ";
-            if(m_NeedDesc)
-                OrderBy += " desc ";
-            break;
-          case ObValue:
-            OrderBy = "value ";
-            if(m_NeedDesc)
-                OrderBy += " desc ";
-            break;
-          case ObValuePaid:
-            OrderBy = "valuepaid ";
-            break;
-          case ObPaid:
-            OrderBy = "status ";
-            if(!m_NeedDesc)
-                OrderBy += " desc ";
-            debug_message("OrderBy = %s\n",OrderBy.toLatin1().data());
-            break;
-          default:
-            OrderBy = m_dateStr;
-            OrderBy +=", fac.description ";
-            debug_message("OrderBy = %s\n",OrderBy.toLatin1().data());
-            break;
-        }
+//        QString OrderBy;
+//        switch(m_orderby)
+//        {
+//          case ObDescription:
+//            OrderBy = "fac.description ";
+//            if(m_NeedDesc)
+//                OrderBy += " desc ";
+//            break;
+//          case ObSupplier:
+//            OrderBy = "supplier ";
+//            if(m_NeedDesc)
+//                OrderBy += " desc ";
+//            break;
+//          case ObIssuedate:
+//            OrderBy = "issuedate ";
+//            if(m_NeedDesc)
+//                OrderBy += " desc ";
+//            break;
+//          case ObVencdate:
+//            OrderBy = "vencdate ";
+//            if(m_NeedDesc)
+//                OrderBy += " desc ";
+//            break;
+//          case ObPaiddate:
+//            OrderBy = "paiddate ";
+//            if(m_NeedDesc)
+//                OrderBy += " desc ";
+//            break;
+//          case ObValue:
+//            OrderBy = "value ";
+//            if(m_NeedDesc)
+//                OrderBy += " desc ";
+//            break;
+//          case ObValuePaid:
+//            OrderBy = "valuepaid ";
+//            break;
+//          case ObPaid:
+//            OrderBy = "status ";
+//            if(!m_NeedDesc)
+//                OrderBy += " desc ";
+//            debug_message("OrderBy = %s\n",OrderBy.toLatin1().data());
+//            break;
+//          default:
+//            OrderBy = m_dateStr;
+//            OrderBy +=", fac.description ";
+//            debug_message("OrderBy = %s\n",OrderBy.toLatin1().data());
+//            break;
+//        }
 
 
         QString LastQuery = m_selectAccountToPay->query().lastQuery();
 
         LastQuery = LastQuery.replace("fac.issuedate as issuedate,","to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate,");
         LastQuery = LastQuery.replace("fac.vencdate as vencdate,","to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate,");
-        LastQuery = LastQuery.replace("case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate,","case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate,");
+        LastQuery = LastQuery.replace("case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate,",
+                                      "case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate,");
         LastQuery = LastQuery.replace("fac.value as value,","to_char(fac.value, 'FM9G999G990D00') as value,");
+        LastQuery = LastQuery.replace("case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else case when vencdate < current_date then 'V' else 'H' end end end as situation",
+                                      "case when fac.paid = true then 'PAGO' when current_date > fac.vencdate then 'VENCIDA' else 'A VENCER' end as status");
 
 
         select->setQuery(LastQuery);
@@ -710,4 +738,17 @@ void AccountToPayManager::sortIndicatorChanged(int orderby,Qt::SortOrder sortOrd
     m_NeedDesc = sortOrder;
 
     m_ui->tableViewAccountToPay->sortByColumn(orderby, sortOrder);
+}
+void AccountToPayManager::Test()
+{
+ // set
+//    m_ui->radioButtonTxExtra->setChecked(true);
+//2017-06-25
+//    m_ui->dateEditStart->setDate(QDate(2017,6,25));
+
+//    m_ui->comboBoxTypeTxExtr->setCurrentIndex(1);
+
+    GetAccountToPay();
+
+    ShowReport();
 }

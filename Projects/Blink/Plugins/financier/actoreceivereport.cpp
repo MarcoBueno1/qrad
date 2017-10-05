@@ -84,11 +84,13 @@ QString actoReceiveReport::MountSQLReport()
                                     " to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, "\
                                     " case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, "\
                                     " to_char(fac.value, 'FM9G999G990D00') as value, "\
-                                    " case when fac.paid = true then 'PAGO' else 'EM ABERTO' end as status, "\
+                                    " case when fac.paid = true then 'PAGO' when current_date > fac.vencdate then 'VENCIDA' else 'A VENCER' end as status, "\
                                     " case when tkt.type is null then fat.description else case when tkt.type = 0 then 'CONDOMÍNIO' else 'TX EXTRA' end end as accounttype, "\
                                     " case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else "\
                                     " case when vencdate < current_date then 'V' else 'H' end end end as situation, "\
-                                    " case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid "\
+                                    " case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, "\
+                                    " case when t.name is null then '' else t.name end as torre,"\
+                                    " case when a.id is null then 0 else a.id end as apart"\
                                     " from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid "\
                                     " %1 join ticket tkt on tkt.accountid = fac.id %2 "\
                                     " %1 join dweller c on tkt.clientid = c.id "\
@@ -102,6 +104,8 @@ QString actoReceiveReport::MountSQLReport()
     QString InnerJoinExtrTax;
     QString JoinType = " left ";
     QString OrderBy;
+    QString WhereVencidas;
+
     if( ui->groupBoxFilterData->isChecked() )
     {
         if (ui->radioButtonFilterIssue->isChecked())
@@ -130,6 +134,7 @@ QString actoReceiveReport::MountSQLReport()
             Where += " and ";
 
        Where += QString(" c.id = %1 ").arg(m_pessoaAP->index(ui->comboBoxPessoaAp->currentIndex(),0).data().toInt());
+       WhereVencidas += QString(" and c.id = %1 ").arg(m_pessoaAP->index(ui->comboBoxPessoaAp->currentIndex(),0).data().toInt());
     }
 
     if( ui->groupBoxApenasTipo->isChecked() )
@@ -141,6 +146,7 @@ QString actoReceiveReport::MountSQLReport()
             if( Where.length() > 5)
                  Where += " and ";
             Where += QString(" tkt.type = %1 ").arg(0);
+            WhereVencidas += QString(" and tkt.type = %1 ").arg(0);
         }
         else
         {
@@ -161,14 +167,17 @@ QString actoReceiveReport::MountSQLReport()
         if( ui->radioButtonOlympic->isChecked() )
         {
             Where += " t.id = 1 ";
+            WhereVencidas += " and t.id = 1 ";
         }
         else if( ui->radioButtonMarine->isChecked())
         {
             Where += " t.id = 2 ";
+            WhereVencidas += " and t.id = 2 ";
         }
         else
         {
             Where += " t.id = 3 ";
+            WhereVencidas += " and t.id = 3 ";
         }
     }
     //// p
@@ -201,6 +210,8 @@ QString actoReceiveReport::MountSQLReport()
              Where += " and ";
 
         Where += QString(" fac.accounttypeid = %1 ").arg(accountTypeId);
+        WhereVencidas += QString(" and fac.accounttypeid = %1 ").arg(accountTypeId);
+
     }
 
     /// order by
@@ -260,7 +271,23 @@ QString actoReceiveReport::MountSQLReport()
     if(Where.length() == 5)
         Where = "";
 
-    aux = QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(Where).arg(OrderBy);
+    if( ui->checkBoxVencidas->isChecked() )
+    {
+        QString WhereUnion = QString(" and ( fac.paid = false and fac.vencdate < '%1') %2 ")
+                .arg(QDate::currentDate().toString(FMT_DATE_DB))
+                .arg(WhereVencidas);
+        QString Union = "( " + QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(WhereUnion).arg(OrderBy);
+        aux  =  QString(" %1) union ( ")
+                .arg(Union);
+        aux += QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(Where).arg(OrderBy);
+        aux += " ) ";
+        aux += OrderBy.replace("t.name", "torre").replace("c.name", "client").replace("fac.paid", "status").replace("a.id", "apart").remove("fac.");
+    }
+    else
+    {
+
+        aux = QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(Where).arg(OrderBy);
+    }
     return aux;
 }
 

@@ -309,7 +309,17 @@
      <item>
       <widget class="QCheckBox" name="checkBoxNotPaid">
        <property name="text">
-        <string>Em Aberto</string>
+        <string>A Vencer</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBoxVencidas">
+       <property name="text">
+        <string>Vencidas</string>
        </property>
        <property name="checked">
         <bool>true</bool>

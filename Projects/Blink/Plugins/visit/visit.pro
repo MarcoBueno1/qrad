@@ -32,7 +32,9 @@ SOURCES = camera.cpp \
     managerveicname.cpp \
     editreason.cpp \
     managerreason.cpp \
-    manageruser.cpp
+    manageruser.cpp \
+    managercommon_area.cpp \
+    editcommon_area.cpp
 
 HEADERS = \ 
              visitplugin.h \ 
@@ -53,7 +55,9 @@ HEADERS = \
     managerveicname.h \
     editreason.h \
     managerreason.h \
-    manageruser.h
+    manageruser.h \
+    managercommon_area.h \
+    editcommon_area.h
 
 
 
@@ -75,7 +79,9 @@ FORMS = \
     managerveicname.ui \
     editreason.ui \
     managerreason.ui \
-    manageruser.ui
+    manageruser.ui \
+    managercommon_area.ui \
+    editcommon_area.ui
 
 
 

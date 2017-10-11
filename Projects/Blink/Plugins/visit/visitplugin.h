@@ -30,6 +30,7 @@
 #define VISIT_MANAGE_BRAND QString("ManageBrand")
 #define VISIT_MANAGE_VEHIC_NAME QString("ManageVeicname")
 #define VISIT_MANAGE_REASON QString("ManageReason")
+#define VISIT_MANAGE_COMMON_AREA QString("ManageCommonArea")
 
 
 class visitPlugin : public QRadPluginInterface

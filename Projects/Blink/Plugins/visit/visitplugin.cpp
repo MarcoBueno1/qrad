@@ -4,6 +4,7 @@
 #include "managerBrand.h"
 #include "managerveicname.h"
 #include "managerreason.h"
+#include "managercommon_area.h"
 
 visitPlugin::visitPlugin()
 {
@@ -72,6 +73,7 @@ void visitPlugin::onLoad(QRadPluginContainer* container)
     appendAction(VISIT_MANAGE_BRAND);
     appendAction(VISIT_MANAGE_VEHIC_NAME);
     appendAction(VISIT_MANAGE_REASON);
+    appendAction(VISIT_MANAGE_COMMON_AREA);
 
 }
 
@@ -223,6 +225,13 @@ void visitPlugin::Process( const QString& action )
         reason->exec();
         delete reason;
         debug_message("<--ManageReason\n");
+    }
+    else if( action == VISIT_MANAGE_COMMON_AREA)
+    {
+
+        Managercommon_area *ca =  new Managercommon_area;
+        ca->exec();
+        delete ca;
     }
 }
 

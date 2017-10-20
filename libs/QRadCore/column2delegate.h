@@ -308,4 +308,16 @@ public:
 
 };
 
+class ColumnReserve : public QRadDelegate
+{
+    Q_OBJECT
+public:
+    void paint(QPainter *painter,
+                            const QStyleOptionViewItem &option,
+                            const QModelIndex &index) const;
+    QVariant FormatValue(QVariant value) const;
+
+};
+
+
 #endif // COLUMN2DELEGATE_H

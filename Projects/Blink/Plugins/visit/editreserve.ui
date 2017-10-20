@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Editreserve</class>
+ <widget class="QDialog" name="Editreserve">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Edit</string>
+  </property>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>781</width>
+     <height>500</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::WinPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="Lblcommona_id">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>59</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Local</string>
+    </property>
+   </widget>
+   <widget class="SComboBox" name="CmbBxcommona_id">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>5</y>
+      <width>27</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="editable">
+     <bool>true</bool>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QComboBox::AdjustToContents</enum>
+    </property>
+    <item>
+     <property name="text">
+      <string/>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="Lbldate_start">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>45</y>
+      <width>59</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Data Inicio</string>
+    </property>
+   </widget>
+   <widget class="QDateEdit" name="DtEdtdate_start">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>40</y>
+      <width>110</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lbltime_start">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>80</y>
+      <width>59</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hora Inicio</string>
+    </property>
+   </widget>
+   <widget class="QTimeEdit" name="TmEdttime_start">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>75</y>
+      <width>118</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lbldate_end">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>115</y>
+      <width>59</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Data Fim</string>
+    </property>
+   </widget>
+   <widget class="QDateEdit" name="DtEdtdate_end">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>110</y>
+      <width>110</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lbltime_end">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>150</y>
+      <width>59</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hora Fim</string>
+    </property>
+   </widget>
+   <widget class="QTimeEdit" name="TmEdttime_end">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>145</y>
+      <width>118</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lblresponsable">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>185</y>
+      <width>59</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Responsavel</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="SpnBxresponsable">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>180</y>
+      <width>111</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="ChkBxused">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>215</y>
+      <width>110</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Foi Usado?</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lblobs_before">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>255</y>
+      <width>59</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Obs  (Antes)</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LnEdtobs_before">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>250</y>
+      <width>113</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Lblobs_after">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>290</y>
+      <width>59</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Obs (Depois)</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LnEdtobs_after">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>285</y>
+      <width>113</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="ChkBxproblem">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>320</y>
+      <width>110</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ocorreu Problema?</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="PshBtnCancel">
+   <property name="geometry">
+    <rect>
+     <x>622</x>
+     <y>568</y>
+     <width>85</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&amp;Cancelar</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PshBtnSave">
+   <property name="geometry">
+    <rect>
+     <x>709</x>
+     <y>568</y>
+     <width>85</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&amp;Salvar</string>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SComboBox</class>
+   <extends>QComboBox</extends>
+   <header location="global">scombobox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

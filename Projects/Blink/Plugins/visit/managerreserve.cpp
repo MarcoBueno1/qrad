@@ -1,23 +1,23 @@
-#include "managercommon_area.h"
-#include "ui_managercommon_area.h"
-#include "editcommon_area.h"
+#include "managerreserve.h"
+#include "ui_managerreserve.h"
+#include "editreserve.h"
 #include "column2delegate.h"
 #include <QMessageBox>
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 0
-#define SQL_ITEMS "select name as \"Nome\", description as \"Descrição\",id from common_area where tp = 0 and removed <> true and description is not null order by id"
+#define SQL_ITEMS "select obs_before, obs_after,id from reserve order by id" 
 
-Managercommon_area::Managercommon_area(QWidget *parent) :
+Managerreserve::Managerreserve(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::Managercommon_area)
+    ui(new Ui::Managerreserve)
 {
     ui->setupUi(this);
 
     m_keyinterval = NULL;
     m_Model = new QSqlQueryModel;
 
-//    ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
+    ui->tableViewSearch->setStyleSheet("QHeaderView::section {     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3C9FE1, stop: 0.5 #308AC7, stop: 0.6 #1C79B7, stop:1 #267BB3); color: white; border: 1.1px solid #ABDEFF; min-height: 30px; min-width: 20px;};");
 
     connect(ui->lineEditSearch, SIGNAL(textEdited(QString)), this, SLOT(StartTimer(QString)));
     connect(ui->tableViewSearch, SIGNAL(found(QModelIndex)), this, SLOT(Found(QModelIndex)));
@@ -29,12 +29,10 @@ Managercommon_area::Managercommon_area(QWidget *parent) :
     connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
 
-    setWindowTitle("Gernciamento de Áreas Comuns");
-
     DoRefresh();
 }
 
-Managercommon_area::~Managercommon_area()
+Managerreserve::~Managerreserve()
 {
      if( m_keyinterval )
      {
@@ -46,7 +44,7 @@ Managercommon_area::~Managercommon_area()
     delete ui;
 }
 
-void Managercommon_area::KeyPressTimeout()
+void Managerreserve::KeyPressTimeout()
 {
 //    if( ui->lineEditSearch->text().trimmed().isEmpty() )
 //        ui->tableViewSearch->selectRow(0);
@@ -54,7 +52,7 @@ void Managercommon_area::KeyPressTimeout()
         ui->tableViewSearch->Search(ui->lineEditSearch->text());
 }
 
-void Managercommon_area::StartTimer( QString )
+void Managerreserve::StartTimer( QString )
 {
     if( ui->lineEditSearch->text().trimmed().length() == 1 )
         ui->tableViewSearch->selectRow(0);
@@ -70,7 +68,7 @@ void Managercommon_area::StartTimer( QString )
     m_keyinterval->setInterval(200);
     m_keyinterval->start();
 }
-void Managercommon_area::Found(QModelIndex)
+void Managerreserve::Found(QModelIndex)
 {
     ui->tableViewSearch->SetNoEmptySearch( true );
 
@@ -79,12 +77,12 @@ void Managercommon_area::Found(QModelIndex)
 
     ui->tableViewSearch->SetNoEmptySearch( false);
 }
-void Managercommon_area::notFound()
+void Managerreserve::notFound()
 {
    ui->lineEditSearch->setStyleSheet(FG_COLOR_NOT_FOUND + BG_COLOR_NOT_FOUND);
   // ui->tableViewSearch->selectRow(0);
 }
-void Managercommon_area::TableClicked(QModelIndex currentIndex)
+void Managerreserve::TableClicked(QModelIndex currentIndex)
 {
     qDebug() << "TableClicked";
     ui->lineEditSearch->setStyleSheet(AUTO_CONFIG_FOCUS);
@@ -93,7 +91,7 @@ void Managercommon_area::TableClicked(QModelIndex currentIndex)
 
     ShowCurrentInformations();
 }
-void Managercommon_area::CurrentChanged(QModelIndex currentIndex)
+void Managerreserve::CurrentChanged(QModelIndex currentIndex)
 {
     ui->lineEditSearch->setStyleSheet(AUTO_CONFIG_FOCUS);
     ui->lineEditSearch->setText(currentIndex.sibling(currentIndex.row(),BN_DEFAULT_COLUMN_SEARCH).data().toString());
@@ -102,7 +100,7 @@ void Managercommon_area::CurrentChanged(QModelIndex currentIndex)
     ShowCurrentInformations( );
 }
 
-void Managercommon_area::ShowCurrentInformations( void )
+void Managerreserve::ShowCurrentInformations( void )
 {
     QString strTemp;
 
@@ -114,7 +112,7 @@ void Managercommon_area::ShowCurrentInformations( void )
          ui->groupBoxItens->setTitle(strTemp);
     }
 }
-void Managercommon_area::LoadTableView()
+void Managerreserve::LoadTableView()
 {
     QApplication::processEvents();
 
@@ -122,12 +120,12 @@ void Managercommon_area::LoadTableView()
 
     QApplication::processEvents();
     ui->tableViewSearch->setModel( m_Model);
-//    ui->tableViewSearch->horizontalHeader()->setStretchLastSection(true);
+    ui->tableViewSearch->horizontalHeader()->setStretchLastSection(true);
 
     QApplication::processEvents();
 }
 
-void Managercommon_area::DoRefresh()
+void Managerreserve::DoRefresh()
 {
     ui->tableViewSearch->SetNoEmptySearch( true );
 
@@ -148,7 +146,7 @@ void Managercommon_area::DoRefresh()
     refreshTable();
 }
 
-void Managercommon_area::refreshTable()
+void Managerreserve::refreshTable()
 {
     if(ui->lineEditSearch->text() == "")
     {
@@ -158,9 +156,9 @@ void Managercommon_area::refreshTable()
     }
 }
 
-void Managercommon_area::ConfigureTable()
+void Managerreserve::ConfigureTable()
 {
-    ui->tableViewSearch->addSearchColumnFilter(0);
+      ui->tableViewSearch->addSearchColumnFilter(0);
     ui->tableViewSearch->addSearchColumn(0);
     ui->tableViewSearch->addSearchColumn(1);
     ui->tableViewSearch->addSearchColumnFilter(1);
@@ -172,17 +170,15 @@ void Managercommon_area::ConfigureTable()
    // m_Model->setHeaderData(4, Qt::Horizontal, QString::fromUtf8("Conuna3"));
   //  m_Model->setHeaderData(5, Qt::Horizontal, QString::fromUtf8("Conuna4"));
 
-    ui->tableViewSearch->setColumnWidth(0, 0.50 * ui->tableViewSearch->width());
-    ui->tableViewSearch->setColumnWidth(1, 0.50 * ui->tableViewSearch->width());
-
+   // ui->tableViewSearch->setColumnWidth(0, 0.06 * ui->tableViewSearch->width());
     ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf("id"));
-    ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
-    ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnCenter);
+     ui->tableViewSearch->setItemDelegateForColumn(0, new ColumnCenter);
+     ui->tableViewSearch->setItemDelegateForColumn(1, new ColumnCenter);
 
 
 }
 
-void Managercommon_area::keyPressEvent(QKeyEvent *event)
+void Managerreserve::keyPressEvent(QKeyEvent *event)
 {
     qDebug() << "KeyPressEvent";
   //  if(event->key() != Qt::Key_Escape)
@@ -206,7 +202,7 @@ void Managercommon_area::keyPressEvent(QKeyEvent *event)
 
 
 }
-void Managercommon_area::MatchNewest(common_area *newest )
+void Managerreserve::MatchNewest(reserve *newest )
 {
     DoRefresh();
     for( int j = 0; j < newest->attributes().count(); j++ )
@@ -218,15 +214,15 @@ void Managercommon_area::MatchNewest(common_area *newest )
         }
     }
 }
-void Managercommon_area::doEditar()
+void Managerreserve::doEditar()
 {
-    Editcommon_area *edt = new Editcommon_area;
+    Editreserve *edt = new Editreserve;
 
     QModelIndex currentIndex = ui->tableViewSearch->currentIndex();
 
     int nId = currentIndex.sibling(currentIndex.row(),ui->tableViewSearch->getColumnOf("id")).data().toInt();
 
-    common_area *sa = common_area::findByPrimaryKey(nId);
+    reserve *sa = reserve::findByPrimaryKey(nId);
     edt->SetModel(sa);
     if( edt->exec() == QDialog::Accepted )
     {
@@ -236,9 +232,9 @@ void Managercommon_area::doEditar()
 
 }
 
-void Managercommon_area::doNovo()
+void Managerreserve::doNovo()
 {
-    Editcommon_area *edt = new Editcommon_area;
+    Editreserve *edt = new Editreserve;
 
     if( edt->exec() == QDialog::Accepted )
     {
@@ -247,7 +243,7 @@ void Managercommon_area::doNovo()
     delete edt;
 }
 
-void Managercommon_area::doSair()
+void Managerreserve::doSair()
 {
     if( QMessageBox::Yes ==  QMessageBox::question(this, "Sair?","Deseja sair desta pesquisa?",QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
            reject();

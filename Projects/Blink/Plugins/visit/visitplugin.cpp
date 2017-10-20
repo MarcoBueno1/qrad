@@ -5,6 +5,9 @@
 #include "managerveicname.h"
 #include "managerreason.h"
 #include "managercommon_area.h"
+#include "managerreserve.h"
+#include "choosecommonarea.h"
+#include "choosereportreserve.h"
 
 visitPlugin::visitPlugin()
 {
@@ -74,7 +77,8 @@ void visitPlugin::onLoad(QRadPluginContainer* container)
     appendAction(VISIT_MANAGE_VEHIC_NAME);
     appendAction(VISIT_MANAGE_REASON);
     appendAction(VISIT_MANAGE_COMMON_AREA);
-
+    appendAction(VISIT_MANAGE_RESERVE);
+    appendAction(VISIT_REPORT_RESERVE);
 }
 
 void visitPlugin::Process( const QString& action )
@@ -232,6 +236,18 @@ void visitPlugin::Process( const QString& action )
         Managercommon_area *ca =  new Managercommon_area;
         ca->exec();
         delete ca;
+    }
+    else if( VISIT_MANAGE_RESERVE == action )
+    {
+        ChooseCommonArea *res = new ChooseCommonArea;
+        res->exec();
+        delete res;
+    }
+    else if( VISIT_REPORT_RESERVE == action )
+    {
+        ChooseReportReserve *rep = new ChooseReportReserve;
+        rep->exec();
+        delete rep;
     }
 }
 

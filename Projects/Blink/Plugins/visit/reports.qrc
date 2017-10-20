@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/reports">
+        <file alias="reserve.bdrt">reserve.bdrt</file>
+    </qresource>
+</RCC>

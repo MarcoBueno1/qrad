@@ -7,11 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>710</width>
-    <height>193</height>
+    <height>236</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Cadastro de Area Comum</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../icons/resources.qrc">
+    <normaloff>:/png/marca-m.png</normaloff>:/png/marca-m.png</iconset>
   </property>
   <widget class="QFrame" name="frame">
    <property name="geometry">
@@ -19,7 +23,7 @@
      <x>10</x>
      <y>7</y>
      <width>691</width>
-     <height>141</height>
+     <height>180</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -74,12 +78,45 @@
      </rect>
     </property>
    </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>21</x>
+      <y>130</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Medida de tempo</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>111</x>
+      <y>129</y>
+      <width>91</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Hora</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>30 Minutos</string>
+     </property>
+    </item>
+   </widget>
   </widget>
   <widget class="QPushButton" name="PshBtnCancel">
    <property name="geometry">
     <rect>
      <x>530</x>
-     <y>154</y>
+     <y>199</y>
      <width>85</width>
      <height>27</height>
     </rect>
@@ -92,7 +129,7 @@
    <property name="geometry">
     <rect>
      <x>617</x>
-     <y>154</y>
+     <y>199</y>
      <width>85</width>
      <height>27</height>
     </rect>
@@ -102,6 +139,10 @@
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

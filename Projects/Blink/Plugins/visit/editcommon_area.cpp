@@ -46,6 +46,12 @@ void Editcommon_area::SetModel(common_area* mod)
 
 void Editcommon_area::Save()
 {
+    if( ui->LnEdtname->text().trimmed().isEmpty())
+    {
+        QMessageBox::warning(this, "Oops","Por favor, informe um nome para este local");
+        ui->LnEdtname->setFocus();
+        return;
+    }
 
     common_area* mod =  m_mod;
     if( m_mod == NULL)
@@ -53,6 +59,7 @@ void Editcommon_area::Save()
 
     mod->setname(ui->LnEdtname->text());
     mod->setdescription(ui->textEdit->toPlainText());
+    mod->setinterval(ui->comboBox->currentIndex()?0:1); // invertido
     bool bRet = mod->Save();
     if( m_lastMod )
        delete m_lastMod;
@@ -74,6 +81,10 @@ void Editcommon_area::Load()
       return;
     ui->LnEdtname->setText(m_mod->getname());
     ui->textEdit->setText(m_mod->getdescription());
+    if( m_mod->getinterval() == 0 )
+        ui->comboBox->setCurrentIndex(1);
+    else
+        ui->comboBox->setCurrentIndex(0);
 
 }
 

@@ -54,7 +54,8 @@ SOURCES += dweller.cpp \
      acbr.cpp \
     extratx.cpp \
     reasonextratax.cpp \
-    common_area.cpp
+    common_area.cpp \
+    reserve.cpp
             
 
 HEADERS += dweller.h \
@@ -96,7 +97,8 @@ HEADERS += dweller.h \
     acbr.h \
     extratx.h \
     reasonextratax.h \
-    common_area.h
+    common_area.h \
+    reserve.h
 
 win32:LIBS +=  -L../../../../libs/QRadCore\release \
                -L../../../../libs/QRadOrm\release

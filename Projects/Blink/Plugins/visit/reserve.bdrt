@@ -1,0 +1,987 @@
+<!DOCTYPE report>
+<StdReport>
+    <properties>
+        <objectName type="QString" >report</objectName>
+        <name type="QString" >report name</name>
+        <author type="QString" >(c) 2008 BogDan</author>
+        <script type="QString" >account.exec()</script>
+        <queries type="QVariantMap" />
+        <uis type="QVariantMap" />
+        <printerName type="QString" ></printerName>
+        <showPrintDialog type="bool" >true</showPrintDialog>
+        <showPrintPreview type="bool" >true</showPrintPreview>
+        <showSplashScreen type="bool" >true</showSplashScreen>
+        <splashScreenPixmap type="QPixmap" ></splashScreenPixmap>
+        <showExitConfirm type="bool" >true</showExitConfirm>
+        <menuGroup type="int" >90</menuGroup>
+        <order type="int" >90</order>
+        <menus type="QStringList" >
+            <string type="QString" >/Program/Reports</string>
+        </menus>
+        <icon type="QPixmap" ></icon>
+        <description type="QString" ></description>
+        <recommends type="QString" ></recommends>
+    </properties>
+    <children>
+        <Page>
+            <properties>
+                <objectName type="QString" >page</objectName>
+                <backgroundBrush type="QBrush" >
+                    <color type="QColor" >0,0,0,255</color>
+                    <style type="int" >0</style>
+                    <texture type="QPixmap" ></texture>
+                </backgroundBrush>
+                <foregroundBrush type="QBrush" >
+                    <color type="QColor" >0,0,0,255</color>
+                    <style type="int" >0</style>
+                    <texture type="QPixmap" ></texture>
+                </foregroundBrush>
+                <itemIndexMethod type="" />
+                <sceneRect type="QRectF" >0,0,2098.15,2971.27</sceneRect>
+                <bspTreeDepth type="int" >6</bspTreeDepth>
+                <palette type="QPalette" />
+                <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                <sortCacheEnabled type="bool" >false</sortCacheEnabled>
+                <stickyFocus type="bool" >false</stickyFocus>
+                <pageSize type="int" >0</pageSize>
+                <orientation type="int" >0</orientation>
+                <geometry type="QRectF" >150,100,1798,2771</geometry>
+                <paperRect type="QRectF" >0,0,2098.15,2971.27</paperRect>
+                <magnetArea type="int" >1</magnetArea>
+                <showGrid type="bool" >false</showGrid>
+            </properties>
+            <children>
+                <PageHeader>
+                    <properties>
+                        <objectName type="QString" >pageheader</objectName>
+                        <geometry type="QRectF" >150,100,1798,176</geometry>
+                        <pen type="QPen" >
+                            <brush type="QBrush" >
+                                <color type="QColor" >0,0,0,255</color>
+                                <style type="int" >1</style>
+                                <texture type="QPixmap" ></texture>
+                            </brush>
+                            <capStyle type="int" >16</capStyle>
+                            <color type="QColor" >0,0,0,255</color>
+                            <isCosmetic type="bool" >true</isCosmetic>
+                            <joinStyle type="int" >64</joinStyle>
+                            <miterLimit type="double" >2</miterLimit>
+                            <style type="int" >1</style>
+                            <width type="int" >0</width>
+                        </pen>
+                        <brush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int" >0</backgroundMode>
+                        <opacity type="int" >100</opacity>
+                        <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                        <bandType type="int" >0</bandType>
+                        <order type="int" >0</order>
+                        <indentation type="int" >0</indentation>
+                        <frame type="int" >0</frame>
+                    </properties>
+                    <children>
+                        <Text>
+                            <properties>
+                                <objectName type="QString" >text_19</objectName>
+                                <geometry type="QRectF" >33,11,1758,100</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >Verdana,5,-1,5,75,0,0,0,0,0</font>
+                                <textFlags type="int" >132</textFlags>
+                                <sizePolicy type="int" >2</sizePolicy>
+                                <text type="QString" >{NOME}</text>
+                            </properties>
+                        </Text>
+                        <Text>
+                            <properties>
+                                <objectName type="QString" >text_6</objectName>
+                                <geometry type="QRectF" >1585.54,126,127,43</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >Verdana,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >130</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >Página:</text>
+                            </properties>
+                        </Text>
+                        <Script>
+                            <properties>
+                                <objectName type="QString" >script</objectName>
+                                <geometry type="QRectF" >1719.01,126,70,41</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >Verdana,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >132</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <script type="QString" >_pageNumber_</script>
+                            </properties>
+                        </Script>
+                        <Picture>
+                            <properties>
+                                <objectName type="QString" >picture</objectName>
+                                <geometry type="QRectF" >-11.0208,-14.7708,389,190</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >24</style>
+                                    <texture type="QPixmap" >iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAACpJREFUKJFjTEtLY8AGjI2NsYozYRXFA0Y1EANYcIX32bNnqWPDqAZiAAD7wQTtuNj6mwAAAABJRU5ErkJggg==</texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <howToPaintPicture type="int" >3</howToPaintPicture>
+                                <drawTextType type="int" >0</drawTextType>
+                                <pixmap type="QPixmap" >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</pixmap>
+                                <text type="QString" >picture</text>
+                                <textColor type="QColor" >0,0,0,255</textColor>
+                                <borderWidth type="int" >0</borderWidth>
+                                <borderColor type="QColor" >0,0,0,255</borderColor>
+                            </properties>
+                        </Picture>
+                        <Text>
+                            <properties>
+                                <objectName type="QString" >text</objectName>
+                                <geometry type="QRectF" >236.771,119.479,1339.81,50</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >Verdana,3,-1,5,75,0,0,0,0,0</font>
+                                <textFlags type="int" >132</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >{DEATE}</text>
+                            </properties>
+                        </Text>
+                    </children>
+                </PageHeader>
+                <DetailContainer>
+                    <properties>
+                        <objectName type="QString" >detailcontainer</objectName>
+                        <geometry type="QRectF" >150,276,1798,198</geometry>
+                        <pen type="QPen" >
+                            <brush type="QBrush" >
+                                <color type="QColor" >0,0,0,255</color>
+                                <style type="int" >1</style>
+                                <texture type="QPixmap" ></texture>
+                            </brush>
+                            <capStyle type="int" >16</capStyle>
+                            <color type="QColor" >0,0,0,255</color>
+                            <isCosmetic type="bool" >true</isCosmetic>
+                            <joinStyle type="int" >64</joinStyle>
+                            <miterLimit type="double" >2</miterLimit>
+                            <style type="int" >1</style>
+                            <width type="int" >0</width>
+                        </pen>
+                        <brush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int" >0</backgroundMode>
+                        <opacity type="int" >100</opacity>
+                        <font type="QFont" >DejaVu Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <bandType type="int" >2</bandType>
+                        <order type="int" >0</order>
+                        <indentation type="int" >0</indentation>
+                        <frame type="int" >0</frame>
+                        <query type="QString" >account</query>
+                    </properties>
+                    <children>
+                        <DetailHeader>
+                            <properties>
+                                <objectName type="QString" >detailheader</objectName>
+                                <geometry type="QRectF" >0,0,1798,72</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >180,180,180,255</color>
+                                    <style type="int" >1</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <bandType type="int" >3</bandType>
+                                <order type="int" >0</order>
+                                <indentation type="int" >0</indentation>
+                                <frame type="int" >0</frame>
+                                <groupField type="QString" ></groupField>
+                                <reprintOnNewPage type="bool" >true</reprintOnNewPage>
+                                <resetDetailNumber type="bool" >false</resetDetailNumber>
+                                <forceNewPage type="bool" >false</forceNewPage>
+                            </properties>
+                            <children>
+                                <Text>
+                                    <properties>
+                                        <objectName type="QString" >text_1</objectName>
+                                        <geometry type="QRectF" >6,0,271,70</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >85,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >85,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >Verdana,2.5,-1,5,75,0,0,0,0,0</font>
+                                        <textFlags type="int" >132</textFlags>
+                                        <sizePolicy type="int" >0</sizePolicy>
+                                        <text type="QString" >DATA</text>
+                                    </properties>
+                                </Text>
+                                <Text>
+                                    <properties>
+                                        <objectName type="QString" >text_13</objectName>
+                                        <geometry type="QRectF" >282.46,0,160,70</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >85,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >85,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >Verdana,2.5,-1,5,75,0,0,0,0,0</font>
+                                        <textFlags type="int" >4228</textFlags>
+                                        <sizePolicy type="int" >0</sizePolicy>
+                                        <text type="QString" >INÍCIO</text>
+                                    </properties>
+                                </Text>
+                                <Text>
+                                    <properties>
+                                        <objectName type="QString" >text_15</objectName>
+                                        <geometry type="QRectF" >449.46,0,160,70</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >85,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >85,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >Verdana,2.5,-1,5,75,0,0,0,0,0</font>
+                                        <textFlags type="int" >4228</textFlags>
+                                        <sizePolicy type="int" >0</sizePolicy>
+                                        <text type="QString" >FIM</text>
+                                    </properties>
+                                </Text>
+                                <Text>
+                                    <properties>
+                                        <objectName type="QString" >text_24</objectName>
+                                        <geometry type="QRectF" >623.712,0,1169,70</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >85,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >85,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >Verdana,2.5,-1,5,75,0,0,0,0,0</font>
+                                        <textFlags type="int" >132</textFlags>
+                                        <sizePolicy type="int" >0</sizePolicy>
+                                        <text type="QString" >RESPONSÁVEL</text>
+                                    </properties>
+                                </Text>
+                                <LineItem>
+                                    <properties>
+                                        <objectName type="QString" >lineitem</objectName>
+                                        <geometry type="QRectF" >-14.8333,64.4583,2683,9.5833</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >0,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <lineStyle type="int" >1</lineStyle>
+                                    </properties>
+                                </LineItem>
+                            </children>
+                        </DetailHeader>
+                        <Detail>
+                            <properties>
+                                <objectName type="QString" >detail</objectName>
+                                <geometry type="QRectF" >0,72,1798,40</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <bandType type="int" >4</bandType>
+                                <order type="int" >0</order>
+                                <indentation type="int" >0</indentation>
+                                <frame type="int" >0</frame>
+                            </properties>
+                            <children>
+                                <Field>
+                                    <properties>
+                                        <objectName type="QString" >field</objectName>
+                                        <geometry type="QRectF" >6,-0.29,272,46.2917</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >0,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >Verdana,2.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int" >132</textFlags>
+                                        <sizePolicy type="int" >0</sizePolicy>
+                                        <queryName type="QString" >account</queryName>
+                                        <fieldName type="QString" >date_start</fieldName>
+                                    </properties>
+                                </Field>
+                                <Field>
+                                    <properties>
+                                        <objectName type="QString" >field_9</objectName>
+                                        <geometry type="QRectF" >284.46,-0.29,160,51.58</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >0,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >Verdana,2.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int" >132</textFlags>
+                                        <sizePolicy type="int" >0</sizePolicy>
+                                        <queryName type="QString" >account</queryName>
+                                        <fieldName type="QString" >time_start</fieldName>
+                                    </properties>
+                                </Field>
+                                <Field>
+                                    <properties>
+                                        <objectName type="QString" >field_2</objectName>
+                                        <geometry type="QRectF" >624.432,-0.29,1165,51.5833</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >0,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >Verdana,2.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int" >129</textFlags>
+                                        <sizePolicy type="int" >0</sizePolicy>
+                                        <queryName type="QString" >account</queryName>
+                                        <fieldName type="QString" >responsavel</fieldName>
+                                    </properties>
+                                </Field>
+                                <Field>
+                                    <properties>
+                                        <objectName type="QString" >field_1</objectName>
+                                        <geometry type="QRectF" >450.46,-0.29,160,51.58</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >0,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >Verdana,2.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int" >132</textFlags>
+                                        <sizePolicy type="int" >0</sizePolicy>
+                                        <queryName type="QString" >account</queryName>
+                                        <fieldName type="QString" >time_end</fieldName>
+                                    </properties>
+                                </Field>
+                            </children>
+                        </Detail>
+                        <DetailFooter>
+                            <properties>
+                                <objectName type="QString" >detailfooter</objectName>
+                                <geometry type="QRectF" >0,112,1798,48</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <bandType type="int" >5</bandType>
+                                <order type="int" >0</order>
+                                <indentation type="int" >0</indentation>
+                                <frame type="int" >4</frame>
+                                <groupField type="QString" ></groupField>
+                            </properties>
+                        </DetailFooter>
+                    </children>
+                </DetailContainer>
+                <PageFooter>
+                    <properties>
+                        <objectName type="QString" >pagefooter_1</objectName>
+                        <geometry type="QRectF" >150,2703.12,1798,167.875</geometry>
+                        <pen type="QPen" >
+                            <brush type="QBrush" >
+                                <color type="QColor" >0,0,0,255</color>
+                                <style type="int" >1</style>
+                                <texture type="QPixmap" ></texture>
+                            </brush>
+                            <capStyle type="int" >16</capStyle>
+                            <color type="QColor" >0,0,0,255</color>
+                            <isCosmetic type="bool" >true</isCosmetic>
+                            <joinStyle type="int" >64</joinStyle>
+                            <miterLimit type="double" >2</miterLimit>
+                            <style type="int" >1</style>
+                            <width type="int" >0</width>
+                        </pen>
+                        <brush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int" >0</backgroundMode>
+                        <opacity type="int" >100</opacity>
+                        <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                        <bandType type="int" >7</bandType>
+                        <order type="int" >0</order>
+                        <indentation type="int" >0</indentation>
+                        <frame type="int" >0</frame>
+                    </properties>
+                    <children>
+                        <Picture>
+                            <properties>
+                                <objectName type="QString" >picture_1</objectName>
+                                <geometry type="QRectF" >25.92,21.7292,344,100</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >24</style>
+                                    <texture type="QPixmap" >iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAKklEQVQokWNMS0tjwAaMjY2xijNhFcUDRjUQA1hwhffZs2epY8OoBmIAAPvBBO242PqbAAAAAElFTkSuQmCC</texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >Verdana,3.5,-1,5,50,0,0,0,0,0</font>
+                                <howToPaintPicture type="int" >3</howToPaintPicture>
+                                <drawTextType type="int" >0</drawTextType>
+                                <pixmap type="QPixmap" >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</pixmap>
+                                <text type="QString" >picture</text>
+                                <textColor type="QColor" >0,0,0,255</textColor>
+                                <borderWidth type="int" >0</borderWidth>
+                                <borderColor type="QColor" >0,0,0,255</borderColor>
+                            </properties>
+                        </Picture>
+                        <LineItem>
+                            <properties>
+                                <objectName type="QString" >lineitem_1</objectName>
+                                <geometry type="QRectF" >-14.8333,0.458333,2683,13.5833</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <lineStyle type="int" >1</lineStyle>
+                            </properties>
+                        </LineItem>
+                        <Text>
+                            <properties>
+                                <objectName type="QString" >text_7</objectName>
+                                <geometry type="QRectF" >28.9583,130.729,348,35</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >MS Shell Dlg 2,2.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >WatsApp: 92 98415-1066</text>
+                            </properties>
+                        </Text>
+                        <Script>
+                            <properties>
+                                <objectName type="QString" >script_3</objectName>
+                                <geometry type="QRectF" >1082.85,24.29,211,50</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >MS Shell Dlg 2,3,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <script type="QString" >_currentDate_</script>
+                            </properties>
+                        </Script>
+                        <Script>
+                            <properties>
+                                <objectName type="QString" >script_1</objectName>
+                                <geometry type="QRectF" >1310.5,24.29,211,50</geometry>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <opacity type="int" >100</opacity>
+                                <font type="QFont" >MS Shell Dlg 2,3,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <script type="QString" >_currentTime_</script>
+                            </properties>
+                        </Script>
+                    </children>
+                </PageFooter>
+            </children>
+        </Page>
+    </children>
+</StdReport>

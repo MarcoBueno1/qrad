@@ -31,6 +31,8 @@
 #define VISIT_MANAGE_VEHIC_NAME QString("ManageVeicname")
 #define VISIT_MANAGE_REASON QString("ManageReason")
 #define VISIT_MANAGE_COMMON_AREA QString("ManageCommonArea")
+#define VISIT_MANAGE_RESERVE QString("ManageReserve")
+#define VISIT_REPORT_RESERVE QString("ReportReserve")
 
 
 class visitPlugin : public QRadPluginInterface

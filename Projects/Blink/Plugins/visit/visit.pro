@@ -1,4 +1,4 @@
-QT       += core gui sql xml  multimedia multimediawidgets
+QT       += core gui sql xml  multimedia multimediawidgets script
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets sql
 
@@ -10,6 +10,7 @@ INCLUDEPATH = ../../../../libs/QRadCore \
               ../../../../libs/QRadCommonGui \
               ../../../../libs/QRadOrm \
               ../../../../libs/QRadHw \
+              ../../../../libs/3rdpart/exaro \
               ../../libs/orm \
               ../../libs/common
 
@@ -34,7 +35,14 @@ SOURCES = camera.cpp \
     managerreason.cpp \
     manageruser.cpp \
     managercommon_area.cpp \
-    editcommon_area.cpp
+    editcommon_area.cpp \
+#    managerreserve.cpp \
+#    editreserve.cpp \
+    choosecommonarea.cpp \
+    calendarreserve.cpp \
+    dayreserve.cpp \
+    newdayreserve.cpp \
+    choosereportreserve.cpp
 
 HEADERS = \ 
              visitplugin.h \ 
@@ -57,7 +65,14 @@ HEADERS = \
     managerreason.h \
     manageruser.h \
     managercommon_area.h \
-    editcommon_area.h
+    editcommon_area.h \
+#    managerreserve.h \
+#    editreserve.h \
+    choosecommonarea.h \
+    calendarreserve.h \
+    dayreserve.h \
+    newdayreserve.h \
+    choosereportreserve.h
 
 
 
@@ -81,7 +96,14 @@ FORMS = \
     managerreason.ui \
     manageruser.ui \
     managercommon_area.ui \
-    editcommon_area.ui
+    editcommon_area.ui \
+#    managerreserve.ui \
+#    editreserve.ui \
+    choosecommonarea.ui \
+    calendarreserve.ui \
+    dayreserve.ui \
+    newdayreserve.ui \
+    choosereportreserve.ui
 
 
 
@@ -108,3 +130,6 @@ OTHER_FILES += visit.json
 
 target.path = $${PREFIX}/bin
 INSTALLS += target
+
+RESOURCES += \
+    reports.qrc

@@ -97,7 +97,8 @@ HEADERS +=  qradplugincontainer.h \
     emailgui.h \
     connectservererror.h \
     excelexporthelper.h \
-    qraddelegate.h
+    qraddelegate.h \
+    qradcalendar.h
 
 
 
@@ -168,7 +169,8 @@ SOURCES +=  qradplugininterface.cpp \
     emailgui.cpp \
     connectservererror.cpp \
     excelexporthelper.cpp \
-    qraddelegate.cpp
+    qraddelegate.cpp \
+    qradcalendar.cpp
 
 win32:SOURCES  += system/src/win/qradsystem.c
 unix::SOURCES  += system/src/lnx/qradsystem.c

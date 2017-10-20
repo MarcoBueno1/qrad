@@ -694,3 +694,34 @@ QVariant ColumnRetBankAndPaid::FormatValue(QVariant value) const
 
    return QRadMoney::MoneyHumanForm2(value.toString().replace(",",".").toDouble());
 }
+
+
+void ColumnReserve::paint(QPainter *painter,
+                         const QStyleOptionViewItem &option,
+                         const QModelIndex &index) const
+{
+    QVariant val = index.model()->data(index, Qt::DisplayRole);
+    QVariant Responsable = index.sibling(index.row(),2).data();
+
+    QStyleOptionViewItem myOption = option;
+
+    if(Responsable.toString().trimmed().isEmpty() )
+    {
+//        painter->fillRect(option.rect, BG_FIN_COLOR_GREEN);
+        if(val.toString().isEmpty())
+            val = QVariant("Disponível");
+    }
+    else
+    {
+        painter->fillRect(option.rect, BG_FIN_COLOR_YELLOW);
+    }
+
+    myOption.displayAlignment = (Qt::AlignCenter | Qt::AlignVCenter);
+    drawDisplay(painter, myOption, myOption.rect, FormatValue(val).toString());
+    drawFocus(painter, myOption, myOption.rect);
+}
+
+QVariant ColumnReserve::FormatValue(QVariant value) const
+{
+    return QVariant(value);
+}

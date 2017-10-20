@@ -5,7 +5,6 @@
 #include "managerveicname.h"
 #include "managerreason.h"
 #include "managercommon_area.h"
-#include "managerreserve.h"
 #include "choosecommonarea.h"
 #include "choosereportreserve.h"
 

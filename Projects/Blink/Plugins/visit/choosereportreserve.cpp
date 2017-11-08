@@ -16,13 +16,17 @@
                          " and d.id in ( select responsable from reserve where date_start between '%1' and '%2' and canceled <> true) "\
                          " order by t.id, a.id"
 
-#define SQL_REPORT " select to_char(date_start, 'dd-mm-yyyy') as date_start , time_start , time_end , "\
+#define SQL_REPORT " select ca.name, to_char(date_start, 'dd-mm-yyyy') as date_start , time_start , time_end , "\
                    " a.numero || ' ' || substring(t.name from 1 for 1) || '-' || d.name as \"responsavel\" "\
                    " from reserve r inner join dweller d on d.id = r.responsable "\
                    " inner join ap a on a.id = d.ap "\
                    " inner join tower t on t.id = d.tower "\
-                   " where date_start between '%1' and '%2' and commona_id = %3 %4 and canceled <> true "\
+                   " inner join common_area ca on ca.id = r.commona_id "\
+                   " where date_start between '%1' and '%2' %3 %4 canceled <> true "\
                    " order by date_start, time_start"
+
+
+//" where date_start between '%1' and '%2' and commona_id = %3 %4 and canceled <> true "
 
 
 ChooseReportReserve::ChooseReportReserve(QWidget *parent) :
@@ -47,6 +51,8 @@ ChooseReportReserve::ChooseReportReserve(QWidget *parent) :
     connect(ui->dateEditUntil,SIGNAL(dateChanged(QDate)), this,SLOT(dateChanged(QDate)));
     connect(ui->dateEditFrom,SIGNAL(dateChanged(QDate)), this,SLOT(dateChanged(QDate)));
 
+    setWindowTitle("Relatório de Reservas");
+
 }
 
 ChooseReportReserve::~ChooseReportReserve()
@@ -70,17 +76,24 @@ void ChooseReportReserve::BuildReport(bool)
         return;
     }
 
-    int localId = m_modelLocal->index(ui->comboBoxLocal->currentIndex(),1).data().toInt();
-    if( 1>localId)
-    {
-        QMessageBox::warning(this,
-                             "Oops!",
-                             "Selecione o Local!");
 
-        ui->comboBoxLocal->setFocus();
-        return;
+    QString strLocal;
+    if( ui->groupBoxLocal->isChecked() )
+    {
+        int localId = m_modelLocal->index(ui->comboBoxLocal->currentIndex(),1).data().toInt();
+        if ( 1>localId )
+        {
+            QMessageBox::warning(this,
+                                 "Oops!",
+                                 "Selecione o Local!");
+
+            ui->comboBoxLocal->setFocus();
+            return;
+        }
+        strLocal = QString(" and commona_id = %1 ").arg(localId);
     }
-    QString pessoa;
+
+    QString pessoa = " and ";
     if( ui->groupBoxOnly->isChecked())
     {
         int idPessoa = m_modelPessoa->index(ui->comboBoxPessoa->currentIndex(),1).data().toInt();
@@ -93,13 +106,13 @@ void ChooseReportReserve::BuildReport(bool)
             return;
 
         }
-        pessoa = QString(" and responsable = %1 ").arg(idPessoa);
+        pessoa = QString(" and responsable = %1 and ").arg(idPessoa);
     }
 
     QString SQL = QString(SQL_REPORT)
             .arg(ui->dateEditFrom->date().toString(FMT_DATE_DB))
             .arg(ui->dateEditUntil->date().toString(FMT_DATE_DB))
-            .arg(localId)
+            .arg(strLocal)
             .arg(pessoa);
 
     debug_message("SQL:%s\n", SQL.toLatin1().data());
@@ -119,7 +132,9 @@ void ChooseReportReserve::BuildReport(bool)
     QString DEATE = ui->dateEditFrom->date() == ui->dateEditUntil->date()?QString("Data: %1").arg(ui->dateEditFrom->date().toString(FMT_DATE)):
                   QString("DE %1 ATÉ: %2").arg(ui->dateEditFrom->date().toString(FMT_DATE)).arg(ui->dateEditUntil->date().toString(FMT_DATE));
 
-    report->setAttributeValue(QString("NOME"), QString("RESERVA DE %1").arg(ui->comboBoxLocal->currentText().toUpper()));
+    report->setAttributeValue(QString("NOME"), QString("RESERVA DE %1").arg(ui->groupBoxLocal->isChecked()?
+                                                                            ui->comboBoxLocal->currentText().toUpper():
+                                                                            "ÁREAS COMUNS"));
     report->setAttributeValue(QString("DEATE"), DEATE );
     if ( !report->show() )
     {

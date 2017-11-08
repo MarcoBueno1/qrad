@@ -42,7 +42,9 @@ SOURCES = camera.cpp \
     calendarreserve.cpp \
     dayreserve.cpp \
     newdayreserve.cpp \
-    choosereportreserve.cpp
+    choosereportreserve.cpp \
+    inviteds.cpp \
+    neweditinvited.cpp
 
 HEADERS = \ 
              visitplugin.h \ 
@@ -72,7 +74,9 @@ HEADERS = \
     calendarreserve.h \
     dayreserve.h \
     newdayreserve.h \
-    choosereportreserve.h
+    choosereportreserve.h \
+    inviteds.h \
+    neweditinvited.h
 
 
 
@@ -103,7 +107,9 @@ FORMS = \
     calendarreserve.ui \
     dayreserve.ui \
     newdayreserve.ui \
-    choosereportreserve.ui
+    choosereportreserve.ui \
+    inviteds.ui \
+    neweditinvited.ui
 
 
 

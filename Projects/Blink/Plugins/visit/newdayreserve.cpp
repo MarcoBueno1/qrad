@@ -8,6 +8,7 @@
 #include "qraddebug.h"
 #include "qradshared.h"
 #include <QCompleter>
+#include "inviteds.h"
 
 NewDayReserve::NewDayReserve(QWidget *parent) :
     QDialog(parent),
@@ -16,6 +17,7 @@ NewDayReserve::NewDayReserve(QWidget *parent) :
     ui->setupUi(this);
 
     m_reserve = NULL;
+
 
 
     m_litedb = QSqlDatabase::addDatabase("QSQLITE", "lite");
@@ -47,6 +49,8 @@ NewDayReserve::NewDayReserve(QWidget *parent) :
     ui->timeEditEnd->setToolTip("Para inserir horário de inicio e fim, selecione com o mouse a linha da tabela abaixo");
 
     connect(ui->pushButtonSave,SIGNAL(clicked(bool)),this,SLOT(Save(bool)));
+    connect(ui->pushButtonInvited,SIGNAL(clicked(bool)),this,SLOT(DoInvited(bool)));
+    ui->pushButtonInvited->setVisible(false);
 }
 
 NewDayReserve::~NewDayReserve()
@@ -56,6 +60,13 @@ NewDayReserve::~NewDayReserve()
     delete m_delegate;
     m_litedb.close();
     delete ui;
+}
+
+void NewDayReserve::DoInvited(bool)
+{
+    Inviteds *pi = new Inviteds;
+
+    pi->Exec(m_reserve->getid());
 }
 
 void NewDayReserve::Save(bool)
@@ -83,16 +94,19 @@ void NewDayReserve::Save(bool)
   for( int i = 0; i < nTimes; i++  )
   {
       if( m_reserve == NULL )
-          Con = QString("select * from reserve where ((('%1' >= time_start and '%1' < time_end) or ('%2' >= time_start and '%2' <= time_end)) or ('%1' < time_start and '%2' > time_end)) and canceled <> true and date_start='%3'")
+          Con = QString("select * from reserve where ((('%1' >= time_start and '%1' < time_end) or ('%2' >= time_start and '%2' <= time_end)) or ('%1' < time_start and '%2' > time_end)) and canceled <> true and date_start='%3' and commona_id = %4 ")
                                 .arg(ui->timeEditStart->time().toString(FMT_TIME))
                                 .arg(ui->timeEditEnd->time().toString(FMT_TIME))
-                                .arg(currentDate.toString(FMT_DATE_DB));
+                                .arg(currentDate.toString(FMT_DATE_DB))
+                                .arg(m_CommonId);
+
       else
-          Con = QString("select * from reserve where ((('%1' >= time_start and '%1' < time_end) or ('%2' >= time_start and '%2' <= time_end)) or ('%1' < time_start and '%2' > time_end)) and id <> %3 and canceled <> true and date_start='%4'")
+          Con = QString("select * from reserve where ((('%1' >= time_start and '%1' < time_end) or ('%2' >= time_start and '%2' <= time_end)) or ('%1' < time_start and '%2' > time_end)) and id <> %3 and canceled <> true and date_start='%4' and commona_id = %5 ")
                                 .arg(ui->timeEditStart->time().toString(FMT_TIME))
                                 .arg(ui->timeEditEnd->time().toString(FMT_TIME))
                                 .arg(m_reserve->getid())
-                                .arg(currentDate.toString(FMT_DATE_DB));
+                                .arg(currentDate.toString(FMT_DATE_DB))
+                                .arg(m_CommonId);
 
 
       debug_message("SQL consistense:%s\n",Con.toLatin1().data());
@@ -160,6 +174,16 @@ void NewDayReserve::Save(bool)
       Reserve->settime_end(ui->timeEditEnd->time());
       if( Reserve->Save() )
       {
+
+          if( 1 == nTimes )
+              if( QMessageBox::Yes == QMessageBox::question(this, "Atenção", "Deseja adicionar convidados agora?", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+              {
+                  reserve *ReserveAux = m_reserve;
+                  m_reserve = Reserve;
+                  DoInvited(true);
+                  m_reserve = ReserveAux;
+              }
+
           delete Reserve;
    //       accept();
       }
@@ -189,7 +213,10 @@ void NewDayReserve::Save(bool)
 
   }
   if( !bFail)
+  {
+
       accept();
+  }
 
 }
 
@@ -285,6 +312,8 @@ int NewDayReserve::Edit(int id, QString CommonName)
                             QString("Não foi possível encontrar a reserva id:%1").arg(id));
        return QDialog::Rejected;
    }
+   ui->pushButtonInvited->setVisible(true);
+
    m_CommonName = CommonName;
    ui->lineEditLocal->setEnabled(false);
    ui->lineEditLocal->setText(CommonName);

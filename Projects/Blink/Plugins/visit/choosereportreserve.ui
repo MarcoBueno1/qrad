@@ -90,7 +90,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QGroupBox" name="groupBox_3">
+   <widget class="QGroupBox" name="groupBoxLocal">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -101,6 +101,12 @@
     </property>
     <property name="title">
      <string> Local </string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
     </property>
     <widget class="QComboBox" name="comboBoxLocal">
      <property name="geometry">

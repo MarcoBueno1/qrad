@@ -47,7 +47,7 @@
        <x>10</x>
        <y>20</y>
        <width>491</width>
-       <height>350</height>
+       <height>331</height>
       </rect>
      </property>
      <property name="selectionMode">
@@ -59,6 +59,19 @@
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
+    </widget>
+    <widget class="QPushButton" name="pushButtonInvited">
+     <property name="geometry">
+      <rect>
+       <x>373</x>
+       <y>354</y>
+       <width>129</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Convidados...</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="layoutWidget">
@@ -105,10 +118,10 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>22</x>
-      <y>86</y>
-      <width>501</width>
-      <height>22</height>
+      <x>19</x>
+      <y>82</y>
+      <width>513</width>
+      <height>25</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -190,7 +203,7 @@
      <rect>
       <x>20</x>
       <y>114</y>
-      <width>501</width>
+      <width>510</width>
       <height>53</height>
      </rect>
     </property>

@@ -25,6 +25,7 @@ public:
 public slots:
     void Save(bool);
     void OnSelectionChanged(QItemSelection, QItemSelection);
+    void DoInvited(bool);
 private:
     Ui::NewDayReserve *ui;
     int m_CommonId;

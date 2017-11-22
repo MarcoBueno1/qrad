@@ -46,9 +46,12 @@ QString actopayreport::MountSQLReport()
                                         " case when fac.paid = true then 'PAGO' when current_date > fac.vencdate then 'VENCIDA' else 'A VENCER' end as status, "\
                                         " fat.description as accounttype, "\
                                         " s.nome as supplier, "\
-                                        " fb.description as bank "\
+                                        " fb.description as bank, "\
+                                        " p.description as forma, "\
+                                        " fac.docnumber as doc, fac.portion || '/' || fac.maxportion as parc "\
                                         " from fin_accounttopay fac "\
                                         " inner join fin_accounttype fat on fat.id = fac.accounttypeid "\
+                                        " left join paymentway p on p.id = fac.paymentway "\
                                         " left outer join supplier s on fac.supplierid = s.id "\
                                         " left outer join fin_bank fb on fac.bankid = fb.id "\
                                         " where fac.removed = false %1 %2 "

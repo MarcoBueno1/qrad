@@ -22,6 +22,8 @@ DECLARE_CLASS(AccountToPayModel)
     ORM_DECLARE_ATTRIBUTE(AccountToPayModel,bool, Removed)
     ORM_DECLARE_ATTRIBUTE(AccountToPayModel,QString, DocNumber)
     ORM_DECLARE_ATTRIBUTE(AccountToPayModel,int, PaymentWay)
+    ORM_DECLARE_ATTRIBUTE(AccountToPayModel,int, MaxPortion)
+    ORM_DECLARE_ATTRIBUTE(AccountToPayModel,int, Portion)
 
    
     ORM_MATCH_TABLE(AccountToPayModel, "fin_accounttopay")

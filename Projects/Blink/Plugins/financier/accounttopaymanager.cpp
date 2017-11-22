@@ -702,6 +702,24 @@ void AccountToPayManager::ShowReport(void)
         LastQuery = LastQuery.replace("case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else case when vencdate < current_date then 'V' else 'H' end end end as situation",
                                       "case when fac.paid = true then 'PAGO' when current_date > fac.vencdate then 'VENCIDA' else 'A VENCER' end as status");
 
+        /////
+        /////   Nova implementacao 22/11/2017
+        /////
+//        "   inner join fin_accounttype fat on fat.id = fac.accounttypeid "
+//        "   fb.description as bank, "\
+
+        LastQuery = LastQuery.replace("fb.description as bank, "
+                                      ,"fb.description as bank, "\
+                                      "p.description as forma, "\
+                                      "fac.docnumber as doc, fac.portion || '/' || fac.maxportion as parc, ");
+
+
+        LastQuery = LastQuery.replace("inner join fin_accounttype fat on fat.id = fac.accounttypeid"
+                                      ,"inner join fin_accounttype fat on fat.id = fac.accounttypeid left join paymentway p on p.id = fac.paymentway ");
+
+        ////
+        ////
+        ////
 
         select->setQuery(LastQuery);
 

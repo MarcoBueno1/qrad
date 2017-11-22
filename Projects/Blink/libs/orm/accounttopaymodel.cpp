@@ -16,4 +16,6 @@ ORM_BEGIN_MAP(AccountToPayModel)
     ORM_MAP_FIELD(Removed, "removed");
     ORM_MAP_FIELD(DocNumber, "docnumber");
     ORM_MAP_FIELD(PaymentWay, "paymentway");
+    ORM_MAP_FIELD(MaxPortion, "maxportion");
+    ORM_MAP_FIELD(Portion, "portion");
 ORM_END_MAP()

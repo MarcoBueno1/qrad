@@ -19,14 +19,15 @@ AccountToPayRegister::AccountToPayRegister(QWidget *parent) :
     m_modelSupplier     = new QSqlQueryModel;
     m_modelBank         = new QSqlQueryModel;
 
-/*
-    m_ui->comboBoxPaymentway_2->setTable("paymentway.Forma de Pagamento");
-    m_ui->comboBoxPaymentway_2->setField("description.Nome");
-    m_ui->comboBoxPaymentway_2->setCanAdd(true);
-    m_ui->comboBoxPaymentway_2->setUserName("dsm");
-    if( m_ui->comboBoxPaymentway_2->completer() )
-        m_ui->comboBoxPaymentway_2->completer()->setFilterMode(Qt::MatchContains );
-*/
+
+
+    m_ui->comboBoxPaymentWay->setTable("paymentway.Forma de Pagamento");
+    m_ui->comboBoxPaymentWay->setField("description.Nome");
+    m_ui->comboBoxPaymentWay->setCanAdd(true);
+    m_ui->comboBoxPaymentWay->setUserName("dsm");
+    if( m_ui->comboBoxPaymentWay->completer() )
+        m_ui->comboBoxPaymentWay->completer()->setFilterMode(Qt::MatchContains );
+
 
     m_ui->comboBoxSupplier->setTable("supplier.Fornecedor");
     m_ui->comboBoxSupplier->setField("nome.Nome");
@@ -114,8 +115,10 @@ void AccountToPayRegister::SendAccountToPayId(int accountToPayId)
     m_ui->comboBoxAccountType->setCurrentIndex(m_ui->comboBoxAccountType->findText(QString("%1").arg(accountToPayModel->getAccountTypeId())));
     m_ui->lineEditDocNumber->setText(accountToPayModel->getDocNumber());
     m_ui->doubleSpinBoxValue->setValue(accountToPayModel->getValue());
+    m_ui->spinBoxMaxPortion->setValue(accountToPayModel->getMaxPortion());
+    m_ui->spinBoxPortion->setValue(accountToPayModel->getPortion());
 
-//    m_ui->comboBoxPaymentway_2->setCurrentId(accountToPayModel->getPaymentWay());
+    m_ui->comboBoxPaymentWay->setCurrentId(accountToPayModel->getPaymentWay());
 
     if (accountToPayModel->getSupplierId() == 0)
     {
@@ -189,6 +192,8 @@ void AccountToPayRegister::SaveAccountToPay(void)
 
         accountToPayModel->setDescription(description);
         accountToPayModel->setIssueDate(QDate::currentDate());
+        accountToPayModel->setMaxPortion(max);
+        accountToPayModel->setPortion(index);
 
         if (m_ui->groupBoxRepeat->isChecked() && index > 1)
         {
@@ -245,11 +250,13 @@ void AccountToPayRegister::SaveAccountToPay(void)
 
         accountToPayModel->setObs(m_ui->textEditObs->toPlainText().toUpper());
 
-//        accountToPayModel->setPaymentWay( m_ui->comboBoxPaymentway_2->model()->data(m_ui->comboBoxPaymentway_2->model()->index(m_ui->comboBoxPaymentway_2->currentIndex(), 0)).toInt());
+        accountToPayModel->setPaymentWay( m_ui->comboBoxPaymentWay->model()->data(m_ui->comboBoxPaymentWay->model()->index(m_ui->comboBoxPaymentWay->currentIndex(), 0)).toInt());
 
         if ((m_accountToPayId != 0) && (max==1))
         {
             accountToPayModel->setId(m_accountToPayId);
+            accountToPayModel->setMaxPortion(m_ui->spinBoxMaxPortion->value());
+            accountToPayModel->setPortion(m_ui->spinBoxPortion->value());
         }
         if(!accountToPayModel->Save())
         {

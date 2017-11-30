@@ -17,13 +17,20 @@
 #include "ticketcontroller.h"
 #include "qradplugincontainer.h"
 
+//                                    " fac.value as value, "
+
 //// novo SQL mais inteligente
 #define SQL_SELECT_ACCOUNTTORECEIVE "select fac.id, case when a.numero is null then fac.description else a.numero || ' ' || substring(t.name from 1 for 1) end as description, "\
                                     " case when c.name is NULL then 'NAO INFORMADO' else c.name end as client, "\
                                     " fac.accounttypeid, "\
                                     " fac.issuedate as issuedate,fac.vencdate as vencdate, "\
                                     " case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, "\
-                                    " fac.value as value, case when fac.valuepaid is null then 0 else fac.valuepaid end as "\
+                                    " case when paid <> true and current_date > vencdate then "\
+                                    " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value)+ "\
+                                    " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value) /100* "\
+                                    " (cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision)/30* (current_date - vencdate)) "\
+                                    " else fac.value end as value "\
+                                    " ,case when fac.valuepaid is null then 0 else fac.valuepaid end as "\
                                     " valuepaid, case when fac.paid is true then 'T' else 'F' end as paid, "\
                                     " case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else "\
                                     " case when vencdate < current_date then 'V' else 'H' end end end as situation, "\
@@ -864,7 +871,23 @@ void AccountToReceiveManager::ShowReport(void)
         TableViewQuery = TableViewQuery.replace("fac.issuedate as issuedate,","to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate,");
         TableViewQuery = TableViewQuery.replace("fac.vencdate as vencdate,","to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate,");
         TableViewQuery = TableViewQuery.replace("case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate,","case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate,");
-        TableViewQuery = TableViewQuery.replace("fac.value as value,","to_char(fac.value, 'FM9G999G990D00') as value,");
+//        TableViewQuery = TableViewQuery.replace("fac.value as value,","to_char(fac.value, 'FM9G999G990D00') as value,");
+        TableViewQuery = TableViewQuery.replace(" case when paid <> true and current_date > vencdate then "\
+        " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value)+ "\
+        " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value) /100* "\
+        " (cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision)/30* (current_date - vencdate)) "\
+        " else fac.value end as value ",
+
+        " case when paid <> true and current_date > vencdate then "\
+        " to_char((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value)+ "\
+        " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value) /100* "\
+        " (cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision)/30* (current_date - vencdate)), 'FM9G999G990D00')"\
+        " else to_char(fac.value, 'FM9G999G990D00') end as value ");
+
+
+
+
+
         TableViewQuery = TableViewQuery.replace("case when fac.paid is true then 'T' else 'F' end as paid,",
                                                 "case when fac.paid = true then 'PAGO' when current_date > fac.vencdate then 'VENCIDA' else 'A VENCER' end as status,");
         TableViewQuery = TableViewQuery.replace("case when fac.valuepaid is null then 0 else fac.valuepaid end as  valuepaid,","to_char(fac.valuepaid, 'FM9G999G990D00') as valuepaid,");

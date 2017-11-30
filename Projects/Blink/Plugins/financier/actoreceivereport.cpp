@@ -76,6 +76,7 @@ void actoReceiveReport::ManagePessoaAP()
     ui->comboBoxPessoaAp->setModel(m_pessoaAP);
     ui->comboBoxPessoaAp->setModelColumn(1);
 }
+//" to_char(fac.value, 'FM9G999G990D00') as value, "
 
 QString actoReceiveReport::MountSQLReport()
 {
@@ -83,8 +84,12 @@ QString actoReceiveReport::MountSQLReport()
                                     " case when c.name is NULL then 'NAO INFORMADO' else c.name end as client, "\
                                     " to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, "\
                                     " case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, "\
-                                    " to_char(fac.value, 'FM9G999G990D00') as value, "\
-                                    " case when fac.paid = true then 'PAGO' when current_date > fac.vencdate then 'VENCIDA' else 'A VENCER' end as status, "\
+                                    " case when paid <> true and current_date > vencdate then "\
+                                    " to_char((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value)+ "\
+                                    " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value) /100* "\
+                                    " (cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision)/30* (current_date - vencdate)), 'FM9G999G990D00')"\
+                                    " else to_char(fac.value, 'FM9G999G990D00') end as value "\
+                                    " ,case when fac.paid = true then 'PAGO' when current_date > fac.vencdate then 'VENCIDA' else 'A VENCER' end as status, "\
                                     " case when tkt.type is null then fat.description else case when tkt.type = 0 then 'CONDOMÍNIO' else 'TX EXTRA' end end as accounttype, "\
                                     " case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else "\
                                     " case when vencdate < current_date then 'V' else 'H' end end end as situation, "\

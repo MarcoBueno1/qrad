@@ -21,7 +21,7 @@ class PaidAccount : public QDialog {
 public:
     PaidAccount(QWidget *parent = 0);
     ~PaidAccount();
-    void    SendPaidAccountId(int accountId, DSM_AccountType_t accountType);
+    void    SendPaidAccountId(int accountId, DSM_AccountType_t accountType, double dValWithTax=-10);
 
     double getValuePaid();
 protected:
@@ -33,6 +33,7 @@ protected:
 
 private:
     Ui::PaidAccount *m_ui;
+    double m_dValWithTax;
 
 private slots:
     void    SavePaidAccount(void);

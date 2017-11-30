@@ -678,7 +678,14 @@ void AccountToReceiveManager::PayAccount(void)
             PaidAccount *paidAccount = new PaidAccount(this);
             QRadConfig::centralizarWidget(paidAccount);
 
-            paidAccount->SendPaidAccountId(m_accountToReceiveId, AccountTypeToReceive);
+//            m_selectAccountToReceive->setHeaderData(7, Qt::Horizontal, QString::fromUtf8("Valor"));
+            QString strValueToPay = m_selectAccountToReceive->index(m_ui->tableViewAccountToReceive->currentIndex().row(),7).data().toString();
+
+            if( strValueToPay.contains("."))
+                strValueToPay = strValueToPay.remove(".");
+            strValueToPay.replace(",", ".");
+
+            paidAccount->SendPaidAccountId(m_accountToReceiveId, AccountTypeToReceive, strValueToPay.toDouble());
 
             debug_message("-->\n");
 

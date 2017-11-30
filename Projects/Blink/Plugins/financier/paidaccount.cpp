@@ -10,8 +10,8 @@
 // alter table fin_accounttoreceive add column paymentway integer default 1;
 
 
-#define SQL_UPDATE_PAIDACCOUNT      "update fin_accounttopay set (paiddate, paid, valuepaid, paymentway) = (?, ?, ?, ?)  where id = (?)"
-#define SQL_UPDATE_RECEIVEACCOUNT   "update fin_accounttoreceive set (paiddate, paid, valuepaid, paymentway) = (?, ?, ?, ?)  where id = (?)"
+#define SQL_UPDATE_PAIDACCOUNT      "update fin_accounttopay set (paiddate, paid, valuepaid, paymentway, valuewithtax ) = (?, ?, ?, ?, ?)  where id = (?)"
+#define SQL_UPDATE_RECEIVEACCOUNT   "update fin_accounttoreceive set (paiddate, paid, valuepaid, paymentway, valuewithtax ) = (?, ?, ?, ?, ?)  where id = (?)"
 
 PaidAccount::PaidAccount(QWidget *parent) :
     QDialog(parent),
@@ -19,6 +19,7 @@ PaidAccount::PaidAccount(QWidget *parent) :
 {
     m_ui->setupUi(this);
 
+    m_dValWithTax = -10;
     m_expMoney = new QRegExpValidator(QRegExp(REGEXP_MONEY), 0);
 
     m_ui->lineEditPaidValue->setValidator(m_expMoney);
@@ -56,7 +57,7 @@ void PaidAccount::changeEvent(QEvent *e)
     }
 }
 
-void PaidAccount::SendPaidAccountId(int accountId, DSM_AccountType_t accountType)
+void PaidAccount::SendPaidAccountId(int accountId, DSM_AccountType_t accountType, double dValWithTax)
 {
     m_accountId = accountId;
     m_accountType = accountType;
@@ -64,13 +65,21 @@ void PaidAccount::SendPaidAccountId(int accountId, DSM_AccountType_t accountType
     if (m_accountType == AccountTypeToPay)
     {
         AccountToPayModel *accountToPayModel = AccountToPayModel::findByPrimaryKey(m_accountId);
-        m_ui->lineEditPaidValue->setText(QRadMoney::MoneyHumanForm2(accountToPayModel->getValue()));
+
+        m_dValWithTax = dValWithTax<=accountToPayModel->getValue()?accountToPayModel->getValue():dValWithTax;
+
+        m_ui->lineEditPaidValue->setText(QRadMoney::MoneyHumanForm2(m_dValWithTax));
+
         delete accountToPayModel;
     }
     else
     {
         AccountToReceiveModel *accountToReceiveModel = AccountToReceiveModel::findByPrimaryKey(m_accountId);
-        m_ui->lineEditPaidValue->setText(QRadMoney::MoneyHumanForm2(accountToReceiveModel->getValue()));
+
+        m_dValWithTax = dValWithTax<=accountToReceiveModel->getValue()?accountToReceiveModel->getValue():dValWithTax;
+
+        m_ui->lineEditPaidValue->setText( QRadMoney::MoneyHumanForm2(dValWithTax) );
+
         delete accountToReceiveModel;
     }
 }
@@ -113,6 +122,10 @@ void PaidAccount::SavePaidAccount(void)
 
     /** paymentway */
     updateAccountType->addBindValue(m_ui->comboBox->model()->data(m_ui->comboBox->model()->index(m_ui->comboBox->currentIndex(), 0)).toInt());
+
+    updateAccountType->addBindValue(m_dValWithTax);
+
+
 
     /** id */
     updateAccountType->addBindValue(m_accountId);

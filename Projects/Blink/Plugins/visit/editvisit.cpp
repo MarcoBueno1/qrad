@@ -186,7 +186,8 @@ void Editvisit::Save()
         CPF.remove("-").remove(".");
         pVis->setCPF(CPF);
         pVis->setNome(ui->lineEditVisitante->text());
-        pVis->saveImage(PORTEIRO_FUL_PATH);
+        if( m_foto && QFile::exists(PORTEIRO_FUL_PATH) )
+            pVis->saveImage(PORTEIRO_FUL_PATH);
         pVis->Save();
         debug_message("Novo Visitante id:%d\n", pVis->getid())
     }

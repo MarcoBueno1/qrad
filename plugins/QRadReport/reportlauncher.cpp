@@ -222,6 +222,9 @@ void ReportLauncher::Buildreport()
                 /*
                    select to_char(v.data_entrada, 'DD/MM/YYYY') || ' ' || hora_entrada as "Entrada",  vi.nome as "Visitante", r.description as "Motivo", d.name || '(' || t.name || ', ' || ap.numero || ')' as "Autorizador"
                  */
+                sql = sql.replace("vi.nome as", "upper(vi.nome) as");
+                debug_message("SQL ALTERADO: %s\n",sql.toLatin1().data());
+
                 if ( !report->load( "report_4_columns" ) )
                 {
                    QRAD_HIDE_PRPGRESS();
@@ -236,6 +239,8 @@ void ReportLauncher::Buildreport()
 
                  pReport->setFields("Entrada","Visitante", "Motivo", "Autorizador", "vazio",  "vazio");
                  pReport->setTitles("Entrada","Visitante", "Motivo", "Autorizador", " ",  " ");
+
+
 
                  pReport->setQueryName("visitas");
                  report->setQuery("visitas", sql);

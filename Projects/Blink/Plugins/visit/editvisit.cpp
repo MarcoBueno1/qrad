@@ -17,6 +17,16 @@
 
 #define PORTEIRO_FUL_PATH "visit.jpg"
 
+
+void Editvisit::RemovePhotoFile()
+{
+    QFile *remove= new QFile(PORTEIRO_FUL_PATH);
+
+    remove->remove();
+    delete remove;
+}
+
+
 Editvisit::Editvisit(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Editvisit)
@@ -29,6 +39,8 @@ Editvisit::Editvisit(QWidget *parent) :
     m_foto = 0;
 
    // CriaTabela();
+
+    RemovePhotoFile();
 
     connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));
     connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));
@@ -210,6 +222,7 @@ void Editvisit::Save()
     if( bRet )
     {
        QMessageBox::information(this, "Sucesso!","Informações foram salvas com sucesso!");
+       RemovePhotoFile();
        accept();
     }
     else

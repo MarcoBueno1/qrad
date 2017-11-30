@@ -40,6 +40,7 @@ private:
     void keyPressEvent(QKeyEvent *e);
     void CriaTabela();
     bool CanSave();
+    void RemovePhotoFile();
 };
 
 #endif // EDITvisit_H

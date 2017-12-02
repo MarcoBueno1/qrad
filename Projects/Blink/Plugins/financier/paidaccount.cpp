@@ -70,6 +70,8 @@ void PaidAccount::SendPaidAccountId(int accountId, DSM_AccountType_t accountType
 
         m_ui->lineEditPaidValue->setText(QRadMoney::MoneyHumanForm2(m_dValWithTax));
 
+        m_ui->comboBox->setCurrentId(accountToPayModel->getPaymentWay());
+
         delete accountToPayModel;
     }
     else
@@ -77,6 +79,7 @@ void PaidAccount::SendPaidAccountId(int accountId, DSM_AccountType_t accountType
         AccountToReceiveModel *accountToReceiveModel = AccountToReceiveModel::findByPrimaryKey(m_accountId);
 
         m_dValWithTax = dValWithTax<=accountToReceiveModel->getValue()?accountToReceiveModel->getValue():dValWithTax;
+        debug_message("Value=%02.02f withTax=%02.02f\n", accountToReceiveModel->getValue(), m_dValWithTax);
 
         m_ui->lineEditPaidValue->setText( QRadMoney::MoneyHumanForm2(dValWithTax) );
 

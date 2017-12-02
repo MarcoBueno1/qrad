@@ -4,7 +4,7 @@
 #include "qraddebug.h"
 #include "dayreserve.h"
 
-#define SQL_RES "select * from reserve where date_start between '%1' and '%2'"
+#define SQL_RES "select * from reserve where date_start between '%1' and '%2' and commona_id=%3"
 
 calendarreserve::calendarreserve(QWidget *parent) :
     QDialog(parent),
@@ -33,7 +33,10 @@ void calendarreserve::UpdateCalendar(int year,int month)
 
     QList<QDate>dates;
 
-    QString sql = QString(SQL_RES).arg(date.toString(FMT_DATE_DB)).arg(LastDay.toString(FMT_DATE_DB));
+    QString sql = QString(SQL_RES)
+            .arg(date.toString(FMT_DATE_DB))
+            .arg(LastDay.toString(FMT_DATE_DB))
+            .arg(m_CommonId);
 
     m_model->setQuery(sql);
 
@@ -160,5 +163,6 @@ int calendarreserve::Exec(int CommonId, QString CommonName )
   m_CommonId = CommonId;
   m_CommonName = CommonName;
   setWindowTitle( QString("Reserva de %1").arg(CommonName));
+  UpdateCalendar(QDate::currentDate().year(),QDate::currentDate().month());
   return exec();
 }

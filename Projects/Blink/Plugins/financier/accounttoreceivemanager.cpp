@@ -681,9 +681,10 @@ void AccountToReceiveManager::PayAccount(void)
 //            m_selectAccountToReceive->setHeaderData(7, Qt::Horizontal, QString::fromUtf8("Valor"));
             QString strValueToPay = m_selectAccountToReceive->index(m_ui->tableViewAccountToReceive->currentIndex().row(),7).data().toString();
 
-            if( strValueToPay.contains("."))
-                strValueToPay = strValueToPay.remove(".");
-            strValueToPay.replace(",", ".");
+            debug_message("strValueToPay=%s\n",strValueToPay.toLatin1().data());
+            //if( strValueToPay.contains("."))
+            //    strValueToPay = strValueToPay.remove(".");
+            //strValueToPay.replace(".", ",");
 
             paidAccount->SendPaidAccountId(m_accountToReceiveId, AccountTypeToReceive, strValueToPay.toDouble());
 

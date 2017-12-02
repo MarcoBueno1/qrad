@@ -18,6 +18,7 @@ NewDayReserve::NewDayReserve(QWidget *parent) :
 
     m_reserve = NULL;
 
+//    ui->pushButtonInvited->setVisible(false);
 
 
     m_litedb = QSqlDatabase::addDatabase("QSQLITE", "lite");
@@ -312,7 +313,7 @@ int NewDayReserve::Edit(int id, QString CommonName)
                             QString("Não foi possível encontrar a reserva id:%1").arg(id));
        return QDialog::Rejected;
    }
-   ui->pushButtonInvited->setVisible(true);
+//   ui->pushButtonInvited->setVisible(true);
 
    m_CommonName = CommonName;
    ui->lineEditLocal->setEnabled(false);

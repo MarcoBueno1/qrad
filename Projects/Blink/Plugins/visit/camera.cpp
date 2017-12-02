@@ -93,10 +93,13 @@ Camera::~Camera()
 
 void Camera::setPath(QString strFullPath)
 {
-    QFile *remove_prev = new QFile(strFullPath);
+    if( QFile::exists(strFullPath))
+    {
+        QFile *remove_prev = new QFile(strFullPath);
 
-    remove_prev->remove();
-    delete remove_prev;
+        remove_prev->remove();
+        delete remove_prev;
+    }
 
     m_FullPath = strFullPath;
 }

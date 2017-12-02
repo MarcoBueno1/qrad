@@ -20,10 +20,13 @@
 
 void Editvisit::RemovePhotoFile()
 {
-    QFile *remove= new QFile(PORTEIRO_FUL_PATH);
+    if(QFile::exists(PORTEIRO_FUL_PATH))
+    {
+        QFile *remove= new QFile(PORTEIRO_FUL_PATH);
 
-    remove->remove();
-    delete remove;
+        remove->remove();
+        delete remove;
+    }
 }
 
 
@@ -178,6 +181,32 @@ void Editvisit::Save()
         return;
 
     Visitante *pVis = Visitante::findByid(ui->lineEditRG->getCurrentId());
+    if(!pVis)
+    {
+       /* if(!ui->lineEditRG->text().trimmed().isEmpty())
+        {
+           VisitanteList *pVLst = Visitante::findBy(QString("select * from visitante where rg='%1' order by id limit 1")
+                                    .arg(ui->lineEditRG->text().trimmed()));
+           if( pVLst && pVLst->count())
+           {
+               pVis = new Visitante;
+               pVis->copyFrom(pVLst->at(0));
+           }
+        }
+
+        if( !pVis && (!ui->lineEditCPF->text().trimmed().isEmpty()))
+        {
+            VisitanteList *pVLst = Visitante::findBy(QString("select * from visitante where cpf='%1' order by id limit 1")
+                                     .arg(ui->lineEditCPF->text().trimmed()));
+            if( pVLst && pVLst->count())
+            {
+                pVis = new Visitante;
+                pVis->copyFrom(pVLst->at(0));
+            }
+        }
+        */
+
+    }
     if(!pVis)
     {
         pVis = new Visitante;

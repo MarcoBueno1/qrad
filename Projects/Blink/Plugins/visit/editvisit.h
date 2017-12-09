@@ -23,13 +23,16 @@ public:
 public slots:
     void Save();
     void Cancel();
-    void found(int id );
+    void found(int id, bool force=false );
     
     void baterFoto();
     void notFound();
     void DeliveryCheck(bool bChecked);
+    void EditRGFinished();
 private:
     Ui::Editvisit *ui;
+    bool m_bfound;
+    int m_CurrentTickCount;
     visit* m_mod;
     visit* m_lastMod;
     QSqlQueryModel *m_deliveryto;

@@ -12,6 +12,7 @@
 #include "ap.h"
 #include "tower.h"
 #include "preaut.h"
+#include <windows.h>
 
 // alter table visit add column company integer;
 
@@ -40,7 +41,9 @@ Editvisit::Editvisit(QWidget *parent) :
     m_lastMod = NULL;
     m_idVisitante = 0;
     m_foto = 0;
-
+    m_CurrentTickCount = 0;
+    m_bfound = false;
+   // m_CurrentVisitanteId = 0;
    // CriaTabela();
 
     RemovePhotoFile();
@@ -58,7 +61,7 @@ Editvisit::Editvisit(QWidget *parent) :
     ui->TmEdtHora->setTime(QTime::currentTime());
     ui->lineEditRG->setFocus();
 
-    ui->lineEditRG->setSelect("select rg || ' | ' || nome || ' | ' || cpf, id, rg, cpf, nome from Visitante");
+    ui->lineEditRG->setSelect("select rg || ' | ' || nome || ' | ' || cpf, id, rg, cpf, nome from visitante where removed <> true order by id");
     ui->lineEditRG->Add(ui->lineEditCPF);
     ui->lineEditRG->Add(ui->lineEditVisitante);
 
@@ -99,6 +102,7 @@ Editvisit::Editvisit(QWidget *parent) :
         ui->comboBoxDeliveryTo->completer()->setFilterMode(Qt::MatchContains );
 
     connect(ui->groupBoxDelivery, SIGNAL(clicked(bool)), this, SLOT(DeliveryCheck(bool)));
+    connect(ui->lineEditRG, SIGNAL(editingFinished()),this, SLOT(EditRGFinished()));
 
 
     ui->groupBoxDelivery->setVisible(false);
@@ -180,12 +184,12 @@ void Editvisit::Save()
     if( !CanSave() )
         return;
 
-    Visitante *pVis = Visitante::findByid(ui->lineEditRG->getCurrentId());
+    Visitante *pVis = Visitante::findByid(m_idVisitante);
     if(!pVis)
     {
-       /* if(!ui->lineEditRG->text().trimmed().isEmpty())
+        if(!ui->lineEditRG->text().trimmed().isEmpty())
         {
-           VisitanteList *pVLst = Visitante::findBy(QString("select * from visitante where rg='%1' order by id limit 1")
+           VisitanteList *pVLst = Visitante::findBy(QString("select * from visitante where rg='%1' and removed <> true order by id limit 1")
                                     .arg(ui->lineEditRG->text().trimmed()));
            if( pVLst && pVLst->count())
            {
@@ -196,16 +200,14 @@ void Editvisit::Save()
 
         if( !pVis && (!ui->lineEditCPF->text().trimmed().isEmpty()))
         {
-            VisitanteList *pVLst = Visitante::findBy(QString("select * from visitante where cpf='%1' order by id limit 1")
+            VisitanteList *pVLst = Visitante::findBy(QString("select * from visitante where cpf='%1' and removed <> true  order by id limit 1")
                                      .arg(ui->lineEditCPF->text().trimmed()));
             if( pVLst && pVLst->count())
             {
                 pVis = new Visitante;
                 pVis->copyFrom(pVLst->at(0));
             }
-        }
-        */
-
+        }        
     }
     if(!pVis)
     {
@@ -220,13 +222,34 @@ void Editvisit::Save()
         pVis->Save();
         debug_message("Novo Visitante id:%d\n", pVis->getid())
     }
-    else
+    else // atualizar dados do visitante
     {
+        bool bSave = false;
+        if( pVis->getRG().isEmpty() && !ui->lineEditRG->text().trimmed().isEmpty())
+        {
+            pVis->setRG(ui->lineEditRG->text());
+            bSave = true;
+        }
+        QString CPF =ui->lineEditCPF->text().trimmed();
+        CPF.remove("-").remove(".");
+        if( pVis->getCPF().isEmpty() && !CPF.trimmed().isEmpty())
+        {
+             pVis->setCPF(CPF);
+             bSave = true;
+        }
+        if( pVis->getNome().length() < ui->lineEditVisitante->text().trimmed().length())
+        {
+             pVis->setNome(ui->lineEditVisitante->text().trimmed());
+             bSave = true;
+        }
         if( m_foto )
         {
             pVis->saveImage(PORTEIRO_FUL_PATH);
-            pVis->Save();
+            bSave = true;
         }
+        if( bSave )
+            pVis->Save();
+
         debug_message("Visitante já existente:%d\n", pVis->getid())
     }
 
@@ -372,13 +395,30 @@ void Editvisit::baterFoto()
   ui->lineEditRG->setFocus();
 }
 
-void Editvisit::found( int id )
+void Editvisit::found( int id, bool force )
 {
+   if( m_bfound && !force)
+       return;
+
+   m_bfound = true;
+
     Visitante *pVis = Visitante::findByid(id);
     if( pVis )
     {
+         // QMessageBox::information(this,"Edit found", "Edit found");
           QPixmap mypix = pVis->getImage();
           ui->LblPhoto->setPixmap(mypix);
+          ui->lineEditCPF->setEnabled(false);
+          ui->lineEditRG->setEnabled(false);
+          ui->lineEditVisitante->setEnabled(false);
+
+          if(force)
+          {
+              if( !pVis->getCPF().trimmed().isEmpty())
+                  ui->lineEditCPF->setText(pVis->getNome());
+              if( !pVis->getNome().trimmed().isEmpty())
+                  ui->lineEditVisitante->setText(pVis->getNome());
+          }
 
           preaut *pre = preaut::findValidByVisitor(id);
           if( pre )
@@ -435,12 +475,19 @@ void Editvisit::found( int id )
               ui->lineEditAnunciarChegada->setStyleSheet(styleSheet);
               ui->DtEdtData->setFocus();
           }
-
+          m_idVisitante = id;
           delete pVis;
+    }
+    else
+    {
+       // QMessageBox::information(this,"Edit found", QString("Edit found, not found id: %1").arg(id));
+
     }
 }
 void Editvisit::notFound()
 {
+    m_idVisitante = 0;
+    m_bfound = false;
     QPixmap mypix;// = pVis->getImage();
     ui->LblPhoto->setPixmap(mypix);
 
@@ -458,4 +505,33 @@ void Editvisit::notFound()
 void Editvisit::DeliveryCheck(bool bChecked)
 {
     ui->groupBoxAutorizadoPor->setEnabled(!bChecked );
+}
+void Editvisit::EditRGFinished()
+{
+   int Elapsed =  GetTickCount() - m_CurrentTickCount;
+   m_CurrentTickCount = GetTickCount();
+   if(  (Elapsed >  1000) && !m_bfound)
+   {
+       m_bfound = true;
+//       QMessageBox::information(this,"Edit RG Finished", "Edit Rg Finished: Completer esta invisivel");
+       //return;
+
+       VisitanteList *visitantes = NULL;
+       if( !ui->lineEditRG->text().trimmed().isEmpty())
+       {
+          visitantes = Visitante::findBy(QString("select * from visitante where rg = '%1' and removed <> true order by id limit 1").arg(ui->lineEditRG->text().trimmed()));
+       }
+       else if( !ui->lineEditCPF->text().remove("-").remove(".").trimmed().isEmpty())
+       {
+           visitantes = Visitante::findBy(QString("select * from visitante where cpf = '%1' and removed <> true order by id limit 1").arg(ui->lineEditRG->text().trimmed()));
+       }
+       if( visitantes && visitantes->count())
+       {
+
+          found(visitantes->at(0)->getid(), true);
+       }
+    // codigo de procura exata pelo RG.
+    // QMessageBox::information(this,"Edit RG Finished", "Edit Rg Finished");
+       //m_bfound = true;
+   }
 }

@@ -21,6 +21,7 @@ public:
 
     void setCurrentId(int id);
     void focusInEvent(QFocusEvent *e);
+    bool isCompleterVisible();
   //  void keyPressEvent(QKeyEvent *event);
 public slots:
     void textchanged(QString text);

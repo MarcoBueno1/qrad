@@ -22,7 +22,7 @@ QList<Visitante*>* Visitante::findAll()
 {
     MODEL_INIT_LIST(Visitante, m_allList);
 
-    QString query = QString("select * from Visitante");
+    QString query = QString("select * from visitante where removed <> true");
 
     if (!Visitante::fillModelList(m_allList, query))
         return NULL;
@@ -34,7 +34,7 @@ Visitante* Visitante::findByid(int id)
 {
     Visitante *VisitanteM = new Visitante();
 
-    QString query = QString("select * from Visitante where id = %3").arg(id);
+    QString query = QString("select * from visitante where id = %3").arg(id);
 
     if (!VisitanteM->fillModelFromQuery(query))
     {

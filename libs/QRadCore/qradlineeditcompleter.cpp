@@ -25,6 +25,10 @@ QRadLineEditCompleter::QRadLineEditCompleter(QWidget *parent):QLineEdit(parent)
 
     m_nCurrentId = 0;
 }
+bool QRadLineEditCompleter::isCompleterVisible()
+{
+    return m_completer->popup()->isVisible();
+}
 
 QRadLineEditCompleter::~QRadLineEditCompleter()
 {

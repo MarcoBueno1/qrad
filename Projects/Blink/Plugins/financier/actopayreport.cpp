@@ -27,6 +27,11 @@ actopayreport::actopayreport(QWidget *parent) :
     ui->comboBoxTipodeConta->setModelColumn(1);
 
     connect(ui->pushButtonBuild,SIGNAL(clicked(bool)),this,SLOT(BuildReport(bool)));
+
+    connect(ui->radioButtonFilterPayment,SIGNAL(clicked(bool)),this,SLOT(EnableDisableVencidas()));
+    connect(ui->radioButtonFilterIssue,SIGNAL(clicked(bool)),this,SLOT(EnableDisableVencidas()));
+    connect(ui->radioButtonFilterVencto,SIGNAL(clicked(bool)),this,SLOT(EnableDisableVencidas()));
+
 }
 
 actopayreport::~actopayreport()
@@ -34,6 +39,22 @@ actopayreport::~actopayreport()
     delete m_Fornecedor;
     delete ui;
 }
+
+void actopayreport::TestMountSQL()
+{
+    ui->groupBoxFilterData->setChecked(false);
+    ui->dateEditFrom->setDate(QDate::fromString("30/06/2017","dd/MM/yyyy"));
+    ui->dateEditUntil->setDate(QDate::fromString("15/07/2017","dd/MM/yyyy"));
+
+    ui->checkBoxNotPaid->setChecked(false);
+    ui->checkBoxPaid->setChecked(false);
+//    ui->groupBoxFilterData->setChecked(false);
+
+    QString SQLReport = MountSQLReport();
+    debug_message("SQL Report:%s\n",SQLReport.toLatin1().data());
+}
+
+
 QString actopayreport::MountSQLReport()
 {
 #define SQL_SELECT_ACCOUNTTOPAY_REPORT  " select fac.id, "\
@@ -60,6 +81,8 @@ QString actopayreport::MountSQLReport()
     QString Where = " and ";
     QString WhereVencidas;
     QString OrderBy;
+    QString DateLogic;
+
     if( ui->groupBoxFilterData->isChecked() )
     {
         if (ui->radioButtonFilterIssue->isChecked())
@@ -79,6 +102,11 @@ QString actopayreport::MountSQLReport()
                                 .arg(aux)
                                 .arg(ui->dateEditFrom->date().toString(FMT_DATE_DB))
                                 .arg(ui->dateEditUntil->date().toString(FMT_DATE_DB));
+
+         DateLogic = QString(" %1 between '%2' and '%3' ")
+                     .arg(aux)
+                     .arg(ui->dateEditFrom->date().toString(FMT_DATE_DB))
+                     .arg(ui->dateEditUntil->date().toString(FMT_DATE_DB));
     }
 
     if( ui->groupBoxFilterApenasDe->isChecked() )
@@ -185,15 +213,33 @@ QString actopayreport::MountSQLReport()
 
     if( ui->checkBoxVencidas->isChecked() )
     {
-        QString WhereUnion = QString(" and ( fac.paid = false and fac.vencdate < '%1') %2 ")
-                .arg(QDate::currentDate().toString(FMT_DATE_DB))
-                .arg(WhereVencidas);
-        QString Union = "(" + QString(SQL_SELECT_ACCOUNTTOPAY_REPORT).arg(WhereUnion).arg(OrderBy);
-        aux  =  QString(" %1) union  ( ")
-                .arg(Union);
-        aux += QString(SQL_SELECT_ACCOUNTTOPAY_REPORT).arg(Where).arg(OrderBy);
-        aux += ") ";
-        aux += OrderBy.replace("fac.paid", "status").remove("fac.").replace("s.name", "supplier" ).replace("fat.description", "accounttype");
+        if( !ui->groupBoxFilterData->isChecked() )
+        {
+            QString WhereUnion = QString(" and ( fac.paid = false and fac.vencdate < '%1') %2 ")
+                    .arg(QDate::currentDate().toString(FMT_DATE_DB))
+                    .arg(WhereVencidas);
+            QString Union = "(" + QString(SQL_SELECT_ACCOUNTTOPAY_REPORT).arg(WhereUnion).arg(OrderBy);
+            aux  =  QString(" %1) union  ( ")
+                    .arg(Union);
+            aux += QString(SQL_SELECT_ACCOUNTTOPAY_REPORT).arg(Where).arg(OrderBy);
+            aux += ") ";
+            aux += OrderBy.replace("fac.paid", "status").remove("fac.").replace("s.name", "supplier" ).replace("fat.description", "accounttype");
+        }
+        else
+        {
+            QString WhereUnion = QString(" and ( fac.paid = false and %1 and fac.vencdate < '%2') %3 ")
+                    .arg(DateLogic)
+                    .arg(QDate::currentDate().toString(FMT_DATE_DB))
+                    .arg(WhereVencidas);
+            QString Union = "(" + QString(SQL_SELECT_ACCOUNTTOPAY_REPORT).arg(WhereUnion).arg(OrderBy);
+            aux  =  QString(" %1) union  ( ")
+                    .arg(Union);
+            aux += QString(SQL_SELECT_ACCOUNTTOPAY_REPORT).arg(Where).arg(OrderBy);
+            aux += ") ";
+            aux += OrderBy.replace("fac.paid", "status").remove("fac.").replace("s.name", "supplier" ).replace("fat.description", "accounttype");
+
+        }
+
     }
     else
     {
@@ -247,4 +293,17 @@ void actopayreport::BuildReport(bool)
   delete select;
   this->setEnabled(true);
 
+}
+
+void actopayreport::EnableDisableVencidas()
+{
+   if( ui->radioButtonFilterPayment->isChecked() )
+   {
+       ui->checkBoxVencidas->setChecked(false);
+       ui->checkBoxVencidas->setEnabled(false);
+   }
+   else
+   {
+       ui->checkBoxVencidas->setEnabled(true);
+   }
 }

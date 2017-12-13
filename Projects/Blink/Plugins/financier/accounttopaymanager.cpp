@@ -163,6 +163,8 @@ void AccountToPayManager::closeEvent(QCloseEvent *event)
 void AccountToPayManager::GetAccountToPay(void)
 {
     QString WhereVencidas;
+    QString DateLogic;
+
     m_strAux = "";
     if (m_ui->radioButtonIssueDate->isChecked())
     {
@@ -184,6 +186,11 @@ void AccountToPayManager::GetAccountToPay(void)
                                 .arg(m_dateStr)
                                 .arg(m_ui->dateEditStart->date().toString(FMT_DATE_DB))
                                 .arg(m_ui->dateEditEnd->date().toString(FMT_DATE_DB));
+
+        DateLogic = QString(" %1 between '%2' and '%3' ")
+                    .arg(m_dateStr)
+                    .arg(m_ui->dateEditStart->date().toString(FMT_DATE_DB))
+                    .arg(m_ui->dateEditEnd->date().toString(FMT_DATE_DB));
     }
 
     if ( (m_ui->checkBoxAccountOpen->isChecked()) && (m_ui->checkBoxAccountPaid->isChecked()) )
@@ -255,15 +262,31 @@ void AccountToPayManager::GetAccountToPay(void)
 
     if( m_ui->checkBoxVencidas->isChecked() )
     {
-        QString WhereUnion = QString(" and ( fac.paid = false and fac.vencdate < '%1') %2 ")
-                .arg(QDate::currentDate().toString(FMT_DATE_DB))
-                .arg(WhereVencidas);
-        QString Union = "(" + QString(SQL_SELECT_ACCOUNTTOPAY).arg(WhereUnion).arg(m_dateStr);
-        strSQL  =  QString(" %1) union  ( ")
-                .arg(Union);
-        strSQL += QString(SQL_SELECT_ACCOUNTTOPAY).arg(m_strAux).arg(m_dateStr);
-        strSQL += ") ";
-        strSQL += " order by " + m_dateStr.remove("fac.") + ", description";
+        if( !m_ui->groupBoxDate->isChecked() )
+        {
+            QString WhereUnion = QString(" and ( fac.paid = false and fac.vencdate < '%1') %2 ")
+                    .arg(QDate::currentDate().toString(FMT_DATE_DB))
+                    .arg(WhereVencidas);
+            QString Union = "(" + QString(SQL_SELECT_ACCOUNTTOPAY).arg(WhereUnion).arg(m_dateStr);
+            strSQL  =  QString(" %1) union  ( ")
+                    .arg(Union);
+            strSQL += QString(SQL_SELECT_ACCOUNTTOPAY).arg(m_strAux).arg(m_dateStr);
+            strSQL += ") ";
+            strSQL += " order by " + m_dateStr.remove("fac.") + ", description";
+        }
+        else
+        {
+            QString WhereUnion = QString(" and ( fac.paid = false and %1 and fac.vencdate < '%2') %3 ")
+                    .arg(DateLogic)
+                    .arg(QDate::currentDate().toString(FMT_DATE_DB))
+                    .arg(WhereVencidas);
+            QString Union = "(" + QString(SQL_SELECT_ACCOUNTTOPAY).arg(WhereUnion).arg(m_dateStr);
+            strSQL  =  QString(" %1) union  ( ")
+                    .arg(Union);
+            strSQL += QString(SQL_SELECT_ACCOUNTTOPAY).arg(m_strAux).arg(m_dateStr);
+            strSQL += ") ";
+            strSQL += " order by " + m_dateStr.remove("fac.") + ", description";
+        }
 
     }
     else
@@ -766,7 +789,17 @@ void AccountToPayManager::Test()
 
 //    m_ui->comboBoxTypeTxExtr->setCurrentIndex(1);
 
+    m_ui->groupBoxDate->setChecked(true);
+    m_ui->radioButtonVencDate->setChecked(true);
+    m_ui->dateEditStart->setDate(QDate::fromString("30/06/2017","dd/MM/yyyy"));
+    m_ui->dateEditEnd->setDate(QDate::fromString("15/07/2017","dd/MM/yyyy"));
+
+    m_ui->checkBoxAccountPaid->setChecked(false);
+    m_ui->checkBoxAccountOpen->setChecked(false);
+//    ui->groupBoxFilterData->setChecked(false);
+    m_ui->checkBoxVencidas->setChecked(true);
+
     GetAccountToPay();
 
-    ShowReport();
+//    ShowReport();
 }

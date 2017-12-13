@@ -38,6 +38,10 @@ actoReceiveReport::actoReceiveReport(QWidget *parent) :
     connect(ui->radioButtonPeople,SIGNAL(clicked(bool)),this,SLOT(ManagePessoaAP()));
     connect(ui->radioButtonAPTorre,SIGNAL(clicked(bool)),this,SLOT(ManagePessoaAP()));
 
+    connect(ui->radioButtonFilterPayment,SIGNAL(clicked(bool)),this,SLOT(EnableDisableVencidas()));
+    connect(ui->radioButtonFilterIssue,SIGNAL(clicked(bool)),this,SLOT(EnableDisableVencidas()));
+    connect(ui->radioButtonFilterVencto,SIGNAL(clicked(bool)),this,SLOT(EnableDisableVencidas()));
+
     ManagePessoaAP();
 
     m_AccountType = new QSqlQueryModel;
@@ -110,6 +114,7 @@ QString actoReceiveReport::MountSQLReport()
     QString JoinType = " left ";
     QString OrderBy;
     QString WhereVencidas;
+    QString DateLogic;
 
     if( ui->groupBoxFilterData->isChecked() )
     {
@@ -130,6 +135,11 @@ QString actoReceiveReport::MountSQLReport()
                                 .arg(aux)
                                 .arg(ui->dateEditFrom->date().toString(FMT_DATE_DB))
                                 .arg(ui->dateEditUntil->date().toString(FMT_DATE_DB));
+
+        DateLogic = QString(" %1 between '%2' and '%3' ")
+                .arg(aux)
+                .arg(ui->dateEditFrom->date().toString(FMT_DATE_DB))
+                .arg(ui->dateEditUntil->date().toString(FMT_DATE_DB));
     }
 
     if( ui->groupBoxFilterApenasDe->isChecked() )
@@ -276,17 +286,35 @@ QString actoReceiveReport::MountSQLReport()
     if(Where.length() == 5)
         Where = "";
 
+    //groupBoxFilterData
     if( ui->checkBoxVencidas->isChecked() )
     {
-        QString WhereUnion = QString(" and ( fac.paid = false and fac.vencdate < '%1') %2 ")
-                .arg(QDate::currentDate().toString(FMT_DATE_DB))
-                .arg(WhereVencidas);
-        QString Union = "( " + QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(WhereUnion).arg(OrderBy);
-        aux  =  QString(" %1) union ( ")
-                .arg(Union);
-        aux += QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(Where).arg(OrderBy);
-        aux += " ) ";
-        aux += OrderBy.replace("t.name", "torre").replace("c.name", "client").replace("fac.paid", "status").replace("a.id", "apart").remove("fac.");
+        if( !ui->groupBoxFilterData->isChecked() )
+        {
+            QString WhereUnion = QString(" and ( fac.paid = false and fac.vencdate < '%1') %2 ")
+                    .arg(QDate::currentDate().toString(FMT_DATE_DB))
+                    .arg(WhereVencidas);
+            QString Union = "( " + QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(WhereUnion).arg(OrderBy);
+            aux  =  QString(" %1) union ( ")
+                    .arg(Union);
+            aux += QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(Where).arg(OrderBy);
+            aux += " ) ";
+            aux += OrderBy.replace("t.name", "torre").replace("c.name", "client").replace("fac.paid", "status").replace("a.id", "apart").remove("fac.");
+        }
+        else
+        {
+            QString WhereUnion = QString(" and ( fac.paid = false and %1 and fac.vencdate < '%2') %3 ")
+                    .arg(DateLogic)
+                    .arg(QDate::currentDate().toString(FMT_DATE_DB))
+                    .arg(WhereVencidas);
+            QString Union = "( " + QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(WhereUnion).arg(OrderBy);
+            aux  =  QString(" %1) union ( ")
+                    .arg(Union);
+            aux += QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(Where).arg(OrderBy);
+            aux += " ) ";
+            aux += OrderBy.replace("t.name", "torre").replace("c.name", "client").replace("fac.paid", "status").replace("a.id", "apart").remove("fac.");
+        }
+
     }
     else
     {
@@ -294,6 +322,20 @@ QString actoReceiveReport::MountSQLReport()
         aux = QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(Where).arg(OrderBy);
     }
     return aux;
+}
+
+void actoReceiveReport::TestMountSQL()
+{
+    ui->dateEditFrom->setDate(QDate::fromString("01/07/2017","dd/MM/yyyy"));
+    ui->dateEditUntil->setDate(QDate::fromString("15/07/2017","dd/MM/yyyy"));
+
+    ui->checkBoxNotPaid->setChecked(false);
+    ui->checkBoxPaid->setChecked(false);
+//    ui->groupBoxFilterData->setChecked(false);
+    ui->checkBoxOrderApTorre->setChecked(false);
+
+    QString SQLReport = MountSQLReport();
+    debug_message("SQL Report:%s\n",SQLReport.toLatin1().data());
 }
 
 void actoReceiveReport::BuildReport(bool)
@@ -341,4 +383,17 @@ void actoReceiveReport::BuildReport(bool)
   delete select;
   this->setEnabled(true);
 
+}
+
+void actoReceiveReport::EnableDisableVencidas()
+{
+   if( ui->radioButtonFilterPayment->isChecked() )
+   {
+       ui->checkBoxVencidas->setChecked(false);
+       ui->checkBoxVencidas->setEnabled(false);
+   }
+   else
+   {
+       ui->checkBoxVencidas->setEnabled(true);
+   }
 }

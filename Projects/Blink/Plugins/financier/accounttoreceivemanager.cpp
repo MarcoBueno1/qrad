@@ -129,9 +129,11 @@ AccountToReceiveManager::AccountToReceiveManager(QWidget *parent) :
     connect(m_ui->btnReport, SIGNAL(pressed()), this, SLOT(ShowReport()));
     connect(m_ui->dateEditStart, SIGNAL(dateChanged(QDate)), this, SLOT(GetAccountToReceive()));
     connect(m_ui->dateEditEnd, SIGNAL(dateChanged(QDate)), this, SLOT(GetAccountToReceive()));
-    connect(m_ui->radioButtonIssueDate, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
-    connect(m_ui->radioButtonVencDate, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
-    connect(m_ui->radioButtonPaidDate, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
+
+    connect(m_ui->radioButtonIssueDate, SIGNAL(clicked()), this, SLOT(SpecialGetAccountToReceive()));
+    connect(m_ui->radioButtonVencDate, SIGNAL(clicked()), this, SLOT(SpecialGetAccountToReceive()));
+    connect(m_ui->radioButtonPaidDate, SIGNAL(clicked()), this, SLOT(SpecialGetAccountToReceive()));
+
     connect(m_ui->checkBoxAccountOpen, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
     connect(m_ui->checkBoxAccountPaid, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
     connect(m_ui->checkBoxVencidas, SIGNAL(clicked()), this, SLOT(GetAccountToReceive()));
@@ -219,6 +221,8 @@ void AccountToReceiveManager::GetAccountToReceive(void)
    QString OrderBy;
    QString PrevalecOrderBy;
    QString WhereVencidas;
+   QString DateLogic;
+
 
    if( m_ui->checkBoxPrevalecerAPTorre->isChecked())
    {
@@ -259,6 +263,11 @@ void AccountToReceiveManager::GetAccountToReceive(void)
                                 .arg(OrderBy)
                                 .arg(m_ui->dateEditStart->date().toString(FMT_DATE_DB))
                                 .arg(m_ui->dateEditEnd->date().toString(FMT_DATE_DB));
+
+        DateLogic = QString(" %1 between '%2' and '%3' ")
+                    .arg(OrderBy)
+                    .arg(m_ui->dateEditStart->date().toString(FMT_DATE_DB))
+                    .arg(m_ui->dateEditEnd->date().toString(FMT_DATE_DB));
     }
 
     if ( (m_ui->checkBoxAccountOpen->isChecked()) && (m_ui->checkBoxAccountPaid->isChecked()) )
@@ -373,28 +382,58 @@ void AccountToReceiveManager::GetAccountToReceive(void)
 
     if( m_ui->checkBoxVencidas->isChecked() )
     {
-        QString WhereUnion = QString(" and ( fac.paid = false and fac.vencdate < '%1') %2 ")
-                .arg(QDate::currentDate().toString(FMT_DATE_DB))
-                .arg(WhereVencidas);
-        QString Union = "( " +  QString(SQL_SELECT_ACCOUNTTORECEIVE)
-                .arg(JoinType)
-                .arg(TicketType)
-                .arg(Tower)
-                .arg(ExtraTaxJoin)
-                .arg(WhereUnion)
-                .arg(PrevalecOrderBy);
+        if( !m_ui->groupBoxDate->isChecked() )
+        {
+            QString WhereUnion = QString(" and ( fac.paid = false and fac.vencdate < '%1') %2 ")
+                    .arg(QDate::currentDate().toString(FMT_DATE_DB))
+                    .arg(WhereVencidas);
+            QString Union = "( " +  QString(SQL_SELECT_ACCOUNTTORECEIVE)
+                    .arg(JoinType)
+                    .arg(TicketType)
+                    .arg(Tower)
+                    .arg(ExtraTaxJoin)
+                    .arg(WhereUnion)
+                    .arg(PrevalecOrderBy);
 
-        TableViewQuery  =  QString(" %1) union ( ")
-                .arg(Union);
+            TableViewQuery  =  QString(" %1) union ( ")
+                    .arg(Union);
 
-        TableViewQuery += QString(SQL_SELECT_ACCOUNTTORECEIVE)
-                .arg(JoinType)
-                .arg(TicketType)
-                .arg(Tower)
-                .arg(ExtraTaxJoin)
-                .arg(Where)
-                .arg(PrevalecOrderBy);
-        TableViewQuery += QString(" ) ") + QString("order by ") + PrevalecOrderBy.replace("t.name", "torre").replace("c.name", "client").replace("fac.paid", "status").replace("a.id", "apart").remove("fac.");
+            TableViewQuery += QString(SQL_SELECT_ACCOUNTTORECEIVE)
+                    .arg(JoinType)
+                    .arg(TicketType)
+                    .arg(Tower)
+                    .arg(ExtraTaxJoin)
+                    .arg(Where)
+                    .arg(PrevalecOrderBy);
+            TableViewQuery += QString(" ) ") + QString("order by ") + PrevalecOrderBy.replace("t.name", "torre").replace("c.name", "client").replace("fac.paid", "status").replace("a.id", "apart").remove("fac.");
+        }
+        else
+        {
+            QString WhereUnion = QString(" and ( fac.paid = false and %1 and fac.vencdate < '%2') %3 ")
+                    .arg(DateLogic)
+                    .arg(QDate::currentDate().toString(FMT_DATE_DB))
+                    .arg(WhereVencidas);
+            QString Union = "( " +  QString(SQL_SELECT_ACCOUNTTORECEIVE)
+                    .arg(JoinType)
+                    .arg(TicketType)
+                    .arg(Tower)
+                    .arg(ExtraTaxJoin)
+                    .arg(WhereUnion)
+                    .arg(PrevalecOrderBy);
+
+            TableViewQuery  =  QString(" %1) union ( ")
+                    .arg(Union);
+
+            TableViewQuery += QString(SQL_SELECT_ACCOUNTTORECEIVE)
+                    .arg(JoinType)
+                    .arg(TicketType)
+                    .arg(Tower)
+                    .arg(ExtraTaxJoin)
+                    .arg(Where)
+                    .arg(PrevalecOrderBy);
+            TableViewQuery += QString(" ) ") + QString("order by ") + PrevalecOrderBy.replace("t.name", "torre").replace("c.name", "client").replace("fac.paid", "status").replace("a.id", "apart").remove("fac.");
+
+        }
     }
     else
     {
@@ -1022,16 +1061,28 @@ void AccountToReceiveManager::doEditDweller()
 
 void AccountToReceiveManager::Test()
 {
- // set
-    m_ui->radioButtonTxExtra->setChecked(true);
-//2017-06-25
-    m_ui->dateEditStart->setDate(QDate(2017,6,25));
+    m_ui->groupBoxDate->setChecked(true);
+    m_ui->radioButtonVencDate->setChecked(true);
+    m_ui->dateEditStart->setDate(QDate::fromString("01/07/2017","dd/MM/yyyy"));
+    m_ui->dateEditEnd->setDate(QDate::fromString("15/07/2017","dd/MM/yyyy"));
 
-    m_ui->comboBoxTypeTxExtr->setCurrentIndex(1);
+    m_ui->checkBoxAccountPaid->setChecked(false);
+    m_ui->checkBoxAccountOpen->setChecked(false);
+//    ui->groupBoxFilterData->setChecked(false);
+    m_ui->checkBoxPrevalecerAPTorre->setChecked(false);
+    m_ui->checkBoxVencidas->setChecked(true);
+
+
+
+ //   m_ui->radioButtonTxExtra->setChecked(true);
+//2017-06-25
+//    m_ui->dateEditStart->setDate(QDate(2017,6,25));
+
+//    m_ui->comboBoxTypeTxExtr->setCurrentIndex(1);
 
     GetAccountToReceive();
 
-    ShowReport();
+//    ShowReport();
 }
 
 void AccountToReceiveManager::sectionClicked(int orderby)
@@ -1048,4 +1099,18 @@ void AccountToReceiveManager::sortIndicatorChanged(int orderby,Qt::SortOrder sor
     m_ui->tableViewAccountToReceive->sortByColumn(orderby, sortOrder);
 
 
+}
+void AccountToReceiveManager::SpecialGetAccountToReceive()
+{
+    if( m_ui->radioButtonPaidDate->isChecked() )
+    {
+        m_ui->checkBoxVencidas->setChecked(false);
+        m_ui->checkBoxVencidas->setEnabled(false);
+    }
+    else
+    {
+        m_ui->checkBoxVencidas->setEnabled(true);
+    }
+
+    GetAccountToReceive();
 }

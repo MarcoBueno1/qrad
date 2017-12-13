@@ -20,6 +20,7 @@ public:
     ~AccountToReceiveManager();
     void Test();
 
+    void SpecialGetAccountToReceive();
 public slots:
     void doCmboTxExtActivacted(int item);
     void doEditDweller();

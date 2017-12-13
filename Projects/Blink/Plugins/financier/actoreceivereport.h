@@ -16,10 +16,12 @@ public:
     explicit actoReceiveReport(QWidget *parent = 0);
     ~actoReceiveReport();
 
+    void TestMountSQL();
 public slots:
     void ManageTxExtra();
     void ManagePessoaAP();
     void BuildReport(bool);
+    void EnableDisableVencidas();
 private:
     Ui::actoReceiveReport *ui;
     QSqlQueryModel *m_pessoaAP;

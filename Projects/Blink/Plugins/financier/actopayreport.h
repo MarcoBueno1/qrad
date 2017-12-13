@@ -16,9 +16,11 @@ public:
     explicit actopayreport(QWidget *parent = 0);
     ~actopayreport();
 
+    void TestMountSQL();
 public slots:
     void BuildReport(bool);
 
+    void EnableDisableVencidas();
 private:
     Ui::actopayreport *ui;
     QSqlQueryModel *m_Fornecedor;

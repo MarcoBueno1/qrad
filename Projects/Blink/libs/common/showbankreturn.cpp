@@ -8,10 +8,10 @@
 #include "qradprogresswindow.h"
 
 
-#define MEM_TABLE "create table mem_table( seunumero character varying, datavencto character varying, nomepagador character varying, datapagto character varying, valor character varying, valorpago character varying, tipoop int)"
-#define INSERT_MEM_TABLE "insert into mem_table( seunumero, datavencto, nomepagador, datapagto, valor, valorpago, tipoop) values( '%1', '%2','%3','%4','%5','%6', %7)"
+#define MEM_TABLE "create table mem_table( nossonumero character varying, seunumero character varying, datavencto character varying, nomepagador character varying, datapagto character varying, valor character varying, valorpago character varying, tipoop int)"
+#define INSERT_MEM_TABLE "insert into mem_table( nossonumero, seunumero, datavencto, nomepagador, datapagto, valor, valorpago, tipoop) values('%1', '%2', '%3','%4','%5','%6','%7', %8)"
 
-#define SELECT_MEM_TABLE "select seunumero as \"Nº Sis\", datavencto as \"Vencto\", nomepagador as \"Nome\", datapagto as \"Pg. Em\", valor as \"ValorR$\", valorpago as \"Pago R$ / Situação\", tipoop from mem_table"
+#define SELECT_MEM_TABLE "select nossonumero as \"Nosso Nº\", seunumero as \"Nº Sis\", datavencto as \"Vencto\", nomepagador as \"Nome\", datapagto as \"Pg. Em\", valor as \"ValorR$\", valorpago as \"Pago R$ / Situação\", tipoop from mem_table"
 
 
 ShowBankReturn::ShowBankReturn(QWidget *parent) :
@@ -91,7 +91,7 @@ void ShowBankReturn::BuildTable(QList<BankTicket*> *list)
 
         //seunumero, datavencto, nomepagador, datapagto, valor, valorpago
 
-        QString Insert = QString(INSERT_MEM_TABLE).arg(tkt->getSeuNumero()).arg(tkt->getdtVencto().toString(FMT_DATE)).arg(tkt->getNomePagador()).arg(tkt->getdtPagto().toString(FMT_DATE)).arg((tkt->getValor())).arg(tkt->getValorPago()).arg(tkt->getTpOp());
+        QString Insert = QString(INSERT_MEM_TABLE).arg(tkt->getNossoNumero()).arg(tkt->getSeuNumero()).arg(tkt->getdtVencto().toString(FMT_DATE)).arg(tkt->getNomePagador()).arg(tkt->getdtPagto().toString(FMT_DATE)).arg((tkt->getValor())).arg(tkt->getValorPago()).arg(tkt->getTpOp());
         if( !query->exec(Insert))
         {
             debug_message("Erro na execucao de: %s\n\nErro:%s", Insert.toLatin1().data(), query->lastError().text().toLatin1().data());
@@ -152,8 +152,10 @@ bool ShowBankReturn::Exec(QList<BankTicket*> *list, QStringList Paths)
 
     m_model->setQuery(SELECT_MEM_TABLE,db);
     ui->tableView->setModel(m_model);
-    ui->tableView->hideColumn(6);
-    ui->tableView->setItemDelegateForColumn(5, m_ColumnPaid);
+    ui->tableView->hideColumn(7);
+    ui->tableView->setItemDelegateForColumn(6, m_ColumnPaid);
+    ui->tableView->horizontalHeader()->setStretchLastSection(true);
+
 
     QRAD_HIDE_PRPGRESS();
     if( exec() == QDialog::Accepted)
@@ -213,8 +215,8 @@ void ShowBankReturn::RadioBtnChanged()
 
     m_model->setQuery(Sql,db);
     ui->tableView->setModel(m_model);
-    ui->tableView->hideColumn(6);
-    ui->tableView->setItemDelegateForColumn(5, m_ColumnPaid);
+    ui->tableView->hideColumn(7);
+    ui->tableView->setItemDelegateForColumn(6, m_ColumnPaid);
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
 
 }

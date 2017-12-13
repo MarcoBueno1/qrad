@@ -643,7 +643,7 @@ void ColumnRetBankAndPaid::paint(QPainter *painter,
                         const QModelIndex &index) const
 {
     QVariant PaidValue = index.model()->data(index, Qt::DisplayRole);
-    QVariant Type = index.sibling(index.row(),6).data();
+    QVariant Type = index.sibling(index.row(),7).data();
 
     QStyleOptionViewItem myOption = option;
 
@@ -684,7 +684,7 @@ void ColumnRetBankAndPaid::paint(QPainter *painter,
 //        }
 
     /* Como sera o alinhamento */
-    myOption.displayAlignment = (Qt::AlignRight | Qt::AlignVCenter);
+    myOption.displayAlignment = (Qt::AlignCenter | Qt::AlignVCenter);
     drawDisplay(painter, myOption, myOption.rect, strText);
     drawFocus(painter, myOption, myOption.rect);
 }

@@ -1,5 +1,7 @@
 #include "buildtkt.h"
 #include "tktspecie.h"
+#include "ticket.h"
+#include "dweller.h"
 #include <QFile>
 #include <QDebug>
 #include <QThread>
@@ -751,12 +753,28 @@ bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QStri
                   tpOp = tpOther;
                   debug_message( "tpOther = %s\n",TipoOperacao.toLatin1().data());
               }
+              if(  Nome.trimmed().isEmpty() )
+              {
+                  QString temp = QString(NossoNumero).remove( QRegExp("^[0]*") );
+                  ticket *pTicket = ticket::findByNossoNumero(temp.toInt(),true);
+                  if( pTicket )
+                  {
+
+                      Dweller *dw = Dweller::findByid(pTicket->getclientid());
+                      if( dw )
+                      {
+                          Nome = dw->getName().toUpper();
+                          delete dw;
+                      }
+                      delete pTicket;
+                  }
+              }
 
 
               BankTicket *pNew = new BankTicket("",
                                                 NossoNumero,
                                                 SeuNumero,
-                                                "",
+                                                Nome,
                                                 QDate::fromString(vencto,FMT_DATE),
                                                 tpOp==tpLiquidated,
                                                 QDate::fromString(dtPagto, FMT_DATE),

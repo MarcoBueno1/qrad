@@ -223,6 +223,19 @@
     <string>&amp;Sair</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="PshBtnExcluir">
+   <property name="geometry">
+    <rect>
+     <x>445</x>
+     <y>560</y>
+     <width>85</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>E&amp;xcluir</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -237,6 +250,7 @@
   </customwidget>
  </customwidgets>
  <resources>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
  </resources>

@@ -30,6 +30,7 @@ public slots:
     void doSair();
     void doNovo();
 
+    void doExcluir();
 private:
     Ui::Managerpreaut *ui;
 

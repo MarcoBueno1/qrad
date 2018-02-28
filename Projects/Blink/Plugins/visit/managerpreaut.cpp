@@ -1,13 +1,14 @@
 #include "managerpreaut.h"
 #include "ui_managerpreaut.h"
 #include "editpreaut.h"
+#include "Visitante.h"
 #include "column2delegate.h"
 #include <QMessageBox>
 #include <QDebug>
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
 #define SQL_ITEMS "select validate, v.nome as \"Nome\" , obs as \"Obs\", p.id from preaut p "\
-                  " inner join visitante v on v.id = p.visit  order by v.nome"
+                  " inner join visitante v on v.id = p.visit  where p.removed <> true order by v.nome"
 
 Managerpreaut::Managerpreaut(QWidget *parent) :
     QDialog(parent),
@@ -29,6 +30,7 @@ Managerpreaut::Managerpreaut(QWidget *parent) :
     connect(ui->PshBtnEditar, SIGNAL(clicked()), this, SLOT(doEditar()));
     connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
+    connect(ui->PshBtnExcluir, SIGNAL(clicked()), this, SLOT(doExcluir()));
 
     setWindowTitle("Gerência de Pré-Autorizações");
 
@@ -244,6 +246,32 @@ void Managerpreaut::doNovo()
         MatchNewest(edt->GetSaved());
     }
     delete edt;
+}
+void Managerpreaut::doExcluir()
+{
+    QModelIndex currentIndex = ui->tableViewSearch->currentIndex();
+
+    int nId = currentIndex.sibling(currentIndex.row(),ui->tableViewSearch->getColumnOf("id")).data().toInt();
+
+    preaut *sa = preaut::findByid(nId);
+    if( sa )
+    {
+        Visitante *pVis =  Visitante::findByid(sa->getvisit());
+        if( pVis )
+        {
+            if( QMessageBox::Yes == QMessageBox::question(this,
+                                                      "Atenção",
+                                                      QString("Deseja realmente excluir a pré-autorização para %1?").arg(pVis->getNome()),
+                                                      QMessageBox::Yes |QMessageBox::No, QMessageBox::No))
+            {
+                sa->updateremoved(true);
+            }
+            delete pVis;
+        }
+        delete sa;
+    }
+
+
 }
 
 void Managerpreaut::doSair()

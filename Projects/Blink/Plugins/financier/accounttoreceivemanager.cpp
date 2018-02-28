@@ -398,6 +398,16 @@ void AccountToReceiveManager::GetAccountToReceive(void)
             TableViewQuery  =  QString(" %1) union ( ")
                     .arg(Union);
 
+            ////// bueno 15/12/2017
+            if( !m_ui->checkBoxAccountPaid->isChecked() && !m_ui->checkBoxAccountOpen->isChecked() )
+            {
+                if( Where.length() )
+                    Where += " and ";
+                Where += QString(" fac.vencdate < '%1' ").arg(QDate::currentDate().toString(FMT_DATE_DB));
+            }
+            ////////
+
+
             TableViewQuery += QString(SQL_SELECT_ACCOUNTTORECEIVE)
                     .arg(JoinType)
                     .arg(TicketType)
@@ -1061,7 +1071,7 @@ void AccountToReceiveManager::doEditDweller()
 
 void AccountToReceiveManager::Test()
 {
-    m_ui->groupBoxDate->setChecked(true);
+    m_ui->groupBoxDate->setChecked(false);
     m_ui->radioButtonVencDate->setChecked(true);
     m_ui->dateEditStart->setDate(QDate::fromString("01/07/2017","dd/MM/yyyy"));
     m_ui->dateEditEnd->setDate(QDate::fromString("15/07/2017","dd/MM/yyyy"));

@@ -297,6 +297,16 @@ QString actoReceiveReport::MountSQLReport()
             QString Union = "( " + QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(WhereUnion).arg(OrderBy);
             aux  =  QString(" %1) union ( ")
                     .arg(Union);
+            ////// bueno 15/12/2017
+            if( !ui->checkBoxPaid->isChecked() && !ui->checkBoxNotPaid->isChecked() )
+            {
+                if( Where.length() )
+                    Where += " and ";
+                Where += QString(" fac.vencdate < '%1' ").arg(QDate::currentDate().toString(FMT_DATE_DB));
+            }
+            ////////
+
+
             aux += QString(SQL_SELECT_ACCOUNTTORECEIVE).arg(JoinType).arg(InnerJoinExtrTax).arg(Where).arg(OrderBy);
             aux += " ) ";
             aux += OrderBy.replace("t.name", "torre").replace("c.name", "client").replace("fac.paid", "status").replace("a.id", "apart").remove("fac.");
@@ -331,7 +341,7 @@ void actoReceiveReport::TestMountSQL()
 
     ui->checkBoxNotPaid->setChecked(false);
     ui->checkBoxPaid->setChecked(false);
-//    ui->groupBoxFilterData->setChecked(false);
+    ui->groupBoxFilterData->setChecked(false);
     ui->checkBoxOrderApTorre->setChecked(false);
 
     QString SQLReport = MountSQLReport();

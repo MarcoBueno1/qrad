@@ -270,6 +270,16 @@ void AccountToPayManager::GetAccountToPay(void)
             QString Union = "(" + QString(SQL_SELECT_ACCOUNTTOPAY).arg(WhereUnion).arg(m_dateStr);
             strSQL  =  QString(" %1) union  ( ")
                     .arg(Union);
+
+            ////// bueno 15/12/2017
+            if( !m_ui->checkBoxAccountPaid->isChecked() && !m_ui->checkBoxAccountOpen->isChecked() )
+            {
+                if( m_strAux.length() )
+                    m_strAux += " and ";
+                m_strAux += QString(" fac.vencdate < '%1' ").arg(QDate::currentDate().toString(FMT_DATE_DB));
+            }
+            ////////
+
             strSQL += QString(SQL_SELECT_ACCOUNTTOPAY).arg(m_strAux).arg(m_dateStr);
             strSQL += ") ";
             strSQL += " order by " + m_dateStr.remove("fac.") + ", description";
@@ -789,7 +799,7 @@ void AccountToPayManager::Test()
 
 //    m_ui->comboBoxTypeTxExtr->setCurrentIndex(1);
 
-    m_ui->groupBoxDate->setChecked(true);
+    m_ui->groupBoxDate->setChecked(false);
     m_ui->radioButtonVencDate->setChecked(true);
     m_ui->dateEditStart->setDate(QDate::fromString("30/06/2017","dd/MM/yyyy"));
     m_ui->dateEditEnd->setDate(QDate::fromString("15/07/2017","dd/MM/yyyy"));

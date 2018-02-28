@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.4.1
+** Created by: Qt User Interface Compiler version 5.9.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -113,21 +113,31 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "QRad Edit", 0));
-        action_Novo->setText(QApplication::translate("MainWindow", "N&ovo", 0));
-        action_Novo->setShortcut(QApplication::translate("MainWindow", "Ctrl+N", 0));
-        action_Abrir->setText(QApplication::translate("MainWindow", "&Abrir", 0));
-        action_Abrir->setShortcut(QApplication::translate("MainWindow", "Ctrl+O", 0));
-        action->setText(QApplication::translate("MainWindow", "_", 0));
-        action_Salvar->setText(QApplication::translate("MainWindow", "&Salvar", 0));
-        action_Salvar->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0));
-        actionSalvar_Como->setText(QApplication::translate("MainWindow", "Salvar &Como", 0));
-        actionSalvar_Como->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+S", 0));
-        actionSair->setText(QApplication::translate("MainWindow", "Sair", 0));
-        actionSair->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0));
-        menu_Arquivo->setTitle(QApplication::translate("MainWindow", "&Arquivo", 0));
-        menu_Editar->setTitle(QApplication::translate("MainWindow", "&Editar", 0));
-        menuA_juda->setTitle(QApplication::translate("MainWindow", "A&juda", 0));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "QRad Edit", Q_NULLPTR));
+        action_Novo->setText(QApplication::translate("MainWindow", "N&ovo", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        action_Novo->setShortcut(QApplication::translate("MainWindow", "Ctrl+N", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
+        action_Abrir->setText(QApplication::translate("MainWindow", "&Abrir", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        action_Abrir->setShortcut(QApplication::translate("MainWindow", "Ctrl+O", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
+        action->setText(QApplication::translate("MainWindow", "_", Q_NULLPTR));
+        action_Salvar->setText(QApplication::translate("MainWindow", "&Salvar", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        action_Salvar->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
+        actionSalvar_Como->setText(QApplication::translate("MainWindow", "Salvar &Como", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        actionSalvar_Como->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+S", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
+        actionSair->setText(QApplication::translate("MainWindow", "Sair", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        actionSair->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
+        menu_Arquivo->setTitle(QApplication::translate("MainWindow", "&Arquivo", Q_NULLPTR));
+        menu_Editar->setTitle(QApplication::translate("MainWindow", "&Editar", Q_NULLPTR));
+        menuA_juda->setTitle(QApplication::translate("MainWindow", "A&juda", Q_NULLPTR));
     } // retranslateUi
 
 };

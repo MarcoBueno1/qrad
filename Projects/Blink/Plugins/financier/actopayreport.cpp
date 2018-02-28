@@ -221,6 +221,17 @@ QString actopayreport::MountSQLReport()
             QString Union = "(" + QString(SQL_SELECT_ACCOUNTTOPAY_REPORT).arg(WhereUnion).arg(OrderBy);
             aux  =  QString(" %1) union  ( ")
                     .arg(Union);
+
+            ////// bueno 15/12/2017
+            if( !ui->checkBoxPaid->isChecked() && !ui->checkBoxNotPaid->isChecked() )
+            {
+                if( Where.length() )
+                    Where += " and ";
+                Where += QString(" fac.vencdate < '%1' ").arg(QDate::currentDate().toString(FMT_DATE_DB));
+            }
+            ////////
+
+
             aux += QString(SQL_SELECT_ACCOUNTTOPAY_REPORT).arg(Where).arg(OrderBy);
             aux += ") ";
             aux += OrderBy.replace("fac.paid", "status").remove("fac.").replace("s.name", "supplier" ).replace("fat.description", "accounttype");

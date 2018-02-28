@@ -16,6 +16,11 @@
         <menu path="Cadastro/Cadastro Auxiliar/Visita" title="Motivo" action="ManageReason" hotkey="CTRL+V" permission="useprofile" />
         <menu path="Configurações" title="e-mail" action="EmailConfig" hotkey="CTRL+V" permission="configureemail" />
         <menu path="Configurações" title="Dados da Empresa" action="MainCompany" hotkey="CTRL+V" permission="configureemail" />
+        <menu path="Cadastro/Áreas Comuns" title="Gerenciar Áreas Comnuns" action="ManageCommonArea" hotkey="CTRL+U" permission="usedweller" />
+		<menu path="Reservas/Consultar ou Reservar" title="Reservas" action="ManageReserve" hotkey="CTRL+S" permission="usedweller" />
+		<menu path="Reservas/Relatorio" title="Reservas" action="ReportReserve" hotkey="CTRL+L" permission="usedweller" />
+        <menu path="Relatorios/Reservas" title="Reservas" action="ReportReserve" hotkey="CTRL+E" permission="usedweller" />
+		
     </plugin>
     <plugin name="financier" library="./financier" enabled="true">
         <menu path="Financeiro" title="Contas a Pagar" action="ShowAccountToPay" hotkey="CTRL+M" permission="gerenciarboletos" icon=":/png/icon_wallet.png" />

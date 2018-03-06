@@ -31,6 +31,7 @@ public slots:
     void doNovo();
 
     void doExcluir();
+    void doUpdateTable();
 private:
     Ui::Managerpreaut *ui;
 

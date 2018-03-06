@@ -8,7 +8,11 @@
 
 #define BN_DEFAULT_COLUMN_SEARCH 1
 #define SQL_ITEMS "select validate, v.nome as \"Nome\" , obs as \"Obs\", p.id from preaut p "\
-                  " inner join visitante v on v.id = p.visit  where p.removed <> true order by v.nome"
+                  " inner join visitante v on v.id = p.visit  where p.removed <> true and v.removed <> true order by v.nome"
+
+#define SQL_ITEMS_VALID "select validate, v.nome as \"Nome\" , obs as \"Obs\", p.id from preaut p "\
+                  " inner join visitante v on v.id = p.visit  where p.removed <> true and v.removed <> true and (validate = '2020-01-01' or validate >= CURRENT_DATE )order by v.nome"
+
 
 Managerpreaut::Managerpreaut(QWidget *parent) :
     QDialog(parent),
@@ -31,6 +35,8 @@ Managerpreaut::Managerpreaut(QWidget *parent) :
     connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));
     connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));
     connect(ui->PshBtnExcluir, SIGNAL(clicked()), this, SLOT(doExcluir()));
+    connect(ui->radioButtonTodas, SIGNAL(clicked(bool)), this, SLOT(doUpdateTable()));
+    connect(ui->radioButtonValidas, SIGNAL(clicked(bool)), this, SLOT(doUpdateTable()));
 
     setWindowTitle("Gerência de Pré-Autorizações");
 
@@ -121,7 +127,10 @@ void Managerpreaut::LoadTableView()
 {
     QApplication::processEvents();
 
-    m_Model->setQuery(SQL_ITEMS);
+    if( ui->radioButtonTodas)
+        m_Model->setQuery(SQL_ITEMS);
+    else
+        m_Model->setQuery(SQL_ITEMS_VALID);
 
     QApplication::processEvents();
     ui->tableViewSearch->setModel( m_Model);
@@ -278,4 +287,8 @@ void Managerpreaut::doSair()
 {
     if( QMessageBox::Yes ==  QMessageBox::question(this, "Sair?","Deseja sair desta pesquisa?",QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
            reject();
+}
+void Managerpreaut::doUpdateTable()
+{
+    LoadTableView();
 }

@@ -3,6 +3,7 @@
 #include "ticket.h"
 #include "dweller.h"
 #include <QFile>
+#include <QDir>
 #include <QDebug>
 #include <QThread>
 #include <QEventLoop>
@@ -677,7 +678,43 @@ bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QStri
     QRAD_SHOW_PRPGRESS(QString("Lendo arquivo de retorno %1...").arg(FileName));
 
 
-    QString cmd =  QString(TKT_EXTRACT_RETURN).arg(strDir).arg(FileName);
+    /////
+    /// \brief problema de ler todos arquivos do diretorio
+    ///       1. Criar diretorio temporario ( caso não exista ),
+    ///       2. Apagar conteudo do diretorio temporario ( caso exista )
+    ///       3. Copiar arquivo selecionado para o diretorio temporario.
+    ///       4. Utilizar path do diretorio temporario para copiar o arquivo origem
+    ///       5. Usar tudo do temporario, pois ACBR nao aceita diretorios com espacos / acentos, assim garante-se que
+    ///          o nome do diretorio esta correto.
+    ///
+    QString temdir = "\\Dvl\\Acbr\\temp";
+
+    QDir dir(temdir);
+    if (!dir.exists())
+    {
+      dir.mkpath(temdir);
+    }
+    else
+    {
+        dir.setNameFilters(QStringList() << "*.*");
+        dir.setFilter(QDir::Files);
+        foreach(QString dirFile, dir.entryList())
+        {
+            dir.remove(dirFile);
+        }
+    }
+    QString src  = QString("%1%2").arg(strDir).arg(FileName);
+    QString dest = QString("%1\\%2").arg(temdir).arg(FileName);
+
+    QFile::copy(src,dest);
+    temdir+= "\\";
+
+//    QString strRemove = QString("%1Retorno.ini").arg(strDir);
+//    QFile::remove(strRemove);
+
+
+//  QString cmd =  QString(TKT_EXTRACT_RETURN).arg(strDir).arg(FileName);
+    QString cmd =  QString(TKT_EXTRACT_RETURN).arg(temdir).arg(FileName);
     m_dwTimeout = 1000;
     if( !Send(cmd))
     {
@@ -686,7 +723,8 @@ bool BuildTkt::ExtractReturn(QList<BankTicket *> *tickets, QString strDir, QStri
     }
 
 #ifdef _WIN32
-    QSettings settings(QString("%1Retorno.Ini").arg(strDir),
+//    QSettings settings(QString("%1Retorno.Ini").arg(strDir),
+      QSettings settings(QString("%1Retorno.Ini").arg(temdir),
                        QSettings::IniFormat);
 #else
     QSettings settings(QString("/media/sf_Dvl/Retorno.Ini"),

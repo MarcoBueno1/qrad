@@ -96,7 +96,7 @@ QStringList QRadConfig::GetAndPersistDir( QString VarName,
                                           QString DefaultPath,
                                           QString WindowTitle,
                                           QString Types,
-                                          QWidget *parent)
+                                          QWidget *parent )
 {
     QSettings settings(QString("mem.ini"),
                        QSettings::IniFormat);

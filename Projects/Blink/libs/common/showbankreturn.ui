@@ -54,7 +54,7 @@
    <property name="title">
     <string>Total Itens: </string>
    </property>
-   <widget class="QTableView" name="tableView">
+   <widget class="QRadTableViewSearch" name="tableView">
     <property name="geometry">
      <rect>
       <x>4</x>
@@ -129,6 +129,13 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QRadTableViewSearch</class>
+   <extends>QTableView</extends>
+   <header location="global">qradtableviewsearch.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

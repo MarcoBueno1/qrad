@@ -857,12 +857,14 @@ QPixmap Model::getImage(int nLoId )
 
 QString Model::getImage(int nLoId, QString path )
 {
-  Q_UNUSED(path);
+//  Q_UNUSED(path);
 
   QSqlDatabase db = QSqlDatabase::database();
 
      QTime time = QTime::currentTime();
      QString strFoto = QString("image_%1_%2_%3.jpg").arg(time.hour()).arg(time.minute()).arg(time.second());
+     if( path.trimmed().length() )
+         strFoto = path;
 
 
      PGSQLAsync::Receive( (unsigned int)nLoId,

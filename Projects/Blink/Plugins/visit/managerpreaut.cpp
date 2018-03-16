@@ -30,6 +30,7 @@ Managerpreaut::Managerpreaut(QWidget *parent) :
     connect(ui->tableViewSearch, SIGNAL(notFound()),this,SLOT(notFound()));
     connect(ui->tableViewSearch,SIGNAL(clicked(QModelIndex)),this,SLOT(TableClicked(QModelIndex)));
     connect(ui->tableViewSearch,SIGNAL(CurrentChanged(QModelIndex)),this,SLOT(CurrentChanged(QModelIndex)));
+    connect(ui->tableViewSearch,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(TableDoubleClicked(QModelIndex)));
 
     connect(ui->PshBtnEditar, SIGNAL(clicked()), this, SLOT(doEditar()));
     connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));
@@ -228,6 +229,14 @@ void Managerpreaut::MatchNewest(preaut *newest )
         }
     }
 }
+
+void Managerpreaut::TableDoubleClicked(QModelIndex)
+{
+    doEditar();
+}
+
+
+
 void Managerpreaut::doEditar()
 {
     Editpreaut *edt = new Editpreaut;

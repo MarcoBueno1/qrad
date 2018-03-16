@@ -44,27 +44,6 @@
     <property name="title">
      <string> Dados do Visitante </string>
     </property>
-    <widget class="SComboBox" name="CmbBxvisit">
-     <property name="geometry">
-      <rect>
-       <x>88</x>
-       <y>20</y>
-       <width>27</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="editable">
-      <bool>true</bool>
-     </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QComboBox::AdjustToContents</enum>
-     </property>
-     <item>
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-    </widget>
     <widget class="QLabel" name="Lblvisit">
      <property name="geometry">
       <rect>
@@ -193,6 +172,16 @@
      </property>
      <property name="scaledContents">
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QRadLineEditCompleter" name="lineEditVisit">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>30</y>
+       <width>389</width>
+       <height>20</height>
+      </rect>
      </property>
     </widget>
    </widget>
@@ -522,27 +511,6 @@
       </property>
      </widget>
     </widget>
-    <widget class="SComboBox" name="CmbBxauthorizer">
-     <property name="geometry">
-      <rect>
-       <x>122</x>
-       <y>212</y>
-       <width>27</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="editable">
-      <bool>true</bool>
-     </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QComboBox::AdjustToContents</enum>
-     </property>
-     <item>
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-    </widget>
     <widget class="QLabel" name="Lblauthorizer">
      <property name="geometry">
       <rect>
@@ -679,6 +647,16 @@
      </property>
      <property name="scaledContents">
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QRadLineEditCompleter" name="lineEditAuthorizer">
+     <property name="geometry">
+      <rect>
+       <x>123</x>
+       <y>220</y>
+       <width>366</width>
+       <height>20</height>
+      </rect>
      </property>
     </widget>
    </widget>
@@ -964,9 +942,13 @@
    <extends>QComboBox</extends>
    <header location="global">scombobox.h</header>
   </customwidget>
+  <customwidget>
+   <class>QRadLineEditCompleter</class>
+   <extends>QLineEdit</extends>
+   <header location="global">qradlineeditcompleter.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>CmbBxvisit</tabstop>
   <tabstop>lineEditCPF</tabstop>
   <tabstop>lineEditRG</tabstop>
   <tabstop>lineEditFoneVisit</tabstop>
@@ -985,7 +967,6 @@
   <tabstop>ChkBxthursday</tabstop>
   <tabstop>ChkBxfriday</tabstop>
   <tabstop>ChkBxsaturday</tabstop>
-  <tabstop>CmbBxauthorizer</tabstop>
   <tabstop>lineEditPhoneAut</tabstop>
   <tabstop>lineEditTower</tabstop>
   <tabstop>lineEditAP</tabstop>
@@ -993,6 +974,7 @@
   <tabstop>PshBtnSave</tabstop>
  </tabstops>
  <resources>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
  </resources>

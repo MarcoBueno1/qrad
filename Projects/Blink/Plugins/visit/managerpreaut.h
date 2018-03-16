@@ -32,6 +32,7 @@ public slots:
 
     void doExcluir();
     void doUpdateTable();
+    void TableDoubleClicked(QModelIndex);
 private:
     Ui::Managerpreaut *ui;
 

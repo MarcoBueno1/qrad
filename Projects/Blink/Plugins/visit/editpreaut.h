@@ -25,6 +25,8 @@ public slots:
     
     void visitActivated(int);
     void AutActivated(int);
+    void found(int id);
+    void notFound();
 private:
     Ui::Editpreaut *ui;
     preaut* m_mod;

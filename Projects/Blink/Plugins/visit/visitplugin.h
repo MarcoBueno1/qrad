@@ -33,6 +33,8 @@
 #define VISIT_MANAGE_COMMON_AREA QString("ManageCommonArea")
 #define VISIT_MANAGE_RESERVE QString("ManageReserve")
 #define VISIT_REPORT_RESERVE QString("ReportReserve")
+#define VISIT_TEST_REMOVE_WRONG_PHOTOS QString("RemoveWrongPhotos")
+#define VISIT_EDIT_PRE_AUT  QString("EditPreAut")
 
 
 class visitPlugin : public QRadPluginInterface

@@ -7,6 +7,8 @@
 #include "managercommon_area.h"
 #include "choosecommonarea.h"
 #include "choosereportreserve.h"
+#include "visitante.h"
+#include <QFile>
 
 visitPlugin::visitPlugin()
 {
@@ -78,6 +80,8 @@ void visitPlugin::onLoad(QRadPluginContainer* container)
     appendAction(VISIT_MANAGE_COMMON_AREA);
     appendAction(VISIT_MANAGE_RESERVE);
     appendAction(VISIT_REPORT_RESERVE);
+    appendAction(VISIT_TEST_REMOVE_WRONG_PHOTOS);
+    appendAction(VISIT_EDIT_PRE_AUT);
 }
 
 void visitPlugin::Process( const QString& action )
@@ -247,6 +251,25 @@ void visitPlugin::Process( const QString& action )
         ChooseReportReserve *rep = new ChooseReportReserve;
         rep->exec();
         delete rep;
+    }
+    else if( VISIT_TEST_REMOVE_WRONG_PHOTOS == action )
+    {
+        VisitanteList *pVisits = Visitante::findBy("select * from visitante where removed <> true and loid > 0 order by nome");
+        QDir mkdir;
+        mkdir.mkdir("c:\\dvl\\qrad\\verify");
+        for( int i = 0; pVisits && (i < pVisits->count()); i++ )
+        {
+            Visitante *pVis = pVisits->at(i);
+
+            QString FileName = "c:\\dvl\\qrad\\verify\\" + QString("%1").arg(pVis->getid())+ "-" + pVis->getNome().trimmed() + "-" + pVis->getCPF().trimmed() + "-" +pVis->getRG() + ".jpg";
+            pVis->getImage(FileName);
+        }
+    }
+    else if( action == VISIT_EDIT_PRE_AUT )
+    {
+        Editpreaut *pEdit = new Editpreaut;
+        pEdit->exec();
+        delete pEdit;
     }
 }
 

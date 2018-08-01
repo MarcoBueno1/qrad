@@ -30,6 +30,8 @@ Editextratx::Editextratx(QWidget *parent) :
     connect(ui->checkBoxMovedOut, SIGNAL(clicked()),this,SLOT(MovedOut()));
     connect(ui->CmbBxmotivo,SIGNAL(activated(QString)), this, SLOT(ComboChanged(QString)));
     connect(ui->lineEditObs,SIGNAL(textEdited(QString)), this, SLOT(TextEdited(QString)));
+    connect(ui->doubleSpinBoxCustAdvPercent, SIGNAL(valueChanged(double)), this, SLOT(valueAdvChanged(double)));
+    connect(ui->doubleSpinBoxCustAdvVal, SIGNAL(valueChanged(double)), this, SLOT(valueAdvChanged(double)));
 
 
     ui->dateEdit->setDate(QDate::currentDate());
@@ -91,7 +93,8 @@ void Editextratx::Save()
     if(ui->groupBox->isChecked())
         mod->setDweller(ui->lineEditMorador->getCurrentId());
 
-
+    mod->setPercentAdv(ui->groupBoxAdv->isChecked()?ui->doubleSpinBoxCustAdvPercent->value():0);
+    mod->setValueAdv(ui->groupBoxAdv->isChecked()?ui->doubleSpinBoxCustAdvVal->value():0);
 
     bool bRet = mod->Save();
     if( m_lastMod )
@@ -114,6 +117,17 @@ void Editextratx::Load()
       return;
     ui->CmbBxmotivo->setCurrentId(m_mod->getMotivo());
 
+    //// verificar se esta carga dos dados realmente
+    ///  precisa ser feita ( até hoje, 01/08/2018 ) ainda não estava sendo feito.
+    ///
+    ui->doubleSpinBox->setValue(m_mod->getValue());
+    ui->dateEdit->setDate(m_mod->getData());
+    if( m_mod->getPercentAdv() > 0.00 )
+    {
+        ui->doubleSpinBoxCustAdvPercent->setValue(m_mod->getPercentAdv());
+        ui->doubleSpinBoxCustAdvVal->setValue(m_mod->getValueAdv());
+    }
+    ui->lineEditObs->setText(m_mod->getObs());
 }
 
 void Editextratx::Cancel()
@@ -220,4 +234,34 @@ void Editextratx::ComboChanged(QString text)
 void Editextratx::TextEdited(QString text)
 {
     m_bEdited = true;
+}
+
+//advocatício
+void Editextratx::valueAdvChanged(double value)
+{
+    Q_UNUSED(value)
+
+    if( ui->doubleSpinBox->value() == 0.00 )
+    {
+        QMessageBox::information(this, "Oops!","Informe primeiro o valor desta taxa extra!");
+        ui->doubleSpinBox->setFocus();
+        return;
+    }
+    double dVal ;
+    if( ui->doubleSpinBoxCustAdvPercent->hasFocus())
+    {
+        if( ui->doubleSpinBoxCustAdvPercent->value() == 0.00 )
+            return;
+
+        dVal = ui->doubleSpinBox->value() / 100 * ui->doubleSpinBoxCustAdvPercent->value();
+        ui->doubleSpinBoxCustAdvVal->setValue(dVal);
+    }
+    else
+    {
+        if( ui->doubleSpinBoxCustAdvVal->value() == 0.00 )
+            return;
+
+        dVal = ui->doubleSpinBoxCustAdvVal->value() * 100 / ui->doubleSpinBox->value();
+        ui->doubleSpinBoxCustAdvPercent->setValue(dVal);
+    }
 }

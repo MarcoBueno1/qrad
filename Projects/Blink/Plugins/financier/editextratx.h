@@ -30,6 +30,7 @@ public slots:
     void Add();
     void Remove();
     void MovedOut();
+    void valueAdvChanged(double value);
 private slots:
     void ComboChanged(QString text);
     void TextEdited(QString text);

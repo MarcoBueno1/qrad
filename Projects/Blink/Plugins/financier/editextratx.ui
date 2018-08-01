@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>579</width>
-    <height>438</height>
+    <height>512</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>9</y>
+     <y>32</y>
      <width>560</width>
-     <height>390</height>
+     <height>446</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -32,9 +32,9 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>143</y>
+      <y>197</y>
       <width>520</width>
-      <height>237</height>
+      <height>241</height>
      </rect>
     </property>
     <property name="title">
@@ -175,7 +175,7 @@
     <property name="geometry">
      <rect>
       <x>26</x>
-      <y>50</y>
+      <y>49</y>
       <width>181</width>
       <height>22</height>
      </rect>
@@ -264,7 +264,7 @@
     <property name="geometry">
      <rect>
       <x>25</x>
-      <y>81</y>
+      <y>80</y>
       <width>510</width>
       <height>22</height>
      </rect>
@@ -314,7 +314,7 @@
     <property name="geometry">
      <rect>
       <x>25</x>
-      <y>110</y>
+      <y>109</y>
       <width>510</width>
       <height>22</height>
      </rect>
@@ -344,12 +344,63 @@
      </item>
     </layout>
    </widget>
+   <widget class="QGroupBox" name="groupBoxAdv">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>136</y>
+      <width>521</width>
+      <height>53</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string> Cust. Advocaticios</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Valor %</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="doubleSpinBoxCustAdvPercent"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Valor R$</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="doubleSpinBoxCustAdvVal">
+       <property name="maximum">
+        <double>999999999.990000009536743</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QPushButton" name="PshBtnCancel">
    <property name="geometry">
     <rect>
      <x>396</x>
-     <y>404</y>
+     <y>482</y>
      <width>85</width>
      <height>27</height>
     </rect>
@@ -362,7 +413,7 @@
    <property name="geometry">
     <rect>
      <x>483</x>
-     <y>404</y>
+     <y>482</y>
      <width>85</width>
      <height>27</height>
     </rect>
@@ -390,11 +441,14 @@
   <tabstop>comboBox</tabstop>
   <tabstop>CmbBxmotivo</tabstop>
   <tabstop>lineEditObs</tabstop>
+  <tabstop>groupBoxAdv</tabstop>
+  <tabstop>doubleSpinBoxCustAdvPercent</tabstop>
+  <tabstop>doubleSpinBoxCustAdvVal</tabstop>
   <tabstop>groupBox</tabstop>
   <tabstop>lineEditMorador</tabstop>
   <tabstop>pushButtonAdd</tabstop>
-  <tabstop>pushButtonRemove</tabstop>
   <tabstop>listView</tabstop>
+  <tabstop>pushButtonRemove</tabstop>
   <tabstop>checkBoxMovedOut</tabstop>
   <tabstop>PshBtnCancel</tabstop>
   <tabstop>PshBtnSave</tabstop>

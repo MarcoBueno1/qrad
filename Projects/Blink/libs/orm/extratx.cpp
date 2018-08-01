@@ -9,5 +9,7 @@ ORM_BEGIN_MAP(extratx)
      ORM_MAP_FIELD(All, "todos")
      ORM_MAP_FIELD(Dweller, "dweller")
      ORM_MAP_FIELD(Obs, "obs")
+     ORM_MAP_FIELD(PercentAdv, "percentadv")
+     ORM_MAP_FIELD(ValueAdv, "valueadv")
 ORM_END_MAP()
 

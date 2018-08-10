@@ -25,6 +25,9 @@
                                     " fac.accounttypeid, "\
                                     " fac.issuedate as issuedate,fac.vencdate as vencdate, "\
                                     " case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, "\
+                                    " fac.value as originalvalue, "\
+                                    " case when paid <> true and current_date > vencdate then  ((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision))+fac.value)/100*(cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision))/30 else 0 end as jurosdia, "\
+                                    " case when paid <> true and current_date > vencdate then  (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision)) else 0 end as multa, "\
                                     " case when paid <> true and current_date > vencdate then "\
                                     " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value)+ "\
                                     " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value) /100* "\
@@ -216,7 +219,7 @@ void AccountToReceiveManager::GetAccountToReceive(void)
    QString JoinType = "left";
    QString TicketType;
    QString Tower;
-   QString ExtraTaxJoin;
+   QString ExtraTaxJoin = QString(" left join extratx ext on ext.id = tkt.extratxid left join reasonextratx reas on ext.motivo = reas.id");
    QString Where;
    QString OrderBy;
    QString PrevalecOrderBy;
@@ -367,7 +370,7 @@ void AccountToReceiveManager::GetAccountToReceive(void)
         debug_message("Current index of type of extratax: %d , currentindex=%d........\n", currentid, m_ui->comboBoxTypeTxExtr->currentIndex());
         if( currentid > 0 )
         {
-            ExtraTaxJoin = QString(" inner join extratx ext on ext.id = tkt.extratxid and ext.motivo = %1 ").arg(currentid);
+            ExtraTaxJoin = QString(" inner join extratx ext on ext.id = tkt.extratxid and ext.motivo = %1 inner join reasonextratx reas on ext.motivo = reas.id ").arg(currentid);
         }
         JoinType = " inner ";
 
@@ -461,7 +464,7 @@ void AccountToReceiveManager::GetAccountToReceive(void)
 
 
     TableViewQuery = TableViewQuery.replace("fac.accounttypeid,",
-                                            "case when tkt.type is null then fat.description else case when tkt.type = 0 then 'CONDOMÍNIO' else 'TX EXTRA' end end as accounttype,");
+                                            "case when tkt.type is null then fat.description else case when tkt.type = 0 then 'CONDOMÍNIO' else 'TX EXTRA'  || '(' || reas.description || ')' end end as accounttype,");
     TableViewQuery = TableViewQuery.replace( "from fin_accounttoreceive fac",
                                              "from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid ");
 
@@ -940,6 +943,13 @@ void AccountToReceiveManager::ShowReport(void)
         " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value) /100* "\
         " (cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision)/30* (current_date - vencdate)), 'FM9G999G990D00')"\
         " else to_char(fac.value, 'FM9G999G990D00') end as value ");
+
+        TableViewQuery = TableViewQuery.replace("fac.value as originalvalue,","to_char(fac.value,'FM9G999G990D00') as originalvalue,");
+        TableViewQuery = TableViewQuery.replace("case when paid <> true and current_date > vencdate then  ((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision))+fac.value)/100*(cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision))/30 else 0 end as jurosdia,",
+                                                "case when paid <> true and current_date > vencdate then  to_char(((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision))+fac.value)/100*(cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision))/30,'FM9G999G990D00') else to_char(0,'FM9G999G990D00') end as jurosdia,");
+
+        TableViewQuery = TableViewQuery.replace("case when paid <> true and current_date > vencdate then  (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision)) else 0 end as multa,",
+                                                "case when paid <> true and current_date > vencdate then  to_char((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision)),'FM9G999G990D00') else to_char(0,'FM9G999G990D00') end as multa,");
 
 
 

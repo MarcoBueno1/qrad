@@ -88,13 +88,16 @@ QString actoReceiveReport::MountSQLReport()
                                     " case when c.name is NULL then 'NAO INFORMADO' else c.name end as client, "\
                                     " to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, "\
                                     " case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, "\
+                                    " to_char(fac.value, 'FM9G999G990D00') as originalvalue, "\
+                                    " case when paid <> true and current_date > vencdate then  to_char(((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision))+fac.value)/100*(cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision))/30, 'FM9G999G990D00') else to_char(0, 'FM9G999G990D00') end as jurosdia, "\
+                                    " case when paid <> true and current_date > vencdate then  to_char((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision)), 'FM9G999G990D00') else to_char(0, 'FM9G999G990D00') end as multa, "\
                                     " case when paid <> true and current_date > vencdate then "\
                                     " to_char((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value)+ "\
                                     " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value) /100* "\
                                     " (cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision)/30* (current_date - vencdate)), 'FM9G999G990D00')"\
                                     " else to_char(fac.value, 'FM9G999G990D00') end as value "\
                                     " ,case when fac.paid = true then 'PAGO' when current_date > fac.vencdate then 'VENCIDA' else 'A VENCER' end as status, "\
-                                    " case when tkt.type is null then fat.description else case when tkt.type = 0 then 'CONDOMÍNIO' else 'TX EXTRA' end end as accounttype, "\
+                                    " case when tkt.type is null then fat.description else case when tkt.type = 0 then 'CONDOMÍNIO' else 'TX EXTRA'  || '(' || reas.description || ')'  end end as accounttype, "\
                                     " case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else "\
                                     " case when vencdate < current_date then 'V' else 'H' end end end as situation, "\
                                     " case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, "\
@@ -110,7 +113,7 @@ QString actoReceiveReport::MountSQLReport()
 
     QString aux;
     QString Where = " and ";
-    QString InnerJoinExtrTax;
+    QString InnerJoinExtrTax = QString(" left join extratx ext on ext.id = tkt.extratxid left join reasonextratx reas on ext.motivo = reas.id");
     QString JoinType = " left ";
     QString OrderBy;
     QString WhereVencidas;
@@ -168,7 +171,7 @@ QString actoReceiveReport::MountSQLReport()
             int currentid = ui->comboBoxTypeTxExtr->model()->data(ui->comboBoxTypeTxExtr->model()->index(ui->comboBoxTypeTxExtr->currentIndex(), 0)).toInt();
             if( currentid > 0 )
             {
-                InnerJoinExtrTax = QString(" inner join extratx ext on ext.id = tkt.extratxid and ext.motivo = %1 ").arg(currentid);
+                InnerJoinExtrTax = QString(" inner join extratx ext on ext.id = tkt.extratxid and ext.motivo = %1 inner join reasonextratx reas on ext.motivo = reas.id ").arg(currentid);
             }
         }
     }

@@ -1381,7 +1381,7 @@
                                 <Text>
                                     <properties>
                                         <objectName type="QString" >text_4</objectName>
-                                        <geometry type="QRectF" >2282.47,-2,206.417,50</geometry>
+                                        <geometry type="QRectF" >2282.47,-2,254,50</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >0,0,0,255</color>

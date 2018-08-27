@@ -26,8 +26,8 @@
                                     " fac.issuedate as issuedate,fac.vencdate as vencdate, "\
                                     " case when fac.paiddate is null then '2000-01-01' else fac.paiddate end as paiddate, "\
                                     " fac.value as originalvalue, "\
-                                    " case when paid <> true and current_date > vencdate then  ((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision))+fac.value)/100*(cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision))/30 else 0 end as jurosdia, "\
                                     " case when paid <> true and current_date > vencdate then  (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision)) else 0 end as multa, "\
+                                    " case when paid <> true and current_date > vencdate then  ((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision))+fac.value)/100*(cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision))/30 else 0 end as jurosdia, "\
                                     " case when paid <> true and current_date > vencdate then "\
                                     " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value)+ "\
                                     " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value) /100* "\
@@ -38,7 +38,8 @@
                                     " case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else "\
                                     " case when vencdate < current_date then 'V' else 'H' end end end as situation, "\
                                     " case when t.name is null then '' else t.name end as torre,"\
-                                    " case when a.id is null then 0 else a.id end as apart"\
+                                    " case when a.id is null then 0 else a.id end as apart,"\
+                                    " ext.valueadv as valueadv "\
                                     " from fin_accounttoreceive fac "\
                                     " %1 join ticket tkt on tkt.accountid = fac.id %2 "\
                                     " %1 join dweller c on tkt.clientid = c.id "\
@@ -489,6 +490,7 @@ void AccountToReceiveManager::GetAccountToReceive(void)
         total     = QRadRound::PowerRound(total) + QRadRound::PowerRound(strAux.remove("H").remove("P").remove("V").remove("T").toFloat());
         strAux = m_selectAccountToReceive->record(index).value("valuepaid").toString();
         totalpaid = QRadRound::PowerRound(totalpaid) + QRadRound::PowerRound(strAux.remove("H").remove("P").remove("V").remove("T").toFloat());
+
     }
     debug_message( "Total: %02.02f  TotalPago: %02.02f\n", total,totalpaid );
 
@@ -547,20 +549,24 @@ void AccountToReceiveManager::ConfigHeaderTable(void)
 {
     m_ui->tableViewAccountToReceive->hideColumn(0);
 //    m_ui->tableViewAccountToReceive->hideColumn(9);
-    m_ui->tableViewAccountToReceive->hideColumn(10);
-    m_ui->tableViewAccountToReceive->hideColumn(11);
-    m_ui->tableViewAccountToReceive->hideColumn(12);
-    m_ui->tableViewAccountToReceive->hideColumn(13);
+    m_ui->tableViewAccountToReceive->hideColumn(10+3);
+    m_ui->tableViewAccountToReceive->hideColumn(11+3);
+    m_ui->tableViewAccountToReceive->hideColumn(12+3);
+    m_ui->tableViewAccountToReceive->hideColumn(13+3);
+    m_ui->tableViewAccountToReceive->hideColumn(13+4);
 
-    m_selectAccountToReceive->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Descrição/AP Torre"));
+    m_selectAccountToReceive->setHeaderData(1, Qt::Horizontal, QString::fromUtf8("Desc/AP Torre"));
     m_selectAccountToReceive->setHeaderData(2, Qt::Horizontal, QString::fromUtf8("Devedor / Condômino"));
     m_selectAccountToReceive->setHeaderData(3, Qt::Horizontal, QString::fromUtf8("Tipo"));
     m_selectAccountToReceive->setHeaderData(4, Qt::Horizontal, QString::fromUtf8("Data de Lançamento"));
     m_selectAccountToReceive->setHeaderData(5, Qt::Horizontal, QString::fromUtf8("Data de Vencimento"));
     m_selectAccountToReceive->setHeaderData(6, Qt::Horizontal, QString::fromUtf8("Data de Quitação"));
     m_selectAccountToReceive->setHeaderData(7, Qt::Horizontal, QString::fromUtf8("Valor"));
-    m_selectAccountToReceive->setHeaderData(8, Qt::Horizontal, QString::fromUtf8("Valor Pago"));
-    m_selectAccountToReceive->setHeaderData(9, Qt::Horizontal, QString::fromUtf8("Status"));
+    m_selectAccountToReceive->setHeaderData(8, Qt::Horizontal, QString::fromUtf8("Multa"));
+    m_selectAccountToReceive->setHeaderData(9, Qt::Horizontal, QString::fromUtf8("Juros"));
+    m_selectAccountToReceive->setHeaderData(7+3, Qt::Horizontal, QString::fromUtf8("Valor Tot"));
+    m_selectAccountToReceive->setHeaderData(8+3, Qt::Horizontal, QString::fromUtf8("Valor Pago"));
+    m_selectAccountToReceive->setHeaderData(9+3, Qt::Horizontal, QString::fromUtf8("Status"));
 
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(1, new ColumnFinancierDescription);
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(2, new ColumnFinancierDescription);
@@ -570,7 +576,10 @@ void AccountToReceiveManager::ConfigHeaderTable(void)
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(6, new ColumnFinancierDate);
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(7, new ColumnFinancierMoney);
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(8, new ColumnFinancierMoney);
-    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(9, new ColumnFinancierAccountPaid);
+    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(9, new ColumnFinancierMoney);
+    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(7+3, new ColumnFinancierMoney);
+    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(8+3, new ColumnFinancierMoney);
+    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(9+3, new ColumnFinancierAccountPaid);
 
 //    m_ui->tableViewAccountToReceive->setColumnWidth(1, 0.25 * m_ui->tableViewAccountToReceive->width());
 //    m_ui->tableViewAccountToReceive->setColumnWidth(2, 0.15 * m_ui->tableViewAccountToReceive->width());
@@ -586,7 +595,7 @@ void AccountToReceiveManager::fillTheFields(QModelIndex currentIndex)
 {
     m_accountToReceiveId = currentIndex.sibling(currentIndex.row(),0).data().toInt();
     m_accountToReceiveRow = m_ui->tableViewAccountToReceive->currentIndex().row();
-    m_accountToReceivePaid = (currentIndex.sibling(currentIndex.row(),9).data().toString() == "T")?true:false;
+    m_accountToReceivePaid = (currentIndex.sibling(currentIndex.row(),9+3).data().toString() == "T")?true:false;
 
     if (m_accountToReceivePaid)
     {
@@ -601,7 +610,7 @@ void AccountToReceiveManager::fillTheFields(QModelIndex currentIndex)
     m_ui->comboBoxAccountType->setModelColumn(0);
 //    m_ui->comboBoxClient->setModelColumn(0);
 
-    m_ui->comboBoxAccountType->setCurrentIndex(m_ui->comboBoxAccountType->findText(QString("%1").arg(currentIndex.sibling(currentIndex.row(),9).data().toInt())));
+    m_ui->comboBoxAccountType->setCurrentIndex(m_ui->comboBoxAccountType->findText(QString("%1").arg(currentIndex.sibling(currentIndex.row(),9+3).data().toInt())));
 //    m_ui->comboBoxClient->setCurrentIndex(m_ui->comboBoxClient->findText(QString("%1").arg(currentIndex.sibling(currentIndex.row(),10).data().toInt())));
 
     m_ui->comboBoxAccountType->setModelColumn(1);
@@ -863,6 +872,7 @@ void AccountToReceiveManager::ShowReport(void)
         QSqlQueryModel *select = new QSqlQueryModel;
         QRadReportManager   *report = new QRadReportManager();
         int total = 0, totalPaid = 0;
+        int totaladv;
 
         if ( !report->load( "accounttoreceive" ) )
         {
@@ -978,6 +988,8 @@ void AccountToReceiveManager::ShowReport(void)
         {
             total       += QRadMoney::StrToInt(select->record(index).value("value").toString());
             totalPaid   += QRadMoney::StrToInt(select->record(index).value("valuepaid").toString());
+            totaladv    += QRadMoney::StrToInt(select->record(index).value("valueadv").toString());
+
         }
 
 //        report->setQuery("account", QString(SQL_SELECT_ACCOUNTTORECEIVE_REPORT)
@@ -990,6 +1002,7 @@ void AccountToReceiveManager::ShowReport(void)
 
         report->setAttributeMoneyValue("TOTAL", total);
         report->setAttributeMoneyValue("TOTAL_PAID", totalPaid);
+        report->setAttributeMoneyValue("TOTAL_CUSTAS",totaladv);
 
         if ( !report->show() )
         {

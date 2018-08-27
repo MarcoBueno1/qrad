@@ -89,8 +89,8 @@ QString actoReceiveReport::MountSQLReport()
                                     " to_char(fac.issuedate, 'dd-mm-yyyy') as issuedate, to_char(fac.vencdate, 'dd-mm-yyyy') as vencdate, "\
                                     " case when fac.paiddate = '2000-01-01' then '-' else to_char(fac.paiddate, 'dd-mm-yyyy') end as paiddate, "\
                                     " to_char(fac.value, 'FM9G999G990D00') as originalvalue, "\
-                                    " case when paid <> true and current_date > vencdate then  to_char(((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision))+fac.value)/100*(cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision))/30, 'FM9G999G990D00') else to_char(0, 'FM9G999G990D00') end as jurosdia, "\
                                     " case when paid <> true and current_date > vencdate then  to_char((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision)), 'FM9G999G990D00') else to_char(0, 'FM9G999G990D00') end as multa, "\
+                                    " case when paid <> true and current_date > vencdate then  to_char(((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision))+fac.value)/100*(cast(replace((select juros from ticketconfig limit 1), ',','.') as double precision))/30, 'FM9G999G990D00') else to_char(0, 'FM9G999G990D00') end as jurosdia, "\
                                     " case when paid <> true and current_date > vencdate then "\
                                     " to_char((fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value)+ "\
                                     " (fac.value /100 * cast(replace((select multa  from ticketconfig limit 1), ',','.') as double precision) +fac.value) /100* "\
@@ -102,7 +102,8 @@ QString actoReceiveReport::MountSQLReport()
                                     " case when vencdate < current_date then 'V' else 'H' end end end as situation, "\
                                     " case when fac.valuepaid is null then 0 else fac.valuepaid end as valuepaid, "\
                                     " case when t.name is null then '' else t.name end as torre,"\
-                                    " case when a.id is null then 0 else a.id end as apart"\
+                                    " case when a.id is null then 0 else a.id end as apart,"\
+                                    " ext.valueadv as valueadv "\
                                     " from fin_accounttoreceive fac inner join fin_accounttype fat on fat.id = fac.accounttypeid "\
                                     " %1 join ticket tkt on tkt.accountid = fac.id %2 "\
                                     " %1 join dweller c on tkt.clientid = c.id "\
@@ -367,7 +368,7 @@ void actoReceiveReport::BuildReport(bool)
 
 
   QSqlQueryModel *select = new QSqlQueryModel;
-  int total = 0, totalPaid = 0;
+  int total = 0, totalPaid = 0, totaladv=0;
 
   QString SQLReport = MountSQLReport();
 
@@ -380,12 +381,15 @@ void actoReceiveReport::BuildReport(bool)
   {
       total       += QRadMoney::StrToInt(select->record(index).value("value").toString());
       totalPaid   += QRadMoney::StrToInt(select->record(index).value("valuepaid").toString());
+      totaladv    += QRadMoney::StrToInt(select->record(index).value("valueadv").toString());
   }
+
 
   report->setQuery("account", SQLReport);
 
   report->setAttributeMoneyValue("TOTAL", total);
   report->setAttributeMoneyValue("TOTAL_PAID", totalPaid);
+  report->setAttributeMoneyValue("TOTAL_CUSTAS", totaladv);
 
   if ( !report->show() )
   {

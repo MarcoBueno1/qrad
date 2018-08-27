@@ -2,6 +2,7 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include <QThread>
 #include <QPluginLoader>
 #include "qradplugininterface.h"
 #include "pluginmodel.h"

@@ -1,6 +1,6 @@
 #include "dialog.h"
 #include "ui_dialog.h"
-
+#include <QDebug>
 #include <QPluginLoader>
 #include <QFileDialog>
 #include <QMessageBox>

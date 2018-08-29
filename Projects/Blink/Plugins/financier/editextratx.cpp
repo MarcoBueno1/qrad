@@ -32,6 +32,7 @@ Editextratx::Editextratx(QWidget *parent) :
     connect(ui->lineEditObs,SIGNAL(textEdited(QString)), this, SLOT(TextEdited(QString)));
     connect(ui->doubleSpinBoxCustAdvPercent, SIGNAL(valueChanged(double)), this, SLOT(valueAdvChanged(double)));
     connect(ui->doubleSpinBoxCustAdvVal, SIGNAL(valueChanged(double)), this, SLOT(valueAdvChanged(double)));
+    connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(valueAdvChanged(double)));
 
 
     ui->dateEdit->setDate(QDate::currentDate());
@@ -248,7 +249,7 @@ void Editextratx::valueAdvChanged(double value)
         return;
     }
     double dVal ;
-    if( ui->doubleSpinBoxCustAdvPercent->hasFocus())
+    if( ui->doubleSpinBoxCustAdvPercent->hasFocus() || ui->doubleSpinBox->hasFocus())
     {
         if( ui->doubleSpinBoxCustAdvPercent->value() == 0.00 )
             return;

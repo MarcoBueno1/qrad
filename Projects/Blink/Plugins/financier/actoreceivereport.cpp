@@ -211,6 +211,10 @@ QString actoReceiveReport::MountSQLReport()
 
         Where += " fac.paid = true ";
     }
+    else if (ui->checkBoxNotPaid->isChecked())
+    {
+        Where += QString(" fac.paid = false and fac.vencdate > '%1' ").arg(QDate::currentDate().toString(FMT_DATE_DB));
+    }
     else
     {
         if( Where.length() > 5)

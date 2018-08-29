@@ -201,7 +201,7 @@ void ColumnFinancierAccountPaid::paint(QPainter *painter,
 QVariant ColumnFinancierAccountPaid::FormatValue(QVariant value) const
 {
     QString paid;
-    if (value.toString().mid(0) == "T")
+    if ((value.toString().mid(0) == "T") || (value.toString().mid(0) == "P"))
     {
         paid = QString::fromUtf8("PAGO");
     }

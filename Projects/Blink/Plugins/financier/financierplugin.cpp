@@ -103,6 +103,12 @@ void FinancierPlugin::Process( const QString& action )
     }
     else if ( ACTION_SHOW_FINANCIER_ACCOUNTTOPAY == action )
     {
+        if( m_accountToPayManager )
+        {
+            delete m_accountToPayManager;
+            m_accountToPayManager = NULL;
+        }
+
         if (!m_accountToPayManager)
         {
             m_accountToPayManager = new AccountToPayManager(m_parent);
@@ -112,6 +118,12 @@ void FinancierPlugin::Process( const QString& action )
     }
     else if ( ACTION_SHOW_FINANCIER_ACCOUNTTORECEIVE == action )
     {
+        if( m_accountToReceiveManager )
+        {
+            delete m_accountToReceiveManager;
+            m_accountToReceiveManager = NULL;
+        }
+
         if (!m_accountToReceiveManager)
         {
             m_accountToReceiveManager = new AccountToReceiveManager(m_parent);

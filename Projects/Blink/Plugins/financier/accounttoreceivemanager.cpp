@@ -69,7 +69,6 @@ AccountToReceiveManager::AccountToReceiveManager(QWidget *parent) :
 {
     m_ui->setupUi(this);
 
-
     m_selectAccountToReceive = new QSqlQueryModel;
     m_modelAccountType   = new QSqlQueryModel;
     m_modelClient      = new QSqlQueryModel;
@@ -88,7 +87,9 @@ AccountToReceiveManager::AccountToReceiveManager(QWidget *parent) :
     m_ui->comboBoxTypeTxExtr->setVisible(false);
 
 
-    m_ui->dateEditStart->setDate(QDate::currentDate().addDays(-7));
+//    m_ui->dateEditStart->setDate(QDate::currentDate().addDays(-7));
+    m_ui->dateEditStart->setDate(QDate::fromString("01/05/2017","dd/MM/yyyy"));
+
     m_ui->dateEditEnd->setDate(QDate::currentDate().addDays(7));
     m_ui->radioButtonIssueDate->setChecked(true);
 
@@ -281,7 +282,7 @@ void AccountToReceiveManager::GetAccountToReceive(void)
     else if (m_ui->checkBoxAccountOpen->isChecked())
     {
         CHECK_STR(Where);
-        Where += " fac.paid = false ";
+        Where += QString(" fac.paid = false and fac.vencdate > '%1' ").arg(QDate::currentDate().toString(FMT_DATE_DB));
     }
     else if (m_ui->checkBoxAccountPaid->isChecked())
     {
@@ -472,6 +473,8 @@ void AccountToReceiveManager::GetAccountToReceive(void)
 
     m_selectAccountToReceive->setQuery(TableViewQuery);
 
+//    ConfigHeaderTable();
+
     QString strDebug = QString(TableViewQuery);
 
     debug_message("\nSQL_SELECT_ACCOUNTTORECEIVE=%s\n", strDebug.toLatin1().data());
@@ -548,8 +551,9 @@ void AccountToReceiveManager::InitialConfig(int row)
 void AccountToReceiveManager::ConfigHeaderTable(void)
 {
     m_ui->tableViewAccountToReceive->hideColumn(0);
-//    m_ui->tableViewAccountToReceive->hideColumn(9);
-    m_ui->tableViewAccountToReceive->hideColumn(10+3);
+    m_ui->tableViewAccountToReceive->hideColumn(9+3);
+//    m_ui->tableViewAccountToReceive->hideColumn(10+3);
+
     m_ui->tableViewAccountToReceive->hideColumn(11+3);
     m_ui->tableViewAccountToReceive->hideColumn(12+3);
     m_ui->tableViewAccountToReceive->hideColumn(13+3);
@@ -566,7 +570,7 @@ void AccountToReceiveManager::ConfigHeaderTable(void)
     m_selectAccountToReceive->setHeaderData(9, Qt::Horizontal, QString::fromUtf8("Juros"));
     m_selectAccountToReceive->setHeaderData(7+3, Qt::Horizontal, QString::fromUtf8("Valor Tot"));
     m_selectAccountToReceive->setHeaderData(8+3, Qt::Horizontal, QString::fromUtf8("Valor Pago"));
-    m_selectAccountToReceive->setHeaderData(9+3, Qt::Horizontal, QString::fromUtf8("Status"));
+    m_selectAccountToReceive->setHeaderData(10+3, Qt::Horizontal, QString::fromUtf8("Status"));
 
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(1, new ColumnFinancierDescription);
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(2, new ColumnFinancierDescription);
@@ -579,7 +583,7 @@ void AccountToReceiveManager::ConfigHeaderTable(void)
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(9, new ColumnFinancierMoney);
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(7+3, new ColumnFinancierMoney);
     m_ui->tableViewAccountToReceive->setItemDelegateForColumn(8+3, new ColumnFinancierMoney);
-    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(9+3, new ColumnFinancierAccountPaid);
+    m_ui->tableViewAccountToReceive->setItemDelegateForColumn(10+3, new ColumnFinancierAccountPaid);
 
 //    m_ui->tableViewAccountToReceive->setColumnWidth(1, 0.25 * m_ui->tableViewAccountToReceive->width());
 //    m_ui->tableViewAccountToReceive->setColumnWidth(2, 0.15 * m_ui->tableViewAccountToReceive->width());

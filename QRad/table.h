@@ -21,10 +21,10 @@ public:
     QString getCaption();
 	bool isLogic();
 
-    void AddField(CField *field);
+    void addField(CField *field);
     QList<CField*> *getFields();
 
-    void AddField(QString field, QString type);
+    void addField(QString field, QString type);
 private:
     QList<CField*> *m_Fields;
     QString m_name;

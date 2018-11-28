@@ -539,7 +539,7 @@ uiskeleton::~uiskeleton()
 
 void uiskeleton::Build(skeleton *skel)
 {
-   QList<CTable*> *pTables = skel->GetTables();
+   QList<CTable*> *pTables = skel->getTables();
 
 	qDebug() <<  __FILE__ << " LINE:" << __LINE__ ;
    for( int i = 0; pTables && (i < pTables->count()); i++ )

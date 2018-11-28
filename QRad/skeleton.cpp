@@ -28,7 +28,7 @@ void skeleton::IgnoreIfExist(bool bIgnore)
     m_IgnoreIfExist = bIgnore;
 }
 
-void skeleton::SetName(QString name)
+void skeleton::setName(QString name)
 {
 //    if( m_Table )
   //      delete m_Table;
@@ -36,7 +36,7 @@ void skeleton::SetName(QString name)
     m_Name =  name;
 }
 
-QString skeleton::GetName()
+QString skeleton::getName()
 {
     if( m_Name.isEmpty() && m_tables)
         m_Name = m_tables->at(0)->getName();
@@ -56,14 +56,14 @@ skeleton::~skeleton()
     }
 }
 
-void skeleton::AddTable(CTable *tbl)
+void skeleton::addTable(CTable *tbl)
 {
     if( !m_tables )
         m_tables = new QList<CTable*>;
 
     m_tables->append(tbl);
 }
-void skeleton::AddTable(QString Name)
+void skeleton::addTable(QString Name)
 {
     if( !m_tables )
         m_tables = new QList<CTable*>;
@@ -89,7 +89,7 @@ void skeleton::AddTable(QString Name)
 //}
 
 
-QList<CTable *> *skeleton::GetTables()
+QList<CTable *> *skeleton::getTables()
 {
     return m_tables;
 }
@@ -142,7 +142,7 @@ void skeleton::CreateH()
                 continue;
 			}
 
-            strBody += QString("     ORM_DECLARE_ATTRIBUTE(%1, %2, %3);\n")
+            strBody += QString("     ORM_DECLARE_ATTRIBUTE(%1, %2, %3)\n")
                     .arg(m_tables->at(i)->getName()).arg(pFields->at(j)->getType()->getType()).arg(pFields->at(j)->getCaption());
         }
 

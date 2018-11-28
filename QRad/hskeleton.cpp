@@ -50,7 +50,7 @@ hskeleton::~hskeleton()
 }
 void hskeleton::Build( skeleton *Skel )
 {
-    QList<CTable *>*pTables = Skel->GetTables();
+    QList<CTable *>*pTables = Skel->getTables();
 
     for( int i = 0; pTables && (i < pTables->count()); i++ )
     {

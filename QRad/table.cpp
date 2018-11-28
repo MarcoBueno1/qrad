@@ -39,14 +39,14 @@ QString CTable::getCaption()
     return m_caption;
 }
 
-void CTable::AddField(CField *field)
+void CTable::addField(CField *field)
 {
     if( !m_Fields )
         m_Fields = new QList<CField *>;
 
     m_Fields->append(field);
 }
-void CTable::AddField(QString field, QString type)
+void CTable::addField(QString field, QString type)
 {
     if( !m_Fields )
         m_Fields = new QList<CField *>;

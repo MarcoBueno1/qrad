@@ -18,7 +18,6 @@
 "    ui->setupUi(this);\n"\
 "    \n"\
 "    m_mod = NULL;\n"\
-"    m_lastMod = NULL;\n"\
 "    %4\n"\
 "    connect(ui->PshBtnSave, SIGNAL(clicked()),this,SLOT(Save()));\n"\
 "    connect(ui->PshBtnCancel, SIGNAL(clicked()),this,SLOT(Cancel()));\n"\
@@ -44,7 +43,8 @@
 "void Edit%1::SetModel(%1* mod)\n"\
 "{\n"\
 "   m_mod = mod;\n"\
-"   Load();\n"\
+"    if( m_mod )\n"\
+"       Load();\n"\
 "}\n"\
 "\n"\
 "\n"\
@@ -66,7 +66,7 @@
 "}\n"\
 "%1* Edit%1::GetSaved()\n"\
 "{\n"\
-"   return m_lastMod;\n"\
+"   return m_mod;\n"\
 "\n"\
 "}\n"\
 "%7\n"
@@ -109,13 +109,13 @@ cppsskeleton::~cppsskeleton()
 }
 void cppsskeleton::Build( skeleton *Skel )
 {
-    if(!Skel->GetTables() || !Skel->GetTables()->at(0)->getFields())
+    if(!Skel->getTables() || !Skel->getTables()->at(0)->getFields())
     {
         qDebug() << "Warning: No table or no fields, we cant proceed ... \n";
         return;
     }
 
-    QList<CTable *>* pTables = Skel->GetTables();
+    QList<CTable *>* pTables = Skel->getTables();
 
     for( int i = 0; i < pTables->count(); i++ )
     {
@@ -139,9 +139,11 @@ void cppsskeleton::Build( skeleton *Skel )
 
 
         QString  strInitCombos;
-        QString  strModel = "    " + Skel->GetName() +"* mod =  m_mod;\n";
-        strModel += "    if( m_mod == NULL)\n";
-        strModel += QString("        ") + QString("mod = new ") + pTables->at(i)->getName() + QString(";\n\n");
+//        QString  strModel = "    " + Skel->getName() +"* mod =  m_mod;\n";
+//        QString  strModel = "    " + pTables->at(i)->getName() +"* mod =  m_mod;\n";
+
+        QString strModel = "    if( !m_mod )\n";
+        strModel += QString("        ") + QString("m_mod = new ") + pTables->at(i)->getName() + QString(";\n\n");
 
         QString strDisconnect;
         QString strConnect;
@@ -159,7 +161,7 @@ void cppsskeleton::Build( skeleton *Skel )
 
             if( fields->at(j)->getType()->getType() == "QString" )
             {
-                strModel += "    mod->set" + fields->at(j)->getCaption() + "(ui->LnEdt" +  fields->at(j)->getCaption() +"->text());\n";
+                strModel += "    m_mod->set" + fields->at(j)->getCaption() + "(ui->LnEdt" +  fields->at(j)->getCaption() +"->text());\n";
             }
             if( fields->at(j)->getType()->getType() == "int" )
             {
@@ -173,7 +175,7 @@ void cppsskeleton::Build( skeleton *Skel )
 
     //                    QString tmp = QString("\n        int row = ;\n").arg(fields.at(i).first->getCaption());
      //                   strModel += tmp;
-                        strModel += QString("    mod->set%1(ui->CmbBx%1->model()->data(ui->CmbBx%1->model()->index(ui->CmbBx%1->currentIndex(), 0)).toInt());\n\n").arg(fields->at(j)->getCaption());
+                        strModel += QString("    m_mod->set%1(ui->CmbBx%1->model()->data(ui->CmbBx%1->model()->index(ui->CmbBx%1->currentIndex(), 0)).toInt());\n\n").arg(fields->at(j)->getCaption());
 
                         strInitCombos += QString("    ui->CmbBx%1->setTable(\"%2\");\n").arg(fields->at(j)->getCaption()).arg(fields->at(j)->getType()->getTable());
                         strInitCombos += QString("    ui->CmbBx%1->setField(\"%2\");\n").arg(fields->at(j)->getCaption()).arg(fields->at(j)->getType()->getField());
@@ -194,37 +196,30 @@ void cppsskeleton::Build( skeleton *Skel )
                     }
                     break;
                     default:
-                        strModel += "    mod->set" + fields->at(j)->getCaption() + "(ui->SpnBx" +  fields->at(j)->getCaption() +"->value());\n";
+                        strModel += "    m_mod->set" + fields->at(j)->getCaption() + "(ui->SpnBx" +  fields->at(j)->getCaption() +"->value());\n";
                         break;
                 }
             }
             if( fields->at(j)->getType()->getType() == "double" )
             {
-                strModel += "    mod->set" + fields->at(j)->getCaption() + "(ui->DblSpnBx" +  fields->at(j)->getCaption() +"->value());\n";
+                strModel += "    m_mod->set" + fields->at(j)->getCaption() + "(ui->DblSpnBx" +  fields->at(j)->getCaption() +"->value());\n";
             }
             if( fields->at(j)->getType()->getType() == "bool" )
             {
-                strModel += "    mod->set" + fields->at(j)->getCaption() + "(ui->ChkBx" +  fields->at(j)->getCaption() +"->isChecked());\n";
+                strModel += "    m_mod->set" + fields->at(j)->getCaption() + "(ui->ChkBx" +  fields->at(j)->getCaption() +"->isChecked());\n";
             }
             if( fields->at(j)->getType()->getType() == "QDate" )
             {
-                strModel += "    mod->set" + fields->at(j)->getCaption() + "(ui->DtEdt" +  fields->at(j)->getCaption() +"->date());\n";
+                strModel += "    m_mod->set" + fields->at(j)->getCaption() + "(ui->DtEdt" +  fields->at(j)->getCaption() +"->date());\n";
             }
             if( fields->at(j)->getType()->getType() == "QTime" )
             {
-                strModel += "    mod->set" + fields->at(j)->getCaption() + "(ui->TmEdt" +  fields->at(j)->getCaption() +"->time());\n";
+                strModel += "    m_mod->set" + fields->at(j)->getCaption() + "(ui->TmEdt" +  fields->at(j)->getCaption() +"->time());\n";
             }
 
         }
 
-        strModel += "    bool bRet = mod->Save();\n";
-        strModel += "    if( m_lastMod )\n";
-        strModel += "       delete m_lastMod;\n";
-        strModel += "    m_lastMod = mod;\n";
-        strModel += "    m_mod = NULL;\n";
-    //    strModel += "    if( m_mod == NULL)\n";
-    //    strModel += "       delete mod;\n";
-        strModel += "    if( bRet )\n";
+        strModel += "    if( m_mod->Save() )\n";
         strModel += "    {\n";
         strModel += "       QMessageBox::information(this, \"Sucesso!\",\"Informações foram salvas com sucesso!\");\n";
         strModel += "       accept();\n";
@@ -232,11 +227,7 @@ void cppsskeleton::Build( skeleton *Skel )
         strModel += "    else\n";
         strModel += "       QMessageBox::warning(this, \"Oops\",\"Não foi possivel salvar\");\n";
 
-
-
-        QString strLoad  = "    if( m_mod == NULL)\n";
-        strLoad         += "      return;\n";
-
+        QString strLoad;
 
         for( int j = 1; j< fields->count();j++)  /// skip primary key
         {

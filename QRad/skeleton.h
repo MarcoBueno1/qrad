@@ -26,8 +26,8 @@ public:
 
 //    void AddField(QString strName, QString type);
 //    void AddField(CField* field, CType* type);
-    void AddTable(CTable *);
-    QList<CTable*> *GetTables();
+    void addTable(CTable *);
+    QList<CTable*> *getTables();
 
     void CreateFile();
 //    void SetTable(CTable *table);
@@ -36,10 +36,10 @@ public:
 	void setType(QRAD_SKEL_TYPE type);
 	QRAD_SKEL_TYPE getType();
 
-    void SetName(QString name);
-    QString GetName();
+    void setName(QString name);
+    QString getName();
     void IgnoreIfExist(bool );
-    void AddTable(QString Name);
+    void addTable(QString Name);
 private:
     QString m_Name;
     bool m_IgnoreIfExist;

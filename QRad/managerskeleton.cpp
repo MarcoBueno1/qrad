@@ -271,9 +271,9 @@
 "    connect(ui->tableViewSearch,SIGNAL(clicked(QModelIndex)),this,SLOT(TableClicked(QModelIndex)));\n"\
 "    connect(ui->tableViewSearch,SIGNAL(CurrentChanged(QModelIndex)),this,SLOT(CurrentChanged(QModelIndex)));\n"\
 "\n"\
-"    connect(ui->PshBtnEditar, SIGNAL(clicked()), this, SLOT(doEditar()));\n"\
-"    connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNovo()));\n"\
-"    connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doSair()));\n"\
+"    connect(ui->PshBtnEditar, SIGNAL(clicked()), this, SLOT(doEdit()));\n"\
+"    connect(ui->PshBtnNovo, SIGNAL(clicked()), this, SLOT(doNew()));\n"\
+"    connect(ui->PshBtnSair, SIGNAL(clicked()), this, SLOT(doExit()));\n"\
 "\n"\
 "    DoRefresh();\n"\
 "}\n"\
@@ -292,9 +292,6 @@
 "\n"\
 "void Manager%1::KeyPressTimeout()\n"\
 "{\n"\
-"//    if( ui->lineEditSearch->text().trimmed().isEmpty() )\n"\
-"//        ui->tableViewSearch->selectRow(0);\n"\
-"//    else\n"\
 "        ui->tableViewSearch->Search(ui->lineEditSearch->text());\n"\
 "}\n"\
 "\n"\
@@ -326,7 +323,6 @@
 "void Manager%1::notFound()\n"\
 "{\n"\
 "   ui->lineEditSearch->setStyleSheet(FG_COLOR_NOT_FOUND + BG_COLOR_NOT_FOUND);\n"\
-"  // ui->tableViewSearch->selectRow(0);\n"\
 "}\n"\
 "void Manager%1::TableClicked(QModelIndex currentIndex)\n"\
 "{\n"\
@@ -406,11 +402,11 @@
 "{\n"\
 "  %4\n"\
 "\n"\
-"   // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8(\"Conuna1\"));\n"\
-"    //m_Model->setHeaderData(2, Qt::Horizontal, QString::fromUtf8(\"Conuna2\"));\n"\
-"   // m_Model->setHeaderData(3, Qt::Horizontal, QString::fromUtf8(\"Conuna3\"));\n"\
-"   // m_Model->setHeaderData(4, Qt::Horizontal, QString::fromUtf8(\"Conuna3\"));\n"\
-"  //  m_Model->setHeaderData(5, Qt::Horizontal, QString::fromUtf8(\"Conuna4\"));\n"\
+"   // m_Model->setHeaderData(1, Qt::Horizontal, QString::fromUtf8(\"Col1\"));\n"\
+"   // m_Model->setHeaderData(2, Qt::Horizontal, QString::fromUtf8(\"Col2\"));\n"\
+"   // m_Model->setHeaderData(3, Qt::Horizontal, QString::fromUtf8(\"Col3\"));\n"\
+"   // m_Model->setHeaderData(4, Qt::Horizontal, QString::fromUtf8(\"Col3\"));\n"\
+"   // m_Model->setHeaderData(5, Qt::Horizontal, QString::fromUtf8(\"Col4\"));\n"\
 "\n"\
 "   // ui->tableViewSearch->setColumnWidth(0, 0.06 * ui->tableViewSearch->width());\n"\
 "    ui->tableViewSearch->hideColumn(ui->tableViewSearch->getColumnOf(\"id\"));\n"\
@@ -420,8 +416,6 @@
 "\n"\
 "void Manager%1::keyPressEvent(QKeyEvent *event)\n"\
 "{\n"\
-"    qDebug() << \"KeyPressEvent\";\n"\
-"  //  if(event->key() != Qt::Key_Escape)\n"\
 "    switch(event->key())\n"\
 "    {\n"\
 "      case Qt::Key_PageUp:\n"\
@@ -433,8 +427,7 @@
 "                           ui->tableViewSearch->keyPressEvent(event);\n"\
 "                           break;\n"\
 "      case Qt::Key_Escape:\n"\
-"  //                         ui->tableViewSearch->keyPressEvent(event);\n"\
-"                           doSair();\n"\
+"                           doExit();\n"\
 "                           break;\n"\
 "      default:\n"\
 "        break;\n"\
@@ -454,7 +447,7 @@
 "        }\n"\
 "    }\n"\
 "}\n"\
-"void Manager%1::doEditar()\n"\
+"void Manager%1::doEdit()\n"\
 "{\n"\
 "    Edit%1 *edt = new Edit%1;\n"\
 "\n"\
@@ -468,22 +461,24 @@
 "    {\n"\
 "        MatchNewest(edt->GetSaved());\n"\
 "    }\n"\
+"    delete sa;\n"\
 "    delete edt;\n"\
 "\n"\
 "}\n"\
 "\n"\
-"void Manager%1::doNovo()\n"\
+"void Manager%1::doNew()\n"\
 "{\n"\
 "    Edit%1 *edt = new Edit%1;\n"\
 "\n"\
 "    if( edt->exec() == QDialog::Accepted )\n"\
 "    {\n"\
 "        MatchNewest(edt->GetSaved());\n"\
+"        delete edt->GetSaved();\n"\
 "    }\n"\
 "    delete edt;\n"\
 "}\n"\
 "\n"\
-"void Manager%1::doSair()\n"\
+"void Manager%1::doExit()\n"\
 "{\n"\
 "    if( QMessageBox::Yes ==  QMessageBox::question(this, \"Sair?\",\"Deseja sair desta pesquisa?\",QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))\n"\
 "           reject();\n"\
@@ -528,9 +523,9 @@
 "    void TableClicked( QModelIndex );\n"\
 "    void CurrentChanged( QModelIndex );\n"\
 "    void KeyPressTimeout();\n"\
-"    void doEditar();\n"\
-"    void doSair();\n"\
-"    void doNovo();\n"\
+"    void doEdit();\n"\
+"    void doExit();\n"\
+"    void doNew();\n"\
 "\n"\
 "private:\n"\
 "    Ui::Manager%1 *ui;\n"\
@@ -577,7 +572,7 @@ void ManagerSkeleton::Build(skeleton *skel)
 
 void ManagerSkeleton::BuildH(skeleton * skel)
 {
-    QList<CTable *>*pTables = skel->GetTables();
+    QList<CTable *>*pTables = skel->getTables();
 
     for( int i = 0; pTables && (i < pTables->count()); i++   )
     {
@@ -629,7 +624,7 @@ QString ManagerSkeleton::getDelegateFor(int nCol, CType *tp)
 
 void ManagerSkeleton::BuildCPP(skeleton * skel)
 {
-    QList<CTable *>*pTables = skel->GetTables();
+    QList<CTable *>*pTables = skel->getTables();
     for( int i = 0; pTables && (i < pTables->count()); i++   )
     {
         QString Name = pTables->at(i)->getName();
@@ -715,7 +710,7 @@ void ManagerSkeleton::BuildCPP(skeleton * skel)
 
 void ManagerSkeleton::BuildUI(skeleton *skel)
 {
-    QList<CTable *>*pTables = skel->GetTables();
+    QList<CTable *>*pTables = skel->getTables();
     for( int i = 0; pTables && (i < pTables->count()); i++   )
     {
        QString Name = pTables->at(i)->getName();

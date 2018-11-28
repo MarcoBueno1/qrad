@@ -43,7 +43,7 @@ void SqlParser::Dump()
 {
     qDebug() << "Quantidade de Esqueletos: " << m_skels->count();
 
-    QList<CTable*> *tables =  m_skels->at(m_skels->count()-1)->GetTables();
+    QList<CTable*> *tables =  m_skels->at(m_skels->count()-1)->getTables();
     if(tables)
         qDebug() << "    Quantidade de Tabelas: "  << tables->count();
     for( int i = 0; tables && (i < tables->count()); i++ )
@@ -106,8 +106,8 @@ QList<skeleton *> *SqlParser::Parse2(QString filename)
             table = new CTable;
             table->setName(TableName);
             skel = new skeleton;
-            skel->SetName(TableName);
-            skel->AddTable(table);
+            skel->setName(TableName);
+            skel->addTable(table);
             m_skels->append(skel);
         }
         else if( table )
@@ -122,7 +122,7 @@ QList<skeleton *> *SqlParser::Parse2(QString filename)
             {
                 CField *fld = new CField;
                 fld->setField(Field,Type);
-                table->AddField(fld);
+                table->addField(fld);
             }
         }
     }
@@ -167,7 +167,7 @@ int SqlParser::Parse(QString filename)
         {
             table = new CTable;
             table->setName(TableName);
-            m_skels->at(m_skels->count()-1)->AddTable(table);
+            m_skels->at(m_skels->count()-1)->addTable(table);
         }
         else if( table )
         {
@@ -181,7 +181,7 @@ int SqlParser::Parse(QString filename)
             {
                 CField *fld = new CField;
                 fld->setField(Field,Type);
-                table->AddField(fld);
+                table->addField(fld);
             }
         }
     }
@@ -190,7 +190,7 @@ int SqlParser::Parse(QString filename)
     delete file;
 
     if( TableName.length() )
-        m_skels->at(m_skels->count()-1)->SetName(TableName);
+        m_skels->at(m_skels->count()-1)->setName(TableName);
 
     Dump();
 
@@ -292,7 +292,7 @@ void SqlParser::getForeingKey( QString Line )
     ///
     /// Find correct node here
     ///
-    QList<CTable *> *Tables = m_skels->at(m_skels->count()-1)->GetTables();
+    QList<CTable *> *Tables = m_skels->at(m_skels->count()-1)->getTables();
     if( !Tables )
     {
         qDebug() <<"Warning: file must present foreing keys after table definition .. ";
@@ -351,8 +351,8 @@ void SqlParser::PrintCommand()
 
    for( int i =0; m_skels && (i < m_skels->count()); i++ )
    {
-      Command += m_skels->at(i)->GetName();
-      QList<CTable *> *pTables = m_skels->at(i)->GetTables();
+      Command += m_skels->at(i)->getName();
+      QList<CTable *> *pTables = m_skels->at(i)->getTables();
       for( int j = 0 ; pTables && (j < pTables->count()); j++)
       {
           Command += " -t " + pTables->at(j)->getName();

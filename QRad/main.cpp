@@ -46,7 +46,6 @@ int main(int argc, char *argv[])
     {
         qDebug() << "Poucos argumentos:";
         qDebug() << "-t tabela -c campo -i tipo          : Gera codigo a partir de linha de comando";
-        qDebug() << "-t tabela -c campo -i tipo          : Gera codigo a partir de linha de comando";
         qDebug() << "-t tabela -c campo -i tipo:multi:Tabela.Campo[marco,antonio,bueno,da,silva]   ";
         qDebug() <<                                     ": Gera codigo a partir de linha de comando, campo multiselecao associado a tabela";
         qDebug() << "-f <arquivo.sql>                    : Gera codigo a partir de um arquivo em SQL";
@@ -80,22 +79,22 @@ int main(int argc, char *argv[])
     {
         if(QString(argv[i]) == "-s")
         {
-            skel->SetName(argv[i+1]);
-            PathMaker::setDir(skel->GetName() );
+            skel->setName(argv[i+1]);
+            PathMaker::setDir(skel->getName() );
         }
         if(QString(argv[i]) == "-t" )
 		{
             CTable *table = new CTable;
             table->setName(argv[i+1]);
-            skel->AddTable(table);
+            skel->addTable(table);
 		}
         else if (QString(argv[i]) == "-c" )
         {
-            QList<CTable *> *m_tables = skel->GetTables();
+            QList<CTable *> *m_tables = skel->getTables();
             if( m_tables )
             {
                 CTable *pTable = m_tables->at(m_tables->count()-1);
-                pTable->AddField(QString(argv[i+1]), QString(argv[i+3]));
+                pTable->addField(QString(argv[i+1]), QString(argv[i+3]));
                 bDoCreate = true;
             }
 

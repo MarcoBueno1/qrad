@@ -59,7 +59,7 @@ void QRadHead::Build()
 		
 	qDebug() << "Build::"  << __FILE__ << " LINE:" << __LINE__ ;
 
-        QList<CTable*>* pTables = skel->GetTables();
+        QList<CTable*>* pTables = skel->getTables();
         qDebug() << "pTables->count():" << pTables->count();
         for( int j = 0; pTables && (j < pTables->count());j ++ )
         {
@@ -88,23 +88,23 @@ void QRadHead::Build()
                     subskel->IgnoreIfExist(true);
 
 
-                    subskel->SetName(fields->at(k)->getType()->getTable());
+                    subskel->setName(fields->at(k)->getType()->getTable());
                     tbl->setName(fields->at(k)->getType()->getTable());
-                    subskel->AddTable(tbl);
+                    subskel->addTable(tbl);
 
 
                     fld = new CField;
                     fld->setField("id", "int");
-                    tbl->AddField(fld);
+                    tbl->addField(fld);
 
                     fld  = new CField;
                     fld->setField(fields->at(k)->getType()->getField(), "QString");
-                    tbl->AddField(fld);
+                    tbl->addField(fld);
 
                     fld  = new CField;
                     fld->setField("tp", "int");
                     fld->setMode(fHide);
-                    tbl->AddField(fld);
+                    tbl->addField(fld);
 
                     subskel->CreateFile();
 

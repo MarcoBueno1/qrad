@@ -191,7 +191,7 @@ void parser::do_StoreT(char *szData )
 
     CTable *tbl = parseTable(QString(szData));
 
-    m_skels->at(m_skels->count()-1)->AddTable(tbl);
+    m_skels->at(m_skels->count()-1)->addTable(tbl);
 }
 
 void parser::do_StoreFi(char *szData )
@@ -203,27 +203,27 @@ void parser::do_StoreFi(char *szData )
 void parser::do_StoreF(char *szData )
 {
     if( !m_skels->count() ||
-        !m_skels->at(m_skels->count()-1)->GetTables())
+        !m_skels->at(m_skels->count()-1)->getTables())
     {
         printInvalid( szData );
         return;
     }
     CField *field = ParseField(QString(szData));
-	QList<CTable *> *tables = m_skels->at(m_skels->count()-1)->GetTables();
-	tables->at(tables->count()-1)->AddField(field);
+	QList<CTable *> *tables = m_skels->at(m_skels->count()-1)->getTables();
+	tables->at(tables->count()-1)->addField(field);
 
 }
 
 void parser::do_StoreI(char *szData )
 {
     if( !m_skels->count() ||
-        !m_skels->at(m_skels->count()-1)->GetTables())
+        !m_skels->at(m_skels->count()-1)->getTables())
     {
         printInvalid( szData );
         return;
     }
     CType *type = ParseType(QString(szData));
-	QList<CTable *> *tables = m_skels->at(m_skels->count()-1)->GetTables();
+	QList<CTable *> *tables = m_skels->at(m_skels->count()-1)->getTables();
 	QList<CField *> *fields = tables->at(tables->count()-1)->getFields();
 	if( !fields )
     {

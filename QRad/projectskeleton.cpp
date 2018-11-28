@@ -54,7 +54,7 @@
 "{\n"\
 "    m_container = container;\n"\
 "\n"\
-"    %2"\
+"%2"\
 "}\n"\
 "\n"\
 "void %1Plugin::Process( const QString& action )\n"\
@@ -82,7 +82,6 @@
     "        if (!m_%2)\n"\
     "            m_%2 = new %3(m_parent);\n"\
     "\n"\
-    "    //    QRadConfig::centralizarWidget(m_%2);\n"\
     "        m_%2->show();\n"\
     "    }\n"
 
@@ -166,7 +165,7 @@ void projectskeleton::Build(skeleton *skel)
 
 void projectskeleton::BuildPro(skeleton *skel)
 {
-    QString Name = skel->GetName();
+    QString Name = skel->getName();
 
     QFile *file = new QFile(PathMaker::Path()+ Name + ".pro");
 
@@ -177,7 +176,7 @@ void projectskeleton::BuildPro(skeleton *skel)
         return;
     }
 
-    QList<CTable *>*pTables = skel->GetTables();
+    QList<CTable *>*pTables = skel->getTables();
 
     QString strSources; //manager  edit
     QString strHeaders; //manager  edit
@@ -246,7 +245,7 @@ void projectskeleton::BuildPro(skeleton *skel)
 
 void projectskeleton::BuildH(skeleton *skel)
 {
-    QString Name = skel->GetName();
+    QString Name = skel->getName();
 
     QFile *file = new QFile(PathMaker::Path()+ Name + "plugin" +  ".h");
 
@@ -256,7 +255,7 @@ void projectskeleton::BuildH(skeleton *skel)
         delete file;
         return;
     }
-    QList<CTable *>*pTables = skel->GetTables();
+    QList<CTable *>*pTables = skel->getTables();
 
     QString strIncludes; //manager  edit
     QString strProtected;
@@ -272,7 +271,8 @@ void projectskeleton::BuildH(skeleton *skel)
         strProtected += QString("    Manager%1 *m_manager;\n").arg(pTables->at(i)->getName());
         strProtected += QString("    Edit%1 *m_edit;\n").arg(pTables->at(i)->getName());
 
-        strHead += QString(H_SKEL).arg(pTables->at(i)->getName()).arg(strIncludes).arg(strProtected);
+//        strHead += QString(H_SKEL).arg(pTables->at(i)->getName()).arg(strIncludes).arg(strProtected);
+        strHead += QString(H_SKEL).arg(Name).arg(strIncludes).arg(strProtected);
     }
 
 
@@ -287,7 +287,7 @@ void projectskeleton::BuildH(skeleton *skel)
 
 void projectskeleton::BuildCPP(skeleton *skel)
 {
-    QString Name = skel->GetName();
+    QString Name = skel->getName();
 
     QFile *file = new QFile(PathMaker::Path()+ Name + "plugin" +  ".cpp");
 
@@ -302,7 +302,7 @@ void projectskeleton::BuildCPP(skeleton *skel)
     QString strProcess;
 	QString strHead ;
 
-    QList<CTable *>*pTables = skel->GetTables();
+    QList<CTable *>*pTables = skel->getTables();
     for( int i = 0; pTables && (i<pTables->count()); i++   )
     {
         strActions += QString(APPEND_ACTION).arg("Manage");
@@ -311,7 +311,8 @@ void projectskeleton::BuildCPP(skeleton *skel)
 
         strProcess += QString(PROCESS_ACTION).arg("Manage").arg("manager").arg("Manager"+pTables->at(i)->getName());
         strProcess += QString(PROCESS_ACTION).arg("Edit").arg("edit").arg("Edit"+pTables->at(i)->getName());
-		strHead += QString(CPP_SKEL).arg(pTables->at(i)->getName()).arg(strActions).arg(strProcess);
+//		strHead += QString(CPP_SKEL).arg(pTables->at(i)->getName()).arg(strActions).arg(strProcess);
+        strHead += QString(CPP_SKEL).arg(Name).arg(strActions).arg(strProcess);
     }
 
 
@@ -325,7 +326,7 @@ void projectskeleton::BuildCPP(skeleton *skel)
 
 void projectskeleton::BuildJson(skeleton *skel)
 {
-    QString Name = skel->GetName();
+    QString Name = skel->getName();
 
     QFile *file = new QFile(PathMaker::Path()+ Name  +  ".json");
 
@@ -348,7 +349,7 @@ void projectskeleton::BuildJson(skeleton *skel)
 
 void projectskeleton::BuildXML(skeleton *skel)
 {
-    QString Name = skel->GetName();
+    QString Name = skel->getName();
 
     QFile *file = new QFile(PathMaker::Path()+ Name  +  "plugin.xml");
 
@@ -361,7 +362,7 @@ void projectskeleton::BuildXML(skeleton *skel)
 
     QString strHead ;
 
-    QList<CTable *>*pTables = skel->GetTables();
+    QList<CTable *>*pTables = skel->getTables();
     for( int i = 0; pTables && (i < pTables->count()); i++   )
     {
         strHead += QString(XML_SKEL).arg(pTables->at(i)->getName()).arg(pTables->at(i)->getCaption());

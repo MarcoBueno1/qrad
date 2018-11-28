@@ -1,5 +1,6 @@
 #include "reportfactory.h"
 //#include "version.h"
+#include <QDebug>
 
 #define EXARO_EXTENSION ".bdrt"
 #define RPT_EXTENSION   ".xml"

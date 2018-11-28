@@ -1,7 +1,7 @@
 #ifndef QRadPLUGININTERFACE_H
 #define QRadPLUGININTERFACE_H
 
-#include <QtCore>
+//#include <QtCore>
 //#include <QWidget>
 #include <QStringList>
 #include "qradsplashscreen.h"

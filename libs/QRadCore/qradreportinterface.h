@@ -1,7 +1,7 @@
 #ifndef QRadREPORTINTERFACE_H
 #define QRadREPORTINTERFACE_H
 
-#include <QtCore>
+//#include <QtCore>
 #include <QMap>
 
 typedef struct ReportCapabilities_tag

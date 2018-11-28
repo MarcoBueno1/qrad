@@ -1,7 +1,7 @@
 #ifndef QRadREPORT_H
 #define QRadREPORT_H
 
-#include <QtCore>
+//#include <QtCore>
 #include <QMap>
 
 #include "qradconfig.h"

@@ -1,7 +1,7 @@
 #ifndef DSMTEXTEDIT_H
 #define DSMTEXTEDIT_H
 
-#include <QtCore>
+//#include <QtCore>
 #include <QTextEdit>
 #include <QKeyEvent>
 

@@ -5,7 +5,7 @@
 #include <QSplashScreen>
 #include <QPainter>
 #include <QTimer>
-#include <QThread>
+//#include <QThread>
 #include <QBitmap>
 
 class QRadSplashScreen : public QSplashScreen

@@ -1,7 +1,7 @@
 #ifndef _QRadPLUGIN_H_
 #define _QRadPLUGIN_H_
 
-#include <QtCore>
+//#include <QtCore>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>

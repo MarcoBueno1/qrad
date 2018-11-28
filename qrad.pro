@@ -54,7 +54,7 @@ SUBDIRS = QRad \
           Projects\Blink\libs\acbrticket \
           Projects\Blink\libs\common \
           Projects\Blink\Main \
-          Projects\Blink\MainPlate \
+#          Projects\Blink\MainPlate \
           Projects\Blink\Plugins\visit \
           Projects\Blink\Plugins\financier \
           Projects\Blink\notifier \

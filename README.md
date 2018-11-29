@@ -19,7 +19,7 @@ To Build (Windows - Qt 5.10.1)
 To Use (example)
 
 1. cd bin
-2. run: -s User -t User -c id -i int -c name.Name -i QString:searchmaster -c gender.Gender -i int:multi:Gender.Description[Male,Female] -c birthday -i QDate -c registration -i QTime
+2. run: qrad -s User -t User -c id -i int -c name.Name -i QString:searchmaster -c gender.Gender -i int:multi:Gender.Description[Male,Female] -c birthday -i QDate -c registration -i QTime
 3. cd built\user
 4. qmake
 5. mingw32-make

@@ -19,9 +19,9 @@ win32:QMAKE_LFLAGS += --enable-auto-import
 
 # Include section
 
-include(qmake/check.pri)
+include(../qmake/check.pri)
 
-include(qmake/cachefile.pri)
+include(../qmake/cachefile.pri)
 
 CACHERESET() {
 	CACHEVAR(PREFIX)
@@ -32,24 +32,24 @@ CACHERESET() {
 	CACHEVAR(LIBS)
 }
 
-include(qmake/debian.pri)
-include(qmake/doc.pri)
+include(../qmake/debian.pri)
+include(../qmake/doc.pri)
 
 # Main project setup
 
 TEMPLATE = subdirs
 CONFIG += ordered
 
-SUBDIRS = Projects\Blink\libs\orm \
-          Projects\Blink\libs\itaufrench \
-          Projects\Blink\libs\acbrticket \
-          Projects\Blink\libs\common \
-          Projects\Blink\Main \
-#          Projects\Blink\MainPlate \
-          Projects\Blink\Plugins\visit \
-          Projects\Blink\Plugins\financier \
-          Projects\Blink\notifier \
-          Projects\Blink\Plugins\report \
+SUBDIRS = Blink\libs\orm \
+          Blink\libs\itaufrench \
+          Blink\libs\acbrticket \
+          Blink\libs\common \
+          Blink\Main \
+#          Blink\MainPlate \
+          Blink\Plugins\visit \
+          Blink\Plugins\financier \
+          Blink\notifier \
+          Blink\Plugins\report \
 
 
 message(Done! Now run \"make\" to build QRad)

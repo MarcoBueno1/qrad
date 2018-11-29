@@ -116,10 +116,6 @@ public:
     }
 
 public slots:
-     void OnBuildChanged(bool);
-     void aboutToUnmanage(QWidget* w);
-
-     void FormChanged();
      void NovoActivacted(QString Text);
      void doEdit(void);
      void doUpdate(QString New);
@@ -150,16 +146,15 @@ private:
 
 
   void showEvent ( QShowEvent * event );
-  void focusOutEvent ( QFocusEvent * event );
-  void checkProperty(QString prop,QVariant val);
   QString CreateEditUi();
-  void ConnectDB();
+  bool ConnectDB();
   bool PersistObjects();
   void CreateTableIfNoExist();
   QString TableName();
   QString TableCaption();
   QString FieldName();
   QString FieldCaption();
+  QString TrueToken();
 };
 
 #endif

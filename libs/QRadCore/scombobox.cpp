@@ -1,10 +1,5 @@
 #include "scombobox.h"
 #include <QMessageBox>
-#ifdef _USE_IN_QT_CREATOR
-#include <QDesignerFormWindowInterface>
-#include <QDesignerPropertyEditorInterface>
-#include <QDesignerFormEditorInterface>
-#endif
 #include <QDir>
 #include <QEvent>
 #include <QSqlDatabase>
@@ -16,8 +11,6 @@
 #include <QSqlQuery>
 #include "qraddebug.h"
 #include <QDebug>
-
-//#include "qbuildcombocontroller.h"
 
 SComboBox::SComboBox(QWidget *parent) :
     QComboBox(parent)
@@ -44,112 +37,26 @@ void SComboBox::showEvent ( QShowEvent * event )
     Q_UNUSED(event );
     debug_message("-->showEvent\n");
 
-#ifdef _USE_IN_QT_CREATOR
-    QDesignerFormWindowInterface *formWindow;
-    formWindow = QDesignerFormWindowInterface::findFormWindow(this);
-    if(formWindow)
+    if( Table().isEmpty() )
     {
-        connect( formWindow,SIGNAL(aboutToUnmanageWidget(QWidget*)),this, SLOT(aboutToUnmanage(QWidget*)));
-        connect( formWindow,SIGNAL(changed()),this, SLOT(FormChanged()));
-
-
-//        QMessageBox::information(this, "Caminho do arquivo corrente",
-//                                 formWindow->absoluteDir().absolutePath() + "\\" + formWindow->fileName() );
-//                                   formWindow->fileName() );
-        m_UIFileName = formWindow->fileName();
-
-        QDesignerFormEditorInterface *editor = formWindow->core();
-        QDesignerPropertyEditorInterface *ProprietyEditor = editor->propertyEditor();
-        connect(ProprietyEditor, SIGNAL(propertyChanged(QString,QVariant)),
-                              this, SLOT(checkProperty(QString,QVariant)));
-
-
-/*        QBuildComboController *newFiles =  new QBuildComboController(this,
-                                                                    m_UIFileName,
-                                                                    objectName(),
-                                                                    Table().toLower(),
-                                                                    Field().toLower());
-
-        delete newFiles;*/
+        QMessageBox::warning(this, "Oops!", QString("Use setTable() para o componente %1").arg(objectName()));
+        return;
     }
-    else
-#endif
+    if( UserName().isEmpty() )
     {
-
-        if( Table().isEmpty() )
-        {
-            QMessageBox::warning(this, "Oops!", QString("Use setTable() para o componente %1").arg(objectName()));
-            return;
-        }
-        if( UserName().isEmpty() )
-        {
-            QMessageBox::warning(this, "Oops!", QString("Use setUserName() para o componente %1").arg(objectName()));
-            return;
-        }
-        if( Field().isEmpty() )
-        {
-            QMessageBox::warning(this, "Oops!", QString("Use setField() para o componente %1").arg(objectName()));
-            return;
-        }
-
-        PersistObjects();
-        connect(this,SIGNAL(activated(QString)),this,SLOT(NovoActivacted(QString)));
+        QMessageBox::warning(this, "Oops!", QString("Use setUserName() para o componente %1").arg(objectName()));
+        return;
+    }
+    if( Field().isEmpty() )
+    {
+        QMessageBox::warning(this, "Oops!", QString("Use setField() para o componente %1").arg(objectName()));
+        return;
     }
 
-///
-///  Verificar depois porque o trecho abaixo nao funcionou
-///
+    PersistObjects();
+    connect(this,SIGNAL(activated(QString)),this,SLOT(NovoActivacted(QString)));
 
-//            connect(m_FormEditor, SIGNAL(propertyChanged(QString,QVariant)),
-  //                        this, SLOT(checkProperty(QString,QVariant)));
-
-    connect( this, SIGNAL(BuildChanged(bool)), this, SLOT(OnBuildChanged(bool)));
     debug_message("<--showEvent\n");
-}
-
-void SComboBox::OnBuildChanged(bool bValue)
-{
-    Q_UNUSED(bValue);
-    QMessageBox::information(this, "OnBuildChanged!!",
-                               "OnBuildChanged" );
-}
-void SComboBox::aboutToUnmanage(QWidget* w)
-{
-    if( w == this )
-    {
-        QMessageBox::information(this, "aboutToUnmanage!!",
-    //                                 formWindow->absoluteDir().absolutePath() + "\\" + formWindow->fileName() );
-                                   "aboutToUnmanage" );
-
-    }
-}
-
-void SComboBox::focusOutEvent ( QFocusEvent * event )
-{
-    Q_UNUSED(event);
-//    QDesignerFormWindowInterface *formWindow;
-  //  formWindow = QDesignerFormWindowInterface::findFormWindow(this);
-
-//    if (event->type() == QEvent::FocusOut)
-//    {
-//        QMessageBox::information(this, "Perdendo o foco",
-//                                 formWindow->absoluteDir().absolutePath() + "\\" + formWindow->fileName() );
-  //                                 QString("Build=%1").arg(Build()?"true":"false") );
-
-
-//    }
-//    return false;
-}
-
-void SComboBox::checkProperty(QString prop,QVariant val)
-{
-    Q_UNUSED(val);
-    Q_UNUSED(prop);
-//    if( prop == "Build" && val.toBool() ==  true )
-    {
-        QMessageBox::information(this, "OH yeah!!!",
-                                   "Propriedade Mudou... "+ QString("Build=%1").arg(Build()?"true":"false") );
-    }
 }
 
 
@@ -162,43 +69,26 @@ void SComboBox::checkProperty(QString prop,QVariant val)
  @return valor indicador de erro ou sucesso (
  */
 
-void SComboBox::FormChanged()
-{
-//    QMessageBox::information(this, "OH yeah!!!",
-//                               "Alguma coisa no form mudou..."+ QString("Build=%1").arg(Build()?"true":"false") );
-
-/*    if( Build() == true)
-    {
-        QBuildComboController *newFiles =  new QBuildComboController(this,
-                                                                    m_UIFileName,
-                                                                    objectName(),
-                                                                    Table().toLower().toLower(),
-                                                                    Field().toLower());
-
-        delete newFiles;
-        setBuild(false);
-    }
-*/
-}
-
-
-void SComboBox::ConnectDB()
+bool SComboBox::ConnectDB()
 {
     if(!Host().isEmpty())
     {
         debug_message("tentando criar uma conexao especifica ... \n");
-        QSqlDatabase database = QSqlDatabase::addDatabase("QPSQL", objectName());
+
+        QSqlDatabase database = QSqlDatabase::addDatabase(QSqlDatabase::database().driverName(), objectName());
         database.setHostName(Host() );
         database.setDatabaseName(DatabaseName());
         database.setUserName(UserName());
         database.setPassword(Password());
 
-        if (!database.open())
+        if( !database.open() || !database.isValid() )
         {
             QMessageBox::warning(NULL,
                                  QString::fromUtf8("Erro na conexão com Banco de dados"),
                                  database.lastError().text());
+            return false;
         }
+
         m_currentdb = database;
     }
     else
@@ -206,6 +96,8 @@ void SComboBox::ConnectDB()
         m_currentdb = QSqlDatabase::database();
         debug_message("usando conexao default ..\n");
     }
+
+    return true;
 }
 
 QString SComboBox::CreateEditUi()
@@ -233,10 +125,11 @@ QString SComboBox::CreateEditUi()
         if( !LineEdit->text().trimmed().isEmpty())
         {
             QSqlQueryModel *AlreadyExist = new QSqlQueryModel;
-            AlreadyExist->setQuery(QString("select %1 from %2 where %1 = '%3' and removed <> true order by tp, %1")
+            AlreadyExist->setQuery(QString("select %1 from %2 where %1 = '%3' and removed <> %4 order by tp, %1")
                                    .arg(FieldName().toLower())
                                    .arg(TableName().toLower())
-                                   .arg(LineEdit->text().trimmed()),
+                                   .arg(LineEdit->text().trimmed())
+                                   .arg(TrueToken()),
                                    m_currentdb);
 
             if( !AlreadyExist->rowCount() )
@@ -268,8 +161,11 @@ void SComboBox::doEdit(void)
     {
         m_pEditor->exec();
         QSqlQueryModel *LastInserted = new QSqlQueryModel;
-        LastInserted->setQuery(QString("select %2 from %1 where removed <> true order by id desc limit 1")
-                           .arg(TableName().toLower()).arg(FieldName().toLower()), m_currentdb);
+        LastInserted->setQuery(QString("select %2 from %1 where removed <> %3 order by id desc limit 1")
+                               .arg(TableName().toLower())
+                               .arg(FieldName().toLower())
+                               .arg(TrueToken()),
+                                m_currentdb);
         New = LastInserted->index(0,0).data().toString();
         delete LastInserted;
     }
@@ -289,8 +185,11 @@ void SComboBox::doEdit(void)
 }
 void SComboBox::doUpdate(QString New)
 {
-            m_pModelLocal->setQuery(QString("select id, %2 from %1 where removed <> true order by tp, %2")
-                               .arg(TableName().toLower()).arg(FieldName().toLower()), m_currentdb);
+            m_pModelLocal->setQuery(QString("select id, %2 from %1 where removed <> %3 order by tp, %2")
+                                    .arg(TableName().toLower())
+                                    .arg(FieldName().toLower())
+                                    .arg(TrueToken()),
+                                    m_currentdb);
 
             setModel(m_pModelLocal);
             setModelColumn(1);
@@ -308,89 +207,78 @@ void SComboBox::NovoActivacted(QString Text )
          emit OnEdit();
    }
 }
+
 bool SComboBox::PersistObjects()
 {
-    bool    bHasNew = false;
-    QString strTokenNew  = "::ADICIONAR::";
-
-    ConnectDB();
-
     debug_message("\n-->PersistObjects()\n");
-//    m_currentdb = QSqlDatabase::database(objectName());
-  //  if(!m_currentdb.isValid())
-    //    m_currentdb = QSqlDatabase::database();
 
-
-
-
-    if(!m_currentdb.isValid())
+    if(!ConnectDB())
     {
-        QMessageBox::information(NULL,
-                                 "Database Erro",
-                                 "Sem Conexao com banco de dados, abortando persistencia");
         return false;
     }
 
+    bool    bHasNew = false;
+    QString strTokenNew  = "::ADICIONAR::";
+
     CreateTableIfNoExist();
 
- //   if( count() )
-  //  {
-        QSqlQueryModel *pList = new QSqlQueryModel;
+    QSqlQueryModel *pList = new QSqlQueryModel;
 
-        pList->setQuery(QString("select %1 from %2 where removed <> true").arg(FieldName().toLower()).arg(TableName().toLower()),m_currentdb);
+    pList->setQuery(QString("select %1 from %2 where removed <> %3").arg(FieldName().toLower()).arg(TableName().toLower()).arg(TrueToken()),m_currentdb);
+    if(pList && pList->rowCount())
+    {
+        for( int j = 0; j < pList->rowCount(); j++)
+        {
+            if( pList->index(j,0).data().toString() == strTokenNew )
+            {
+                bHasNew = true;
+                break;
+            }
+        }
+    }
+
+
+    for( int i =0; i < count(); i++  )
+    {
+        bool bFound = false;
+        QString Text = itemText(i);
+
+        if( Text == strTokenNew )
+            bHasNew = true;
+
         if(pList && pList->rowCount())
         {
             for( int j = 0; j < pList->rowCount(); j++)
             {
                 if( pList->index(j,0).data().toString() == strTokenNew )
-                {
                     bHasNew = true;
+
+                if( pList->index(j,0).data().toString() == Text )
+                {
+                    bFound = true;
                     break;
                 }
+
             }
         }
-
-
-        for( int i =0; i < count(); i++  )
+        if(!bFound) // nao encontrado, adiciona ao banco
         {
-            bool bFound = false;
-            QString Text = itemText(i);
+            QSqlQueryModel *Add = new QSqlQueryModel;
+            Add->setQuery(QString("insert into %1 (%2) values ('%3')")
+                                     .arg(TableName().toLower())
+                                     .arg(FieldName().toLower())
+                                     .arg(Text),m_currentdb);
 
-            if( Text == strTokenNew )
-                bHasNew = true;
-
-            if(pList && pList->rowCount())
-            {
-                for( int j = 0; j < pList->rowCount(); j++)
-                {
-                    if( pList->index(j,0).data().toString() == strTokenNew )
-                        bHasNew = true;
-
-                    if( pList->index(j,0).data().toString() == Text )
-                    {
-                        bFound = true;
-                        break;
-                    }
-
-                }
-            }
-            if(!bFound) // nao encontrado, adiciona ao banco
-            {
-                QSqlQueryModel *Add = new QSqlQueryModel;
-                Add->setQuery(QString("insert into %1 (%2) values ('%3')")
-                                         .arg(TableName().toLower())
-                                         .arg(FieldName().toLower())
-                                         .arg(Text),m_currentdb);
-
-                if( Add->lastError().isValid())
-                        QMessageBox::warning(this,"Erro ao Inserir",
-                                                 QString("Query:%1 Resultado:%2")
-                                                 .arg(Add->query().lastQuery())
-                                                 .arg(Add->lastError().text()));
-                delete Add;
-            }
+            if( Add->lastError().isValid())
+                    QMessageBox::warning(this,"Erro ao Inserir",
+                                             QString("Query:%1 Resultado:%2")
+                                             .arg(Add->query().lastQuery())
+                                             .arg(Add->lastError().text()));
+            delete Add;
         }
- //   }
+    }
+
+    delete pList;
 
     if( !bHasNew && CanAdd())
     {
@@ -405,19 +293,23 @@ bool SComboBox::PersistObjects()
 
     if( CanAdd())
     {
-        m_pModelLocal->setQuery(QString("select id, %1 from %2 where %1 <> '' and removed <> true order by tp, %1")
+        m_pModelLocal->setQuery(QString("select id, %1 from %2 where %1 <> '' and removed <> %3 order by tp, %1")
                                 .arg(FieldName().toLower())
                                 .arg(TableName().toLower())
+                                .arg(TrueToken())
                                ,m_currentdb);
     }
     else
     {
-        m_pModelLocal->setQuery(QString("select id, %1 from %2 where %1 <> '%3' and %1 <> ''  and removed <> true order by tp, %1")
+        m_pModelLocal->setQuery(QString("select id, %1 from %2 where %1 <> '%3' and %1 <> ''  and removed <> %4 order by tp, %1")
                                 .arg(FieldName().toLower())
                                 .arg(TableName().toLower())
                                 .arg(strTokenNew)
+                                .arg(TrueToken())
                                ,m_currentdb);
     }
+
+    debug_message("\nm_pModelLocal = %s\n",m_pModelLocal->query().lastQuery().toLatin1().data());
 
 
 
@@ -445,41 +337,38 @@ void SComboBox::CreateTableIfNoExist()
 {
     /// first check if can do that ...
     ///
-    ///
-    ///
-    ///
+
     debug_message("-->CreateTableIfNoExist()\n");
+    QString strPrimType = "integer NOT NULL";
+
 
     if( UserName().trimmed().isEmpty() )
     {
-        debug_message("<--CreateTableIfNoExist() L:%d\n", __LINE__);
+        debug_message("<--CreateTableIfNoExist() Username is empty L:%d\n", __LINE__);
         return;
     }
-
-    QSqlQueryModel *CrateTable = new QSqlQueryModel();
 
     ///
     /// create table if no exists
     ///
-    ///
-    ///
-//    select relname, relnamespace from pg_class join pg_catalog.pg_namespace n ON n.oid = pg_class.relnamespace where n.nspname='public' and relname='%1';
 
-    QString strChecExist = QString("SELECT true FROM pg_tables WHERE tablename = '%1'").arg(TableName().toLower().toLower());
-    CrateTable->setQuery(strChecExist, m_currentdb);
-    if( CrateTable->rowCount())
-    {
-        delete CrateTable;
-        debug_message("<--CreateTableIfNoExist() L:%d\n", __LINE__);
-        return;
-    }
+    QSqlQueryModel *CrateTable = new QSqlQueryModel();
 
-	QString strPrimType = "integer NOT NULL";
-	QSqlDatabase db = QSqlDatabase::database();
-	debug_message(" drivername: %s\n", db.driverName().toUtf8().data() );
-	if( db.driverName()	 == "QSQLITE" )
+    QSqlDatabase db = QSqlDatabase::database();
+    debug_message(" drivername: %s\n", db.driverName().toUtf8().data() );
+    if( db.driverName()	 == "QSQLITE" )
         strPrimType = "INTEGER PRIMARY KEY autoincrement";
-	//INTEGER PRIMARY KEY (SQLITE)
+    else /// QPSQL
+    {
+        QString strChecExist = QString("SELECT true FROM pg_tables WHERE tablename = '%1'").arg(TableName().toLower().toLower());
+        CrateTable->setQuery(strChecExist, m_currentdb);
+        if( CrateTable->rowCount())
+        {
+            delete CrateTable;
+            debug_message("<--CreateTableIfNoExist() L:%d\n", __LINE__);
+            return;
+        }
+    }
 	
     QString strCreate = QString( "CREATE TABLE %1 ("\
                                  "id %3, "\
@@ -564,4 +453,9 @@ QString SComboBox::FieldCaption()
 void SComboBox::SetEditor(QDialog *pEditor)
 {
 
+}
+
+QString SComboBox::TrueToken()
+{
+    return m_currentdb.driverName()=="QSQLITE"?"'true'":"true";
 }

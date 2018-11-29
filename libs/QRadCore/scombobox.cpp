@@ -39,17 +39,32 @@ void SComboBox::showEvent ( QShowEvent * event )
 
     if( Table().isEmpty() )
     {
-        QMessageBox::warning(this, "Oops!", QString("Use setTable() para o componente %1").arg(objectName()));
+        QMessageBox::warning(this,
+                             "Oops!",
+                             QCoreApplication::translate("SComboBox",
+                                                         QString("Use setTable() to %1")
+                                                         .arg(objectName())
+                                                         .toLatin1().data()));
         return;
     }
     if( UserName().isEmpty() )
     {
-        QMessageBox::warning(this, "Oops!", QString("Use setUserName() para o componente %1").arg(objectName()));
+        QMessageBox::warning(this,
+                             "Oops!",
+                             QCoreApplication::translate("SComboBox",
+                                                         QString("Use setUserName() to %1")
+                                                         .arg(objectName())
+                                                         .toLatin1().data()));
         return;
     }
     if( Field().isEmpty() )
     {
-        QMessageBox::warning(this, "Oops!", QString("Use setField() para o componente %1").arg(objectName()));
+        QMessageBox::warning(this,
+                             "Oops!",
+                             QCoreApplication::translate("SComboBox",
+                                                         QString("Use setField() to %1")
+                                                         .arg(objectName())
+                                                         .toLatin1().data()));
         return;
     }
 
@@ -84,7 +99,7 @@ bool SComboBox::ConnectDB()
         if( !database.open() || !database.isValid() )
         {
             QMessageBox::warning(NULL,
-                                 QString::fromUtf8("Erro na conexão com Banco de dados"),
+                                 QCoreApplication::translate("SComboBox","Error: Database connection"),
                                  database.lastError().text());
             return false;
         }
@@ -109,8 +124,8 @@ QString SComboBox::CreateEditUi()
     QLineEdit *LineEdit = new QLineEdit(Window);
     QLabel *Label = new QLabel(QString::fromUtf8("%1:").arg(FieldCaption()),Window);
 
-    Window->setWindowTitle(QString::fromUtf8("Adicionar %1").arg(TableCaption()));
-    Button->setText("Salvar");
+    Window->setWindowTitle(QCoreApplication::translate("SComboBox",QString("Add %1").arg(TableCaption()).toLatin1().data()));
+    Button->setText(QCoreApplication::translate("SComboBox","Save"));
     Layout->addRow( Label );
     Layout->addRow( LineEdit );
     Layout->addRow( Button );
@@ -224,8 +239,13 @@ bool SComboBox::PersistObjects()
 
     QSqlQueryModel *pList = new QSqlQueryModel;
 
-    pList->setQuery(QString("select %1 from %2 where removed <> %3").arg(FieldName().toLower()).arg(TableName().toLower()).arg(TrueToken()),m_currentdb);
-    if(pList && pList->rowCount())
+    pList->setQuery(QString("select %1 from %2 where removed <> %3")
+                    .arg(FieldName().toLower())
+                    .arg(TableName().toLower())
+                    .arg(TrueToken()),
+                    m_currentdb);
+
+    if(pList->rowCount())
     {
         for( int j = 0; j < pList->rowCount(); j++)
         {
@@ -238,6 +258,7 @@ bool SComboBox::PersistObjects()
     }
 
 
+    /// Add each in memory item to database ( if not found in DB )
     for( int i =0; i < count(); i++  )
     {
         bool bFound = false;
@@ -246,13 +267,10 @@ bool SComboBox::PersistObjects()
         if( Text == strTokenNew )
             bHasNew = true;
 
-        if(pList && pList->rowCount())
+        if(pList->rowCount())
         {
             for( int j = 0; j < pList->rowCount(); j++)
             {
-                if( pList->index(j,0).data().toString() == strTokenNew )
-                    bHasNew = true;
-
                 if( pList->index(j,0).data().toString() == Text )
                 {
                     bFound = true;
@@ -261,6 +279,7 @@ bool SComboBox::PersistObjects()
 
             }
         }
+
         if(!bFound) // nao encontrado, adiciona ao banco
         {
             QSqlQueryModel *Add = new QSqlQueryModel;

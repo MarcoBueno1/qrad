@@ -20,11 +20,11 @@ void configureDatabase()
 
     if(!db.open())
     {
-        qDebug() <<"Impossivel conectar no banco";
+        qDebug() <<"Database error";
     }
     else
     {
-        qDebug() << "Conexão Ok";
+        qDebug() << "connection Ok";
     }
 
 }
@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
     bool bDoCreate = false;
     QApplication a(argc, argv);
 
+    /* future use
     if(argc == 1)
     {
         configureDatabase();
@@ -41,36 +42,45 @@ int main(int argc, char *argv[])
         delete gui;
         return 0;
     }
+    */
 
     if( argc < 4 )
     {
-        qDebug() << "Poucos argumentos:";
-        qDebug() << "-t tabela -c campo -i tipo          : Gera codigo a partir de linha de comando";
-        qDebug() << "-t tabela -c campo -i tipo:multi:Tabela.Campo[marco,antonio,bueno,da,silva]   ";
-        qDebug() <<                                     ": Gera codigo a partir de linha de comando, campo multiselecao associado a tabela";
-        qDebug() << "-f <arquivo.sql>                    : Gera codigo a partir de um arquivo em SQL";
-        qDebug() << "-f <arquivo.sql> -command           : Gera linha de comando a partir de um arquivo em SQL";
-        qDebug() << "Modificadores de campo:";
-        qDebug() << "----------------";
-        qDebug() << ":hide                               - campo escondido, não aparece nas telas de edição nem de pesquisa, apenas banco de dados";
-        qDebug() << ":nomodel                            - campo visual, não existe na tabela\n";
-        qDebug() << "Tipos possiveis:";
-        qDebug() << "----------------";
-        qDebug() << "int";
-        qDebug() << "QString";
-        qDebug() << "bool";
-        qDebug() << "double\n\n";
-        qDebug() << "Subclasses de tipos:";
-        qDebug() << "---------------------";
-        qDebug() << ":search                              - Tela de Pesquisa: Indica que este campo será usado como campo de pesquisa";
-        qDebug() << ":searchmaster                        - Tela de Pesquisa: Indica que este campo terá precedencia na tela de pesquisa";
-        qDebug() << ":multi.tabela.campo[valor1,..]       - Cadastro........: Indica que este campo é chave estrangeira, relacionado a outra tabela conforme exemplo abaixo ( cria combobox inteligente )\n";
-        qDebug() << "Exemplos:";
-        qDebug() << "----------------";
-        qDebug() << "/qrad -t dsm_sale.Depositario -c id -i int -c total -i double:search -c discount -i double:search -c cashierid.Envelope -i int:multi:Envelopes.Tipo[A4,A5] -c obs -i QString:searchmaster -c coo -i int";
+        qInfo() << "few arguments:";
+        qInfo() << "-s project_name";
+        qInfo() << "-t table";
+        qInfo() << "-c field";
+
+        qInfo() << "-i fieldtype";
+
+        qInfo() << "----------------";
+        qInfo() << "Field types:";
+        qInfo() << "----------------";
+        qInfo() << "int";
+        qInfo() << "QString";
+        qInfo() << "QDate";
+        qInfo() << "QTime";
+        qInfo() << "bool";
+        qInfo() << "double";
+        qInfo() << "----------------";
+        qInfo() << "Field Modifiers:";
+        qInfo() << "----------------";
+        qInfo() << ":hide                         : hide field, exists only in databse";
+        qInfo() << ":nomodel                      : only exist in form ( not in dtabase )";
+        qInfo() << ":search                       : field used to search";
+        qInfo() << ":searchmaster                 : master search field";
+        qInfo() << ":multi.table.field[value1,..] : Foreing key ( creates smart comboboxes and related table )";
+
+        qInfo() << "----------------";
+        qInfo() << "SQL Parser:";
+        qInfo() << "----------------";
+        qInfo() << "-f <file.sql> -command        : create a commando line parameters from sql field";
+
+        qInfo() << "Examples:";
+        qInfo() << "----------------";
+        qInfo() << "qrad -s User -t User -c id -i int -c name.Name -i QString:searchmaster -c gender.Gender -i int:multi:Gender.Description[Male,Female] -c birthday -i QDate -c registration -i QTime";
+        return 0;
     }
-	
-	
 	
 
     skeleton *skel =  new skeleton();

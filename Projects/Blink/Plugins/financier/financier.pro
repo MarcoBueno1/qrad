@@ -113,7 +113,7 @@ win32:LIBS += -L../../../../libs/QRadCore/release \
         -L../../../../libs/QRadLic/release \
         -L../../../../libs/QRadLicUp/release \
         -L../../libs/acbrticket/release \
-        -L../../libs/pdfwrapper/release
+        -L../../../../libs/pdfwrapper/release
 
 LIBS += -L../../../../libs/QRadCore \
         -L../../../../libs/QRadOrm \
@@ -123,7 +123,7 @@ LIBS += -L../../../../libs/QRadCore \
         -L../../../../libs/QRadLic \
         -L../../../../libs/QRadLicUp \
         -L../../libs/acbrticket/ \
-        -L../../libs/pdfwrapper/ \
+        -L../../../../libs/pdfwrapper/ \
         -lqradcore \
         -lqradorm \
         -lqradlicup \

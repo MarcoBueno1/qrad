@@ -50,7 +50,7 @@ LIBS += -L../../../libs/QRadCore \
         -lqradorm \
         -litaufrench \
         -lacbrticket \
-        -lReport \
+        -L../../../bin -lReport \
         -lqradcommongui
 
 

@@ -27,12 +27,14 @@ win32:LIBS += -L../../../libs/QRadCore/release \
               -L../../../libs/QRadOrm/release \
               -L../libs/orm/release \
               -L../../../libs/3rdpart/exaro
+
 unix:LIBS += -L../../../libs/QRadCore \
              -L../../../libs/QRadOrm \
              -L../libs/orm/ \
              -L../../../libs/3rdpart/exaro
 
-LIBS += -lqradcore \
+LIBS += -L../../../bin \
+        -lqradcore \
         -lqradorm \
         -lblinkorm \
         -lReport

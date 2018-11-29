@@ -24,6 +24,6 @@ To Use (example)
 4. qmake
 5. mingw32-make
 6. mingw32-make install
-7. cd ..\..\
+7. cd .. \ ..\
 8. run: qradplugintest built\user\release\Userplugin.dll
 

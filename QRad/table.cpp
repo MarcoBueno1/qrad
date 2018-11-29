@@ -36,7 +36,7 @@ QString CTable::getName()
 
 QString CTable::getCaption()
 {
-    return m_caption;
+    return m_caption.length()?m_caption:m_name;
 }
 
 void CTable::addField(CField *field)

@@ -49,18 +49,8 @@ SUBDIRS = QRad \
           libs/pdfwrapper \
           libs/QRadCommonGui \
           plugins/QRadReport \
-          Projects\Blink\libs\orm \
-          Projects\Blink\libs\itaufrench \
-          Projects\Blink\libs\acbrticket \
-          Projects\Blink\libs\common \
-          Projects\Blink\Main \
-#          Projects\Blink\MainPlate \
-          Projects\Blink\Plugins\visit \
-          Projects\Blink\Plugins\financier \
-          Projects\Blink\notifier \
-          Projects\Blink\Plugins\report \
           Tools\QRadEdit \
-          Tools\QRadPluginTest \
+          Tools\QRadPluginTest
 
 
 message(Done! Now run \"make\" to build QRad)

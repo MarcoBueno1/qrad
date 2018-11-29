@@ -35,7 +35,7 @@ win32:LIBS += \
 unix:LIBS += \
         -L$${SOURCE_TREE}/bin
 
-LIBS += -lqradcore \
+LIBS +=  -L../../libs/QRadCore/release -lqradcore \
          -L../../libs/3rdpart/exaro \
          -lReport
 

@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>812</width>
+    <width>854</width>
     <height>600</height>
    </rect>
   </property>
@@ -1245,6 +1245,24 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
       </widget>
      </item>
      <item>
+      <widget class="QGroupBox" name="groupBoxFormaPagto">
+       <property name="title">
+        <string>Forma Pagto</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QComboBox" name="comboBoxPaymentway"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -1308,6 +1326,9 @@ QPushButton::down-arrow:on {      top: 1px;      left: 1px;  }
   <tabstop>btnExit</tabstop>
  </tabstops>
  <resources>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>

@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include "qraddebug.h"
 
+#define SQL_SELECT_COMBO_PAYMENTWAY "select * from paymentway where tp = 1 order by description"
 
 
 actopayreport::actopayreport(QWidget *parent) :
@@ -26,6 +27,11 @@ actopayreport::actopayreport(QWidget *parent) :
     ui->comboBoxTipodeConta->setModel(m_AccountType);
     ui->comboBoxTipodeConta->setModelColumn(1);
 
+
+    m_paymentway->setQuery(SQL_SELECT_COMBO_PAYMENTWAY);
+    ui->comboBoxPaymentway->setModel(m_paymentway);
+    ui->comboBoxPaymentway->setModelColumn(1);
+
     connect(ui->pushButtonBuild,SIGNAL(clicked(bool)),this,SLOT(BuildReport(bool)));
 
     connect(ui->radioButtonFilterPayment,SIGNAL(clicked(bool)),this,SLOT(EnableDisableVencidas()));
@@ -37,6 +43,8 @@ actopayreport::actopayreport(QWidget *parent) :
 actopayreport::~actopayreport()
 {
     delete m_Fornecedor;
+    delete m_AccountType;
+    delete m_paymentway;
     delete ui;
 }
 
@@ -137,6 +145,21 @@ QString actopayreport::MountSQLReport()
 
         Where += " fac.paid = false ";
     }
+
+
+    //// verify paymentway ?
+    if( ui->groupBoxFormaPagto->isChecked() )
+    {
+        int nPaymentId;
+        if( Where.length() > 5)
+             Where += " and ";
+
+        GET_COMBOBOX_ID(nPaymentId, ui->comboBoxPaymentway);
+
+        Where += QString(" fac.paymentway = %1 ").arg(nPaymentId);
+    }
+
+
 
     if( ui->groupBoxTipoDeConta->isChecked() )
     {

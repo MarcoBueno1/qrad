@@ -39,6 +39,9 @@
 
 #define SQL_SELECT_FORMATED             "case when fac.paid = true then 'P' else case when vencdate > current_date then 'T' else case when vencdate < current_date then 'V' else 'H' end end end || "
 
+
+#define SQL_SELECT_COMBO_PAYMENTWAY "select * from paymentway where tp = 1 order by description"
+
 #define CHECK_STR(str) {str += " and ";}
 
 /**
@@ -57,6 +60,7 @@ AccountToPayManager::AccountToPayManager(QWidget *parent) :
     m_modelAccountType   = new QSqlQueryModel;
     m_modelSupplier      = new QSqlQueryModel;
     m_modelBank          = new QSqlQueryModel;
+    m_paymentway         = new QSqlQueryModel;
 
     m_orderby =-1;
 
@@ -118,6 +122,7 @@ AccountToPayManager::~AccountToPayManager()
     delete m_modelAccountType;
     delete m_modelSupplier;
     delete m_modelBank;
+    delete m_paymentway;
 }
 
 void AccountToPayManager::changeEvent(QEvent *e)
@@ -191,6 +196,16 @@ void AccountToPayManager::GetAccountToPay(void)
                     .arg(m_dateStr)
                     .arg(m_ui->dateEditStart->date().toString(FMT_DATE_DB))
                     .arg(m_ui->dateEditEnd->date().toString(FMT_DATE_DB));
+    }
+
+    //// verify paymentway ?
+    if( m_ui->groupBoxFormaPagto->isChecked() )
+    {
+        CHECK_STR(m_strAux);
+        int nPaymentId;
+        GET_COMBOBOX_ID(nPaymentId, m_ui->comboBoxPaymentway);
+
+        m_strAux += QString(" fac.paymentway = %1 ").arg(nPaymentId);
     }
 
     if ( (m_ui->checkBoxAccountOpen->isChecked()) && (m_ui->checkBoxAccountPaid->isChecked()) )
@@ -379,6 +394,11 @@ void AccountToPayManager::GetBankValues(void)
 
 void AccountToPayManager::InitialConfig(int row)
 {
+    m_paymentway->setQuery(SQL_SELECT_COMBO_PAYMENTWAY);
+    m_ui->comboBoxPaymentway->setModel(m_paymentway);
+    m_ui->comboBoxPaymentway->setModelColumn(1);
+
+
     GetAccountToPay();
     QModelIndex currentIndex = m_ui->tableViewAccountToPay->currentIndex();
 

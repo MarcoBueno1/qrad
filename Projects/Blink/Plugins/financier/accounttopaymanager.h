@@ -26,7 +26,8 @@ protected:
     QSqlQueryModel  *m_modelAccountType,
                     *m_modelSupplier,
                     *m_modelBank,
-                    *m_selectAccountToPay;
+                    *m_selectAccountToPay,
+                    *m_paymentway;
     int             m_accountToPayId,
                     m_accountToPayRow;
     QString         m_dateStr,

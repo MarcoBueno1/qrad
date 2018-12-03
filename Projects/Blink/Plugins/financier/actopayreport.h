@@ -25,6 +25,7 @@ private:
     Ui::actopayreport *ui;
     QSqlQueryModel *m_Fornecedor;
     QSqlQueryModel *m_AccountType;
+    QSqlQueryModel *m_paymentway;
     QString MountSQLReport();
 };
 

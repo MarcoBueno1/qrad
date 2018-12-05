@@ -112,6 +112,9 @@ int main(int argc, char *argv[])
        }
        delete pLC;
     }
+    debug_message("String de identificacao: %s!!!!!\n", pl->GetClientIdentification().toLatin1().data());
+
+
 
     delete pl;
 

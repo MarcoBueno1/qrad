@@ -7,7 +7,7 @@
 #include "qradconfig.h"
 #include "qradpluginaction.h"
 
-#define BLINK_RELEASE "1.0.14"
+#define BLINK_RELEASE "1.0.17"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -76,7 +76,7 @@ void MainWindow::on_actionSobre_o_Blink_triggered()
 {
     QMessageBox::about(this, QString::fromUtf8("Sobre o DSM"),
                        QString::fromUtf8("<h2>DSM %1</h2>"
-                          "<p>Copyright &copy; 2017 Marco Bueno."
+                          "<p>Copyright &copy; 2018 Marco Bueno."
                           "<p>DSM é um sistema de gestão para condomínios.\n").arg(BLINK_RELEASE));
 
 }

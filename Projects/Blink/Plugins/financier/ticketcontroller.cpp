@@ -931,8 +931,16 @@ bool TicketController::UpdateTickets(QList<BankTicket*> *list)
          else if( pCurrent->getTpOp() == tpLiquidated) // pagos apenas com vencimento acima de 05/07/2017
          {
              ticket *ptkt = ticket::findByNossoNumero(pCurrent->getNossoNumero().toInt(),true);
-             if(( ptkt && (ptkt->getStatus() != tpLiquidated)) && ptkt->getVencto() > QDate::fromString("05072017","ddMMyyyy"))
+             debug_message("\nfindByNossoNumero(%d) == %x ", pCurrent->getNossoNumero().toInt(), ptkt);
+             debug_message("\ngetdtPagto() == %s  ", pCurrent->getdtPagto().toString("ddMMyyyy").toLatin1().data());
+             debug_message("\ngetValorPago() == %s  ", pCurrent->getValorPago().toLatin1().data());
+             debug_message("\ngetValor() == %s  ", pCurrent->getValor().toLatin1().data());
+             if(ptkt)
+                 debug_message("\ngetStatus() == %d  ", ptkt->getStatus());
+
+             if(( ptkt && (ptkt->getStatus() != stPaid)) && ptkt->getVencto() > QDate::fromString("05072017","ddMMyyyy"))
              {
+                 debug_message("\ngetVencto() == %s", ptkt->getVencto().toString("ddMMyyyy").toLatin1().data());
                  bRet = ptkt->UpdateToPaid(pCurrent->getdtPagto(),pCurrent->getValorPago().replace(",",".").toDouble());
                  delete ptkt;
              }

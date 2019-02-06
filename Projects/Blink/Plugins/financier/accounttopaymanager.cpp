@@ -97,6 +97,7 @@ AccountToPayManager::AccountToPayManager(QWidget *parent) :
     connect(m_ui->radioButtonPaidDate, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
     connect(m_ui->checkBoxAccountOpen, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
     connect(m_ui->checkBoxAccountPaid, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
+    connect(m_ui->groupBoxFormaPagto, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
     connect(m_ui->groupBoxDate, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
     connect(m_ui->groupBoxAccountType, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
     connect(m_ui->groupBoxSupplier, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
@@ -327,7 +328,7 @@ void AccountToPayManager::GetAccountToPay(void)
 
 
 
-    debug_message("\nSQL_SELECT_ACCOUNTTOPAY=%s\n", strSQL.toLatin1().data());
+    debug_message("\nSQL_SELECT_ACCOUNTTOPAY_1=%s\n", strSQL.toLatin1().data());
 
     m_ui->tableViewAccountToPay->setModel(m_selectAccountToPay);
 
@@ -821,13 +822,14 @@ void AccountToPayManager::Test()
 
     m_ui->groupBoxDate->setChecked(false);
     m_ui->radioButtonVencDate->setChecked(true);
-    m_ui->dateEditStart->setDate(QDate::fromString("30/06/2017","dd/MM/yyyy"));
-    m_ui->dateEditEnd->setDate(QDate::fromString("15/07/2017","dd/MM/yyyy"));
+    m_ui->dateEditStart->setDate(QDate::fromString("01/01/2018","dd/MM/yyyy"));
+    m_ui->dateEditEnd->setDate(QDate::fromString("01/01/2019","dd/MM/yyyy"));
 
-    m_ui->checkBoxAccountPaid->setChecked(false);
+    m_ui->checkBoxAccountPaid->setChecked(true);
     m_ui->checkBoxAccountOpen->setChecked(false);
 //    ui->groupBoxFilterData->setChecked(false);
-    m_ui->checkBoxVencidas->setChecked(true);
+    m_ui->checkBoxVencidas->setChecked(false);
+    m_ui->groupBoxFormaPagto->setChecked(true);
 
     GetAccountToPay();
 

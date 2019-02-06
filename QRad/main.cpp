@@ -28,6 +28,40 @@ void configureDatabase()
     }
 
 }
+
+bool WrongParameters()
+{
+   if( QCoreApplication::arguments().count() < 4 )
+       return true;
+
+   if(( QCoreApplication::arguments().count() == 4) && !QCoreApplication::arguments().contains("-f"))
+       return true;
+
+
+   if(( QCoreApplication::arguments().at(1) == "-f" ) && (QCoreApplication::arguments().count() > 2 ))
+   {
+       return false;
+   }
+
+
+   if(( QCoreApplication::arguments().at(1) != "-s" )
+           || (QCoreApplication::arguments().at(3) != "-t" )
+           || (QCoreApplication::arguments().at(5) != "-c" ) )
+   {
+       return true;
+   }
+
+
+   for( int i = 5; i < (QCoreApplication::arguments().count()-2); i++ )
+   {
+         if( (QCoreApplication::arguments().at(i) != "-c" ) ||
+             (QCoreApplication::arguments().at(i+2) != "-i" ) )
+             return true;
+   }
+
+   return false;
+}
+
 int main(int argc, char *argv[])
 {
     bool bDoCreate = false;
@@ -44,7 +78,7 @@ int main(int argc, char *argv[])
     }
     */
 
-    if( argc < 4 )
+    if( WrongParameters() )
     {
         qInfo() << "few arguments:";
         qInfo() << "-s project_name";

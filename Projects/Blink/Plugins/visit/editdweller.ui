@@ -334,9 +334,9 @@
      <property name="geometry">
       <rect>
        <x>417</x>
-       <y>340</y>
+       <y>360</y>
        <width>336</width>
-       <height>90</height>
+       <height>71</height>
       </rect>
      </property>
      <property name="title">
@@ -348,7 +348,7 @@
         <x>10</x>
         <y>20</y>
         <width>317</width>
-        <height>59</height>
+        <height>41</height>
        </rect>
       </property>
      </widget>
@@ -493,7 +493,7 @@
        <x>420</x>
        <y>270</y>
        <width>330</width>
-       <height>71</height>
+       <height>90</height>
       </rect>
      </property>
      <property name="title">
@@ -505,7 +505,7 @@
         <x>12</x>
         <y>17</y>
         <width>260</width>
-        <height>43</height>
+        <height>66</height>
        </rect>
       </property>
       <attribute name="horizontalHeaderDefaultSectionSize">
@@ -921,6 +921,9 @@
   <tabstop>pushButtonBaterFoto</tabstop>
  </tabstops>
  <resources>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
+  <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>
   <include location="../../icons/resources.qrc"/>

@@ -60,6 +60,7 @@ private slots:
     void    DeleteAccountToPay(void);
     void    GetAccountToPay(void);
     void    ShowReport(void);
+    void    PaymentActivacted(int);
 };
 
 #endif // ACCOUNTTOPAYMANAGER_H

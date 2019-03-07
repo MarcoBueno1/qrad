@@ -98,6 +98,7 @@ AccountToPayManager::AccountToPayManager(QWidget *parent) :
     connect(m_ui->checkBoxAccountOpen, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
     connect(m_ui->checkBoxAccountPaid, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
     connect(m_ui->groupBoxFormaPagto, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
+    connect(m_ui->comboBoxPaymentway, SIGNAL(activated(int)), this, SLOT(PaymentActivacted(int)));
     connect(m_ui->groupBoxDate, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
     connect(m_ui->groupBoxAccountType, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
     connect(m_ui->groupBoxSupplier, SIGNAL(clicked()), this, SLOT(GetAccountToPay()));
@@ -834,4 +835,9 @@ void AccountToPayManager::Test()
     GetAccountToPay();
 
 //    ShowReport();
+}
+
+void AccountToPayManager::PaymentActivacted(int)
+{
+  GetAccountToPay();
 }

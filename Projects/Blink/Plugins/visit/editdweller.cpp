@@ -427,7 +427,7 @@ void EditDweller::RefreshVeicTable()
   QString SQL = QString("select dv.id, dv.board as \"Placa\", b.name as \"Marca\", v.type as \"Nome\" "\
                         " from vehicle dv inner join brand b on b.id = dv.brand  "\
                         " inner join veicname v on v.id = dv.veicname  "\
-                        " where dv.owner = %1 and removed = false").arg(m_mod?m_mod->getid():0);
+                        " where dv.owner = %1 and v.removed = false").arg(m_mod?m_mod->getid():0);
 
   m_VehicleModel->setQuery(SQL);
   ui->tableViewVeiculos->setModel(m_VehicleModel);

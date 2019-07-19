@@ -16,7 +16,7 @@ public:
                               QString strusername,
                               QString strpassword);
 
-    static void Receive( unsigned int loid,
+    static int Receive( unsigned int loid,
                          QString strFilePath,
                          QString strstrHostName,
                          QString strdatabasename,

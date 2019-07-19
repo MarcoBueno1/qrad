@@ -11,6 +11,8 @@
 #include <QDate>
 #include <QString>
 #include <QDebug>
+#include <QCryptographicHash>
+
 
 #include "qradround.h"
 
@@ -592,6 +594,8 @@ public:
 
     static void InitAttribute(ModelAttribute *attr);
     static QString getNoAccentuation( QString strPortuguese ) ;
+    static QByteArray fileChecksum(const QString &fileName, QCryptographicHash::Algorithm hashAlgorithm=QCryptographicHash::Md5);
+
 protected:
     virtual QString className() = 0;
 protected:

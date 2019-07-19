@@ -21,13 +21,21 @@
 
 void Editvisit::RemovePhotoFile()
 {
+    QRAD_IN()
     if(QFile::exists(PORTEIRO_FUL_PATH))
     {
+        debug_message("Removendo arquivo Md5:%s\n", Model::fileChecksum(PORTEIRO_FUL_PATH).data());
+
         QFile *remove= new QFile(PORTEIRO_FUL_PATH);
 
-        remove->remove();
+        bool bRes = remove->remove();
+        if( !bRes )
+        {
+            debug_message("Erro ao remover arquivo Md5:%s\n", Model::fileChecksum(PORTEIRO_FUL_PATH).data());
+        }
         delete remove;
     }
+    QRAD_OUT()
 }
 
 
@@ -178,11 +186,16 @@ bool Editvisit::CanSave()
     return true;
 }
 
+
 void Editvisit::Save()
 {
+  QRAD_IN()
 
-    if( !CanSave() )
-        return;
+  if( !CanSave() )
+  {
+       QRAD_OUT()
+       return;
+  }
 
     Visitante *pVis = Visitante::findByid(m_idVisitante);
     if(!pVis)
@@ -193,6 +206,9 @@ void Editvisit::Save()
                                     .arg(ui->lineEditRG->text().trimmed()));
            if( pVLst && pVLst->count())
            {
+               debug_message("Visitante já cadastrado, encontrados:%d com o RG:%s\n",
+                             pVLst->count(),
+                             ui->lineEditRG->text().trimmed().toLatin1().data());
                pVis = new Visitante;
                pVis->copyFrom(pVLst->at(0));
            }
@@ -204,6 +220,10 @@ void Editvisit::Save()
                                      .arg(ui->lineEditCPF->text().trimmed()));
             if( pVLst && pVLst->count())
             {
+                debug_message("Visitante já cadastrado, encontrados:%d com o CPF:%s\n",
+                              pVLst->count(),
+                              ui->lineEditCPF->text().trimmed().toLatin1().data());
+
                 pVis = new Visitante;
                 pVis->copyFrom(pVLst->at(0));
             }
@@ -211,14 +231,27 @@ void Editvisit::Save()
     }
     if(!pVis)
     {
+        debug_message("Visitante NAO cadastrado, cadastrando: RG:%s CPF:%s Nome:%s\n",
+                      ui->lineEditRG->text().trimmed().toLatin1().data(),
+                      ui->lineEditCPF->text().trimmed().toLatin1().data(),
+                      ui->lineEditVisitante->text().toLatin1().data());
+
         pVis = new Visitante;
-        pVis->setRG(ui->lineEditRG->text());
+        pVis->setRG(ui->lineEditRG->text().trimmed());
         QString CPF =ui->lineEditCPF->text().trimmed();
         CPF.remove("-").remove(".");
         pVis->setCPF(CPF);
         pVis->setNome(ui->lineEditVisitante->text());
         if( m_foto && QFile::exists(PORTEIRO_FUL_PATH) )
-            pVis->saveImage(PORTEIRO_FUL_PATH);
+        {
+            debug_message("Salvando arquivo Md5:%s\n", Model::fileChecksum(PORTEIRO_FUL_PATH).data());
+
+            bool bSave = pVis->saveImage(PORTEIRO_FUL_PATH);
+            if( !bSave )
+            {
+                debug_message("Erro ao Salvar arquivo Md5:%s\n", Model::fileChecksum(PORTEIRO_FUL_PATH).data());
+            }
+        }
         pVis->Save();
         debug_message("Novo Visitante id:%d\n", pVis->getid())
     }
@@ -227,30 +260,42 @@ void Editvisit::Save()
         bool bSave = false;
         if( pVis->getRG().isEmpty() && !ui->lineEditRG->text().trimmed().isEmpty())
         {
-            pVis->setRG(ui->lineEditRG->text());
+            debug_message("Alterando RG do visitante id:%d para RG:%s\n", pVis->getid(), ui->lineEditRG->text().trimmed().toLatin1().data());
+            pVis->setRG(ui->lineEditRG->text().trimmed());
             bSave = true;
         }
         QString CPF =ui->lineEditCPF->text().trimmed();
         CPF.remove("-").remove(".");
         if( pVis->getCPF().isEmpty() && !CPF.trimmed().isEmpty())
         {
+             debug_message("Alterando CPF do visitante id:%d para CPF:%s\n", pVis->getid(), CPF.toLatin1().data());
              pVis->setCPF(CPF);
              bSave = true;
         }
         if( pVis->getNome().length() < ui->lineEditVisitante->text().trimmed().length())
         {
+             debug_message("Alterando Nome do visitante id:%d para Nome:%s\n", pVis->getid(), ui->lineEditVisitante->text().toLatin1().data());
              pVis->setNome(ui->lineEditVisitante->text().trimmed());
              bSave = true;
         }
         if( m_foto )
         {
-            pVis->saveImage(PORTEIRO_FUL_PATH);
+            debug_message("Alterando Foto do visitante id:%d para Md5:%s\n", pVis->getid(), Model::fileChecksum(PORTEIRO_FUL_PATH).data());
+
+            bSave = pVis->saveImage(PORTEIRO_FUL_PATH);
+            if( !bSave )
+            {
+                debug_message("Erro ao Salvar arquivo Md5:%s\n", Model::fileChecksum(PORTEIRO_FUL_PATH).data());
+            }
             bSave = true;
         }
         if( bSave )
-            pVis->Save();
+        {
+            bool bResult = pVis->Save();
+            debug_message("Salvando visitante id:%d bResult:%s\n", pVis->getid(), bResult?"true":"false");
+        }
 
-        debug_message("Visitante já existente:%d\n", pVis->getid())
+        debug_message("Visitante já existente:%d\n", pVis->getid());
     }
 
     visit* mod =  m_mod;
@@ -274,12 +319,20 @@ void Editvisit::Save()
     m_mod = NULL;
     if( bRet )
     {
+       debug_message("Visita salva com sucesso, id:%d\n", mod->getid());
+
        QMessageBox::information(this, "Sucesso!","Informações foram salvas com sucesso!");
        RemovePhotoFile();
        accept();
     }
     else
+    {
+       debug_message("Problema ao salvar visita, id:%d\n", mod->getid());
+
        QMessageBox::warning(this, "Oops","Não foi possivel salvar");
+    }
+
+    QRAD_OUT()
 }
 
 void Editvisit::Load()
@@ -337,8 +390,15 @@ void Editvisit::Load()
           ui->lineEditRG->setText(pVis->getRG());
           ui->lineEditCPF->setText(pVis->getCPF());
           ui->lineEditVisitante->setText(pVis->getNome());
-          QPixmap mypix = pVis->getImage();
-          ui->LblPhoto->setPixmap(mypix);
+          if( pVis->getLoId() )
+          {
+              QPixmap mypix = pVis->getImage();
+              ui->LblPhoto->setPixmap(mypix);
+          }
+          else
+          {
+              debug_message("Visitante id: %d não tem imagem associada\n", pVis->getid())
+          }
           delete pVis;
     }
     Dweller *dw = Dweller::findByid(m_mod->getautorizador());
@@ -380,19 +440,33 @@ visit* Editvisit::GetSaved()
 
 void Editvisit::baterFoto()
 {
+  QRAD_IN()
+
   Camera *cam = new Camera;
 
+  debug_message("Antes de bater foto Md5:%s\n", Model::fileChecksum(PORTEIRO_FUL_PATH).data());
+
   cam->setPath(PORTEIRO_FUL_PATH);
+
   if( QDialog::Accepted == cam->exec())
   {
+      debug_message("Nova foto Md5:%s\n", Model::fileChecksum(PORTEIRO_FUL_PATH).data());
+
       QImage myImage ;
       myImage.load(PORTEIRO_FUL_PATH);
       ui->LblPhoto->setPixmap(QPixmap::fromImage(myImage));
       ui->PshBtnSave->setFocus(Qt::TabFocusReason);
       m_foto = 1;
   }
+  else
+  {
+      debug_message("Usuario cancelou a foto Md5:%s\n", Model::fileChecksum(PORTEIRO_FUL_PATH).data());
+  }
   delete cam;
   ui->lineEditRG->setFocus();
+
+  QRAD_OUT()
+
 }
 
 void Editvisit::found( int id, bool force )

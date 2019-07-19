@@ -12,6 +12,8 @@
 #include <unac.h>
 #endif
 
+#include "qraddebug.h"
+
 #define IS_STRING_VALUE(attr) ((ATTR_QString == attr->type()) || (ATTR_QDate == attr->type()) || \
                                (ATTR_QTime == attr->type()) || ( ATTR_QChar == attr->type()) || \
                                (ATTR_char  == attr->type()))
@@ -822,35 +824,64 @@ int Model::saveImage( QString path )
 
 QPixmap Model::getImage(int nLoId )
 {
-  QSqlDatabase db = QSqlDatabase::database();
+   QRAD_IN();
 
-     QTime time = QTime::currentTime();
-     QString strFoto = QString("image_%1_%2_%3.jpg").arg(time.hour()).arg(time.minute()).arg(time.second());
+   debug_message("nLoId:%d\n", nLoId);
+
+
+   QImage myImage;// = new QImage(strFoto);
+   QPixmap pix;
+
+   QSqlDatabase db = QSqlDatabase::database();
+
+   QTime time = QTime::currentTime();
+   QString strFoto = QString("image_%1_%2_%3.jpg").arg(time.hour()).arg(time.minute()).arg(time.second());
  
+   if(QFile::exists(strFoto))
+   {
+       debug_message("Removendo arquivo %s Md5:%s\n", strFoto.toLatin1().data(), fileChecksum(strFoto).data());
 
-     PGSQLAsync::Receive( (unsigned int)nLoId,
+       QFile *remove= new QFile(strFoto);
+
+       bool bRes = remove->remove();
+       if( !bRes )
+       {
+           debug_message("Erro ao remover arquivo %s Md5:%s\n", strFoto.toLatin1().data(), fileChecksum(strFoto).data());
+       }
+       delete remove;
+   }
+
+
+   if( 1 != PGSQLAsync::Receive( (unsigned int)nLoId,
                           strFoto,
                           db.hostName(),
                           db.databaseName(),
                           db.userName(),
-                          db.password() );
+                          db.password() ))
+   {
+       debug_message("Nao foi possivel ler a imagem do BD: %s\n", strFoto.toLatin1().data());
+       pix = QPixmap(100, 200);
 
+       QRAD_OUT()
 
-    ///
-    /// \brief codigo para ler a imagem do banco de dados
-    ///
+       return pix;
 
-    QImage myImage;// = new QImage(strFoto);
-//    qDebug() << "QImage";
+   }
+
     if( !myImage.load(strFoto))
-       qDebug() << "Load Error...";
-    qDebug() << "load...";
+    {
+        debug_message("Erro ao tentar carregar imagem: %s\n", strFoto.toLatin1().data());
+    }
 
     if( myImage.isNull())
-        qDebug() << "image is null ... ";
+    {
+        debug_message("Objeto myImage nulo: %s\n", strFoto.toLatin1().data());
+    }
 
-    QPixmap pix =  QPixmap::fromImage(myImage);
-    qDebug() << "from image...";
+    pix =  QPixmap::fromImage(myImage);
+
+    QRAD_OUT()
+
     return pix;
 }
 
@@ -885,3 +916,14 @@ QString Model::getImage(int nLoId, QString path )
 //   QCoreApplication *app = QCoreApplication::instance();
 //    m_useTableFilter = app->property("useTableFilter").toBool();
 
+QByteArray Model::fileChecksum(const QString &fileName, QCryptographicHash::Algorithm hashAlgorithm)
+{
+    QFile f(fileName);
+    if (f.open(QFile::ReadOnly)) {
+        QCryptographicHash hash(hashAlgorithm);
+        if (hash.addData(&f)) {
+            return hash.result();
+        }
+    }
+    return QByteArray().toHex();
+}

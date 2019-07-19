@@ -73,13 +73,14 @@ unsigned int PGSQLAsync::Send( QString strFilePath,
 }
 
 
-void PGSQLAsync::Receive( unsigned int loid,
+int PGSQLAsync::Receive( unsigned int loid,
                           QString strFilePath,
                           QString strstrHostName,
                           QString strdatabasename,
                           QString strusername,
                           QString strpassword )
 {
+    int nResult;
     char conninfo[256];
     PGconn     *conn;
     PGresult   *res;
@@ -118,9 +119,13 @@ void PGSQLAsync::Receive( unsigned int loid,
 
      strcpy(szfilename,strFilePath.toUtf8().data());
 
-     printf("exporting file %s\n", szfilename);
+     debug_message("exporting file %s\n", szfilename);
 
-     lo_export(conn, loid, szfilename);
+     nResult = lo_export(conn, loid, szfilename);
+     if( 1 != nResult )
+     {
+         debug_message("Erro ao expostar file %s, erro: %d \n", szfilename, nResult);
+     }
 
 
      res = PQexec(conn, "end");
@@ -129,6 +134,8 @@ void PGSQLAsync::Receive( unsigned int loid,
      PQclear(res);
 
      PQfinish(conn);
+
+     return nResult;
 
 }
 int PGSQLAsync::WaitChange( QString strtable,

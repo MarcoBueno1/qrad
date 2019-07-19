@@ -3,18 +3,28 @@
 
 #include <QCoreApplication>
 #include <QTime>
+#include <QDateTime>
 #include <QStringList>
 #include <stdio.h>
 
+
 #ifdef Q_OS_WIN32
+
+#define QRAD_IN() \
+    debug_message( "-->");
+
+#define QRAD_OUT() \
+    debug_message( "<--");
+
+
+
 #define debug_message(fmt, args...) \
-    if (QCoreApplication::instance()->arguments().contains("--debug")) \
     {   \
       FILE *fp;\
       fp = fopen( "debug.txt", "a+t");\
       if( fp )\
       {\
-         fprintf(fp, "%s:%s:L:%d ", __FILE__,__PRETTY_FUNCTION__, __LINE__);  \
+         fprintf(fp, "%s%s:%s:L:%d ", QDateTime::currentDateTime().toString("dd/MM/yyyy HH:MM:ss.zzz ").toLatin1().data(), __FILE__,__PRETTY_FUNCTION__, __LINE__);  \
          fprintf(fp, fmt, ##args); \
          fflush(fp);\
          fclose(fp);\

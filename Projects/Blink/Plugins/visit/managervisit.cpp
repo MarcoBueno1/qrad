@@ -295,18 +295,22 @@ void Managervisit::MatchNewest(visit *newest )
 }
 void Managervisit::doEditar()
 {
+    QRAD_IN();
     Editvisit *edt = new Editvisit;
 
     QModelIndex currentIndex = ui->tableViewSearch->currentIndex();
 
     int nId = currentIndex.sibling(currentIndex.row(),ui->tableViewSearch->getColumnOf("id")).data().toInt();
 
-    qDebug() << nId;
+//    qDebug() << nId;
+    debug_message("nId %d\n", nId);
+
 
     visit *sa = visit::findByid(nId);
     if( !sa )
     {
         QMessageBox::warning(this,"Oops!", "Selecione um item primeiro!");
+        QRAD_OUT();
         return;
     }
 
@@ -319,21 +323,30 @@ void Managervisit::doEditar()
 
     ui->lineEditSearch->selectAll();
     ui->lineEditSearch->setFocus();
-
+    QRAD_OUT();
 }
 
 void Managervisit::doNovo()
 {
+    QRAD_IN();
+
     Editvisit *edt = new Editvisit;
 
     if( edt->exec() == QDialog::Accepted )
     {
         MatchNewest(edt->GetSaved());
+        debug_message("Criada nova vista nId: %d\n", edt->GetSaved()->getid());
     }
+
+
     delete edt;
 
     ui->lineEditSearch->selectAll();
     ui->lineEditSearch->setFocus();
+
+
+    QRAD_OUT();
+
 }
 
 void Managervisit::doSair()
